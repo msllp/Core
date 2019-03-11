@@ -1,0 +1,16 @@
+{
+    "name": "msllp/core",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Million Solutions LLP",
+            "email": "dev@millionsllp.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "MS\\Core\\": "src/Core",}
+    }
+}
