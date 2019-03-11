@@ -12,4 +12,6 @@ namespace MS\Provider;
 class MSCoreServiceProvider extends \Illuminate\Support\ServiceProvider
 {
 
+
+
 }
