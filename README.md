@@ -15,3 +15,6 @@ Run the Composer require command from the Terminal:
 
     composer require msllp/core
  
+ ##Configuration
+    
+    \MS\Core\
