@@ -11,6 +11,6 @@
     "require": {},
     "autoload": {
         "psr-4": {
-            "MS\\Core\\": "src/Core",}
+            "MS\\Core\\": "src/Core"}
     }
 }
