@@ -16,5 +16,10 @@ Run the Composer require command from the Terminal:
     composer require msllp/core
  
  ##Configuration
+If you're using Laravel 5.8+, this is all there is to do. 
+
+open your `config/app.php` file.
+
+Add a new line to the `providers` array:
     
-    \MS\Core\
+    \MS\Provider\MSCoreServiceProvider::class,
