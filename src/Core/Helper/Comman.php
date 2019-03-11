@@ -42,5 +42,13 @@ class Comman
             require_once(base_path('MS'.DIRECTORY_SEPARATOR .'F'.DIRECTORY_SEPARATOR .'M'.DIRECTORY_SEPARATOR ."Routes.php"));
         }
     }
+
+    public static function test(){
+        return[
+
+            'Status'=>200,
+            'Msg'=>"Working good "
+        ];
+    }
 }
 
