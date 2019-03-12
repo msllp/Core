@@ -25,14 +25,14 @@ Add a new line to the `providers` array:
     \MS\Provider\MSCoreServiceProvider::class,
     
 ##MS Folder Architect
-    MS      (MS Root Folder
-    ./B     (For Backend)
-    ../L    (L for Layouts)
-    ../M    (M for Modules)
+    MS      (MS Root Folder)
+    - B     (For Backend)
+     | - L    (L for Layouts)
+     | - M    (M for Modules)
     
-    ./L     (For Frontend)
-    ../L    (L for Layouts)
-    ../M    (M for Modules)
+    - L     (For Frontend)
+     | - L    (L for Layouts)
+     | - M    (M for Modules)
     
-    ./DB
-    ../Masetr
+    - DB
+     | - Masetr
