@@ -20,18 +20,18 @@ class MSCoreServiceProvider extends \Illuminate\Support\ServiceProvider
     public function boot()
     {
 
-        $this->loadTranslationsFrom(  dirname(__DIR__) .'/Lang', 'MS');
+        $this->loadTranslationsFrom(  dirname(__DIR__) .DS.'Lang', 'MS');
 
-        $this->loadViewsFrom(  dirname(__DIR__) . '/Views', 'MS');
+        $this->loadViewsFrom(  dirname(__DIR__) .DS.'Views', 'MS');
 
         $this->publishes([
-            dirname(__DIR__) .'/Config/MS.php' => base_path('config/MS.php'),
+            dirname(__DIR__) .DS.'Config'.DS.'MS.php' => base_path('config/MS.php'),
         ], 'MS_config');
 
 
 
         $this->publishes([
-            dirname(__DIR__).'MSDB' => base_path('MS/DB/Master')
+            dirname(__DIR__).DS.'MSDB' => base_path('MS/DB/Master')
         ], 'MS_db');
 
         if(config('MS.default_route_load')){
