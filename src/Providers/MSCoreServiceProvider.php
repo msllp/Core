@@ -7,7 +7,7 @@
  */
 
 namespace MS\Provider;
-
+define('DS',DIRECTORY_SEPARATOR);
 
 class MSCoreServiceProvider extends \Illuminate\Support\ServiceProvider
 {
@@ -20,17 +20,17 @@ class MSCoreServiceProvider extends \Illuminate\Support\ServiceProvider
     public function boot()
     {
 
-        $this->loadTranslationsFrom(__DIR__ . '/Lang', 'MS');
+        $this->loadTranslationsFrom(__DIR__ . DS.'Lang', 'MS');
 
-        $this->loadViewsFrom(__DIR__ . '/Views', 'MS');
+        $this->loadViewsFrom(__DIR__ . DS.'Views', 'MS');
 
         $this->publishes([
-            __DIR__ . '/Config/MS.php' => base_path('config/MS.php'),
+            __DIR__ . DS'Config'.DS.'MS.php' => base_path('config/MS.php'),
         ], 'MS_config');
 
 
         $this->publishes([
-            __DIR__.'/MSDB' => base_path('MS/DB/Master')
+            __DIR__.DS.'MSDB' => base_path('MS/DB/Master')
         ], 'MS_db');
 
         if(config('MS.default_route_load')){
