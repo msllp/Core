@@ -34,6 +34,20 @@ class MSCoreServiceProvider extends \Illuminate\Support\ServiceProvider
             dirname(__DIR__).DS.'MSDB' => base_path('MS/DB/Master')
         ], 'MS_db');
 
+
+        $this->publishes([
+            dirname(__DIR__).DS.'Routes'.DS.'MasterRoutes.php' => base_path('routes/web.php')
+        ], 'MS_Master_Routes');
+
+        $this->publishes([
+            dirname(__DIR__).DS.'Routes'.DS.'ModuleRoutes.php' => base_path('MS/B/M/Routes.php')
+        ], 'MS_Backend_Routes');
+
+        $this->publishes([
+            dirname(__DIR__).DS.'Routes'.DS.'ModuleRoutes.php' => base_path('MS/F/M/Routes.php')
+        ], 'MS_Frontend_Routes');
+
+
         if(config('MS.default_route_load')){
 
         }
