@@ -36,4 +36,4 @@ Add a new line to the `providers` array:
      | - M    (M for Modules)
     
     - DB
-     | - Masetr
+     | - Master
