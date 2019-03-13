@@ -10,7 +10,7 @@
 // Please see http://code.google.com/p/phpliteadmin/wiki/Configuration for more details
 
 //password to gain access
-$password = '9662611234';
+$password = 'admin!123';
 
 //directory relative to this file to search for databases (if false, manually list databases in the $databases variable)
 $directory = '.';
@@ -70,7 +70,7 @@ function leet_text($value)
 /* ---- Advanced options ---- */
 
 //changing the following variable allows multiple phpLiteAdmin installs to work under the same domain.
-$cookie_name = 'ICSDB';
+$cookie_name = 'MSDB';
 
 //whether or not to put the app in debug mode where errors are outputted
 $debug = false;
