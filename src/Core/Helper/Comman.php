@@ -43,6 +43,82 @@ class Comman
         }
     }
 
+
+    /**
+     * To Load Custom Location Route file
+     * Avalaible $type Random Ranges
+     *  1 Number
+     *  2 Lower a to z
+     *  3 Lower a to z
+     *  4 Lower a to z + Lower a to z
+     *  5 Lower a to z + Lower a to z + Number
+     * @param integer $count = 4 (Default)
+     * @param integer $type = 1 (Default)
+     * @return string
+     */
+    public static function random($count=4,$type=1): string {
+        $randstring=[];
+        switch ($type) {
+            case'patern':
+                $characters = '123';
+                break;
+
+            case '1':
+                $characters = '0123456789';
+                break;
+
+            case '2':
+                $characters = 'abcdefghijklmnopqrstuvwxyz';
+                break;
+
+            case '3':
+                $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                break;
+
+            case '4':
+                $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                break;
+
+
+            case '5':
+                $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                break;
+
+            default:
+                $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                break;
+        }
+
+
+        for ($i = 0; $i < $count; $i++) {
+            $randstring[]= $characters[rand(0, strlen($characters)-1)];
+        }
+        return implode('', $randstring) ;
+    }
+
+    /**
+     * To encode url friendly string
+     * @param $str
+     * @return string
+     */
+    public static function encode($str): string {
+        $code=base64_encode ($str);
+        $code=substr($code, 0, -2);
+        // dd($code);
+        return $code.self::random(5,5);
+    }
+
+    /**
+     * To decode url friendly string
+     * @param $str
+     * @return string
+     */
+    public static function decode($str): string {
+        $code=substr($str, 0, -5);
+        $code.="==";
+        return base64_decode ($code);
+    }
+
     public static function test(){
         return[
 

@@ -48,11 +48,25 @@ class MSCoreServiceProvider extends \Illuminate\Support\ServiceProvider
         ], 'MS_Frontend_Routes');
 
 
+
         if(config('MS.default_route_load')){
+
+
 
         }
 
 
 
+    }
+    /**
+     * Register bindings in the container.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->mergeConfigFrom(
+            [dirname(__DIR__).DS.'Config/Auth.php'=> base_path('config/auth.php')]
+        );
     }
 }
