@@ -66,7 +66,7 @@ class MSCoreServiceProvider extends \Illuminate\Support\ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            [dirname(__DIR__).DS.'Config/Auth.php'=> base_path('config/auth.php')]
+            dirname(__DIR__).DS.'Config/Auth.php', base_path('config/auth.php')
         );
     }
 }

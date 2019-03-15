@@ -126,5 +126,11 @@ class Comman
             'Msg'=>"Working good "
         ];
     }
+
+    public static function createTable($array):bool{
+
+        return MSDB::
+
+    }
 }
 
