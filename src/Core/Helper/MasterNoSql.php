@@ -8,10 +8,13 @@
 
 namespace MS\Core\Helper;
 
-use Illuminate\Support\Facades\Schema;
+use \Illuminate\Support\Facades\Schema;
 
 interface MasterNoSql
 {
+
+
+    public function __construct(string $nameSpace,string $id,array $perFix);
 
     // Table Function
 
@@ -23,25 +26,33 @@ interface MasterNoSql
      * @param string $tableConnection
      * @return bool
      */
-    public static function makeTable($tableName, $columnArray, $tableConnection="MSDB"):bool;
-    public static function makeTableColumnWhenTableMaking(Schema $tableClass,$columnName,$columnType="string",$defaultValue=""):bool;
-    public static function deleteTable():bool;
+    public static function makeTable(string $tableName,array $columnArray,string $tableConnection="MSDB"):bool;
+    public static function makeTableColumnWhenTableMaking(Schema $tableClass,string $columnName,string $columnType="string",$defaultValue=""):bool;
+
+    /**
+     * To delete Drop/Delete Table
+     * @param string $tableName
+     * @param string $tableConnection
+     * @return bool
+     */
+    public static function deleteTable(string $tableName, string $tableConnection="MSDB"):bool;
 
 
      // Table Column Function
-
-
-    public static function addTableColumnToDB():bool;
-    public static function updateTableColumnToDB():bool;
-    public static function deleteTableColumnFromDB():bool;
-    public static function getTableColumnFromDB():bool ;
+    public static function addTableColumnToDB(string $tableName, string $tableConnection="MSDB",array $columnArray):bool;
+    public static function updateTableColumnToDB(string $tableName, string $tableConnection="MSDB",array $columnArray):bool;
+    public static function deleteTableColumnFromDB(string $tableName, string $tableConnection="MSDB",array $columnArray):bool;
+    public static function getTableColumnFromDB(string $tableName, string $tableConnection="MSDB",array $columnArray):bool ;
 
 
     // Table Row Function
+    public static function addRow(string $tableName,array $columnArray,string $tableConnection="MSDB"):bool;
+    public static function updateRow(string $tableName, array $identifier, array $columnArray, string $tableConnection="MSDB"):bool;
+    public static function deleteRow(string $tableNam,array $identifier,string $tableConnection="MSDB"):bool;
+    public static function getRow(string $tableName,array $identifier,string $tableConnection="MSDB"):bool;
 
-
-    public static function addRow():bool;
-    public static function updateRow():bool;
-    public static function deleteRow():bool;
-    public static function getRow():bool;
+    public function rowAdd(array $columnArray);
+    public function rowEdit(array $identifier,array $columnArray);
+    public function rowDelete(array $identifier);
+    public function rowGet(array $identifier);
 }

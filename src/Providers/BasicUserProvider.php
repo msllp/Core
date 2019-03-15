@@ -7,7 +7,7 @@
  */
 
 namespace MS\Provider;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use \Illuminate\Contracts\Auth\Authenticatable;
 
 class BasicUserProvider implements Authenticatable
 {

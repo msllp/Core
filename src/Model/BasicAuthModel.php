@@ -5,8 +5,8 @@
  * Date: 14-03-2019
  * Time: 04:55 AM
  */
-use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use \Illuminate\Contracts\Auth\Authenticatable;
+use \Illuminate\Notifications\Notifiable;
 
 class BasicAuthModel implements Authenticatable{
 
