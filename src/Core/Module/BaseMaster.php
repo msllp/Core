@@ -12,11 +12,11 @@ namespace MS\Core\Module;
 interface BaseMaster
 {
 
-    public static function getTable($tableID,$perFix=false):string ;
+    public static function getTable($tableID=false,$perFix=false):string ;
 
-    public static function getConnection($tableID):string ;
+    public static function getConnection($tableID=false):string ;
 
-    public static function getField($tableID):string ;
+    public static function getField($tableID=false):string ;
 
 
 }

@@ -38,8 +38,9 @@ class Master implements BaseMaster
 
     }
 
-    public static function getConnection($tableID):string
+    public static function getConnection($tableID=false):string
     {
+        if(!$tableID)$tableID=array_key_first(static ::$tables);
         if(array_key_exists($tableID,static ::$tables)){
             return static ::$tables[$tableID]['connection'];
         }
@@ -49,8 +50,9 @@ class Master implements BaseMaster
         return"No Connection Found";
     }
 
-    public static function getField($tableID):string
+    public static function getField($tableID=false):string
     {
+        if(!$tableID)$tableID=array_key_first(static ::$tables);
         if(array_key_exists($tableID,static ::$tables)){
             return static ::$tables[$tableID]['fields'];
         }
