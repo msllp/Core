@@ -29,6 +29,13 @@ class MSDB implements MasterNoSql
 
     }
 
+
+    public function checkTableExist($id=false,$perFix=false):bool{
+        $connection=$this->model->connection;
+        $table=$this->model->table;
+        return Schema::connection($connection)->hasTable($table);
+    }
+
     public function rowAdd(array $columnArray):bool
     {
 
