@@ -13,8 +13,10 @@ class Master implements BaseMaster
 {
 
 
-    public static function getTable($tableID,$perFix=false):string
+    public static function getTable($tableID=false,$perFix=false):string
     {
+        if(!$tableID)$tableID=array_key_first(static ::$tables);
+
         if(array_key_exists($tableID,static::$tables)){
 
             if(substr(static ::$tables[$tableID]['tableName'], -1)=="_"){

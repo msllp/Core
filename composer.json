@@ -18,6 +18,10 @@
     "autoload": {
         "psr-4": {
             "MS\\":"src/",
-            "MS\\Core\\": "src/Core"}
-    }
+            "MS\\Core\\": "src/Core"},
+      "files": [
+        "MS/Core/helpers.php"
+      ]
+    },
+  "description": "For Million Solutions LLP Private Code"
 }
