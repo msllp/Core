@@ -24,7 +24,7 @@ class MSDB implements MasterNoSql
                     'id'=>$id,
                     'perfix'=>implode('_',$perFix),
             ];
-        $this->model=new $this->database['namespace'] ($id,$this->database['perfix']);
+        $this->model=new $this->database['namespace'] ( $nameSpace,$id,$this->database['perfix']);
         //parent::__construct($nameSpace, $id, $perFix);
 
     }

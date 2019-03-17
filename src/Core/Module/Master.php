@@ -61,7 +61,7 @@ class Master implements BaseMaster
         }
         return ["No Connection Found"];
     }
-    }
+
 
 
 }
