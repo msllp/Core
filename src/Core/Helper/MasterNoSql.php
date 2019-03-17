@@ -38,21 +38,21 @@ interface MasterNoSql
     public static function deleteTable(string $tableName, string $tableConnection="MSDB"):bool;
 
 
-     // Table Column Function
-    public static function addTableColumnToDB(string $tableName, string $tableConnection="MSDB",array $columnArray):bool;
-    public static function updateTableColumnToDB(string $tableName, string $tableConnection="MSDB",array $columnArray):bool;
-    public static function deleteTableColumnFromDB(string $tableName, string $tableConnection="MSDB",array $columnArray):bool;
-    public static function getTableColumnFromDB(string $tableName, string $tableConnection="MSDB",array $columnArray):bool ;
+    // Table Column Function
+//    public static function addTableColumnToDB(string $tableName, string $tableConnection="MSDB",array $columnArray):bool;
+//    public static function updateTableColumnToDB(string $tableName, string $tableConnection="MSDB",array $columnArray):bool;
+//    public static function deleteTableColumnFromDB(string $tableName, string $tableConnection="MSDB",array $columnArray):bool;
+//    public static function getTableColumnFromDB(string $tableName, string $tableConnection="MSDB",array $columnArray):bool ;
 
 
     // Table Row Function
-    public static function addRow(string $tableName,array $columnArray,string $tableConnection="MSDB"):bool;
-    public static function updateRow(string $tableName, array $identifier, array $columnArray, string $tableConnection="MSDB"):bool;
-    public static function deleteRow(string $tableNam,array $identifier,string $tableConnection="MSDB"):bool;
-    public static function getRow(string $tableName,array $identifier,string $tableConnection="MSDB"):bool;
+//    public static function addRow(string $tableName,array $columnArray,string $tableConnection="MSDB"):bool;
+//    public static function updateRow(string $tableName, array $identifier, array $columnArray, string $tableConnection="MSDB"):bool;
+//    public static function deleteRow(string $tableNam,array $identifier,string $tableConnection="MSDB"):bool;
+//    public static function getRow(string $tableName,array $identifier,string $tableConnection="MSDB"):bool;
 
     public function rowAdd(array $columnArray);
-    public function rowEdit(array $identifier,array $columnArray);
-    public function rowDelete(array $identifier);
-    public function rowGet(array $identifier);
+//    public function rowEdit(array $identifier,array $columnArray);
+//    public function rowDelete(array $identifier);
+//    public function rowGet(array $identifier);
 }
