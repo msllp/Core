@@ -22,19 +22,31 @@ class MSDB implements MasterNoSql
         $this->database=[
                     'namespace'=>"\\".$nameSpace."\\Model",
                     'id'=>$id,
-                    'prefix'=>implode('_',$perFix),
+                    'perfix'=>implode('_',$perFix),
             ];
-        $this->model=new $this->database['namespace'] ($id,$this->database['prefix']);
+        $this->model=new $this->database['namespace'] ($id,$this->database['perfix']);
         //parent::__construct($nameSpace, $id, $perFix);
 
     }
 
-    public function rowAdd(array $columnArray)
+    public function rowAdd(array $columnArray):bool
     {
 
-        DB::table('users')->insert(
-            ['email' => 'john@example.com', 'votes' => 0]
-        );
+        try{
+
+            $tableName=$this->database['namespace']::getTable($this->database['id']).$this->database['perfix'];
+            $connection=$this->database['namespace']::getConnection($this->database['id']).$this->database['perfix'];
+            DB::connection($connection)->table($tableName)->insert($columnArray);
+
+        }catch (\Exception $e){
+
+            return false;
+
+
+        }
+
+        return true;
+
         // TODO: Implement rowAdd() method.
     }
 
@@ -62,10 +74,12 @@ class MSDB implements MasterNoSql
                     $table->timestamps();
                 });
             }
-        return true;
+
         }catch(Exception $e) {
         return false;
         }
+
+        return true;
     }
 
     public static function makeTableColumnWhenTableMaking(Schema $tableClass,string $columnName,string $columnType = "string", $defaultValue = ""): bool
@@ -95,8 +109,10 @@ class MSDB implements MasterNoSql
 
     public static function deleteTable(string $tableName, string $tableConnection = "MSDB"): bool
     {
-        // TODO: Implement deleteTable() method.
-
+        try{
+           DB::connection($tableConnection)->table($tableName)->delete();
+        }catch (Exception $e){return false;}
+        return true;
     }
 
 }
