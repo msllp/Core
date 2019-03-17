@@ -12,7 +12,7 @@ namespace MS\Core\Model;
 
 use   \Illuminate\Database\Eloquent\Model;
 
-class MasterModel extends Model {
+class Master extends Model {
 
 
     public $namespace,$tableID,$perFix,$ms_base,$base_Field;
