@@ -20,7 +20,7 @@
             "MS\\":"src/",
             "MS\\Core\\": "src/Core"},
       "files": [
-        "MS/Core/helpers.php"
+        "src/Functions/7_3.php"
       ]
     },
   "description": "For Million Solutions LLP Private Code"
