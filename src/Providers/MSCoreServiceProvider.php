@@ -48,6 +48,11 @@ class MSCoreServiceProvider extends \Illuminate\Support\ServiceProvider
         ], 'MS_Frontend_Routes');
 
 
+        $this->publishes([
+            dirname(__DIR__).DS.'Middlelwares'.DS.'settingOn.php' => base_path('app/Http/Middleware/settingOn.php')
+        ], 'MS_SettingOn_Config');
+
+
 
         if(config('MS.default_route_load')){
 

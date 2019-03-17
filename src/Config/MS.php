@@ -10,6 +10,19 @@ return[
 
     'front_module_root'=>'MS/F',
 
-    'backend_prefix'=>"admin"
+    'backend_prefix'=>"admin",
+
+    'Modules'=>
+
+    [
+
+        'Frontend'=>[],
+        'Backend'=>[
+            'MAS'=>true,
+
+
+        ],
+
+    ],
 
 ];

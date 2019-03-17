@@ -132,5 +132,44 @@ class Comman
        // return MSDB::
 
     }
+
+
+    ///For Database setting for Modules
+    ///
+    ///
+
+    public static function marge_database($Config){
+
+        $loadArray=config('database.connections');
+        $loadArray=array_merge($loadArray,self::loadDBForModule($Config));
+        \Config::set('database.connections',$loadArray);
+
+    }
+
+
+    public static function loadDBForModule($module){
+
+        $m="_Master";
+        $d="_Data";
+        $basePath='MS'.DIRECTORY_SEPARATOR.'DB'.DIRECTORY_SEPARATOR.'Master'.DIRECTORY_SEPARATOR;
+        $loadArray=[];
+
+        $return[$module.$m]=[
+            'driver' => 'sqlite',
+            'database' => base_path($basePath.$module.$m),
+            'prefix' => '',
+        ];
+
+        $return[$module.$d]=[
+            'driver' => 'sqlite',
+            'database' => base_path($basePath.$module.$d),
+            'prefix' => '',
+        ];
+        $loadArray=array_merge($loadArray,$return);
+
+        return $loadArray;
+
+    }
+
 }
 
