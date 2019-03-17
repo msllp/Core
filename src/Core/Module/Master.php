@@ -15,12 +15,17 @@ class Master implements BaseMaster
 
     public static function getTable($tableID,$perFix=false):string
     {
-        if(array_key_exists($tableID,static ::$tables)){
+        if(array_key_exists($tableID,static::$tables)){
 
-            if(substr(static ::$tables[$tableID]['tableName'], -1)){}
+            if(substr(static ::$tables[$tableID]['tableName'], -1)=="_"){
 
+                if(is_array($perFix)){
+                    return static ::$tables[$tableID]['tableName'].implode("_",$perFix);
+                }else{
+                    return static ::$tables[$tableID]['tableName'].$perFix;
+                }
 
-
+            }
 
             return static ::$tables[$tableID]['tableName'];
         }
