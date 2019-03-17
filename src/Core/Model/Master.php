@@ -15,11 +15,11 @@ use   \Illuminate\Database\Eloquent\Model;
 class Master extends Model {
 
 
-    public $namespace,$tableID,$perFix,$ms_base,$base_Field;
+    public $namespace,$tableID,$perFix,$ms_base,$base_Field,$g;
 
     public function __construct(string $nameSpace,$tableID=false, $perFix=false, $tableConnection=false,$glue="_")
     {
-        parent::__construct();
+
         $this->namespace=$nameSpace;
         $this->g=$glue;
         $this->ms_base="\\".$nameSpace."\\Base";
@@ -47,6 +47,8 @@ class Master extends Model {
         foreach ($this->base_Field as $key => $value) {
             $this->fillable[]=$value['name'];
         }
+
+        parent::__construct();
     }
 
 
