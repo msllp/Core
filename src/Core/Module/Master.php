@@ -32,7 +32,7 @@ class Master implements BaseMaster
             return static ::$tables[$tableID]['tableName'];
         }
         if(count(static ::$tables) > 0){
-            return reset(static ::$tables);
+            return reset(static ::$tables)['tableName'];
         }
         return"No Module Table Found";
 
@@ -45,21 +45,22 @@ class Master implements BaseMaster
             return static ::$tables[$tableID]['connection'];
         }
         if(count(static ::$tables) > 0){
-            return reset(static ::$tables);
+            return reset(static ::$tables)['connection'];
         }
         return"No Connection Found";
     }
 
-    public static function getField($tableID=false):string
+    public static function getField($tableID=false):array
     {
         if(!$tableID)$tableID=array_key_first(static ::$tables);
         if(array_key_exists($tableID,static ::$tables)){
             return static ::$tables[$tableID]['fields'];
         }
         if(count(static ::$tables) > 0){
-            return reset(static ::$tables);
+            return reset(static ::$tables)['fields'];
         }
-        return"No Connection Found";
+        return ["No Connection Found"];
+    }
     }
 
 

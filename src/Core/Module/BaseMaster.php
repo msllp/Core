@@ -16,7 +16,7 @@ interface BaseMaster
 
     public static function getConnection($tableID=false):string ;
 
-    public static function getField($tableID=false):string ;
+    public static function getField($tableID=false):array ;
 
 
 }
