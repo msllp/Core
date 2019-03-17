@@ -21,7 +21,7 @@ class Master extends Model {
     {
         parent::__construct();
         $this->namespace=$nameSpace;
-        $this->ms_base="//".$nameSpace."//Base";
+        $this->ms_base="\\".$nameSpace."\\Base";
         if($tableID){
             $this->tableID=$tableID;
             if($perFix){
