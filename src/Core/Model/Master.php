@@ -21,11 +21,13 @@ class Master extends Model {
     {
         parent::__construct();
         $this->namespace=$nameSpace;
+        $this->g=$glue;
         $this->ms_base="\\".$nameSpace."\\Base";
         if($tableID){
             $this->tableID=$tableID;
             if($perFix){
                 if(is_array($perFix))$perFix=implode($glue,$perFix);
+                $perFix=$this->g.$perFix;
                 $this->table=$this->ms_base::getTable($tableID).$perFix;
                 $this->perFix=$perFix;
             }else{
