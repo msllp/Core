@@ -51,8 +51,8 @@ interface MasterNoSql
 //    public static function deleteRow(string $tableNam,array $identifier,string $tableConnection="MSDB"):bool;
 //    public static function getRow(string $tableName,array $identifier,string $tableConnection="MSDB"):bool;
 
-    public function rowAdd(array $columnArray);
+    public function rowAdd(array $columnArray,array $uniqArray=[]):bool ;
     public function rowEdit(array $identifier,array $columnArray):bool ;
-//    public function rowDelete(array $identifier);
+    public function rowDelete(array $identifier):bool ;
 //    public function rowGet(array $identifier);
 }

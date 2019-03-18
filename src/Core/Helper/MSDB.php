@@ -37,9 +37,40 @@ class MSDB implements MasterNoSql
 
         return Schema::connection($connection)->hasTable($table);
     }
-    public function rowAdd(array $columnArray):bool
-    {
+    public function migrate($id=false,$perFix=false):bool {
 
+        if (is_array($id) && is_array($perFix)){
+
+
+        }else{
+
+            $table=$this->model->getTable();
+            $connection=$this->model->getConnectionName();
+            $fields=$this->model->base_Field;
+
+
+        }
+
+        // dd($this);
+
+        // dd($this);
+        if(!$this->checkTableExist($id,$perFix)){
+            return self::makeTable($table,$fields,$connection);
+        }
+
+        return false;
+    }
+    public function delete():bool {
+
+        $table=$this->model->getTable();
+        $connection=$this->model->getConnectionName();
+        return self::deleteTable($table,$connection);
+
+
+    }
+
+    public function rowAdd(array $columnArray,array $uniqArray=[]):bool
+    {
         if(!array_key_exists('created_at',$columnArray))$columnArray['created_at']=now()->toDateTimeString();
         if(!array_key_exists('updated_at',$columnArray))$columnArray['updated_at']=now()->toDateTimeString();
         try{
@@ -62,8 +93,6 @@ class MSDB implements MasterNoSql
 
         // TODO: Implement rowAdd() method.
     }
-
-
     public function rowEdit(array $identifier, array $columnArray):bool
     {
         // TODO: Implement rowEdit() method.
@@ -88,36 +117,29 @@ class MSDB implements MasterNoSql
         return false;
     }
 
-    public function migrate($id=false,$perFix=false):bool {
+    public function rowDelete(array $identifier):bool
+    {
+        // TODO: Implement rowDelete() method.
+        $connection=$this->model->getConnectionName();
+        $table=$this->model->getTable();
+        $fields=$this->model->base_Field;
 
-        if (is_array($id) && is_array($perFix)){
-
-
+        if(count($identifier) < 2){
+            dd(reset($identifier));
+            //$objFields=collect($fields)->where(array_key_first($identifier),reset($identifier) );
         }else{
 
-            $table=$this->model->getTable();
-            $connection=$this->model->getConnectionName();
-            $fields=$this->model->base_Field;
-
+            $objFields=collect($fields)->where('name',array_key_first($identifier))->count();
+            if ($objFields > 0){
+            \DB::connection($connection)->table($table)->where(array_key_first($identifier),reset($identifier))->delete();
+                return true;
+            }
 
         }
 
-        // dd($this);
-
-        // dd($this);
-        return self::makeTable($table,$fields,$connection);
+        return false;
 
     }
-
-    public function delete():bool {
-
-        $table=$this->model->getTable();
-        $connection=$this->model->getConnectionName();
-        return self::deleteTable($table,$connection);
-
-
-    }
-
 
     public static function makeTable(string $tableName,array $columnArray,string $tableConnection = "MSDB"): bool
     {
