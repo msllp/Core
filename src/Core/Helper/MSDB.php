@@ -20,10 +20,10 @@ class MSDB implements MasterNoSql
     public function __construct(string $nameSpace, string $id, array $perFix)
     {
         $this->database=[
-                    'namespace'=>"\\".$nameSpace."\\Model",
-                    'id'=>$id,
-                    'perfix'=>implode('_',$perFix),
-            ];
+            'namespace'=>"\\".$nameSpace."\\Model",
+            'id'=>$id,
+            'perfix'=>implode('_',$perFix),
+        ];
         $this->model=new $this->database['namespace'] ( $nameSpace,$id,$this->database['perfix']);
         //parent::__construct($nameSpace, $id, $perFix);
 
@@ -40,11 +40,16 @@ class MSDB implements MasterNoSql
     public function rowAdd(array $columnArray):bool
     {
 
+        if(!array_key_exists('created_at',$columnArray))$columnArray['created_at']=now()->toDateTimeString();
+        if(!array_key_exists('updated_at',$columnArray))$columnArray['updated_at']=now()->toDateTimeString();
         try{
 
-            $tableName=$this->database['namespace']::getTable($this->database['id']).$this->database['perfix'];
-            $connection=$this->database['namespace']::getConnection($this->database['id']).$this->database['perfix'];
-            DB::connection($connection)->table($tableName)->insert($columnArray);
+            $connection=$this->model->getConnectionName();
+            $table=$this->model->getTable();
+            $tableName=$table;
+            // $connection=$this->database['namespace']::getConnection($this->database['id']).$this->database['perfix'];
+            \DB::connection($connection)->table($tableName)->insert($columnArray);
+
 
         }catch (\Exception $e){
 
@@ -59,8 +64,65 @@ class MSDB implements MasterNoSql
     }
 
 
+    public function rowEdit(array $identifier, array $columnArray):bool
+    {
+        // TODO: Implement rowEdit() method.
+        $connection=$this->model->getConnectionName();
+        $table=$this->model->getTable();
+        $fields=$this->model->base_Field;
+        if(!array_key_exists('updated_at',$columnArray))$columnArray['updated_at']=now()->toDateTimeString();
+        if(count($identifier) < 2){
+            dd(reset($identifier));
+            //$objFields=collect($fields)->where(array_key_first($identifier),reset($identifier) );
+        }else{
+
+            $objFields=collect($fields)->where('name',array_key_first($identifier))->count();
+            if ($objFields > 0){
+
+                \DB::connection($connection)->table($table)->update( $columnArray);
+                return true;
+            }
+
+        }
+
+        return false;
+    }
+
+    public function migrate($id=false,$perFix=false):bool {
+
+        if (is_array($id) && is_array($perFix)){
+
+
+        }else{
+
+            $table=$this->model->getTable();
+            $connection=$this->model->getConnectionName();
+            $fields=$this->model->base_Field;
+
+
+        }
+
+        // dd($this);
+
+        // dd($this);
+        return self::makeTable($table,$fields,$connection);
+
+    }
+
+    public function delete():bool {
+
+        $table=$this->model->getTable();
+        $connection=$this->model->getConnectionName();
+        return self::deleteTable($table,$connection);
+
+
+    }
+
+
     public static function makeTable(string $tableName,array $columnArray,string $tableConnection = "MSDB"): bool
     {
+
+
         try{
 
             if($tableConnection!="MSDB"){
@@ -68,15 +130,19 @@ class MSDB implements MasterNoSql
                 Schema::connection($tableConnection)->create($tableName, function (Blueprint $table)use ($columnArray)  {
                     $table->increments('id');
                     foreach ($columnArray as $value) {
+
                         self::makeTableColumnWhenTableMaking($table,$value['name'],$value['type']);
                     }
+
                     $table->timestamps();
+                    // dd($table);
                 });
             }else{
                 Schema::dropIfExists($tableName);
                 Schema::create($tableName, function (Blueprint $table) use ($columnArray) {
                     $table->increments('id');
                     foreach ($columnArray as $value) {
+                        //  dd($table);
                         self::makeTableColumnWhenTableMaking($table,$value['name'],$value['type']);
                     }
                     $table->timestamps();
@@ -84,14 +150,15 @@ class MSDB implements MasterNoSql
             }
 
         }catch(Exception $e) {
-        return false;
+            return false;
         }
 
         return true;
     }
 
-    public static function makeTableColumnWhenTableMaking(Schema $tableClass,string $columnName,string $columnType = "string", $defaultValue = ""): bool
+    public static function makeTableColumnWhenTableMaking( $tableClass,string $columnName,string $columnType = "string", $defaultValue = ""): bool
     {
+        // dd($tableClass);
         switch ($columnType) {
             case 'boolean':
                 $tableClass->boolean($columnName)->default(false);
@@ -113,12 +180,14 @@ class MSDB implements MasterNoSql
                 }
                 break;
         }
+        return true;
     }
 
     public static function deleteTable(string $tableName, string $tableConnection = "MSDB"): bool
     {
+        //dd( Schema::connection($tableConnection)->drop($tableName));
         try{
-           DB::connection($tableConnection)->table($tableName)->delete();
+            Schema::connection($tableConnection)->drop($tableName);
         }catch (Exception $e){return false;}
         return true;
     }

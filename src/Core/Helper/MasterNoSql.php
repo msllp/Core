@@ -27,7 +27,7 @@ interface MasterNoSql
      * @return bool
      */
     public static function makeTable(string $tableName,array $columnArray,string $tableConnection="MSDB"):bool;
-    public static function makeTableColumnWhenTableMaking(Schema $tableClass,string $columnName,string $columnType="string",$defaultValue=""):bool;
+    public static function makeTableColumnWhenTableMaking( $tableClass,string $columnName,string $columnType="string",$defaultValue=""):bool;
     public function checkTableExist($id=false,$perFix=false):bool;
     /**
      * To delete Drop/Delete Table
@@ -52,7 +52,7 @@ interface MasterNoSql
 //    public static function getRow(string $tableName,array $identifier,string $tableConnection="MSDB"):bool;
 
     public function rowAdd(array $columnArray);
-//    public function rowEdit(array $identifier,array $columnArray);
+    public function rowEdit(array $identifier,array $columnArray):bool ;
 //    public function rowDelete(array $identifier);
 //    public function rowGet(array $identifier);
 }
