@@ -119,16 +119,16 @@ class MSDB implements MasterNoSql
 
     public function rowDelete(array $identifier):bool
     {
-        // TODO: Implement rowDelete() method.
         $connection=$this->model->getConnectionName();
         $table=$this->model->getTable();
         $fields=$this->model->base_Field;
 
         if(count($identifier) < 2){
-            dd(reset($identifier));
+            //dd(reset($identifier));
+            goto a;
             //$objFields=collect($fields)->where(array_key_first($identifier),reset($identifier) );
         }else{
-
+            a:
             $objFields=collect($fields)->where('name',array_key_first($identifier))->count();
             if ($objFields > 0){
             \DB::connection($connection)->table($table)->where(array_key_first($identifier),reset($identifier))->delete();
