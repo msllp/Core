@@ -141,6 +141,41 @@ class MSDB implements MasterNoSql
 
     }
 
+    public function rowGet(array $identifier=[]): array
+    {
+        $connection=$this->model->getConnectionName();
+        $table=$this->model->getTable();
+        $fields=$this->model->base_Field;
+
+
+        $return=[];
+        if(count($identifier) > 1){
+
+            goto ms_default;
+
+        }
+        elseif(count($identifier) < 1) {
+
+
+            $row=\DB::connection($connection)->table($table)->get();
+            if ($row->count() > 0)$return=$row->toArray();
+
+            goto fn_final;
+        }elseif(count($identifier) == 1) {
+            ms_default:
+            $objFields=collect($fields)->where('name',array_key_first($identifier))->count();
+            if ($objFields > 0){
+                $row=\DB::connection($connection)->table($table)->where(array_key_first($identifier),reset($identifier))->get();
+                if ($row->count() > 0)$return=$row->toArray();
+                goto fn_final;
+            }
+        }
+
+        fn_final:
+        return $return;
+
+    }
+
     public static function makeTable(string $tableName,array $columnArray,string $tableConnection = "MSDB"): bool
     {
 
