@@ -28,7 +28,13 @@ interface MasterNoSql
      */
     public static function makeTable(string $tableName,array $columnArray,string $tableConnection="MSDB"):bool;
     public static function makeTableColumnWhenTableMaking( $tableClass,string $columnName,string $columnType="string",$defaultValue=""):bool;
-    public function checkTableExist($id=false,$perFix=false):bool;
+
+    /**
+     * @param bool $id
+     * @param bool $perFix
+     * @return bool
+     */
+    public function checkTableExist($id=false, $perFix=false):bool;
     /**
      * To delete Drop/Delete Table
      * @param string $tableName
@@ -52,8 +58,29 @@ interface MasterNoSql
 //    public static function getRow(string $tableName,array $identifier,string $tableConnection="MSDB"):bool;
 
 
-    public function rowAdd(array $columnArray,array $uniqArray=[]):bool ;
-    public function rowEdit(array $identifier,array $columnArray):bool ;
+    /**
+     * @param array $columnArray
+     * @param array $uniqArray
+     * @return bool
+     */
+    public function rowAdd(array $columnArray, array $uniqArray=[]):bool ;
+
+    /**
+     * @param array $identifier
+     * @param array $columnArray
+     * @return bool
+     */
+    public function rowEdit(array $identifier, array $columnArray):bool ;
+
+    /**
+     * @param array $identifier
+     * @return bool
+     */
     public function rowDelete(array $identifier):bool ;
-    public function rowGet(array $identifier=[]): array
+
+    /**
+     * @param array $identifier
+     * @return array
+     */
+    public function rowGet(array $identifier=[]): array;
 }

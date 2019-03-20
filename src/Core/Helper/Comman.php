@@ -127,13 +127,6 @@ class Comman
         ];
     }
 
-    public static function createTable($array):bool{
-
-       // return MSDB::
-
-    }
-
-
     ///For Database setting for Modules
     ///
     ///
