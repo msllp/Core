@@ -250,18 +250,13 @@ class MSDB implements MasterNoSql
     }
 
     public static function dropTable($namespace=false,$id=false,$perFix=false){
-        // $modelName="\\".$namespace."\\Model";
         $baseName="\\".$namespace."\\Base";
         if(!$id)$id= array_key_first($baseName::$tables);
-
-        if (is_array($id) && is_array($perFix)){
-            $table=$baseName::getTable($id,$perFix);
-            $connection=$baseName::getConnection($id);
+        if (is_array($perFix)){
+            $m=new self($namespace,$id,$perFix);
         }else{
-
-            $table=$baseName::getTable($id);
-            $connection=$baseName::getConnection($id);
+            $m=new self ($namespace,$id);
         }
-        return self::deleteTable($table,$connection);
+        return $m->delete();
     }
 }
