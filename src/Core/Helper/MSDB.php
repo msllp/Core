@@ -31,7 +31,6 @@ class MSDB implements MasterNoSql
 
 
     /**
-     * Check Module Table Exist
      * @param bool $id
      * @param bool $perFix
      * @return bool
@@ -327,8 +326,7 @@ class MSDB implements MasterNoSql
         }
         return $m->delete();
     }
-
     public function getAllTable(string $connection):array {
-        return \DB::connection($connection)->getDoctrineSchemaManager()->listTableNames();
+        return \DB::connection($this->model->getConnectionName())->getDoctrineSchemaManager()->listTableNames();
     }
 }
