@@ -30,14 +30,27 @@ class MSDB implements MasterNoSql
     }
 
 
-    public function checkTableExist($id=false,$perFix=false):bool{
+    /**
+     * Check Module Table Exist
+     * @param bool $id
+     * @param bool $perFix
+     * @return bool
+     */
+    public function checkTableExist($id=false, $perFix=false):bool{
 
         $connection=$this->model->getConnectionName();
         $table=$this->model->getTable();
 
         return Schema::connection($connection)->hasTable($table);
     }
-    public function migrate($id=false,$perFix=false):bool {
+
+    /**
+     * Create Module Table
+     * @param bool $id
+     * @param bool $perFix
+     * @return bool
+     */
+    public function migrate($id=false, $perFix=false):bool {
 
         if (is_array($id) && is_array($perFix)){
 
@@ -60,6 +73,11 @@ class MSDB implements MasterNoSql
 
         return false;
     }
+
+    /**
+     * Delete Module Table
+     * @return bool
+     */
     public function delete():bool {
 
         $table=$this->model->getTable();
@@ -69,7 +87,13 @@ class MSDB implements MasterNoSql
 
     }
 
-    public function rowAdd(array $columnArray,array $uniqArray=[]):bool
+    /**
+     * Add Row to desired Database
+     * @param array $columnArray
+     * @param array $uniqArray
+     * @return bool
+     */
+    public function rowAdd(array $columnArray, array $uniqArray=[]):bool
     {
         if(!array_key_exists('created_at',$columnArray))$columnArray['created_at']=now()->toDateTimeString();
         if(!array_key_exists('updated_at',$columnArray))$columnArray['updated_at']=now()->toDateTimeString();
@@ -93,6 +117,13 @@ class MSDB implements MasterNoSql
 
         // TODO: Implement rowAdd() method.
     }
+
+    /**
+     * Edit Row From any valid Column Value
+     * @param array $identifier
+     * @param array $columnArray
+     * @return bool
+     */
     public function rowEdit(array $identifier, array $columnArray):bool
     {
         // TODO: Implement rowEdit() method.
@@ -117,6 +148,11 @@ class MSDB implements MasterNoSql
         return false;
     }
 
+    /**
+     * Delete Row From any valid Column Value
+     * @param array $identifier
+     * @return bool
+     */
     public function rowDelete(array $identifier):bool
     {
         $connection=$this->model->getConnectionName();
@@ -141,6 +177,11 @@ class MSDB implements MasterNoSql
 
     }
 
+    /**
+     * Get Row From any valid Column Value
+     * @param array $identifier
+     * @return array
+     */
     public function rowGet(array $identifier=[]): array
     {
         $connection=$this->model->getConnectionName();
@@ -176,7 +217,14 @@ class MSDB implements MasterNoSql
 
     }
 
-    public static function makeTable(string $tableName,array $columnArray,string $tableConnection = "MSDB"): bool
+    /**
+     * Static Raw drop Table Function
+     * @param string $tableName
+     * @param array $columnArray
+     * @param string $tableConnection
+     * @return bool
+     */
+    public static function makeTable(string $tableName, array $columnArray, string $tableConnection = "MSDB"): bool
     {
 
 
@@ -213,7 +261,14 @@ class MSDB implements MasterNoSql
         return true;
     }
 
-    public static function makeTableColumnWhenTableMaking( $tableClass,string $columnName,string $columnType = "string", $defaultValue = ""): bool
+    /**
+     * @param $tableClass
+     * @param string $columnName
+     * @param string $columnType
+     * @param string $defaultValue
+     * @return bool
+     */
+    public static function makeTableColumnWhenTableMaking($tableClass, string $columnName, string $columnType = "string", $defaultValue = ""): bool
     {
         // dd($tableClass);
         switch ($columnType) {
@@ -240,6 +295,12 @@ class MSDB implements MasterNoSql
         return true;
     }
 
+    /**
+     * Static Raw drop Table Function
+     * @param string $tableName
+     * @param string $tableConnection
+     * @return bool
+     */
     public static function deleteTable(string $tableName, string $tableConnection = "MSDB"): bool
     {
         //dd( Schema::connection($tableConnection)->drop($tableName));
@@ -249,7 +310,14 @@ class MSDB implements MasterNoSql
         return true;
     }
 
-    public static function dropTable($namespace=false,$id=false,$perFix=false){
+    /**
+     * Static drop Module Table Function
+     * @param bool $namespace
+     * @param bool $id
+     * @param bool $perFix
+     * @return bool|mixed
+     */
+    public static function dropTable($namespace=false, $id=false, $perFix=false){
         $baseName="\\".$namespace."\\Base";
         if(!$id)$id= array_key_first($baseName::$tables);
         if (is_array($perFix)){
@@ -258,5 +326,9 @@ class MSDB implements MasterNoSql
             $m=new self ($namespace,$id);
         }
         return $m->delete();
+    }
+
+    public function getAllTable(string $connection):array {
+        return \DB::connection($connection)->getDoctrineSchemaManager()->listTableNames();
     }
 }

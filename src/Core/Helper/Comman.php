@@ -164,5 +164,10 @@ class Comman
 
     }
 
+    public function getAllTable():array {
+        dd(\DB::connection($this->model->getConnectionName())-> getDoctrineSchemaManager()->listTableNames());
+        return \DB::connection($this->model->getConnectionName());
+    }
+
 }
 
