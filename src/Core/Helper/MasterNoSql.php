@@ -28,7 +28,7 @@ interface MasterNoSql
      */
     public static function makeTable(string $tableName,array $columnArray,string $tableConnection="MSDB"):bool;
     public static function makeTableColumnWhenTableMaking( $tableClass,string $columnName,string $columnType="string",$defaultValue=""):bool;
-
+    public static function dropTable($namespace=false,$id=false,$perFix=false);
     /**
      * @param bool $id
      * @param bool $perFix
