@@ -1,7 +1,7 @@
-@extends('layouts.plane')
+@extends('MS::layouts.plane')
 
 @section('body')
- <div id="wrapper">
+    <div id="wrapper">
 
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
@@ -80,12 +80,12 @@
                                         <strong>Task 1</strong>
                                         <span class="pull-right text-muted">40% Complete</span>
                                     </p>
-                                   
-                                        <div>
-                                        @include('widgets.progress', array('animated'=> true, 'class'=>'success', 'value'=>'40'))
-                                            <span class="sr-only">40% Complete (success)</span>
-                                        </div>
-                                   
+
+                                    <div>
+                                        @include('MS::widgets.progress', array('animated'=> true, 'class'=>'success', 'value'=>'40'))
+                                        <span class="sr-only">40% Complete (success)</span>
+                                    </div>
+
                                 </div>
                             </a>
                         </li>
@@ -97,12 +97,12 @@
                                         <strong>Task 2</strong>
                                         <span class="pull-right text-muted">20% Complete</span>
                                     </p>
-                                   
-                                        <div>
-                                        @include('widgets.progress', array('animated'=> true, 'class'=>'info', 'value'=>'20'))
-                                            <span class="sr-only">20% Complete</span>
-                                        </div>
-                                   
+
+                                    <div>
+                                        @include('MS::widgets.progress', array('animated'=> true, 'class'=>'info', 'value'=>'20'))
+                                        <span class="sr-only">20% Complete</span>
+                                    </div>
+
                                 </div>
                             </a>
                         </li>
@@ -114,12 +114,12 @@
                                         <strong>Task 3</strong>
                                         <span class="pull-right text-muted">60% Complete</span>
                                     </p>
-                                    
-                                        <div>
-                                        @include('widgets.progress', array('animated'=> true, 'class'=>'warning', 'value'=>'60'))
-                                            <span class="sr-only">60% Complete (warning)</span>
-                                        </div>
-                                   
+
+                                    <div>
+                                        @include('MS::widgets.progress', array('animated'=> true, 'class'=>'warning', 'value'=>'60'))
+                                        <span class="sr-only">60% Complete (warning)</span>
+                                    </div>
+
                                 </div>
                             </a>
                         </li>
@@ -131,12 +131,12 @@
                                         <strong>Task 4</strong>
                                         <span class="pull-right text-muted">80% Complete</span>
                                     </p>
-                                    
-                                        <div>
-                                        @include('widgets.progress', array('animated'=> true,'class'=>'danger', 'value'=>'80'))
-                                            <span class="sr-only">80% Complete (danger)</span>
-                                        </div>
-                                    
+
+                                    <div>
+                                        @include('MS::widgets.progress', array('animated'=> true,'class'=>'danger', 'value'=>'80'))
+                                        <span class="sr-only">80% Complete (danger)</span>
+                                    </div>
+
                                 </div>
                             </a>
                         </li>
@@ -334,14 +334,14 @@
         </nav>
 
         <div id="page-wrapper">
-			 <div class="row">
+            <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">@yield('page_heading')</h1>
                 </div>
                 <!-- /.col-lg-12 -->
-           </div>
-			<div class="row">  
-				@yield('section')
+            </div>
+            <div class="row">
+                @yield('section')
 
             </div>
             <!-- /#page-wrapper -->

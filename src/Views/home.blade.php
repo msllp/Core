@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('MS::layouts.dashboard')
 @section('page_heading','Dashboard')
 @section('section')
            
@@ -212,15 +212,15 @@
                    
                     <!-- /.panel -->
                 @endsection
-                @include('widgets.panel', array('header'=>true, 'as'=>'pane2'))
+                @include('MS::widgets.panel', array('header'=>true, 'as'=>'pane2'))
                 </div>
                 <!-- /.col-lg-8 -->
                 <div class="col-lg-4">
                     @section ('cchart11_panel_title','Line Chart')
                     @section ('cchart11_panel_body')
-                    @include('widgets.charts.clinechart')
+                    @include('MS::widgets.charts.clinechart')
                     @endsection
-                    @include('widgets.panel', array('header'=>true, 'as'=>'cchart11'))
+                    @include('MS::widgets.panel', array('header'=>true, 'as'=>'cchart11'))
 
                     @section ('pane1_panel_title', 'Notifications Panel')
                     @section ('pane1_panel_body')
@@ -279,7 +279,7 @@
                         <!-- /.panel-body -->
                   
                     @endsection
-                    @include('widgets.panel', array('header'=>true, 'as'=>'pane1'))
+                    @include('MS::widgets.panel', array('header'=>true, 'as'=>'pane1'))
                       
                     
                     <!-- /.panel -->
@@ -400,7 +400,7 @@
                     </div>
                     <!-- /.panel .chat-panel -->
                     @endsection
-                    @include('widgets.panel', array('header'=>true, 'as'=>'pane3'))
+                    @include('MS::widgets.panel', array('header'=>true, 'as'=>'pane3'))
                 </div>
 
                 <!-- /.col-lg-4 -->

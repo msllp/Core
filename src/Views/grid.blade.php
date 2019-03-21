@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('MS::layouts.dashboard')
 @section('page_heading','Grid System')
 @section('section')
 <div class="col-sm-12">
@@ -7,7 +7,7 @@
 		@section ('grid1_panel_body')
 		<div class="text-center"><h4>Twelve</h4></div>
 		@endsection
-		@include('widgets.panel', array('controls'=> true, 'as'=> 'grid1'))
+		@include('MS::widgets.panel', array('controls'=> true, 'as'=> 'grid1'))
 	</div>
 </div>
 <div class="row">
@@ -15,14 +15,14 @@
 		@section ('grid2_panel_body')
 		<div class="text-center"><h4>Six</h4></div>
 		@endsection
-		@include('widgets.panel', array('controls'=> true, 'as'=> 'grid2'))
+		@include('MS::widgets.panel', array('controls'=> true, 'as'=> 'grid2'))
 	</div>
 
 	<div class="col-sm-6">
 		@section ('grid3_panel_body')
 		<div class="text-center"><h4>Six</h4></div>
 		@endsection
-		@include('widgets.panel', array('controls'=> true, 'as'=> 'grid3'))
+		@include('MS::widgets.panel', array('controls'=> true, 'as'=> 'grid3'))
 	</div>
 </div>
 <div class="row">
@@ -30,21 +30,21 @@
 		@section ('grid4_panel_body')
 		<div class="text-center"><h4>Four</h4></div>
 		@endsection
-		@include('widgets.panel', array('controls'=> true, 'as'=> 'grid4'))
+		@include('MS::widgets.panel', array('controls'=> true, 'as'=> 'grid4'))
 	</div>
 
 	<div class="col-sm-4">
 		@section ('grid5_panel_body')
 		<div class="text-center"><h4>Four</h4></div>
 		@endsection
-		@include('widgets.panel', array('controls'=> true, 'as'=> 'grid5'))
+		@include('MS::widgets.panel', array('controls'=> true, 'as'=> 'grid5'))
 	</div>
 
 	<div class="col-sm-4">
 		@section ('grid6_panel_body')
 		<div class="text-center"><h4>Four</h4></div>
 		@endsection
-		@include('widgets.panel', array('controls'=> true, 'as'=> 'grid6'))
+		@include('MS::widgets.panel', array('controls'=> true, 'as'=> 'grid6'))
 	</div>
 </div>
 <div class="row">
@@ -52,25 +52,25 @@
 		@section ('grid7_panel_body')
 		<div class="text-center"><h4>Three</h4></div>
 		@endsection
-		@include('widgets.panel', array('controls'=> true, 'as'=> 'grid7'))
+		@include('MS::widgets.panel', array('controls'=> true, 'as'=> 'grid7'))
 	</div>
 	<div class="col-sm-3">
 		@section ('grid8_panel_body')
 		<div class="text-center"><h4>Three</h4></div>
 		@endsection
-		@include('widgets.panel', array('controls'=> true, 'as'=> 'grid8'))
+		@include('MS::widgets.panel', array('controls'=> true, 'as'=> 'grid8'))
 	</div>
 	<div class="col-sm-3">
 		@section ('grid9_panel_body')
 		<div class="text-center"><h4>Three</h4></div>
 		@endsection
-		@include('widgets.panel', array('controls'=> true, 'as'=> 'grid9'))
+		@include('MS::widgets.panel', array('controls'=> true, 'as'=> 'grid9'))
 	</div>
 	<div class="col-sm-3">
 		@section ('grid10_panel_body')
 		<div class="text-center"><h4>Three</h4></div>
 		@endsection
-		@include('widgets.panel', array('controls'=> true, 'as'=> 'grid10'))
+		@include('MS::widgets.panel', array('controls'=> true, 'as'=> 'grid10'))
 	</div>
 </div>
 <div class="row">
@@ -78,13 +78,13 @@
 		@section ('grid11_panel_body')
 		<div class="text-center"><h4>Five</h4></div>
 		@endsection
-		@include('widgets.panel', array('controls'=> true, 'as'=> 'grid11'))
+		@include('MS::widgets.panel', array('controls'=> true, 'as'=> 'grid11'))
 	</div>
 	<div class="col-sm-7">
 		@section ('grid12_panel_body')
 		<div class="text-center"><h4>Seven</h4></div>
 		@endsection
-		@include('widgets.panel', array('controls'=> true, 'as'=> 'grid12'))
+		@include('MS::widgets.panel', array('controls'=> true, 'as'=> 'grid12'))
 	</div>
 </div>
 <div class="row">
@@ -92,13 +92,13 @@
 		@section ('grid13_panel_body')
 		<div class="text-center"><h4>Four</h4></div>
 		@endsection
-		@include('widgets.panel', array('controls'=> true, 'as'=> 'grid13'))
+		@include('MS::widgets.panel', array('controls'=> true, 'as'=> 'grid13'))
 	</div>
 	<div class="col-sm-8">
 		@section ('grid14_panel_body')
 		<div class="text-center"><h4>Eight</h4></div>
 		@endsection
-		@include('widgets.panel', array('controls'=> true, 'as'=> 'grid14'))
+		@include('MS::widgets.panel', array('controls'=> true, 'as'=> 'grid14'))
 	</div>
 </div>
 <div class="row">
@@ -106,13 +106,13 @@
 		@section ('grid15_panel_body')
 		<div class="text-center"><h4>Three</h4></div>
 		@endsection
-		@include('widgets.panel', array('controls'=> true, 'as'=> 'grid15'))
+		@include('MS::widgets.panel', array('controls'=> true, 'as'=> 'grid15'))
 	</div>
 	<div class="col-sm-9">
 		@section ('grid16_panel_body')
 		<div class="text-center"><h4>Nine</h4></div>
 		@endsection
-		@include('widgets.panel', array('controls'=> true, 'as'=> 'grid16'))
+		@include('MS::widgets.panel', array('controls'=> true, 'as'=> 'grid16'))
 	</div>
 </div>
 <div class="row">
@@ -120,13 +120,13 @@
 		@section ('grid17_panel_body')
 		<div class="text-center"><h4>Two</h4></div>
 		@endsection
-		@include('widgets.panel', array('controls'=> true, 'as'=> 'grid17'))
+		@include('MS::widgets.panel', array('controls'=> true, 'as'=> 'grid17'))
 	</div>
 	<div class="col-sm-10">
 		@section ('grid18_panel_body')
 		<div class="text-center"><h4>Ten</h4></div>
 		@endsection
-		@include('widgets.panel', array('controls'=> true, 'as'=> 'grid18'))
+		@include('MS::widgets.panel', array('controls'=> true, 'as'=> 'grid18'))
 	</div>
 </div>
 <div class="row">
@@ -134,13 +134,13 @@
 		@section ('grid19_panel_body')
 		<div class="text-center"><h4>One</h4></div>
 		@endsection
-		@include('widgets.panel', array('controls'=> true, 'as'=> 'grid19'))
+		@include('MS::widgets.panel', array('controls'=> true, 'as'=> 'grid19'))
 	</div>
 	<div class="col-sm-11">
 		@section ('grid20_panel_body')
 		<div class="text-center"><h4>Eleven</h4></div>
 		@endsection
-		@include('widgets.panel', array('controls'=> true, 'as'=> 'grid20'))
+		@include('MS::widgets.panel', array('controls'=> true, 'as'=> 'grid20'))
 	</div>
 </div>
 </div>

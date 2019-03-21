@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('MS::layouts.dashboard')
 @section('page_heading','Typoghraphy')
 @section('section')
 <div class="col-sm-12">
@@ -13,7 +13,7 @@
 		<h5>Heading 5 <small>Sub-heading</small> </h5> 
 		<h6>Heading 6 <small>Sub-heading</small> </h6>
 		@endsection
-		@include('widgets.panel', array('header'=>true, 'as'=>'typo1'))
+		@include('MS::widgets.panel', array('header'=>true, 'as'=>'typo1'))
 	</div>
 	<div class="col-sm-4"> 
 		@section ('typo2_panel_title','Paragraphs')
@@ -27,7 +27,7 @@
 		<p class="text-center">Center aligned text.</p> 
 		<p class="text-right">Right aligned text.</p> 
 		@endsection
-		@include('widgets.panel', array('header'=>true, 'as'=>'typo2'))
+		@include('MS::widgets.panel', array('header'=>true, 'as'=>'typo2'))
 	</div>
 	<div class="col-sm-4">
 		@section ('typo3_panel_title','Emphasis Classes')
@@ -39,7 +39,7 @@
 		<p class="text-warning">This is an example of warning text.</p> 
 		<p class="text-danger">This is an example of danger text.</p> 
 		@endsection
-		@include('widgets.panel', array('header'=>true, 'as'=>'typo3'))
+		@include('MS::widgets.panel', array('header'=>true, 'as'=>'typo3'))
 	</div>
 </div> 
 <div class="row">
@@ -58,7 +58,7 @@
 		<a href="mailto:#">first.last@example.com</a> 
 		</address> 
 		@endsection
-		@include('widgets.panel', array('header'=>true, 'as'=>'typo4'))
+		@include('MS::widgets.panel', array('header'=>true, 'as'=>'typo4'))
 	</div>
 	<div class="col-sm-4">
 		@section ('typo5_panel_title','Blockquotes')
@@ -76,7 +76,7 @@
 		 <blockquote class="pull-right"> <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p> 
 		 </blockquote> 
 		 @endsection
-		@include('widgets.panel', array('header'=>true, 'as'=>'typo5'))
+		@include('MS::widgets.panel', array('header'=>true, 'as'=>'typo5'))
 	</div>
 	<div class="col-sm-4">
 		@section ('typo6_panel_title','List')
@@ -112,7 +112,7 @@
 			<li>List Item</li> 
 		</ul>
 		@endsection
-		@include('widgets.panel', array('header'=>true, 'as'=>'typo6'))
+		@include('MS::widgets.panel', array('header'=>true, 'as'=>'typo6'))
 	</div>
 </div> 
 <div class="row">
@@ -132,7 +132,7 @@
 		<dd>Description List Text </dd>
 		</dl>
 		@endsection
-		@include('widgets.panel', array('header'=>true, 'as'=>'typo7'))
+		@include('MS::widgets.panel', array('header'=>true, 'as'=>'typo7'))
 	</div>
 	<div class="col-sm-4">
 		@section ('typo8_panel_title','Code')
@@ -140,7 +140,7 @@
 		<p>This is an example of an inline code element within body copy. Wrap inline code within a <code>&lt;code&gt;...&lt;/code&gt;</code>tag.</p>
 		<pre>This is an example of preformatted text.</pre>
 		@endsection
-		@include('widgets.panel', array('header'=>true, 'as'=>'typo8'))
+		@include('MS::widgets.panel', array('header'=>true, 'as'=>'typo8'))
 	</div>
 </div>	
 </div>
