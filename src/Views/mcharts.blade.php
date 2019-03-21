@@ -12,7 +12,7 @@
 
 			@section ('cchart3_panel_title','Donut Chart')
 			@section ('cchart3_panel_body')
-				<div style="max-width:400px; margin:0 auto;">@include('widgets.charts.cdonutchart')</div>
+				<div style="max-width:400px; margin:0 auto;">@include('MS::widgets.charts.cdonutchart')</div>
 			@endsection
 			@include('MS::widgets.panel', array('header'=>true, 'as'=>'cchart3'))
 		</div>
@@ -20,7 +20,7 @@
 			
 			@section ('cchart2_panel_title','Pie Chart')
 			@section ('cchart2_panel_body')
-				<div style="max-width:400px; margin:0 auto;">@include('widgets.charts.cpiechart')</div>
+				<div style="max-width:400px; margin:0 auto;">@include('MS::widgets.charts.cpiechart')</div>
 			@endsection
 			@include('MS::widgets.panel', array('header'=>true, 'as'=>'cchart2'))
 
