@@ -18,7 +18,7 @@
 <i class="fa fa-at"></i>section ('inside_panel_body')
 &lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo&lt;/p&gt;
 <i class="fa fa-at"></i>endsection
-<i class="fa fa-at"></i>include('widgets.panel', array('header'=>true, 'as'=>'inside'))
+<i class="fa fa-at"></i>include('MS::widgets.panel', array('header'=>true, 'as'=>'inside'))
 </pre>
 		@endsection
 		@include ('MS::widgets.panel', array('class'=>'primary', 'header'=>true, 'footer'=>true, 'as'=>'dpanel'))
@@ -31,7 +31,7 @@
 		@endsection	
 		@section ('dcollapsible_panel_footer')
 <pre class="codeWrapper">
-<i class="fa fa-at"></i>include('widgets.collapse', array('id'=>'2', 'header'=> 'This is a header', 'body'=>'Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.'))
+<i class="fa fa-at"></i>include('MS::widgets.collapse', array('id'=>'2', 'header'=> 'This is a header', 'body'=>'Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.'))
 </pre>
 		@endsection
 		@include ('MS::widgets.panel', array('class'=>'primary', 'header'=>true, 'footer'=>true, 'as'=>'dcollapsible'))
@@ -46,9 +46,9 @@
 		@endsection	
 		@section ('dbutton_panel_footer')
 <pre class="codeWrapper">
-<i class="fa fa-at"></i>include('widgets.button', array('value'=>'Info button', 'class'=>'info'))
-<i class="fa fa-at"></i>include('widgets.button', array('class'=>'danger', 'size'=>'lg', 'value'=>'Large Button'))
-<i class="fa fa-at"></i>include('widgets.button', array('class'=>'success btn-outline', 'value'=>'Primary'))
+<i class="fa fa-at"></i>include('MS::widgets.button', array('value'=>'Info button', 'class'=>'info'))
+<i class="fa fa-at"></i>include('MS::widgets.button', array('class'=>'danger', 'size'=>'lg', 'value'=>'Large Button'))
+<i class="fa fa-at"></i>include('MS::widgets.button', array('class'=>'success btn-outline', 'value'=>'Primary'))
 </pre>
 		@endsection
 		@include ('MS::widgets.panel', array('class'=>'primary', 'header'=>true, 'footer'=>true, 'as'=>'dbutton'))
@@ -63,8 +63,8 @@
 		@endsection	
 		@section ('doalert_panel_footer')
 <pre class="codeWrapper">
-<i class="fa fa-at"></i>include('widgets.alert', array('class'=>'success', 'message'=> 'You have an alert', 'icon'=> 'user'))
-<i class="fa fa-at"></i>include('widgets.alert', array('class'=>'info', 'dismissable'=>true, 'message'=> 'My message'))
+<i class="fa fa-at"></i>include('MS::widgets.alert', array('class'=>'success', 'message'=> 'You have an alert', 'icon'=> 'user'))
+<i class="fa fa-at"></i>include('MS::widgets.alert', array('class'=>'info', 'dismissable'=>true, 'message'=> 'My message'))
 </pre>
 		@endsection
 		@include ('MS::widgets.panel', array('class'=>'primary', 'header'=>true, 'footer'=>true, 'as'=>'doalert'))
