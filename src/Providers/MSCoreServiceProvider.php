@@ -33,7 +33,9 @@ class MSCoreServiceProvider extends \Illuminate\Support\ServiceProvider
         $this->publishes([
             dirname(__DIR__).DS.'MSDB' => base_path('MS/DB/Master')
         ], 'MS_db');
-
+        $this->publishes([
+            dirname(__DIR__) .DS.'Public'.DS.'B'.DS.'asset' => public_path(),
+        ], 'public_backend');
 
         $this->publishes([
             dirname(__DIR__).DS.'Routes'.DS.'MasterRoutes.php' => base_path('routes/web.php')
