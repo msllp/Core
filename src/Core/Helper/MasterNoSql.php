@@ -91,5 +91,5 @@ interface MasterNoSql
      */
     public function rowGet(array $identifier=[]): array;
 
-    public function getAllTable(string $connection):array ;
+    public function getAllTable(string $connection=""):array ;
 }

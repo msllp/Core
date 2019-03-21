@@ -326,7 +326,10 @@ class MSDB implements MasterNoSql
         }
         return $m->delete();
     }
-    public function getAllTable(string $connection):array {
-        return \DB::connection($this->model->getConnectionName())->getDoctrineSchemaManager()->listTableNames();
+    public function getAllTable(string $connection=""):array {
+        if($connection !=""){
+            return \DB::connection($this->model->getConnectionName())->getDoctrineSchemaManager()->listTableNames();
+        }
+
     }
 }
