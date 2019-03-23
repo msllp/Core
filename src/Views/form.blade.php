@@ -6,6 +6,15 @@
 <div class="row">
     <div class="col-lg-6">
         <form role="form">
+
+            <?php
+            $data=[
+                'name'=>'test'
+
+            ];
+            ?>
+
+            @include("MS::layouts.form.text",['data'=>$data])
             <div class="form-group">
                 <label>Text Input</label>
                 <input class="form-control">
