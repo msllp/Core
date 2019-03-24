@@ -55,6 +55,22 @@ class MSCoreServiceProvider extends \Illuminate\Support\ServiceProvider
         ], 'MS_SettingOn_Config');
 
 
+        $this->publishes([
+            dirname(__DIR__) .DS.'Core'.DS.'Template'.DS.'webpack.mix.js' => base_path('webpack.mix.js'),
+        ], 'webpack');
+
+        $this->publishes([
+            dirname(__DIR__) .DS.'Core'.DS.'Template'.DS.'bower.json' => base_path('bower.js'),
+        ], 'bower');
+
+        $this->publishes([
+            dirname(__DIR__) .DS.'Core'.DS.'Template'.DS.'gulpfile.js' => base_path('gulpfile.js'),
+        ], 'gulp');
+
+
+
+
+
 
         if(config('MS.default_route_load')){
 
