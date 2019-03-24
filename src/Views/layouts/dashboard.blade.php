@@ -1,4 +1,4 @@
-@extends('MS::layouts.plane')
+@extends('MS::core.layouts.root')
 
 @section('body')
     <div id="wrapper">

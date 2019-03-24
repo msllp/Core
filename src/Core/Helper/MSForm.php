@@ -17,7 +17,7 @@ class MSForm
 
     public function addModuleForm($namespace=false,$id=false,$perFix=false,$data=false){
 
-        
+
 
 
     }
