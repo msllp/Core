@@ -11,15 +11,18 @@
 	<meta content="width=device-width, initial-scale=1" name="viewport"/>
 	<meta content="" name="description"/>
 	<meta content="" name="author"/>
-
-	<link rel="stylesheet" href="{{ asset("b/app.css") }}" />
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+	<link rel="stylesheet" href="{{ asset("b/css/app.css") }}" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 
 
 </head>
-<body>
+<body class="container-fluid">
+
+
+
 @yield('body')
-<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
-<script defer src="https://use.fontawesome.com/releases/v5.8.1/js/all.js" integrity="sha384-g5uSoOSBd7KkhAMlnQILrecXvzst9TdC09/VM+pjDTCM+1il8RHz5fKANTFFb+gQ" crossorigin="anonymous"></script>
+<script src="{{ asset("b/js/app.js") }}" type="text/javascript" defer></script>
+
 </body>
 </html>
