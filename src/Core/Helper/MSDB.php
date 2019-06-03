@@ -15,16 +15,33 @@ class MSDB implements MasterNoSql
 {
 
 
-    public $model,$database,$table;
+    public $model,$database,$masterNamespace;
 
-    public function __construct(string $nameSpace, string $id, array $perFix)
+    public $ms_id="0";
+
+    public function __construct(string $nameSpace, string $id=null, array $perFix=[])
     {
+
+        $nameSpace=$nameSpace;
+            $base=$nameSpace."\B";
+        $this->masterNamespace= $nameSpace;
+        if($id==null)$id=$this->ms_id;
         $this->database=[
-            'namespace'=>"\\".$nameSpace."\\Model",
+            'namespace'=>"\\".$nameSpace."\\M",
             'id'=>$id,
-            'perfix'=>implode('_',$perFix),
+
+            //'perfix'=>implode('_',$perFix),
         ];
-        $this->model=new $this->database['namespace'] ( $nameSpace,$id,$this->database['perfix']);
+
+
+        if(count($perFix)>0 )$this->database['perfix']=$perFix;
+        //if()
+
+        if(array_key_exists('perfix',$this->database)) {
+            $this->model = new $this->database['namespace'] ($nameSpace, $id, $this->database['perfix']);
+        }else{
+            $this->model = new $this->database['namespace'] ($nameSpace, $id);
+        }
         //parent::__construct($nameSpace, $id, $perFix);
 
     }
@@ -37,8 +54,8 @@ class MSDB implements MasterNoSql
      */
     public function checkTableExist($id=false, $perFix=false):bool{
 
-        $connection=$this->model->getConnectionName();
-        $table=$this->model->getTable();
+            $connection=$this->model->getConnectionName();
+            $table=$this->model->getTable();
 
         return Schema::connection($connection)->hasTable($table);
     }
@@ -63,9 +80,6 @@ class MSDB implements MasterNoSql
 
         }
 
-        // dd($this);
-
-        // dd($this);
         if(!$this->checkTableExist($id,$perFix)){
             return self::makeTable($table,$fields,$connection);
         }
@@ -102,16 +116,96 @@ class MSDB implements MasterNoSql
             $table=$this->model->getTable();
             $tableName=$table;
             // $connection=$this->database['namespace']::getConnection($this->database['id']).$this->database['perfix'];
+
+            $fieldCollection=collect($this->model->base_Field);
+
+            foreach ($this->model->base_Field as $input){
+                if(array_key_exists('validation',$input) && is_array($input['validation']) ){
+                    if(in_array('unique',$input['validation']) or (array_key_exists('unique',$input['validation']) && $input['validation']['unique'])  ){
+                        $uniqArray[$input['name']]=$input;
+                    }
+
+
+
+                }
+                switch ($input['input']){
+                    case 'generated':
+                        goto fn_auto;
+                        break;
+
+                    case 'locked':
+                        fn_auto:
+                        if(!array_key_exists($input['name'],$columnArray) && array_key_exists('callback',$input)){
+                            $sClass=$this->model->namespace."\\F";
+                            $sMethod="::".$input['callback'];
+                          //  dd($input['callback']."()");
+                            //dd(call_user_func($sClass . $sMethod));
+                            $columnArray[$input['name']]=call_user_func($sClass . $sMethod);
+
+                        }
+                        break;
+
+                }
+
+
+
+
+            }
+           // dd($columnArray);
+
+            $valdationError=0;
+
+            if(count($uniqArray)>0){
+                $valdationError=1;
+                $model=\DB::connection($connection)->table($tableName);
+                $valdationErrorArray=[];
+
+                foreach ($uniqArray as $name =>$data){
+                    if(array_key_exists($name,$columnArray)){
+                        $model=\DB::connection($connection)->table($tableName);
+                        $model=$model->where($name,$columnArray[$name]);
+
+
+                        if($model->get()->count() > 0){
+
+                            $valdationErrorArray[$name]="Duplicate Found for Column name: ".$name ." \n Error casued by class::method = ".__METHOD__;
+                        }
+                     //   if($name=="Username")dd(($model->get()->count()));
+                    }
+
+
+                }
+               // dd($valdationErrorArray);
+
+                if($valdationError==true)
+            if(count($valdationErrorArray) < 1 )$valdationError=0;
+
+            }
+           // dd($valdationErrorArray);
+           // dd($valdationError==false);
+             if($valdationError==true)goto ms_error_found;
+            if($valdationError==false)
             \DB::connection($connection)->table($tableName)->insert($columnArray);
 
-
         }catch (\Exception $e){
+            ms_error_found:
+           // dd($valdationErrorArray);
+          if(0){
+              if(isset($valdationErrorArray)){
+                  if(count($valdationErrorArray)>0) $er['validationArray']=$valdationErrorArray;
+              }
+              dd($er);
 
+          }
+
+            //dd($er);
+            goto ms_final_return;
             return false;
 
 
         }
-
+        ms_final_return:
+        if($valdationError==true)return false;
         return true;
 
         // TODO: Implement rowAdd() method.
@@ -235,6 +329,7 @@ class MSDB implements MasterNoSql
                     $table->increments('id');
                     foreach ($columnArray as $value) {
 
+                        if(array_key_exists('name',$value) && array_key_exists('name',$value) )
                         self::makeTableColumnWhenTableMaking($table,$value['name'],$value['type']);
                     }
 
@@ -317,7 +412,7 @@ class MSDB implements MasterNoSql
      * @return bool|mixed
      */
     public static function dropTable($namespace=false, $id=false, $perFix=false){
-        $baseName="\\".$namespace."\\Base";
+        $baseName="\\".$namespace."\\B";
         if(!$id)$id= array_key_first($baseName::$tables);
         if (is_array($perFix)){
             $m=new self($namespace,$id,$perFix);
@@ -326,10 +421,16 @@ class MSDB implements MasterNoSql
         }
         return $m->delete();
     }
-    public function getAllTable(string $connection=""):array {
+    public function getAllTable(string $connection=null):array {
         if($connection !=""){
             return \DB::connection($this->model->getConnectionName())->getDoctrineSchemaManager()->listTableNames();
         }
 
+    }
+
+    public function displayFrom(){
+
+        $f=new \MS\Core\Helper\MSForm($this->masterNamespace,$this->database['id']);
+       return $f->fromModel($this)->view();
     }
 }

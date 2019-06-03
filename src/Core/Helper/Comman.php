@@ -34,10 +34,24 @@ class Comman
      * To Load Custom Location Route file
      * @param array $array['locationOfFile'=>'Location of Folder in MS']
      */
-    public static function loadCustom($array=[]){
+    public static function loadCustom($array=[],$end='0'){
 
+    //dd($end);
         if(count($array) > 0){
-            array_key_exists('locationOfFile', $array)?require_once(base_path('MS'.DIRECTORY_SEPARATOR .implode(DIRECTORY_SEPARATOR,explode('.', $array['locationOfFile'])).'.php')):null;
+          switch ($end){
+              case '0':
+                  array_key_exists('locationOfFile', $array)?require_once(base_path('MS'.DIRECTORY_SEPARATOR .implode(DIRECTORY_SEPARATOR,explode('.', $array['locationOfFile'])).'.php')):null;
+                  break;
+              case 'b':
+                  array_key_exists('locationOfFile', $array)?require_once(base_path(implode(DIRECTORY_SEPARATOR,['MS','B','M']).DIRECTORY_SEPARATOR .implode(DIRECTORY_SEPARATOR,explode('.', $array['locationOfFile'])).'.php')):null;
+                  break;
+              case 'f':
+                array_key_exists('locationOfFile', $array)?require_once(base_path(implode(DIRECTORY_SEPARATOR,['MS','F','M']).DIRECTORY_SEPARATOR .implode(DIRECTORY_SEPARATOR,explode('.', $array['locationOfFile'])).'.php')):null;
+
+
+                  break;
+          }
+
         }else{
             require_once(base_path('MS'.DIRECTORY_SEPARATOR .'F'.DIRECTORY_SEPARATOR .'M'.DIRECTORY_SEPARATOR ."Routes.php"));
         }
@@ -103,8 +117,11 @@ class Comman
      */
     public static function encode($str): string {
         $code=base64_encode ($str);
-        $code=substr($code, 0, -2);
-        // dd($code);
+        //var_dump($code);
+        $code=substr($code, 0, -1);
+        //dd($code);
+
+
         return $code.self::random(5,5);
     }
 
@@ -114,8 +131,10 @@ class Comman
      * @return string
      */
     public static function decode($str): string {
+        
         $code=substr($str, 0, -5);
-        $code.="==";
+        $code.="=";
+        //dd(base64_decode ($code));
         return base64_decode ($code);
     }
 
@@ -169,5 +188,48 @@ class Comman
         return \DB::connection($this->model->getConnectionName());
     }
 
+    public static function load_Route($mCode){
+
+        $class=$mCode."\\B";
+
+        $r=$class::$route;
+        $dv="@";
+        $controller="\\".$class::$controller;
+      //  dd($controller);
+       // dd($r);
+        foreach ($r as $key=>$link){
+
+            $method=$controller.$dv.$link['method'];
+            switch ($link['type']){
+
+                case 'get':
+                    \Route::get($link['route'],$method)->name($link['name']);
+                    break;
+
+                case 'post':
+                    \Route::post($link['route'],$method)->name($link['name']);
+                    break;
+
+                case 'put':
+                    \Route::put($link['route'],$method)->name($link['name']);
+                    break;
+
+                case 'update':
+                    \Route::patch($link['route'],$method)->name($link['name']);
+                    break;
+
+                case 'delete':
+                    \Route::delete($link['route'],$method)->name($link['name']);
+                    break;
+
+
+
+                default:
+                    \Route::get($link['route'],$method)->name($link['name']);
+                    break;
+            }
+
+        }
+    }
 }
 

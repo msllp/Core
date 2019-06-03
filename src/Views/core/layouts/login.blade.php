@@ -1,21 +1,63 @@
 @extends('MS::core.layouts.root')
 @section('body')
-<form class="form-signin card text-center" >
+    <?php
+        $logo="logo_tr.png";
 
-    <img class="mb-4 card-img-top" src="https://getbootstrap.com/docs/4.3/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+        if (isset($data) && array_key_exists('logo',$data))$logo=$data['logo'];
 
+
+        $link=asset(implode('/',['images',$logo]));
+
+    ?>
+<form class="form-signin card text-center ms-box" >
+    <center>
+    <img class="mt-3 card-img-top" src="{{$link}}" style="max-height: 72px;max-width:120px;padding: 5px;background-color: aliceblue;    border-radius: calc(0.25rem - 1px);">
+    </center>
     <div class="card-body" id="msapp">
-<?php
+
+        {{--<h1 class="h4  font-weight-normal card-title">Sign in </h1>--}}
+<div class="card-text">
+        <h4 class="small mb-3" style="color: aliceblue;">To continue, first verify it's you who can access</h4>
+
+
+    <?php
+
+    $array=[
+        'name'=>"Username",
+        'type'=>"datetime",
+        'vName'=>"Username or Email",
+        'prefix'=>"lock text-info",
+        'perfix'=>"asterisk text-danger",
+        'inputOnly'=>true,
+        'required'=>true,
+        'validation'=>[
+           // 'minSize'=>5,
+            'required'=>1
+        ],
+
+
+    ];
+    $arrayJson=collect($array)->toJson();
+
+    ?>
+
+    <inputtext :ms-data="{{$arrayJson}}"     ></inputtext>
+
+
+        <?php
 
         $array=[
             'name'=>"password",
+            // 'type'=>"text",
             'vName'=>"Password",
-            'prefix'=>"cogs",
-            'perfix'=>"rupee-sign",
+
+            'prefix'=>"key text-info",
+            'perfix'=>"asterisk text-danger",
             'inputOnly'=>true,
+            'required'=>true,
             'validation'=>[
-                'type'=>'password',
-                'minSize'=>'1',
+                // 'type'=>'password',
+                //  'minSize'=>5,
                 'required'=>1
             ],
 
@@ -24,22 +66,17 @@
         $arrayJson=collect($array)->toJson();
 
         ?>
-        <h1 class="h3 mb-3 font-weight-normal card-title">Please sign in</h1>
-        <label for="inputEmail" class="sr-only">Email address</label>
         <inputtext :ms-data="{{$arrayJson}}"     ></inputtext>
 
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" value="remember-me"> Remember me
-            </label>
-            <button class="btn btn-lg btn-primary btn-block card-link" type="submit">Sign in</button>
-            <p class="mt-3  text-muted card-subtitle">© 2017-2019</p>
 
-        </div>
+
+            <button class="btn btn-lg btn-primary btn-block card-link" type="submit"><i class="fa fa-user-check"></i> Verify Me</button>
+            <p class="mt-2 text-muted card-subtitle">© 2017-2019</p>
+
+</div>
 
     </div>
+    <div class="ms-copyright">  a Genuine <img src="{{asset("images/m.png")}}" >illion certified Product </div>
 </form>
 
     <script type="text/javascript">

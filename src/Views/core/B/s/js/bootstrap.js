@@ -55,9 +55,15 @@ var appDir = path.dirname(require.main.filename);
 
 
 Vue.component('inputtext', require('./components/inputText.vue').default);
+Vue.component('panelbackend', require('./components/panelBackend.vue').default);
+Vue.component('msinput', require('./components/msInput.vue').default);
 
-//Vue.component('example-component', require('../vendor/msllp/core/src/Views/core/layouts/components/ExampleComponent.vue'));
+import MS from './MS';
 
+Vue.mixin(MS);
+// Vue.extend({
+//     mixins: [MS]
+// })
 
 const app = new Vue({
     el: '#msapp'

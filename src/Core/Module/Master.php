@@ -12,56 +12,110 @@ namespace MS\Core\Module;
 class Master implements BaseMaster
 {
 
+    public static $ds=DIRECTORY_SEPARATOR;
+
+    public static function getBasics(){
+        $return=[
+            'dbList'=>[],
+            'basePath'=>null
+        ];
+        $ex=explode('\\',static::$controller);
+        $end=explode('\\',static::$controller)[0];
+        $module=explode('\\',static::$controller)[1];
+        $modulePath=[base_path(),'MS',$end,'M',$module,'T'];
+        $moduleDBPath=implode(self::$ds,$modulePath);
+        $return['basePath']=implode(self::$ds,$modulePath);
+        if(!is_dir($moduleDBPath))return $return;
+
+        $return['dbList']=array_diff( scandir($moduleDBPath),['.','..']);
+        return $return;
+    }
+
+    public static function getModuleTables(){
+
+        $base=self::getBasics();
+
+        $returnArray=[];
+        $allExistDB=$base['dbList'];
+        $moduleDBPath=$base['basePath'];
+
+        foreach ($allExistDB as $fileName){
+
+            $dbData= include (implode(self::$ds,[$moduleDBPath,$fileName]));
+
+            foreach ($dbData as $tableID=>$tableDetails){
+                if(!array_key_exists($tableID,$returnArray))$returnArray[$tableID]=$tableDetails;
+            }
+
+        }
+
+      return array_merge(  static::$tables,$returnArray);
+    }
 
     public static function getTable($tableID=false,$perFix=false):string
     {
-        if(!$tableID)$tableID=array_key_first(static ::$tables);
 
-        if(array_key_exists($tableID,static::$tables)){
+        $table= self:: getModuleTables() ;
+        if(!$tableID)$tableID=array_key_first($table);
 
-            if(substr(static ::$tables[$tableID]['tableName'], -1)=="_"){
+        if(array_key_exists($tableID,$table)){
+
+            if(substr($table[$tableID]['tableName'], -1)=="_"){
 
                 if(is_array($perFix)){
-                    return static ::$tables[$tableID]['tableName'].implode("_",$perFix);
+                    return $table[$tableID]['tableName'].implode("_",$perFix);
                 }else{
-                    return static ::$tables[$tableID]['tableName'].$perFix;
+                    return $table[$tableID]['tableName'].$perFix;
                 }
 
             }
 
-            return static ::$tables[$tableID]['tableName'];
+            return $table[$tableID]['tableName'];
         }
-        if(count(static ::$tables) > 0){
-            return reset(static ::$tables)['tableName'];
+        if(count($table) > 0){
+            return reset($table)['tableName'];
         }
         return"No Module Table Found";
 
     }
 
+
     public static function getConnection($tableID=false):string
     {
-        if(!$tableID)$tableID=array_key_first(static ::$tables);
-        if(array_key_exists($tableID,static ::$tables)){
-            return static ::$tables[$tableID]['connection'];
+        $table= self:: getModuleTables() ;
+        if(!$tableID)$tableID=array_key_first($table);
+        if(array_key_exists($tableID,$table)){
+            return $table[$tableID]['connection'];
         }
-        if(count(static ::$tables) > 0){
-            return reset(static ::$tables)['connection'];
+        if(count($table) > 0){
+            return reset($table)['connection'];
         }
         return"No Connection Found";
     }
 
     public static function getField($tableID=false):array
     {
-        if(!$tableID)$tableID=array_key_first(static ::$tables);
-        if(array_key_exists($tableID,static ::$tables)){
-            return static ::$tables[$tableID]['fields'];
+        $table= self:: getModuleTables() ;
+        if(!$tableID)$tableID=array_key_first($table);
+        if(array_key_exists($tableID,$table)){
+            return $table[$tableID]['fields'];
         }
-        if(count(static ::$tables) > 0){
-            return reset(static ::$tables)['fields'];
+        if(count($table) > 0){
+            return reset($table)['fields'];
         }
         return ["No Connection Found"];
     }
 
+    public static function getAction($tableID=false){
+        $table= self:: getModuleTables() ;
+        if(!$tableID)$tableID=array_key_first($table);
 
-
+        if(array_key_exists($tableID,$table)){
+            return $table[$tableID]['action'];
+        }
+        if(count($table) > 0){
+            return reset($table)['action'];
+        }
+        return"No Connection Found";
+    }
 }

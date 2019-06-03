@@ -12,21 +12,23 @@ namespace MS\Core\Model;
 
 use   \Illuminate\Database\Eloquent\Model;
 
-class Master extends Model {
+class Master  extends Model  implements BaseMaster{
 
 
-    public $namespace,$tableID,$perFix,$ms_base,$base_Field,$g;
+    public $namespace,$tableID,$perFix,$ms_base,$base_Field,$g,$ms_action;
 
     public function __construct(string $nameSpace,$tableID=false, $perFix=false, $tableConnection=false,$glue="_")
     {
 
         $this->namespace=$nameSpace;
         $this->g=$glue;
-        $this->ms_base="\\".$nameSpace."\\Base";
+        $this->ms_base="\\".$nameSpace."\\B";
+        $this->ms_action=$this->ms_base::getAction($tableID);
+        $this->tableID=$tableID;
         if($tableID){
-            $this->tableID=$tableID;
+            //$this->tableID=$tableID;
             if($perFix){
-                if(is_array($perFix))$perFix=implode($glue,$perFix);
+                if(count($perFix)>0)$perFix=implode($glue,$perFix);
                 $perFix=$this->g.$perFix;
                 $this->table=$this->ms_base::getTable($tableID).$perFix;
                 $this->perFix=$perFix;
@@ -38,7 +40,15 @@ class Master extends Model {
         }
         else
         {
-                $this->table=$this->ms_base::getTable();
+
+                if($perFix){
+                    $this->perFix=$perFix;
+                    $this->table=$this->ms_base::getTable().$glue.$perFix;
+                }else{
+                    $this->table=$this->ms_base::getTable();
+                }
+
+
                 $this->connection=$this->ms_base::getConnection();
                 $this->base_Field=$this->ms_base::getField();
             }
