@@ -108,12 +108,14 @@ class Master implements BaseMaster
 
     public static function getAction($tableID=false){
         $table= self:: getModuleTables() ;
-        if(!$tableID)$tableID=array_key_first($table);
 
+        if(!$tableID)$tableID=array_key_first($table);
+      //  dd($tableID);
         if(array_key_exists($tableID,$table)){
+          //  dd($table[$tableID]['action']);
             return $table[$tableID]['action'];
         }
-        if(count($table) > 0){
+        if(count($table) < 1){
             return reset($table)['action'];
         }
         return"No Connection Found";

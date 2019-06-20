@@ -12,9 +12,78 @@ namespace MS\Core\Helper;
 class MSForm
 {
 
+
+    public function __construct(string $namespace,string $id=null,string $perFix=null,array $data=[])
+    {
+
+        $this->namespace=$namespace;
+        $this->id=$id;
+        $this->perFix=$perFix;
+        $this->data=$data;
+        $base="\\".$this->namespace."\\B";
+        $this->dbMaster=$base::getModuleTables()[ $this->id];
+       // $this->actionButton=[];
+
+
+
+
+
+
+
+    }
+
+    private function viewActionBtn(){
+
+        return  $this->make4VueButtonArray($this->action);
+        return view("MS::core.layouts.Form.button.buttonGroup")->with('data',$this->action)->render();
+       dd($this);
+    }
+
+    private function  make4VueButtonArray($data){
+        $returnData=[];
+        foreach ($data as $type =>$btnData){
+
+            $btn['Class']=['btn'];
+            switch ($type){
+                case 'back';
+                    if(array_key_exists('btnColor',$btnData)) unset($btnData['btnColor']) ;
+                    $btn['Class'][]='btn-primary';
+                    break;
+
+                case 'add';
+                    if(array_key_exists('btnColor',$btnData)) unset($btnData['btnColor']) ;
+                    $btn['Class'][]='btn-success';
+                    break;
+
+                case 'edit';
+                    if(array_key_exists('btnColor',$btnData)) unset($btnData['btnColor']) ;
+                    $btn['Class'][]='btn-warning';
+                    break;
+
+
+                case 'delete';
+                    $btn['Class'][]='btn-default';
+                    break;
+            }
+
+            if(array_key_exists('btnIcon',$btnData) && $btnData['btnIcon']== "")unset($btnData['btnIcon']);
+            if(array_key_exists('route',$btnData))$btnData['route']=route($btnData['route']);
+            $btnData['btnClass']=implode(' ',$btn['Class']);
+            if(in_array($type,$this->accessAction))
+            $returnData[$type]=$btnData;
+        }
+
+
+
+        return $returnData;
+    //dd($returnData);
+    }
+
+
     public $returnHTML =[
-            '<div id="msapp" class="accordion">'
+         //   '<div  class="accordion">'
         ];
+
 
     public static $optionalStyleKeys=[
         'prefix'=>'prefix',
@@ -30,17 +99,34 @@ class MSForm
 
     ];
     public $namespace,$id,$perFix,$data,$msdb,$fields,$dbMaster;
+    public $newForm=true;
+
+    public $accessAction=['add','back'];
+
+    public static function getDataFromTable($str){
+        $ex=explode(':',$str);
+        //dd($ex);
+        $data=[];
+        $rdata=[];
+        if(count($ex)==3){
+            $data ['namespace']=$ex[0];
+            $data ['tableId']=$ex[1];
+            $ex2=explode('->',$ex[2]);
+            $data ['darray'][$ex2[0]]=$ex2[1];
+           // dd($data);
+            $m=new MSDB($data['namespace'],$data['tableId']);
+           // $m->migrate();
+            $d=$m->rowGet();
+
+            $rdata['msdata']=$d;
+            $rdata['value']=$ex2[0];
+            $rdata['text']=$ex2[1];
+            return $rdata;
 
 
-    public function __construct(string $namespace,string $id=null,string $perFix=null,array $data=[])
-    {
-
-        $this->namespace=$namespace;
-        $this->id=$id;
-        $this->perFix=$perFix;
-        $this->data=$data;
-        $base="\\".$this->namespace."\\B";
-        $this->dbMaster=$base::$tables[ $this->id];
+        }else{
+            return [];
+        }
 
 
     }
@@ -52,7 +138,14 @@ class MSForm
             {
                 $array[$value]=$data['style'][$key];
             }
+            if(array_key_exists('validation',$data) &&  array_key_exists($key,$data['validation']))
+            {
+
+                $array[$value]=$data['validation'][$key];
+            }
         }
+
+
         foreach (self::$optionalStyleKeysWithDynamicValue as $key=>$value){
             if(array_key_exists('style',$data) && array_key_exists($key,$data['style']))
             {
@@ -110,19 +203,40 @@ class MSForm
 
 
             }
-        }
 
+            //var_dump($key);
+
+            if(array_key_exists('validation',$data) && array_key_exists($key,$data['validation']))
+            {
+                dd(array_key_exists($key,$data['validation']));
+                switch ($key){
+                    case 'existIn':
+
+                        dd($key);
+                        break;
+
+                    default:
+
+                        dd($key);
+
+
+                }
+
+
+            }
+
+        }
+        //var_dump($array);
         return $array;
 
     }
 
-    public function fromModel(MSDB $dbClass){
+    public function fromModel(MSDB $dbClass,$data=[]){
         $this->msdb=$dbClass;
-      //  dd($this);
         $this->action=$this->fields=$this->msdb->model->ms_action;;
         $this->fields=$this->msdb->model->base_Field;
+        if(count($data)>0)$this->newForm=false;
         $this->makeForm();
-
         return $this;
 
     }
@@ -138,17 +252,22 @@ class MSForm
 
     }
 
-    private function makeFieldsFromGroup($groupArray){
+    private function makeFieldsFromGroup_old($groupArray){
             $returnArray=[];
 
             foreach ($groupArray as $title=>$fieldsArray){
                 $returnArray[]=[
                     'vName'=>$title,
                     'input'=>'gourpHeading',
+                    $title=>$fieldsArray
 
                 ];
                 foreach ($fieldsArray as $fieldName){
-                    $returnArray[]=$this->getFieldFromFields($fieldName);
+                    $aray=$this->getFieldFromFields($fieldName);
+                    if(array_key_exists('fieldGroupMultiple',$this->dbMaster))
+                    $aray['groupInput']=$this->dbMaster['fieldGroupMultiple'];
+
+                    $returnArray[]=$aray;
                 }
 
                 $returnArray[]=[
@@ -161,7 +280,62 @@ class MSForm
     return $returnArray;
 
     }
-    private function makeForm(){
+
+    private function make4Vue($str){
+            $str= strtolower(str_replace(' ','_',$str)) ;
+            return $str;
+    }
+
+    private function map4Vue($array){
+
+            return array_map(
+                function ($key){
+                     return  $this->make4Vue($key) ;
+                },$array
+            );
+    }
+
+    private function makeFieldsFromGroup($groupArray){
+        $returnArray=[];
+
+        foreach ($groupArray as $title=>$fieldsArray){
+//            $returnArray[]=[
+//                'vName'=>$title,
+//                'input'=>'gourpHeading',
+//                $title=>$fieldsArray
+//
+//            ];
+            foreach ($fieldsArray as $fieldName){
+                $aray=$this->getFieldFromFields($fieldName);
+//                if(array_key_exists('fieldGroupMultiple',$this->dbMaster) && $this->dbMaster['fieldGroupMultiple'])
+//                    $aray['groupInput']=$this->make4Vue($title);
+
+              //  $returnArray[$this->make4Vue($title)]['inputs'][]= $this->makeDataForVue($aray);
+                $returnArray[$this->make4Vue($title)]['gruoupHeading']=$title;
+                if(array_key_exists('fieldGroupMultiple',$this->dbMaster) && in_array($title,$this->dbMaster['fieldGroupMultiple']))
+                {
+                    $returnArray[$this->make4Vue($title)]['inputs'][]= $this->makeDataForVue($aray,true);
+                    $returnArray[$this->make4Vue($title)]['groupDynamic']=true;
+
+                }else{
+                    $returnArray[$this->make4Vue($title)]['inputs'][]= $this->makeDataForVue($aray);
+                    $returnArray[$this->make4Vue($title)]['groupDynamic']=false;
+                }
+
+            }
+//
+//            $returnArray[]=[
+//                'vName'=>$title,
+//                'input'=>'gourpEnd',
+//
+//            ];
+
+        }
+        return $returnArray;
+
+    }
+
+    private function makeForm_old(){
 
         if( array_key_exists('add',$this->action) ){
             $action=$this->action;
@@ -171,7 +345,7 @@ class MSForm
         if(array_key_exists('fieldGroup',$this->dbMaster)){
             $getFields=true;
             $fields=$this->makeFieldsFromGroup($this->dbMaster['fieldGroup'])  ;
-              //dd($fields);
+              dd($fields);
         }
 
         foreach ($fields as $rowArray){
@@ -221,13 +395,13 @@ class MSForm
 
                 case 'gourpHeading':
                     $data=[
-                        'title'=>$rowArray['vName']
+                        'title'=>$rowArray['vName'],
+                        'data'=>$rowArray
                     ];
                    // $this->returnHTML[]='<div class="accordion" id="accorinf_master">';
                     $this->returnHTML[]=view("MS::core.layouts.HTML.splitButtonStart")->with('data',$data)->render();
-
-
                     break;
+
                 case 'gourpEnd':
                     $this->returnHTML[]=view("MS::core.layouts.HTML.splitButtonEnd")->render();
 
@@ -235,7 +409,7 @@ class MSForm
 
                 default:
 
-                    if($this->checkFromHidden($rowArray))$this->text($rowArray);
+                    if($this->checkFromHidden($rowArray))$this->addOneline($rowArray);
 
                     break;
 
@@ -248,22 +422,109 @@ class MSForm
 
 //        dd($this);
     }
+    private function makeForm(){
 
 
 
+        if( array_key_exists('add',$this->action) ){
+            $action=$this->action;
+        }
+        $fields=$this->fields;
+        $getFields=false;
+        //if()
+
+        if(array_key_exists('fieldGroup',$this->dbMaster)){
+            $getFields=true;
+            $fields=$this->makeFieldsFromGroup($this->dbMaster['fieldGroup'])  ;
+            $this->returnHTML['formData']=$fields;
+//            if(array_key_exists('fieldGroupMultiple',$this->dbMaster))
+//            {
+//                $this->returnHTML['multipleGroup']= $this-> map4Vue( $this->dbMaster['fieldGroupMultiple']);
+//            }
+
+        }else {
+            $this->returnHTML=[];
+        }
+
+
+
+        }
+
+
+
+
+    private function makeDataForVue($data,$multiple=false){
+       // dd($this);
+        $array=[
+            'name'=>$data['name'],
+            'type'=>$data['input'],
+            //'vName'=>$data['vName'],
+            //'prefix'=>"lock text-info",
+            //'perfix'=>"asterisk text-danger",
+            //'inputOnly'=>true,
+            //'required'=>true,
+            'validation'=>[
+                // 'minSize'=>5,
+                'required'=>1
+            ],
+            //'inputClass'=>[],
+            //'formClass'=>[],
+
+
+
+        ];
+
+
+
+        $array=\MS\Core\Helper\MSForm::makeArrayForViewFromStyle($array,$data);
+//dd($array);
+
+        if (array_key_exists('vName',$data))$array['vName']=$data['vName'];
+        if (!array_key_exists('vName',$array))$array['vName']=$data['name'];
+
+        if(array_key_exists('style',$data)){
+
+
+
+        }
+
+        if(array_key_exists('validation',$data)){
+
+            if(array_key_exists( 'required',$data['validation']) && $data['validation'] ['required'])
+                (array_key_exists('perfix',$array))?$array['perfix'].= " fa-asterisk text-danger":$array['perfix']= "asterisk text-danger";
+            if(array_key_exists('existIn',$data['validation']))$array['verifyBy']=\MS\Core\Helper\MSForm::getDataFromTable($data['validation']['existIn']);
+
+
+            //$array['']=;
+
+
+        }
+
+        if(array_key_exists('inputMultiple',$data))$array['inputMultiple']=$data['inputMultiple'];
+        if($multiple)$array['inputMultiple']=true;
+        if(array_key_exists('groupInput',$data))$array['groupInput']=$data['groupInput'];
+
+//dd($array);
+        return $array;
+        $arrayJson=collect($array)->toJson();
+    }
     public function view(){
         //dd($this->returnHTML);
-        $this->returnHTML[]='</div>';
 
+        $this->returnHTML['actionButton']=$this->viewActionBtn();
+     //   $this->returnHTML[]='</div>';
+      //  dd($this->returnHTML);
+        return view("MS::core.layouts.Form.formPlate")->with("form",$this->returnHTML);
         return view("MS::core.layouts.Form.formPlate")->with("form",implode("",$this->returnHTML));
         return implode("",$this->returnHTML);
     }
 
     private function addOneline(array $data){
+        dd($data);
+        $this->returnHTML['input'][]=$data;
 
-        //dd($data);
 
-        $this->returnHTML[]=view("MS::core.layouts.Form.input.oneline")->with('data',$data)->render();
+//        $this->returnHTML[]=view("MS::core.layouts.Form.input.oneline")->with('data',$data)->render();
 
     }
 

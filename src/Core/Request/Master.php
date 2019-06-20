@@ -21,10 +21,7 @@ class Master extends FormRequest implements BaseMaster
     {
 
 
-        return [
-            'msg' => $validator->errors()  ,
-
-        ];
+        return $validator->errors() ;
 
 
     }

@@ -57,15 +57,89 @@ var appDir = path.dirname(require.main.filename);
 Vue.component('inputtext', require('./components/inputText.vue').default);
 Vue.component('panelbackend', require('./components/panelBackend.vue').default);
 Vue.component('msinput', require('./components/msInput.vue').default);
+Vue.component('msform', require('./components/msForm.vue').default);
+Vue.component('msinvoice', require('./components/msInvoice.vue').default);
 
 import MS from './MS';
 
 Vue.mixin(MS);
-// Vue.extend({
-//     mixins: [MS]
-// })
+ Vue.extend({
+     mixins: [MS]
+ })
 
 const app = new Vue({
     el: '#msapp'
+    ,
+    mixins: [MS],
+    methods:{
+        getModBtn:function(url){
+
+           // console.log(this);
+        this.setMsErrorZero();
+
+        this.getGetLink(url,this);
+        },
+        setMsError:function (Data) {
+
+            this.mserror=Data;
+            //console.log(Data);
+
+              //  console.log(Data);
+
+            this.mserror.forEach(function(value, index) {
+                var key=value.name.toString();
+                this.$refs[key].setError();
+                this.$refs[key].inputError=value.msg
+
+         //       console.log(this.$refs[key].getValue());
+
+            },this)
+            this.mserrorCount=true;
+         //   console.log(this.mserror);
+
+        },
+
+        setMsErrorZero:function(){
+
+            // console.log(this.$refs.AverageBuyRate.getAttribute('class'));
+             //  console.log(this.$refs['AverageBuyRate'].getAttribute('msdata'));
+            this.mserrorCount=false;
+            this.mserror=[];
+
+
+        },
+        setUpGroup:function (data) {
+           // alert("demo");
+            //console.log(data);
+            this.msform=data;
+            //this.msform.push(data);
+
+        },
+        checkGroupExist:function(value){
+
+            if(this.msform.length > 0 )return false;
+            return false;
+            return this.in_array(value,this.msform);
+        }
+
+
+
+    },
+    data: function () {
+        return {
+            mserror: [],
+            mstab: [],
+            mserrorCount: false,
+            msform: []
+
+
+        }
+    },
+    mounted:function (){
+   // console.log(this.msform);
+
+
+    }
+
 });
 

@@ -292,8 +292,10 @@ class MSDB implements MasterNoSql
 
 
             $row=\DB::connection($connection)->table($table)->get();
-            if ($row->count() > 0)$return=$row->toArray();
 
+            if ($row->count() > 0)$return=collect($row->all())->map(function ($item){
+                return json_decode(json_encode($item),true);
+            })->toArray();
             goto fn_final;
         }elseif(count($identifier) == 1) {
             ms_default:

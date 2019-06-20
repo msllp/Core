@@ -1,18 +1,23 @@
 <template>
-    <div class="form-group">
+    <div class="form-group"  >
 
+<section  v-for="(input,key) in finalInput">
 
-        <label v-if="!inputOnly">   {{ inputVname }}</label>
+    <label v-if="!input.baseValue.inputOnly">   {{ input.baseValue.inputVname }}</label>
     <div class="input-group" data-toggle="tooltip" data-placement="left">
     
-        <div v-if="inputPrefix" class="input-group-prepend">
-            <i :class="'fa fa-'+inputPrefix+ ' input-group-text' " ></i>
+        <div v-if="input.inputPrefix" class="input-group-prepend">
+            <i :class="'fa fa-'+input.inputPrefix+ ' input-group-text' " ></i>
         </div>
 
 
-    <input :type="inputType" :name="inputName"  :class="'form-control '+msValid" v-model="msValue" :aria-describedby="inputName" :placeholder="'Enter '+inputVname+' here'">
+    <input  :type="inputType" :list="inputName" :name="inputName"  :class="'form-control '+msValid" v-model="msValue" :aria-describedby="inputName" :placeholder="'Enter '+inputVname+' here'">
 
 
+        <datalist :id="inputName" class="col-lg-12">
+            <option v-for ="autofiled in inputAuto" :value="autofiled[dValue]" > {{autofiled[dText]}} </option>
+
+        </datalist>
 
             <div v-if="inputPerfix" class="input-group-append ">
                 <i :class="'fa fa-'+inputPerfix+ ' input-group-text' " ></i>
@@ -31,9 +36,10 @@
 
         </small>
 
-        <small v-if="msValid == 'is-valid' " class="form-text text-muted text-right" :id="inputName" >
-            {{msValue}}
-        </small>
+
+    <!--<div class="btn btn-success" v-if="inputMultiple" @click="addinput()">add </div>-->
+    <!--<div class="btn btn-danger" v-if="inputMultiple" v-on:click="removeinput(input.baseValue.inputCount)">Remove </div>-->
+</section>
 
     </div>
 </template>
@@ -54,9 +60,9 @@
 
         mounted() {
 
+           // console.log(this.msData);
 
-          //  this.msValid="is-invalid";
-
+            if(this.msData.hasOwnProperty('groupInput'))this.groupInput=this.msData.groupInput;
             if(this.msData.hasOwnProperty('name'))this.inputName=this.msData.name;
             if(this.msData.hasOwnProperty('vName'))this.inputVname=this.msData.vName;
            // if(!this.msData.hasOwnProperty('vName'))this.inputVname=this.msData.name;
@@ -65,6 +71,17 @@
             if(this.msData.hasOwnProperty('inputOnly'))this.inputOnly=this.msData.inputOnly;
             if(this.msData.hasOwnProperty('type'))this.inputType=this.msData.type;
             if(this.msData.hasOwnProperty('required'))this.inputRequired=this.msData.required;
+            if(this.msData.hasOwnProperty('verifyBy'))
+            {
+
+                if(this.msData.verifyBy.hasOwnProperty('msdata'))this.inputAuto=this.msData.verifyBy.msdata;
+                if(this.msData.verifyBy.hasOwnProperty('value'))this.dValue=this.msData.verifyBy.value;
+                if(this.msData.verifyBy.hasOwnProperty('text'))this.dText=this.msData.verifyBy.text;
+
+
+
+            }
+            if(this.msData.hasOwnProperty('inputMultiple'))this.inputMultiple=this.msData.inputMultiple;
 
             if(this.msData.hasOwnProperty('validation'))
             {
@@ -72,11 +89,41 @@
                 this.inputValidation=this.msData.validation;
             }
 
+         //   var finalArray= this.makeArrayForInput(this);
+
+            this.setFinalInput(this.makeArrayForInput(this));
+
+            if(!this.$root.checkGroupExist(this.groupInput)){
+                this.$root.setUpGroup(this.groupInput);
+            }
+
 
 
        // console.log( this.inputValidation);
         },
         methods:{
+
+            setError:function () {
+                this.msValid="is-invalid";
+            },
+            getValue:function () {
+                var returnF=this.msValue;
+                return returnF;
+            },
+            removeinput(count){
+
+                delete this.finalInput.splice(count, 1);
+              //  this.finalInput.push(this.makeArrayForInput(this));
+                inputCount--;
+            },
+            addinput(){
+                this.finalInput.push(this.makeArrayForInput(this));
+                inputCount++
+            },
+            setFinalInput(array){
+                this.finalInput=[array];
+             //   console.log(this.finalInput);
+            },
 
 
         },
@@ -86,6 +133,7 @@
                 msValue:'',
                 msMinCharValidation:0,
                 inputValidation:[],
+                inputAuto:[],
                 inputError:new Object(),
                 inputName:'',
                 inputVname:'',
@@ -93,7 +141,13 @@
                 inputPerfix:'',
                 inputOnly:false,
                 inputType:'text',
-                inputRequired:false
+                inputRequired:false,
+                dValue:'',
+                dText:'',
+                finalInput:new Object({}),
+                inputMultiple:false,
+                inputCount:0,
+                groupInput:[]
             }
         }
         ,
