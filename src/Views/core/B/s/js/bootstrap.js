@@ -59,6 +59,7 @@ Vue.component('panelbackend', require('./components/panelBackend.vue').default);
 Vue.component('msinput', require('./components/msInput.vue').default);
 Vue.component('msform', require('./components/msForm.vue').default);
 Vue.component('msinvoice', require('./components/msInvoice.vue').default);
+Vue.component('msgst', require('./components/msGST.vue').default);
 
 import MS from './MS';
 
