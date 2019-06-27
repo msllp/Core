@@ -80,13 +80,15 @@
 
 
         </table>
+
             <table class="table table-striped table-bordered table-hover">
                 <tr >
                     <td colspan="2">
 
                         <div class="btn-group btn-group-lg btn-block" role="group" aria-label="Basic example">
-                            <button type="button" class="btn btn-warning fa fa-retweet " v-on:click="refreshInvoice()"> Reset</button>
-                            <button type="button" class="btn btn-success fa fa-plus-square " style="color: #1b1e21" v-on:click="showProductModel()"> Add</button>
+                            <button type="button" class="btn btn-warning fa fa-retweet " v-on:click="refreshInvoice()" style="border-radius: 0px"> Reset</button>
+                            <button type="button" class="btn btn-success fa fa-plus-square " style="color: #1b1e21;border-radius: 0px" v-on:click="showProductModel()"> Add</button>
+                            <button type="button" class="btn btn-info fa fa-print " style="color: #1b1e21;border-radius: 0px" v-on:click="generateInoice()"> Generate invoice</button>
                         </div>
 
                           </td>
@@ -114,6 +116,8 @@
 
         </table>
 
+        <small class="text-muted float-right" style="margin-top:0px;">Powered by <a href="https://www.millionsllp.com">
+            <img src="http://gst.msllp.in/images/logo_final.png" style="max-height: 30px;margin-top:-7px;margin-right:15px "></a></small>
 
 
         <div class="modal" tabindex="-1" role="dialog" id="msProductModel">
@@ -252,6 +256,7 @@
                 }
             },
         mounted() {
+         //   this.generateInoice();
 
             var masterUser={
                 name:"Raghuvir Traderes",
@@ -337,6 +342,9 @@
                  };
              }
 
+             product.SGSTrate= product.SGST;
+             product.CGSTrate= product.CGST;
+
                  var withTaxCost= this.to2(product.unit *  product.unitCost);
                  var SGST= this.to2( (withTaxCost )  * product.SGST / 100) ;
                  var CGST= this.to2((withTaxCost )  * product.CGST / 100) ;
@@ -348,7 +356,7 @@
                  this.msProductUnitName.push(product.unitName);
                  this.msProductSGST.push(SGST);
                  this.msProductCGST.push(CGST);
-                 this.msProductTotal.push(total);
+                 this.msProductTotal.push(withTaxCost);
                  this.msProductTotalwithOutTaxForDisplay=this.msProductTotalwithOutTaxForDisplay + withTaxCost;
                  this.msProductSGSTForDisplay=this.msProductSGSTForDisplay +SGST;
                  this.msProductCGSTForDisplay=this.msProductCGSTForDisplay +CGST;
@@ -492,6 +500,8 @@
                     CGST: this.msModel.CGST,
 
                 };
+
+
                 console.log(this.editProduct(this.msCurrentProduct,Newproduct) );
 
                 $('#msProductModel').modal('toggle');
@@ -505,6 +515,10 @@
                 var product = this.msProductMaster[key];
 
                 var withTaxCost= this.to2 (data.unit *  data.unitCost);
+
+                var SGSTRate=data.SGST;
+                var CGSTRate=data.CGST;
+
                 var SGST=  this.to2 ( data.SGST* withTaxCost / 100)    ;
                 var CGST= this.to2 ( data.CGST* withTaxCost / 100  )   ;
 
@@ -513,8 +527,8 @@
                 var CGST_old=  this.msProductCGST[key]  ;
 
 
-                console.log("New One "+SGST + " /  Old: "+ SGST_old);
-                console.log("New One "+CGST + " /  Old: "+ CGST_old);
+                //console.log("New One "+SGST + " /  Old: "+ SGST_old);
+               // console.log("New One "+CGST + " /  Old: "+ CGST_old);
                 if(data.name != product.name) {
                     if (this.check_uniq(this.msProductName, [data.name])) {
                         this.msProductName[key]=data.name
@@ -539,7 +553,7 @@
                 this.msProductTotalwithOutTaxForDisplay= this.to2(this.msProductTotalwithOutTaxForDisplay - withTaxCost_old);
                 this.msProductTotalwithOutTaxForDisplay= this.to2(this.msProductTotalwithOutTaxForDisplay + withTaxCost);
 
-                console.log(data);
+                //console.log(data);
 
                 this.msProductTAXCODE[key]=data.taxCode;
                 this.msProductUnit[key]=data.unit;
@@ -554,7 +568,9 @@
                     unitName:data.unitName,
                     SGST: SGST,
                     CGST: CGST,
-                    total:withTaxCost
+                    total:withTaxCost,
+                    SGSTrate:SGSTRate,
+                    CGSTrate:CGSTRate
                 };
 
 
@@ -562,7 +578,31 @@
             },
             refreshInvoice(){
                 location.reload();
-            }
+            },
+        generateInoice(){
+
+            var self=this
+            axios.post('/MAS/fromAppGenaratePdf', {
+                msData: self.msProductMaster,
+                msDataTotal:{
+                    SGST:self.msProductSGSTForDisplay,
+                    CGST:self.msProductCGSTForDisplay,
+                    productTotal:self.msProductTotalwithOutTaxForDisplay,
+                }
+            })
+                .then(function (response) {
+
+                    if(response.headers['content-type'] == "application/pdf"){
+
+                        window.open("document.pdf",'_blank');
+
+                    }
+                    console.log(response.headers);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
         }
 
     }
