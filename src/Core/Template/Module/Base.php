@@ -13,27 +13,27 @@ use MS\Core\Module\Master;
 class B extends Master
 {
 
-    public static $controller="B\MAS\C";
-    public static $model="B\MAS\M";
+    public static $controller="{{end}}\{{modCode}}\C";
+    public static $model="{{end}}\{{modCode}}\M";
     //  public static $dir="MS.B.MAS";
 
     public static $route=[
 
         [
-            'name'=>'MAS.Index',
+            'name'=>'{{end}}.{{modCode}}.Index',
             'route'=>'/',
             'method'=>'index',
             'type'=>'get',
         ],
 
         [
-            'name'=>'MAS.Index.data',
+            'name'=>'{{end}}.{{modCode}}.data',
             'route'=>'/data',
             'method'=>'indexData',
             'type'=>'get',
         ]];
 
-   public static $allOnSameconnection=false;
+   public static $allOnSameconnection=true;
 
 
 

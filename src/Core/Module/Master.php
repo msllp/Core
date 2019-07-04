@@ -48,8 +48,9 @@ class Master implements BaseMaster
             }
 
         }
+        $return=array_merge(  static::$tables,$returnArray);
 
-      return array_merge(  static::$tables,$returnArray);
+      return $return;
     }
 
     public static function getTable($tableID=false,$perFix=false):string
@@ -74,6 +75,23 @@ class Master implements BaseMaster
         }
         if(count($table) > 0){
             return reset($table)['tableName'];
+        }
+        return"No Module Table Found";
+
+    }
+    public static function getTableArray($tableID=false):array
+    {
+
+        $table= self:: getModuleTables() ;
+        if(!$tableID)$tableID=array_key_first($table);
+
+        if(array_key_exists($tableID,$table)){
+
+
+            return $table[$tableID];
+        }
+        if(count($table) > 0){
+            return reset($table);
         }
         return"No Module Table Found";
 
@@ -105,6 +123,8 @@ class Master implements BaseMaster
         }
         return ["No Connection Found"];
     }
+
+
 
     public static function getAction($tableID=false){
         $table= self:: getModuleTables() ;

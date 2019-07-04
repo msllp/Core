@@ -78,6 +78,14 @@ class MSCoreServiceProvider extends \Illuminate\Support\ServiceProvider
 
         }
 
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                \MS\Core\Console\Master::class,
+                \MS\Core\Console\GenMod::class,
+                \MS\Core\Console\Git::class,
+            ]);
+        }
+
 
 
     }
@@ -91,6 +99,12 @@ class MSCoreServiceProvider extends \Illuminate\Support\ServiceProvider
 
         $this->mergeConfigFrom(
             dirname(__DIR__).DS.'Config/Auth.php', base_path('config/auth.php')
+        );
+
+      //  \Config::set('app.url','http://hdtuto.com/');
+      //  dd(dirname(__DIR__));
+        $this->mergeConfigFrom(
+            dirname(__DIR__).DS.'Config/Filesystem.php', 'filesystems.disks'
         );
     }
 }

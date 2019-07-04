@@ -8,13 +8,13 @@
 
 namespace MS\Core\Model;
 
-
+use \Illuminate\Notifications\Notifiable;
 
 use   \Illuminate\Database\Eloquent\Model;
 
 class Master  extends Model  implements BaseMaster{
 
-
+    use Notifiable;
     public $namespace,$tableID,$perFix,$ms_base,$base_Field,$g,$ms_action;
 
     public function __construct(string $nameSpace,$tableID=false, $perFix=false, $tableConnection=false,$glue="_")
