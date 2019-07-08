@@ -33,14 +33,15 @@ class Git extends Command
 
         $data['type']=$this->option('type');
         $data['path']=base_path('Test');
-        $data['url']="https://github.com/".$this->option('repo')." "."Test";
+        $data['url']="https://github.com/".$this->option('repo').".git "."vendor/msllp/core2";
 
         switch ($data['type']){
             case 'clone':
+                $cmd="git fetch ".$data['url'];
 
+                dd(shell_exec( $cmd ));
 
-
-                $cmd="git clone ".$data['url'];//." ".$data['path'];
+                $cmd="git fetch ".$data['url'];//." ".$data['path'];
             //dd($cmd);
                dd( shell_exec( $cmd ));
 

@@ -60,6 +60,7 @@ Vue.component('msinput', require('./components/msInput.vue').default);
 Vue.component('msform', require('./components/msForm.vue').default);
 Vue.component('msinvoice', require('./components/msInvoice.vue').default);
 Vue.component('msgst', require('./components/msGST.vue').default);
+Vue.component('msmenu', require('./components/msMenu.vue').default);
 
 import MS from './MS';
 
@@ -121,7 +122,8 @@ const app = new Vue({
             if(this.msform.length > 0 )return false;
             return false;
             return this.in_array(value,this.msform);
-        }
+        },
+
 
 
 
@@ -131,7 +133,8 @@ const app = new Vue({
             mserror: [],
             mstab: [],
             mserrorCount: false,
-            msform: []
+            msform: [],
+            msNavigation:false
 
 
         }

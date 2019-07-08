@@ -9,10 +9,10 @@ ul {
 .menu-container {
 
    // margin-top: 47px;
-    z-index: 1000;
+    z-index: 1045;
   //position: fixed;
-  left: $ms-menu-width;
-  width: $ms-menu-width;
+  //left: $ms-menu-width;
+  //width: $ms-menu-width;
   //height: 100%;
  //margin-left: -277px;
   overflow-y: auto;
@@ -22,10 +22,9 @@ ul {
   transition: all .5s ease;
 }
 
-.menu {
-  position: fixed;
+@mixin menu {
+    z-index: 1045;
   width:$ms-menu-width;
-  //height: 90%;
   background: linear-gradient(to right, rgba(35, 37, 38, 0.1), rgba(65, 67, 69, 0.5));
 }
 
@@ -77,12 +76,14 @@ ul {
   padding: 10px 15px 10px 15px;
   color: #fff;
   text-decoration: none;
-  background: linear-gradient(to right, rgba(35, 37, 38, 0.5), rgba(65, 67, 69, 0.7));
+
+
+  background: linear-gradient(to right, rgba(255,81,47, 0.9), rgba(221,36,118, 0.9));
 
   &:hover {
     color: #fff;
     text-decoration: none;
-    background: linear-gradient(to left, rgba(35, 37, 38, 0.5), rgba(65, 67, 69, 0.7));
+    background:  linear-gradient(to right, rgba(255,81,47, 1), rgba(221,36,118, 1));
     transition: all 500ms ease-out;
   }
 
@@ -94,18 +95,32 @@ ul {
 
 // context menu
 .context-menu-container {
-  position: absolute;
-  left: 55px;
-  width:  $ms-menu-width - 40;
+    position: absolute;
+    top: 0px;
+    left: 228px;
+    min-width: 225px;
   height: 100%;
   background: #000;
+    overflow-scrolling: touch;
+    transition: all 200ms ease;
+}
+
+.context-menu-container-full {
+    position: absolute;
+    top: 0px;
+    left: 66px;
+    min-width: 225px;
+    height: 100%;
+    background: #000;
+    overflow-scrolling: touch;
+    transition: all 250ms ease;
 }
 
 .context-menu {
-  position: absolute;
-  top: 0;
+//  position: absolute;
+ // top: 0;
   width: 100%;
-  background: #000;
+    background:  linear-gradient(to right, rgba(0,0,0, 1), rgba(0,36,0, 1));
 }
 
 .context-menu__title {
@@ -155,18 +170,48 @@ ul {
 
 // links
 .menu__link--active {
-  background: #000;
+    background:  linear-gradient(to left, rgba(0,0,0, 1), rgba(21,36,18, 1));
 }
 
 .slide-fade-enter-active {
-  transition: all 0.2s ease;
+  transition: all 150ms ease;
 }
 
 .slide-fade-leave-active {
-  transition: all 0.2s ease;
+  transition: all 150ms ease;
 }
 
 .slide-fade-enter, .slide-fade-leave-to {
-  transform: translate3d(-30px, 0, 0);
+ // transform: translate3d(-30px, 0, 0);
   opacity: 0;
+}
+
+
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+
+
+
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+
+}
+
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+
 }

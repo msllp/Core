@@ -41,11 +41,24 @@
 
             <div class="row">
 
+<transition name="ms">
+                <div class="ms-side float-right col-xs-12 col-sm-12 col-md-2 col-lg-2" v-if="msNavOn">
 
-                <ms-menu class="ms-side"></ms-menu>
+                    <ms-menu :ms-nav ="msNavOn" ></ms-menu>
+
+                </div>
 
 
-                <div class="ms-live-box float-right col-xs-12 col-sm-12 col-md-10 col-lg-10 bg-light">Live Box </div>
+                <div class="ms-side float-right col-xs-12 col-sm-12 col-md-2 col-lg-2" v-else >
+
+                    <ms-menu :ms-nav ="msNavOn"></ms-menu>
+
+                </div>
+
+</transition>
+
+                <div class="ms-live-box float-right col-xs-12 col-sm-12 col-md-10 col-lg-10 bg-light"  v-if="msNavOn">Live Box </div>
+                <div class="ms-live-box float-right col-xs-12 col-sm-12 col-md-12 col-lg-12 bg-light ms-live-box-full"  v-else>Live Box </div>
 
             </div>
         </div>
@@ -58,6 +71,29 @@
     import msMenu from './msMenu';
     export default {
         name: "panelBackend",
+
+        data() {
+            return {
+                msNavOn:true
+
+            }
+        }
+        ,
+        methods:{
+            setNavOn(show=false){
+                if(!show){
+                    this.msNavOn=false;
+                }else {
+                    this.msNavOn=true
+                }
+
+                    console.log(this.msNavOn);
+            }
+
+        }
+
+        ,
+
         components : {
             msMenu
         }

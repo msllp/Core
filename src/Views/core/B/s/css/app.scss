@@ -155,17 +155,21 @@ canvas.round {
 }
 
 .navbar {
-    background: linear-gradient(to right, rgba(35,37,38,0.1), rgba(65,67,69,0.5)) ;
+    background: linear-gradient(to right, rgb(39,41,61, 1), rgba(0,0,0,1));
     box-shadow: 5px 5px 10px rgba(35,37,38,0.5);
 }
 
 .ms-side{
-  //  z-index: 1022;
-    width: 20%;
+    z-index: 1;
+    padding-left: 0px;
+    padding-right: 0px;
+ //   box-shadow: 5px 5px 10px rgba(35,37,38,0.5);
 }
 
 .ms-live-box{
-    z-index: 1021;
+    z-index: -1;
+    box-shadow: 5px 5px 10px rgba(35,37,38,0.5);
+    padding: 20px;
 }
 
 @import url('https://fonts.googleapis.com/css?family=Exo:400,700');
@@ -318,3 +322,103 @@ body{
 
 }
 
+.ms-nav {
+
+    position: absolute;
+   background: linear-gradient(to right, rgba(49,71,85,1), rgba(38,160,218,1));
+    color:white;
+
+
+}
+.ms-nav > li > a  {
+    min-width: 50px;
+    padding: 15px;
+
+
+}
+
+.menu__title{
+    margin-left: 0px;
+}
+.menu__top{
+    min-width:228px;
+    padding:14px 0px 0px 0px;
+}
+.menu__top_hidden > .menu__top{
+    min-width:50px;
+    animation: animate2 ease-out;
+    animation-delay: 0s;
+    animation-duration: 500ms;
+}
+
+.ms-live-box-full{
+    padding-left: 70px;
+}
+
+@keyframes animate2 {
+
+    0%{
+        min-width:228px;
+    }
+
+    100%{
+        min-width:50px;
+    }
+
+}
+
+.ms-nav > li > a > span {
+  //  animation: animate3 ease-in;
+    animation-delay: 0s;
+    animation-duration: 200ms;
+    display: inline-block;
+}
+
+.ms-nav > li > a  :first-child {
+ //   animation: animate3 reverse;
+    animation-delay: 0s;
+
+    animation-duration: 200ms;
+
+}
+
+
+@keyframes animate3 {
+
+
+    0%{
+        transform: translateX(-1000px) ;
+        opacity: 0;
+      //  border-radius: 50%;
+    }
+
+    100%{
+        transform: translateX(0) ;
+        opacity: 1;
+        //border-radius: 0;
+    }
+
+
+
+}
+
+
+.ms-enter-class{
+    //opacity: 0;
+    transition: all 150ms ease;
+}
+.ms-enter-active-class{
+    transition: all 150ms ease;
+}
+.ms-enter-to-class {
+    transition: all 150ms ease;
+}
+.ms-leave-class{
+    transition: all 150ms ease;
+}
+.ms-leave-active-class{
+    transition: all 150ms ease;
+}
+.ms-leave-to-class {
+    transition: all 150ms ease;
+}

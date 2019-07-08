@@ -1,19 +1,21 @@
 <template>
-<div class="menu-container">
+<div class="">
 
     <!-- root level itens -->
-    <ul class="menu">
 
-        <li class="menu__top">
 
-                <img src="/icon-32.png" alt="icon">
+
+    <ul class="menu" :class="msNavClass">
+
+        <li class="menu__top" @click.prvent="hideNav()"  >
 
             <a
                 href="#"
                 @click.prevent="openProjectLink"
                 class="menu__title"
             >
-                Project Name...
+                <i class="fa fa-home menu__icon" aria-hidden="true"></i>
+               <span  v-if="msNavigationOn">Navigation</span>
             </a>
         </li>
 
@@ -24,7 +26,7 @@
                 :class="highlightSection('home')"
             >
                 <i class="fa fa-home menu__icon" aria-hidden="true"></i>
-                Home
+                <span  v-if="msNavigationOn"> Home</span>
             </a>
         </li>
 
@@ -35,7 +37,8 @@
                 :class="highlightSection('products')"
             >
                 <i class="fa fa-tag menu__icon" aria-hidden="true"></i>
-                Products
+
+                   <span  v-if="msNavigationOn">  Products</span>
                 <i class="fa fa-chevron-right menu__arrow-icon" aria-hidden="true"></i>
             </a>
         </li>
@@ -47,7 +50,7 @@
                 :class="highlightSection('customers')"
             >
                 <i class="fa fa-users menu__icon" aria-hidden="true"></i>
-                Customers
+                <span  v-if="msNavigationOn"> Customers </span>
                 <i class="fa fa-chevron-right menu__arrow-icon" aria-hidden="true"></i>
             </a>
         </li>
@@ -59,55 +62,61 @@
                 :class="highlightSection('account')"
             >
                 <i class="fa fa-user menu__icon" aria-hidden="true"></i>
-                Account
+                <span  v-if="msNavigationOn">  Account</span>
                 <i class="fa fa-chevron-right menu__arrow-icon" aria-hidden="true"></i>
             </a>
         </li>
 
     </ul>
 
-    <!-- context menu: childs of root level itens -->
-    <transition name="slide-fade">
 
-        <div class="context-menu-container" v-show="showContextMenu">
+    <ul>
+        <li>
+            <transition name="slide-fade">
 
-            <ul class="context-menu">
+                <div class="context-menu-container" v-show="showContextMenu" :class="msContextClass">
 
-                <li v-for="(item, index) in menuItens" :key="index">
+                    <ul class="context-menu">
 
-                    <h5 v-if="item.type === 'title'" class="context-menu__title">
+                        <li v-for="(item, index) in menuItens" :key="index">
 
-                        <i :class="item.icon" aria-hidden="true"></i>
+                            <h5 v-if="item.type === 'title'" class="context-menu__title">
 
-                        {{item.txt}}
+                                <i :class="item.icon" aria-hidden="true"></i>
 
-                        <a
-                            v-if="index === 0"
-                            @click.prevent="closeContextMenu"
-                            class="context-menu__btn-close"
-                            href="#"
-                        >
-                            <i class="fa fa-window-close" aria-hidden="true"></i>
-                        </a>
+                                {{item.txt}}
 
-                    </h5>
+                                <a
+                                    v-if="index === 0"
+                                    @click.prevent="closeContextMenu"
+                                    class="context-menu__btn-close"
+                                    href="#"
+                                >
+                                    <i class="fa fa-window-close" aria-hidden="true"></i>
+                                </a>
 
-                    <a
-                        v-else
-                        href="#"
-                        @click.prevent="openSection(item)"
-                        :class="subMenuClass(item.txt)"
-                    >
-                        {{item.txt}}
-                    </a>
+                            </h5>
 
-                </li>
+                            <a
+                                v-else
+                                href="#"
+                                @click.prevent="openSection(item)"
+                                :class="subMenuClass(item.txt)"
+                            >
+                                {{item.txt}}
+                            </a>
 
-            </ul>
+                        </li>
 
-        </div>
+                    </ul>
 
-    </transition>
+                </div>
+
+            </transition>
+
+        </li>
+    </ul>
+
 
 </div>
 
@@ -120,18 +129,28 @@
 
     export default {
         name: 'msMenu',
+        props:{
+            'msNav':{
+                     type: Boolean,
+                    required: true,
+                    default:true
+            }
+        },
         data(){
             return {
                 contextSection: '',
                 menuItens: [],
                 menuData: menuData,
-                activeSubMenu: ''
+                activeSubMenu: '',
+                msNavigationOn:true,
+                msNavClass:'ms-nav',
+                msContextClass:''
             }
         },
         methods: {
             openProjectLink() {
-
-                alert('You could open the project frontend in another tab here, so the logged admin could see changes made to the project ;)');
+               //this. hideNav()
+              //  alert('You could open the project frontend in another tab here, so the logged admin could see changes made to the project ;)');
             },
             updateMenu(context) {
                 this.contextSection = context;
@@ -162,12 +181,30 @@
             getUrl(item) {
                 let sectionSlug = kebabCase(item.txt);
                 return `${item.link}/${sectionSlug}`;
+            },
+            hideNav(show=false){
+
+                if(this.msNavigationOn){
+                    this.msNavigationOn=false;
+                    this.msContextClass="context-menu-container-full";
+                    this.msNavClass=" ms-nav menu__top_hidden";
+                }else{
+                    this.msNavigationOn=true
+                    this.msNavClass=" ms-nav";
+                    this.msContextClass="";
+                }
+                this.$parent.setNavOn(this.msNavigationOn);
+
+
             }
         },
         computed: {
             showContextMenu() {
                 return this.menuItens.length;
             },
+        },
+        mounted() {
+            this.msNavigationOn=this.msNav;
         }
     }
 </script>
