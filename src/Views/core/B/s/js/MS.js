@@ -20,7 +20,7 @@ export default {
                     var re = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{"+length+",})");
                     break;
             }
-        return re.test(pass);
+            return re.test(pass);
         },
 
         validateLen(str,size=1){
@@ -31,7 +31,7 @@ export default {
 
         getGetLink(url,classFor){
             url=url+"?dataLink=true"
-           var returnX="";
+            var returnX="";
             var self = classFor ;
 
             let re= axios.get(url)
@@ -41,18 +41,47 @@ export default {
                         self.setHtml(returnX);
 
                     }
-                    )
+                )
                 .catch(function (error) {
                     // handle error
                     self.setMsError(error.response.data);
-                  //  console.log(error.response.data);
+                    //  console.log(error.response.data);
                 })
                 .finally( response => {
-                  });
+                });
 
 
 
         },
+        postLink(link,data,classFor){
+            var Freturn={};
+
+
+            axios.post(link, data,{headers: {
+                    'content-type': 'multipart/form-data',
+                    // 'charset':'utf-8',
+                    'boundary':Math.random().toString().substr(2),
+                    'Accept': "application/json",
+                    'maxContentLength':Math.random().toString().substr(2)
+                }})
+                .then(function (response) {
+                    //console.log(response);
+                    Freturn.data=response.data;
+                })
+                .catch(function (error) {
+                    Freturn.error=error.response.data.errors;
+
+                    classFor.setAllMsError(Freturn.error);
+                    //  delete Freturn.error.message;
+
+
+                });
+            return Freturn;
+            //  console.log(Freturn);
+        },
+
+
+
         makeArrayForInput(base){
             var self = base ;
 
@@ -68,23 +97,23 @@ export default {
                 re.label = 'Enter ' + vName;
 
             }
-        //    console.log(re);
-         //   base.setFinalInput(re);
+            //    console.log(re);
+            //   base.setFinalInput(re);
             return re;
-           // console.log(re);
-           // return [re];
+            // console.log(re);
+            // return [re];
         },
         makeArrayForInputGroup(base,id,index){
             var self=base;
             var idfor=id+"_"+index;
             var Inputindex=1
-          //  console.log(self.msFormData[id])
+            //  console.log(self.msFormData[id])
 
             Inputindex =base.msCount[id] -1 ;
             var fordata={
                 rootId:id,
                 id:index,
-               groupDynamic:true,
+                groupDynamic:true,
                 gruoupHeading:self.msFormData[id].gruoupHeading+" No of: " + Inputindex ,
                 inputs:self.msFormData[id].inputs
 
@@ -95,35 +124,34 @@ export default {
         in_array(value,array){
             return array.includes(value);
         },
-        get_time_diff( datetime )
-{
-    var datetime = typeof datetime !== 'undefined' ? datetime : "2014-01-01 01:02:03.123456";
+        get_time_diff( datetime ){
+            var datetime = typeof datetime !== 'undefined' ? datetime : "2014-01-01 01:02:03.123456";
 
-    var datetime = new Date( datetime ).getTime();
-    var now = new Date().getTime();
+            var datetime = new Date( datetime ).getTime();
+            var now = new Date().getTime();
 
-    if( isNaN(datetime) )
-    {
-        return "";
-    }
+            if( isNaN(datetime) )
+            {
+                return "";
+            }
 
-    //console.log( datetime + " " + now);
+            //console.log( datetime + " " + now);
 
-    if (datetime < now) {
-        var milisec_diff = now - datetime;
-    }else{
-        var milisec_diff = datetime - now;
-    }
+            if (datetime < now) {
+                var milisec_diff = now - datetime;
+            }else{
+                var milisec_diff = datetime - now;
+            }
 
-    var days = Math.floor(milisec_diff / 1000 / 60 / (60 * 24));
+            var days = Math.floor(milisec_diff / 1000 / 60 / (60 * 24));
 
-    var date_diff = new Date( milisec_diff );
+            var date_diff = new Date( milisec_diff );
 
-    return date_diff.getMilliseconds();
-},
+            return date_diff.getMilliseconds();
+        },
         roundToTwo(num) {
-        //    console.log(num);
-          //  console.log(Math.round(num)     );
+            //    console.log(num);
+            //  console.log(Math.round(num)     );
             return Math.round(num);
         },
         calc_get_prapotion(totalValue,secondValue ){
@@ -140,8 +168,31 @@ export default {
                 if(this.in_array(baseArray[i],setArray))return false;
             }
             return true;
+        },
+
+        isMobile() {
+            //     return true
+
+            var str=navigator.platformt;
+            //var n = str.search("Windows");
+            console.log(navigator.platform);
+            //if(n >0 )
+            if( (str  == 'Android') || (str  == 'iPhone') || (str  == 'iPod') || (str  == 'iPad') || (str  == 'BlackBerry') || (str  == 'Pocket PC') || (str  == 'webOS')  || (str == "Linux armv8l") ) {
+                return true
+            } else {
+                return false
+            }
         }
-    }
+
+        ,
+        forNice(str){
+            var txt=str;
+            return txt.toLowerCase()
+                .split(' ')
+                .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+                .join(' ');
+        }
+    },
 
 
 }

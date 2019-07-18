@@ -97,9 +97,13 @@ class MSCoreServiceProvider extends \Illuminate\Support\ServiceProvider
     public function register()
     {
 
+        define("MSCORE_UI_STATUS_1","B\MAS:CORE_UI_Status_1:StatusBoolean->StatusName");
+
         $this->mergeConfigFrom(
             dirname(__DIR__).DS.'Config/Auth.php', base_path('config/auth.php')
         );
+
+
 
       //  \Config::set('app.url','http://hdtuto.com/');
       //  dd(dirname(__DIR__));
