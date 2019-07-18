@@ -314,10 +314,13 @@ class MSForm
                 $returnArray[$this->make4Vue($title)]['gruoupHeading']=$title;
                 if(array_key_exists('fieldGroupMultiple',$this->dbMaster) && in_array($title,$this->dbMaster['fieldGroupMultiple']))
                 {
+                   // if($aray == null)dd($fieldsArray);
+                 //   if($aray == null)dd($aray);
                     $returnArray[$this->make4Vue($title)]['inputs'][]= $this->makeDataForVue($aray,true);
                     $returnArray[$this->make4Vue($title)]['groupDynamic']=true;
 
                 }else{
+                    if($aray == null)dd($fieldsArray);
                     $returnArray[$this->make4Vue($title)]['inputs'][]= $this->makeDataForVue($aray);
                     $returnArray[$this->make4Vue($title)]['groupDynamic']=false;
                 }
@@ -474,7 +477,7 @@ class MSForm
 
         ];
 
-
+   //if($data == null ) dd($data);
 
         $array=\MS\Core\Helper\MSForm::makeArrayForViewFromStyle($array,$data);
 //dd($array);
@@ -491,7 +494,8 @@ class MSForm
         if(array_key_exists('validation',$data)){
 
             if(array_key_exists( 'required',$data['validation']) && $data['validation'] ['required'])
-                (array_key_exists('perfix',$array))?$array['perfix'].= " fa-asterisk text-danger":$array['perfix']= "asterisk text-danger";
+
+                (array_key_exists('perfix',$array))?$array['perfix'].= " ":$array['perfix']= " ";
             if(array_key_exists('existIn',$data['validation']))$array['verifyBy']=\MS\Core\Helper\MSForm::getDataFromTable($data['validation']['existIn']);
 
 
