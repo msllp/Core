@@ -7,6 +7,7 @@
  */
 
 namespace MS\Provider;
+define("MSCORE_UI_STATUS_1","B\MAS:CORE_UI_Status_1:StatusBoolean->StatusName");
 define('DS',DIRECTORY_SEPARATOR);
 
 class MSCoreServiceProvider extends \Illuminate\Support\ServiceProvider
@@ -19,7 +20,7 @@ class MSCoreServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     public function boot()
     {
-
+        \MS\Core\Helper\Comman::loadBack();
         $this->loadTranslationsFrom(  dirname(__DIR__) .DS.'Lang', 'MS');
 
         $this->loadViewsFrom(  dirname(__DIR__) .DS.'Views', 'MS');
@@ -97,7 +98,7 @@ class MSCoreServiceProvider extends \Illuminate\Support\ServiceProvider
     public function register()
     {
 
-        define("MSCORE_UI_STATUS_1","B\MAS:CORE_UI_Status_1:StatusBoolean->StatusName");
+
 
         $this->mergeConfigFrom(
             dirname(__DIR__).DS.'Config/Auth.php', base_path('config/auth.php')

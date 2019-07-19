@@ -124,7 +124,9 @@ class Master implements BaseMaster
         return ["No Connection Found"];
     }
 
-
+    public static function getRoutes(){
+        return static ::$route;
+    }
 
     public static function getAction($tableID=false){
         $table= self:: getModuleTables() ;
@@ -139,5 +141,66 @@ class Master implements BaseMaster
             return reset($table)['action'];
         }
         return"No Connection Found";
+    }
+
+    public static function testAllModRoutes($class ){
+
+        $allRoute=self:: getRoutes();
+        $k=0;
+        $resData=[];
+        $resDataError=[];
+        $error=0;
+        foreach ($allRoute as $route){
+
+            switch ($route['type'])
+            {
+                case 'get':
+                    $res= $class->get(route( $route['name']));
+                    $resData[$k]['name']=$route['name'];
+                    $resData[$k]['result']= $res->status();
+                    break;
+                    case 'post';
+                        \Session::start();
+                        //dd();
+                        $res = $class->call('POST', route( $route['name'], array(
+                            '_token' => csrf_token(),
+                              "modName" => 'Master',
+                              "modDesc" => "Core Module to Work as platform or MS Appliacation.",
+                              "modCode" => "MAS",
+                              "modIcon" => "fa-home",
+                              "modPrefix" => "MAS",
+                              "modForSuperAdmin" => 1,
+                              "modForAdmin" => 0,
+                              "modHomeAction" => 'MAS.Index',
+                              "modDataAction" => 'MAS.Index',
+                        )));
+                        $resData[$k]['name']=$route['name'];
+                        $resData[$k]['result']= "402";
+
+
+                        break;
+            }
+
+            if(!$error && array_key_exists($k,$resData )&& array_key_exists('result',$resData[$k])  &&($resData[$k]['result'] ==500)){
+
+                $resDataError[$k]['name']=$resData[$k]['name'];
+                $resDataError[$k]['result']= $resData[$k]['result'];
+                $error=1;
+            }
+           $k++;
+
+
+
+        }
+
+        dd($resData);
+        if(!$error){
+
+            return true;
+
+
+        }
+            return $resDataError;
+
     }
 }

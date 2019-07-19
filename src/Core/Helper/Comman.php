@@ -21,12 +21,12 @@ class Comman
 
 
     public static function loadBack(){
-        require_once(base_path('MS'.DIRECTORY_SEPARATOR .'B'.DIRECTORY_SEPARATOR .'M'.DIRECTORY_SEPARATOR ."Routes.php"));
+        require(base_path('MS'.DIRECTORY_SEPARATOR .'B'.DIRECTORY_SEPARATOR .'M'.DIRECTORY_SEPARATOR ."Routes.php"));
     }
 
 
     public static function loadFront(){
-        require_once(base_path('MS'.DIRECTORY_SEPARATOR .'F'.DIRECTORY_SEPARATOR .'M'.DIRECTORY_SEPARATOR ."Routes.php"));
+        require(base_path('MS'.DIRECTORY_SEPARATOR .'F'.DIRECTORY_SEPARATOR .'M'.DIRECTORY_SEPARATOR ."Routes.php"));
     }
 
 
@@ -40,13 +40,13 @@ class Comman
         if(count($array) > 0){
           switch ($end){
               case '0':
-                  array_key_exists('locationOfFile', $array)?require_once(base_path('MS'.DIRECTORY_SEPARATOR .implode(DIRECTORY_SEPARATOR,explode('.', $array['locationOfFile'])).'.php')):null;
+                  array_key_exists('locationOfFile', $array)?require(base_path('MS'.DIRECTORY_SEPARATOR .implode(DIRECTORY_SEPARATOR,explode('.', $array['locationOfFile'])).'.php')):null;
                   break;
               case 'b':
-                  array_key_exists('locationOfFile', $array)?require_once(base_path(implode(DIRECTORY_SEPARATOR,['MS','B','M']).DIRECTORY_SEPARATOR .implode(DIRECTORY_SEPARATOR,explode('.', $array['locationOfFile'])).'.php')):null;
+                  array_key_exists('locationOfFile', $array)?require(base_path(implode(DIRECTORY_SEPARATOR,['MS','B','M']).DIRECTORY_SEPARATOR .implode(DIRECTORY_SEPARATOR,explode('.', $array['locationOfFile'])).'.php')):null;
                   break;
               case 'f':
-                array_key_exists('locationOfFile', $array)?require_once(base_path(implode(DIRECTORY_SEPARATOR,['MS','F','M']).DIRECTORY_SEPARATOR .implode(DIRECTORY_SEPARATOR,explode('.', $array['locationOfFile'])).'.php')):null;
+                array_key_exists('locationOfFile', $array)?require(base_path(implode(DIRECTORY_SEPARATOR,['MS','F','M']).DIRECTORY_SEPARATOR .implode(DIRECTORY_SEPARATOR,explode('.', $array['locationOfFile'])).'.php')):null;
 
 
                   break;
