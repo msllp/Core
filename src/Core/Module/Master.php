@@ -205,4 +205,98 @@ class Master implements BaseMaster
             return $resDataError;
 
     }
+
+    public static function getAllRules($tableID=false){
+
+
+        $targeTable=self::getTableArray($tableID);
+        $outArray=[];
+        foreach ($targeTable['fields'] as $field){
+
+            if(array_key_exists('validation',$field) && is_array($field['validation']) && (count($field['validation']) > 0)){
+
+
+                foreach ($field['validation'] as $ruleType=>$ruleString){
+
+                    switch ($ruleType){
+
+                        case 'required':
+                            if($ruleString) $outArray[$field['name']][]= 'required';
+                            break;
+
+                    }
+
+
+
+                }
+
+
+
+            }
+
+        }
+        return $outArray;
+     //   dd($outArray);
+
+}
+
+    public static function getAllMessage($tableID=false,$rules){
+        $targeTable=self::getTableArray($tableID);
+        $outArray=[];
+        if(array_key_exists('validationMessage',$targeTable)){
+
+            if(count($rules)>0){
+
+               // dd($rules);
+                foreach ($rules as  $inputName=>$ruleArray){
+
+
+                    foreach ($ruleArray as $ruleLine){
+                        switch ($ruleLine){
+
+                            case 'required':
+                                $ruleMade=implode(".",[$inputName,$ruleLine]);
+                            if(array_key_exists($ruleMade,$targeTable['validationMessage']))$outArray[$ruleMade]=$targeTable['validationMessage'][$ruleMade];
+                                break;
+
+                            case defualt;
+                                break;
+                        }
+                    }
+
+                }
+
+            }
+
+
+
+            }
+
+
+
+        //dd($data);
+        //dd($outArray);
+        return $outArray;
+    }
+
+    public static function getAllAttr($tableID=false,$rules){
+
+        $targeTable=self::getTableArray($tableID);
+        $outArray=[];
+dd($targeTable);
+            if(count($rules)>0) {
+
+                // dd($rules);
+                foreach ($rules as $inputName => $ruleArray) {
+                    foreach (self::getField($tableID) as $inputArray){
+
+                        $outArray[]
+
+                    }
+
+                }
+            }
+        return $outArray;
+    }
+
 }

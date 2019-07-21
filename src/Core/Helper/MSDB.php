@@ -10,6 +10,7 @@ namespace MS\Core\Helper;
 
 use \Illuminate\Support\Facades\Schema;
 use \Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Validator;
 //use Illuminate\Notifications\Notification;
 
 class MSDB implements MasterNoSql
@@ -497,6 +498,39 @@ class MSDB implements MasterNoSql
         return false;
 
 
+    }
+
+
+    public function checkRulesForData($r){
+        $b=implode('\\',[$this->masterNamespace,'B']);
+        $data=$r->all();
+       $rules= $b::getAllRules($this->ms_id);
+
+       //dd($b::getAllMessage($this->ms_id,$rules));
+       //foreach ()
+        dd($b::getAllAttr($this->ms_id,$rules));
+        $message=$b::getAllMessage($this->ms_id,$rules);
+        $attr=[];
+        $validator = Validator::make( $data,$this->makeRulesForValidation($rules),$message,$attr);
+
+        dd($validator->errors()->all());
+        //if()
+
+
+
+
+
+    }
+
+
+    private function makeRulesForValidation($data){
+
+        $outArray=[];
+        foreach ($data as $inputName=>$inputRules){
+            $outArray[$inputName]=implode('|',$inputRules);
+        }
+        return $outArray;
+        dd($outArray);
     }
 
 
