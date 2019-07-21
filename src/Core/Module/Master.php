@@ -171,8 +171,10 @@ class Master implements BaseMaster
                               "modPrefix" => "MAS",
                               "modForSuperAdmin" => 1,
                               "modForAdmin" => 0,
-                              "modHomeAction" => 'MAS.Index',
-                              "modDataAction" => 'MAS.Index',
+                         //     "modHomeAction" => 'MAS.Index',
+                          //    "modDataAction" => 'MAS.Index',
+                            'modStatus'=>1,
+                         //   'id'=>1
                         )));
                         $resData[$k]['name']=$route['name'];
                         $resData[$k]['result']= "402";

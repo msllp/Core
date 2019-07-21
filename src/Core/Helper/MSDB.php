@@ -301,9 +301,11 @@ class MSDB implements MasterNoSql
            // dd($valdationError==false);
              if($valdationError==true)goto ms_error_found;
             if($valdationError==false)
-            //    dd($columnArray);
-                dd( \DB::connection($connection)->table($tableName)->insert($columnArray));
-            \DB::connection($connection)->table($tableName)->insert($columnArray);
+             // dd($columnArray);
+
+               // dd($model->insert($columnArray));
+
+            $model->insert($columnArray);
 
         }catch (\Exception $e){
             ms_error_found:
