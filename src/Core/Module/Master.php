@@ -290,7 +290,7 @@ dd($targeTable);
                 foreach ($rules as $inputName => $ruleArray) {
                     foreach (self::getField($tableID) as $inputArray){
 
-                        $outArray[]
+                      //  $outArray[]
 
                     }
 
