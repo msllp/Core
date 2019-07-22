@@ -92,6 +92,7 @@ class MSForm
         'formClass'=>'formClass',
         'onlyInput'=>'inputOnly',
 
+
         ];
 
     public static $optionalStyleKeysWithDynamicValue=[
@@ -457,7 +458,8 @@ class MSForm
 
 
     private function makeDataForVue($data,$multiple=false){
-       // dd($this);
+      //  dd($this);
+
         $array=[
             'name'=>$data['name'],
             'type'=>$data['input'],
@@ -503,11 +505,26 @@ class MSForm
 
 
         }
-
         if(array_key_exists('inputMultiple',$data))$array['inputMultiple']=$data['inputMultiple'];
+        if(array_key_exists('inputMultiple',$data))$array['inputMultiple']=$data['inputMultiple'];
+        if(array_key_exists('inputInfo',$data))$array['inputInfo']=$data['inputInfo'];
         if($multiple)$array['inputMultiple']=true;
         if(array_key_exists('groupInput',$data))$array['groupInput']=$data['groupInput'];
+        $f= implode("\\",[$this->namespace,"F"]) ;
+        switch ($data['input']){
 
+            case 'auto':
+                goto msautogenratevalue;
+
+                break;
+
+            case 'locked':
+                msautogenratevalue:
+                if(array_key_exists('callback',$data))$array['value']=call_user_func(implode("::",[$f,$data['callback']]));
+                if($array['type'] != 'locked')$array['type']='locked';
+                //dd($array);
+                break;
+        }
 //dd($array);
         return $array;
         $arrayJson=collect($array)->toJson();

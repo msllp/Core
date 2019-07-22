@@ -508,9 +508,9 @@ class MSDB implements MasterNoSql
 
        //dd($b::getAllMessage($this->ms_id,$rules));
        //foreach ()
-        dd($b::getAllAttr($this->ms_id,$rules));
+        //displayFromdd($b::getAllAttr($this->ms_id,$rules));
         $message=$b::getAllMessage($this->ms_id,$rules);
-        $attr=[];
+        $attr=$b::getAllAttr($this->ms_id,$rules);
         $validator = Validator::make( $data,$this->makeRulesForValidation($rules),$message,$attr);
 
         dd($validator->errors()->all());

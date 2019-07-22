@@ -283,19 +283,23 @@ class Master implements BaseMaster
 
         $targeTable=self::getTableArray($tableID);
         $outArray=[];
-dd($targeTable);
+
+
+
+
             if(count($rules)>0) {
 
                 // dd($rules);
                 foreach ($rules as $inputName => $ruleArray) {
                     foreach (self::getField($tableID) as $inputArray){
 
-                      //  $outArray[]
+                        $outArray[$inputArray['name']]=$inputArray ['vName'];
 
                     }
 
                 }
             }
+      //  dd($outArray);
         return $outArray;
     }
 

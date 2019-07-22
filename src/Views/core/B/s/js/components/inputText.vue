@@ -4,8 +4,8 @@
 
 
         <div v-if="true">
-            <section v-if="(inputType != 'locked')&&(inputType != 'radio')&&(inputType != 'checkbox')&&(inputType != 'option')&&(inputType != 'multioption')&&(inputType != 'file')&&(inputType != 'multifile')"  v-for="(input,key) in finalInput">
-                <div  class="row align-items-center form-group" style="padding-left: 1rem;">
+            <section v-if="(inputType != 'locked')&&(inputType != 'radio')&&(inputType != 'checkbox')&&(inputType != 'option')&&(inputType != 'multioption')&&(inputType != 'file')&&(inputType != 'multifile')"  v-for="(input,key) in finalInput" :title="inputInfo">
+                <div  class="row align-items-center form-group" >
 
                     <label class="col-4 col-sm-4 col-md-4 col-lg-2  col-xl-2" v-if="!input.baseValue.inputOnly">   {{ forNice(input.baseValue.inputVname) }}</label>
 
@@ -54,8 +54,8 @@
 
 
 
-            <div  class="form-group"  v-if="(inputType == 'radio')">
-                <div class="row" style="padding-left: 1rem;">
+            <div  class="row align-items-center form-group"  v-if="(inputType == 'radio')" :title="inputInfo">
+
 
                     <label class="col col-lg-2 col-md-2 col-sm-4 col-xl-4">{{ inputVname }} <span v-if="inputRequired" class=" text-danger fa fa-asterisk ms-spin"></span> </label><br>
 
@@ -69,10 +69,10 @@
                         </div>
                     </div>
 
-                </div>
+
             </div>
 
-            <div  class="form-group"  v-if="(inputType == 'checkbox')">
+            <div  class="form-group"  v-if="(inputType == 'checkbox')" :title="inputInfo">
                 <div> {{ inputVname }}<br>
                     <div class="form-check-inline"  v-for ="(autofiled,index) in inputAuto" >
                         <input class="form-check-input"  v-model="msValue[index]" :name="inputName+'[]'"  :type="inputType" :value="autofiled[dValue]" :id="inputName+index">
@@ -90,15 +90,19 @@
 
 
 
-            <div  class="row form-group"  v-if="(inputType == 'locked')" style="margin-left: 0px;cursor: help"title="It is auto genrated Uniq Number For Tass/Proccess." >
-                <label class=" col-xs-6 col-sm-6 col-md-6 col-lg-2" >{{ forNice(inputVname) }} </label>
-                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-10">
-                    <div class="form-control text-info text-muted disabled" >
-                        {{forNice(dValue)}}
+            <div  class="form-group"  v-if="(inputType == 'locked') || (inputType == 'auto')" style="margin-left: 0px;cursor: help" :title="inputInfo" >
+              <div class="row">
 
-                    </div>
-                </div>
+                  <label class=" col-xs-6 col-sm-6 col-md-6 col-lg-2" >{{ forNice(inputVname) }} </label>
+                  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-10">
+                      <div class="form-control text-info text-muted disabled" >
+                          {{forNice(dValue)}}
 
+                      </div>
+                  </div>
+
+
+              </div>
 
                 <input  type="hidden" v-model="dValue">
             </div>
@@ -132,9 +136,11 @@
 
 
             <div  class="form-group"  v-if="(inputType == 'file') ||  (inputType == 'multifile')">
-                <section  v-for="(input,key) in finalInput" >
+                <section class="row" v-for="(input,key) in finalInput" >
 
-                    <label v-if="!input.baseValue.inputOnly" :for="inputName">   {{ forNice(input.baseValue.inputVname) }}</label>
+                    <label class=" col-xs-6 col-sm-6 col-md-6 col-lg-2" v-if="!input.baseValue.inputOnly" :for="inputName">   {{ forNice(input.baseValue.inputVname) }}</label>
+
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-10">
                     <div class="input-group" data-toggle="tooltip" data-placement="left">
 
                         <div v-if="input.inputPrefix" class="input-group-prepend">
@@ -150,7 +156,7 @@
                         </div>
 
                     </div>
-
+                    </div>
 
 
                     <small v-if="msValid == 'is-invalid'" class="form-text text-muted text-center" :id="inputName +'_error'" >
@@ -208,9 +214,10 @@
                 }else{
                     this.inputName=this.msData.name;
                 }
+
             }
 
-
+            if(this.msData.hasOwnProperty('inputInfo'))this.inputInfo=this.msData.inputInfo;
             if(this.msData.hasOwnProperty('vName'))this.inputVname=this.msData.vName;
             // if(!this.msData.hasOwnProperty('vName'))this.inputVname=this.msData.name;
             if(this.msData.hasOwnProperty('prefix'))this.inputPrefix=this.msData.prefix;
@@ -315,7 +322,8 @@
                 finalInput:new Object({}),
                 inputMultiple:false,
                 inputCount:0,
-                groupInput:[]
+                groupInput:[],
+                inputInfo:"",
             }
         }
         ,
@@ -435,14 +443,14 @@
     }
 
     .form-group{
-        padding:0px 0px 0px 0px;
 
+        padding-left: 15px ;
 
         margin-bottom: 15px;
 
     }
 
-    .form-group > label,.form-group>div > label{
+    .form-group > label,.form-group>div > label  , .form-group>section> label{
         padding:5px 5px 5px 5px;
 
         border-top:1px solid rgba(35,37,38,0.2) ;
