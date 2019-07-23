@@ -7,9 +7,9 @@
             <section v-if="(inputType != 'locked')&&(inputType != 'radio')&&(inputType != 'checkbox')&&(inputType != 'option')&&(inputType != 'multioption')&&(inputType != 'file')&&(inputType != 'multifile')"  v-for="(input,key) in finalInput" :title="inputInfo">
                 <div  class="row align-items-center form-group" >
 
-                    <label class="col-4 col-sm-4 col-md-4 col-lg-2  col-xl-2" v-if="!input.baseValue.inputOnly">   {{ forNice(input.baseValue.inputVname) }}</label>
+                    <label class="col col-4 " v-if="!input.baseValue.inputOnly">   {{ forNice(input.baseValue.inputVname) }}</label>
 
-                    <div class="col-8 col-sm-8 col-md-8 col-lg-10  col-xl-10" style="margin-top: -7px;">
+                    <div class="col col-8" style="margin-top: -7px;">
 
                         <div class="input-group" data-toggle="tooltip" data-placement="left">
 
@@ -54,15 +54,15 @@
 
 
 
-            <div  class="row align-items-center form-group"  v-if="(inputType == 'radio')" :title="inputInfo">
+            <div  class="row form-group"  v-if="(inputType == 'radio')" :title="inputInfo">
 
 
-                    <label class="col col-lg-2 col-md-2 col-sm-4 col-xl-4">{{ inputVname }} <span v-if="inputRequired" class=" text-danger fa fa-asterisk ms-spin"></span> </label><br>
+                    <label class="col col-4 ">{{ inputVname }} <span v-if="inputRequired" class=" text-danger fa fa-asterisk ms-spin"></span> </label><br>
 
-                    <div class="col col-lg-10 col-md-10 col-sm-8 col-xl-8">
-                        <div class="form-check-inline "  v-for ="(autofiled,index) in inputAuto" style="box-shadow: -3px 3px 1px rgba(23,162,184,0.2);">
+                    <div class="col col-8">
+                        <div class="form-check-inline "  v-for ="(autofiled,index) in inputAuto" >
                             <input class="form-check-input" :name="inputName"  v-model="msValue"  :type="inputType" :value="autofiled[dValue]" :id="inputName+index"  >
-                            <label class="form-check-label" :for="inputName+index" style="padding: 5px;">
+                            <label class="form-check-label" :for="inputName+index" >
                                 {{forNice(autofiled[dText])}}
                             </label>
 
@@ -72,19 +72,23 @@
 
             </div>
 
-            <div  class="form-group"  v-if="(inputType == 'checkbox')" :title="inputInfo">
-                <div> {{ inputVname }}<br>
-                    <div class="form-check-inline"  v-for ="(autofiled,index) in inputAuto" >
-                        <input class="form-check-input"  v-model="msValue[index]" :name="inputName+'[]'"  :type="inputType" :value="autofiled[dValue]" :id="inputName+index">
-                        <label class="form-check-label" :for="inputName+index">
-                            {{forNice(autofiled[dText])}}
-                        </label>
+            <div  class="row form-group"  v-if="(inputType == 'checkbox')" :title="inputInfo">
+
+                    <label class="col col-4 "> {{ inputVname }}</label>
+                    <div class="col col-8 ">
+                        <div class="form-check-inline"  v-for ="(autofiled,index) in inputAuto"  >
+                            <input class="form-check-input"  v-model="msValue[index]" :name="inputName+'[]'"  :type="inputType" :value="autofiled[dValue]" :id="inputName+index">
+                            <label class="form-check-label" :for="inputName+index">
+                                {{forNice(autofiled[dText])}}
+                            </label>
                     </div>
+
 
                 </div>
 
 
             </div>
+
 
 
 
@@ -419,16 +423,29 @@
     {
         border:1px solid rgba(23,162,184,0.5);
         padding-left:5px;
-        padding-right:0px;
-        border-radius: 0px;
+
+        min-height: 35px;
+        box-shadow: rgba(23, 162, 184, 0.2) -3px 3px 1px;
+        cursor: pointer;
+
+
     }
+
+    .form-check-inline > div{
+        padding: 5px;
+    }
+
+
 
     .form-check-inline >  label{
         padding-left:5px ;
         padding-right:5px ;
+        min-height: 35px;
+        padding:5px;
+
     }
 
-    input:checked + label {
+    input:checked + label  {
         color:white;
         background-color:  rgba(23,162,184,1);
         box-shadow: -22px 0px 0px rgba(23,162,184,1);
@@ -439,6 +456,10 @@
         -moz-user-select: none; /* Firefox */
         -ms-user-select: none; /* Internet Explorer/Edge */
         user-select: none;
+        padding-top:5px ;
+        padding-bottom:5px ;
+
+
 
     }
 
