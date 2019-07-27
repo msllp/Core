@@ -7,7 +7,7 @@
             <section v-if="(inputType != 'locked')&&(inputType != 'radio')&&(inputType != 'checkbox')&&(inputType != 'option')&&(inputType != 'multioption')&&(inputType != 'file')&&(inputType != 'multifile')"  v-for="(input,key) in finalInput" :title="inputInfo">
                 <div  class="row align-items-center form-group" >
 
-                    <label class="col col-4 " v-if="!input.baseValue.inputOnly">   {{ forNice(input.baseValue.inputVname) }}</label>
+                    <label class="col" v-if="!input.baseValue.inputOnly">   {{ forNice(input.baseValue.inputVname) }}</label>
 
                     <div class="col col-8" style="margin-top: -7px;">
 
@@ -57,7 +57,12 @@
             <div  class="row form-group"  v-if="(inputType == 'radio')" :title="inputInfo">
 
 
-                    <label class="col col-4 ">{{ inputVname }} <span v-if="inputRequired" class=" text-danger fa fa-asterisk ms-spin"></span> </label><br>
+                    <label class="col col ">
+<span class="row" >
+                        <span class="col col-8">{{ forNice(inputVname) }}</span>
+                        <span class="col col" ><span v-if="inputRequired" class=" text-danger fa fa-asterisk ms-spin"></span> </span>
+</span>
+                        </label><br>
 
                     <div class="col col-8">
                         <div class="form-check-inline "  v-for ="(autofiled,index) in inputAuto" >
@@ -74,7 +79,10 @@
 
             <div  class="row form-group"  v-if="(inputType == 'checkbox')" :title="inputInfo">
 
-                    <label class="col col-4 "> {{ inputVname }}</label>
+                    <label class="col col "> <span class="row" >
+                        <span class="col col-8">{{ forNice(inputVname) }}</span>
+                        <span class="col col" ><span v-if="inputRequired" class=" text-danger fa fa-asterisk ms-spin"></span> </span>
+</span></label>
                     <div class="col col-8 ">
                         <div class="form-check-inline"  v-for ="(autofiled,index) in inputAuto"  >
                             <input class="form-check-input"  v-model="msValue[index]" :name="inputName+'[]'"  :type="inputType" :value="autofiled[dValue]" :id="inputName+index">
@@ -97,8 +105,8 @@
             <div  class="form-group"  v-if="(inputType == 'locked') || (inputType == 'auto')" style="margin-left: 0px;cursor: help" :title="inputInfo" >
               <div class="row">
 
-                  <label class=" col-xs-6 col-sm-6 col-md-6 col-lg-2" >{{ forNice(inputVname) }} </label>
-                  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-10">
+                  <label class="col" >{{ forNice(inputVname) }} </label>
+                  <div class="col col-8">
                       <div class="form-control text-info text-muted disabled" >
                           {{forNice(dValue)}}
 
@@ -117,7 +125,13 @@
 
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
-                        <label class="input-group-text" :for="inputName">{{ forNice(inputVname) }} </label>
+                        <label class="input-group-text" :for="inputName">
+
+                            <span class="row" >
+                        <span class="col col-8">{{ forNice(inputVname) }}</span>
+                        <span class="col col" ><span v-if="inputRequired" class=" text-danger fa fa-asterisk ms-spin"></span> </span>
+</span>
+                        </label>
                     </div>
 
 
@@ -142,9 +156,15 @@
             <div  class="form-group"  v-if="(inputType == 'file') ||  (inputType == 'multifile')">
                 <section class="row" v-for="(input,key) in finalInput" >
 
-                    <label class=" col-xs-6 col-sm-6 col-md-6 col-lg-2" v-if="!input.baseValue.inputOnly" :for="inputName">   {{ forNice(input.baseValue.inputVname) }}</label>
+                    <label class="col " v-if="!input.baseValue.inputOnly" :for="inputName">
+                    <span class="row" >
+                        <span class="col col-8">{{ forNice(input.baseValue.inputVname) }}</span>
+                        <span class="col col" ><span v-if="inputRequired" class=" text-danger fa fa-asterisk ms-spin"></span> </span>
+</span>
 
-                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-10">
+                    </label>
+
+                    <div class="col col-8">
                     <div class="input-group" data-toggle="tooltip" data-placement="left">
 
                         <div v-if="input.inputPrefix" class="input-group-prepend">

@@ -74,7 +74,7 @@ class Comman
         $randstring=[];
         switch ($type) {
             case'patern':
-                $characters = '123';
+                $characters = '456';
                 break;
 
             case '1':
@@ -118,11 +118,19 @@ class Comman
     public static function encode($str): string {
         $code=base64_encode ($str);
         //var_dump($code);
-        $code=substr($code, 0, -1);
-        //dd($code);
 
 
-        return $code.self::random(5,5);
+        $r1=self::random(1,'patern');
+        $r2=self::random(1,'patern');
+        $r3=self::random(1,'patern');
+
+
+        $codeGarbage1=substr($code, $r1, 2);
+        $codeGarbage2=self::random($r2,5);
+        $codeGarbage3=self::random($r3,5);
+
+
+        return $r3.$codeGarbage1.$codeGarbage3.$code.$codeGarbage2.$r2;
     }
 
     /**
@@ -131,9 +139,19 @@ class Comman
      * @return string
      */
     public static function decode($str): string {
-        
-        $code=substr($str, 0, -5);
-        $code.="=";
+
+        $r1=substr($str,0,1)+3;
+        $r2=substr($str,-1,1)+1;
+      //  var_dump($str);
+
+
+        $code=substr($str, $r1);
+        //dd(substr($code,0 ,-$r2));
+        $code=substr($code, 0   ,-$r2);
+      //  var_dump($code);
+       // $code=substr($code, 0, $r2);
+   // dd(base64_decode ($code));
+//        $code.="==";
         //dd(base64_decode ($code));
         return base64_decode ($code);
     }
@@ -199,7 +217,59 @@ class Comman
        // dd($r);
         foreach ($r as $key=>$link){
 
-            $method=$controller.$dv.$link['method'];
+            $ex=explode(':',$link['method']);
+
+            if(count($ex)>1){
+            $vNamespace=$ex[0];
+            $actionString=$ex[1];
+            $actionEx=explode('.',$actionString);
+
+            $lastV=last($actionEx);
+
+            $methodEx=explode('@',$lastV);
+            $actionEx[array_key_last ($actionEx)]=$methodEx[0];
+            $method=last($methodEx);
+           // dd($actionEx);
+            $actionString=implode("\\",$actionEx);
+            $found=0;
+                $routeArray=[];
+            switch ($vNamespace){
+                case "MS":
+                    $vNamespace="MS\Core";
+                    $found=1;
+
+                    $routeArray=[
+                        'Helper.MSSign.check'=>"core/signRequest",
+                    ];
+
+
+                    break;
+            }
+
+            if($found){
+                $finalActionString="\\".implode('\\',[ $vNamespace,$actionString ])."@".$method;
+            }else{
+                $finalActionString="\\".implode('\\',[ $actionString ])."@".$method;
+            }
+                $method=$finalActionString;
+            //dd(implode('.',array_merge($actionEx,[ last($methodEx) ])));
+//dd($routeArray);
+  //              dd(array_key_exists(implode('.',array_merge($actionEx,[ last($methodEx) ])),$routeArray));
+                if(($link['route'] == "::")&& array_key_exists(implode('.',array_merge($actionEx,[ last($methodEx) ])),$routeArray)  ){
+
+                    $link['route']=$routeArray[implode('.',array_merge($actionEx,[ last($methodEx) ]))];
+                }
+                if (!array_key_exists('type',$link)){
+                    $link['type']='get';
+                }
+
+                //dd($link);
+            }else{
+                $method=$controller.$dv.$link['method'];
+            }
+
+
+
             switch ($link['type']){
 
                 case 'get':
