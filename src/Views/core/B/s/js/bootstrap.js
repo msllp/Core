@@ -84,18 +84,25 @@ const app = new Vue({
         setMsError:function (Data) {
 
             this.mserror=Data;
-            //console.log(Data);
+          //  console.log(Data);
 
               //  console.log(Data);
-
-            this.mserror.forEach(function(value, index) {
-                var key=value.name.toString();
-                this.$refs[key].setError();
-                this.$refs[key].inputError=value.msg
-
-         //       console.log(this.$refs[key].getValue());
-
-            },this)
+            
+            for (var inputName in Data){
+                var key=inputName.toString().toLowerCase();
+                console.log(this.$refs['msFrom'].$refs[key][0].setError());
+                this.$refs['msFrom'].$refs[key][0].setError();
+                this.$refs['msFrom'].$refs[key][0].inputError=Data[inputName];
+            }
+            
+         //    this.mserror.forEach(function(value, index) {
+         //        var key=value.name.toString();
+         //        this.$refs[key].setError();
+         //        this.$refs[key].inputError=value.msg;
+         //
+         // //       console.log(this.$refs[key].getValue());
+         //
+         //    },this)
             this.mserrorCount=true;
          //   console.log(this.mserror);
 
@@ -103,8 +110,11 @@ const app = new Vue({
 
         setMsErrorZero:function(){
 
-            // console.log(this.$refs.AverageBuyRate.getAttribute('class'));
-             //  console.log(this.$refs['AverageBuyRate'].getAttribute('msdata'));
+            for (var inputName in this.mserror){
+                var key=inputName.toString().toLowerCase();
+                this.$refs['msFrom'].$refs[key][0].setErrorZero();
+            }
+
             this.mserrorCount=false;
             this.mserror=[];
 

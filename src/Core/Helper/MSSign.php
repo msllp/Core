@@ -27,8 +27,9 @@ class MSSign  extends BaseController
             'dasdas'=>"sadasd",
             'dasdas1'=>"sadasd1"
         ];
-       // var_dump($data);
-        return $this->encryptArray( $data );
+        var_dump($data);
+
+       // return $this->encryptArray( $data );
         dd($this->decryptArray( $this->encryptArray($data) ));
     }
 

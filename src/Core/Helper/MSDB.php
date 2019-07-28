@@ -17,7 +17,7 @@ class MSDB implements MasterNoSql
 {
 
 
-    public $model,$database,$masterNamespace;
+    public $model,$database,$masterNamespace,$dataToProcess;
 
     public $ms_id="0";
 
@@ -512,14 +512,35 @@ class MSDB implements MasterNoSql
         $message=$b::getAllMessage($this->ms_id,$rules);
         $attr=$b::getAllAttr($this->ms_id,$rules);
         $validator = Validator::make( $data,$this->makeRulesForValidation($rules),$message,$attr);
-
-        dd($validator->errors()->all());
+        $e=$validator->errors();
+        $this->dataToProcess=$e;
+        if(count($e)< 1){
+            return true;
+        }
+        return false;
+        dd($validator->errors());
         //if()
 
 
 
 
 
+    }
+
+    public function toJason(){
+
+        $c=collect($this->dataToProcess)->toJson();
+        return $c;
+    }
+    public function toArray(){
+
+        //$c=collect($this->dataToProcess)->toJson();
+        return $this->dataToProcess;
+    }
+
+    public function errors(){
+
+        return [ 'errors'=> $this->toArray()->toArray()];
     }
 
 

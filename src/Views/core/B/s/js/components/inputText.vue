@@ -39,14 +39,6 @@
             </section>
 
 
-            <small v-if="msValid == 'is-invalid'" class="form-text text-muted text-center" :id="inputName +'_error'" >
-
-                <div v-for="item in inputError" class="alert alert-danger" role="alert" style="font-size: smaller;
-    padding: 5px;">
-                    {{ item }}
-                </div>
-
-            </small>
 
 
             <!--<div class="btn btn-success" v-if="inputMultiple" @click="addinput()">add </div>-->
@@ -98,10 +90,6 @@
             </div>
 
 
-
-
-
-
             <div  class="form-group"  v-if="(inputType == 'locked') || (inputType == 'auto')" style="margin-left: 0px;cursor: help" :title="inputInfo" >
               <div class="row">
 
@@ -116,7 +104,7 @@
 
               </div>
 
-                <input  type="hidden" v-model="dValue">
+                <input  type="hidden" v-model="dValue" :name="inputName">
             </div>
 
 
@@ -183,14 +171,6 @@
                     </div>
 
 
-                    <small v-if="msValid == 'is-invalid'" class="form-text text-muted text-center" :id="inputName +'_error'" >
-
-                        <div v-for="item in inputError" class="alert alert-danger" role="alert" style="font-size: smaller;
-    padding: 5px;    margin-top: -15px">
-                            {{ item }}
-                        </div>
-
-                    </small>
 
 
                     <!--<div class="btn btn-success" v-if="inputMultiple" @click="addinput()">add </div>-->
@@ -200,6 +180,14 @@
 
 
 
+            <small v-if="msValid == 'is-invalid'" class="form-text text-muted text-center" :id="inputName +'_error'" >
+
+                <div v-for="item in inputError" class="alert alert-danger" role="alert" style="font-size: smaller;
+    padding: 5px;">
+                    {{ item }}
+                </div>
+
+            </small>
 
         </div>
     </div>
@@ -279,8 +267,12 @@
             if(!this.$root.checkGroupExist(this.groupInput)){
                 this.$root.setUpGroup(this.groupInput);
             }
-
+            if((this.inputType == "locked")|| (this.inputType == "auto") ){
+                this.msValue=this.dValue;
+                //this.$parent.setInputData(this.inputName,this.dValue);
+            }
             this.$parent.setInputData(this.inputName,this.msValue);
+
 
 
 
@@ -290,6 +282,10 @@
 
             setError:function () {
                 this.msValid="is-invalid";
+            },
+            setErrorZero:function(){
+                this.msValid="is-valid";
+                this.inputError=new Object();
             },
             getValue:function () {
                 var returnF=this.msValue;

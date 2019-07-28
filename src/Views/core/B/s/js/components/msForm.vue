@@ -215,8 +215,10 @@
             getAllData(link){
 
 
-                console.log(link);
+              //  console.log(link);
                 var formData=new FormData();
+                var signLink="http://gst.ms/MAS/core/signRequest";
+
                 for(var propertyName in this.msFormDataFinal) {
                     //console.log(propertyName);
                     if(this.msFormDataFinal[propertyName] instanceof Object){
@@ -224,6 +226,7 @@
                             formData.append(propertyName+"["+file+"]",this.msFormDataFinal[propertyName][file]);
                         }
                     }else{
+
                         formData.append(propertyName,this.msFormDataFinal[propertyName]);
                     }
 
@@ -232,9 +235,13 @@
                     // you can get the value like this: myObject[propertyName]
                 }
 
+
+
+
+
                 var data =  this.postLink(link,formData,this);
 
-                console.log(data);
+                //console.log(data);
                 // console.log($('form'));
 
 
@@ -272,7 +279,7 @@
             viewIconTogle(){}
             ,setAllMsError(data){
 
-                //      console.log(data);
+                 //    console.log(data);
 
 
                 this.$parent.setMsError(data,this.$refs);

@@ -8,7 +8,7 @@ $json=collect($form)->toJson();
 ?>
 
 
-<msform :ms-data="{{$json}}"></msform>
+<msform :ms-data="{{$json}}" key="msFrom" ref="msFrom"></msform>
 
 
         <form>

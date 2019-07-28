@@ -259,8 +259,8 @@ class Comman
 
                     $link['route']=$routeArray[implode('.',array_merge($actionEx,[ last($methodEx) ]))];
                 }
-                if (!array_key_exists('type',$link)){
-                    $link['type']='get';
+                if (!array_key_exists('type',$link) || ($link['type']!="post")){
+                    $link['type']='post';
                 }
 
                 //dd($link);

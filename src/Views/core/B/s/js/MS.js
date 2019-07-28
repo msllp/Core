@@ -70,7 +70,7 @@ export default {
                 })
                 .catch(function (error) {
                     Freturn.error=error.response.data.errors;
-
+                   // console.log(error.response.data);
                     classFor.setAllMsError(Freturn.error);
                     //  delete Freturn.error.message;
 
