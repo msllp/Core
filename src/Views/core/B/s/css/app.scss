@@ -487,3 +487,45 @@ label,option{
     -ms-user-select: none; /* Internet Explorer/Edge */
     user-select: none;
 }
+
+div{
+    transition: all 500ms ease-in-out!important;
+
+}
+
+.ms-error{
+
+
+    border-top:1px solid rgba(237,33,58,0.9 )!important;
+    border-bottom:1px solid rgba(237,33,58,0.9 )!important;
+    border-left:1px solid rgba(237,33,58,0.9 )!important;
+    border-right:2px solid rgba(237,33,58,0.9 )!important;
+   // background: linear-gradient(to right, rgba(237,33,58,0.4), rgba(237,33,58,0.0));
+   // color: white;
+    //text-align: right;
+    //animation: ms-blink 1000ms infinite ease-in-out;;
+    //box-shadow: 5px 5px 10px rgba(35,37,38,0.5);
+
+    transition: all 500ms ease-in-out;
+    cursor: help;
+
+
+}
+
+@keyframes ms-blink {
+    0%{
+        box-shadow: 5px 5px 10px rgba(35,37,38,0.5);
+    }
+    25%{
+        box-shadow: 3px 5px 10px rgba(35,37,38,0.5);
+    }
+    50%{
+        box-shadow: 5px 5px 10px rgba(35,37,38,0.5);
+    }
+
+
+    100%{
+        box-shadow: 3px 5px 10px rgba(35,37,38,0.5);
+    }
+
+}

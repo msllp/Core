@@ -7,7 +7,9 @@
             <section v-if="(inputType != 'locked')&&(inputType != 'radio')&&(inputType != 'checkbox')&&(inputType != 'option')&&(inputType != 'multioption')&&(inputType != 'file')&&(inputType != 'multifile')"  v-for="(input,key) in finalInput" :title="inputInfo">
                 <div  class="row align-items-center form-group" >
 
-                    <label class="col" v-if="!input.baseValue.inputOnly">   {{ forNice(input.baseValue.inputVname) }}</label>
+                    <label class="col" v-if="!input.baseValue.inputOnly" :class="{
+                    'ms-error':(msValid == 'is-invalid')
+                    }">   {{ forNice(input.baseValue.inputVname) }}</label>
 
                     <div class="col col-8" style="margin-top: -7px;">
 
@@ -49,7 +51,9 @@
             <div  class="row form-group"  v-if="(inputType == 'radio')" :title="inputInfo">
 
 
-                    <label class="col col ">
+                    <label class="col col " :class="{
+                    'ms-error':(msValid == 'is-invalid')
+                    }">
 <span class="row" >
                         <span class="col col-8">{{ forNice(inputVname) }}</span>
                         <span class="col col" ><span v-if="inputRequired" class=" text-danger fa fa-asterisk ms-spin"></span> </span>
@@ -71,7 +75,9 @@
 
             <div  class="row form-group"  v-if="(inputType == 'checkbox')" :title="inputInfo">
 
-                    <label class="col col "> <span class="row" >
+                    <label class="col" :class="{
+                    'ms-error':(msValid == 'is-invalid')
+                    }"> <span class="row" >
                         <span class="col col-8">{{ forNice(inputVname) }}</span>
                         <span class="col col" ><span v-if="inputRequired" class=" text-danger fa fa-asterisk ms-spin"></span> </span>
 </span></label>
@@ -111,9 +117,11 @@
             <div  class="form-group"  v-if="(inputType == 'option') || (inputType == 'multioption')">
 
 
-                <div class="input-group mb-3">
+                <div class="input-group mb-3" >
                     <div class="input-group-prepend">
-                        <label class="input-group-text" :for="inputName">
+                        <label class="input-group-text" :for="inputName" :class="{
+                    'ms-error':(msValid == 'is-invalid')
+                    }">
 
                             <span class="row" >
                         <span class="col col-8">{{ forNice(inputVname) }}</span>
@@ -144,7 +152,9 @@
             <div  class="form-group"  v-if="(inputType == 'file') ||  (inputType == 'multifile')">
                 <section class="row" v-for="(input,key) in finalInput" >
 
-                    <label class="col " v-if="!input.baseValue.inputOnly" :for="inputName">
+                    <label class="col " v-if="!input.baseValue.inputOnly" :for="inputName" :class="{
+                    'ms-error':(msValid == 'is-invalid')
+                    }">
                     <span class="row" >
                         <span class="col col-8">{{ forNice(input.baseValue.inputVname) }}</span>
                         <span class="col col" ><span v-if="inputRequired" class=" text-danger fa fa-asterisk ms-spin"></span> </span>
@@ -258,7 +268,27 @@
                 if(this.msData.validation.hasOwnProperty('required'))this.inputRequired=this.msData.validation.required;
             }
 
-            if(this.inputType == "checkbox")this.msValue={};
+
+
+            switch (this.inputType) {
+                case "locked":
+                    this.msValue=this.dValue;
+                    break;
+
+                case"auto":
+                    this.msValue=this.dValue;
+                    break;
+
+                case "checkbox":
+
+                    break;
+                case "radio":
+                    this.msValid="is-valid";
+
+                    break;
+
+
+            }
 
             //   var finalArray= this.makeArrayForInput(this);
 
@@ -267,10 +297,10 @@
             if(!this.$root.checkGroupExist(this.groupInput)){
                 this.$root.setUpGroup(this.groupInput);
             }
-            if((this.inputType == "locked")|| (this.inputType == "auto") ){
-                this.msValue=this.dValue;
-                //this.$parent.setInputData(this.inputName,this.dValue);
-            }
+            // if((this.inputType == "locked")|| (this.inputType == "auto") ){
+            //     this.msValue=this.dValue;
+            //     //this.$parent.setInputData(this.inputName,this.dValue);
+            // }
             this.$parent.setInputData(this.inputName,this.msValue);
 
 
@@ -282,6 +312,7 @@
 
             setError:function () {
                 this.msValid="is-invalid";
+
             },
             setErrorZero:function(){
                 this.msValid="is-valid";
