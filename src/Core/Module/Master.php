@@ -210,6 +210,7 @@ class Master implements BaseMaster
 
 
         $targeTable=self::getTableArray($tableID);
+        //dd($targeTable);
         $outArray=[];
         foreach ($targeTable['fields'] as $field){
 
@@ -235,6 +236,7 @@ class Master implements BaseMaster
             }
 
         }
+     //   dd($outArray);
         return $outArray;
      //   dd($outArray);
 

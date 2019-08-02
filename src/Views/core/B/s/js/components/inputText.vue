@@ -7,9 +7,15 @@
             <section v-if="(inputType != 'locked')&&(inputType != 'radio')&&(inputType != 'checkbox')&&(inputType != 'option')&&(inputType != 'multioption')&&(inputType != 'file')&&(inputType != 'multifile')"  v-for="(input,key) in finalInput" :title="inputInfo">
                 <div  class="row align-items-center form-group" >
 
-                    <label class="col" v-if="!input.baseValue.inputOnly" :class="{
+
+                    <label class="col" :class="{
                     'ms-error':(msValid == 'is-invalid')
-                    }">   {{ forNice(input.baseValue.inputVname) }}</label>
+                    }">
+                        <span class="row" >
+                        <span class="col col-8">{{ forNice(inputVname) }}</span>
+                        <span class="col col" ><span v-if="inputRequired" class=" text-danger fa fa-asterisk ms-spin"></span> </span>
+                </span>
+                    </label>
 
                     <div class="col col-8" style="margin-top: -7px;">
 
@@ -42,9 +48,6 @@
 
 
 
-
-            <!--<div class="btn btn-success" v-if="inputMultiple" @click="addinput()">add </div>-->
-            <!--<div class="btn btn-danger" v-if="inputMultiple" v-on:click="removeinput(input.baseValue.inputCount)">Remove </div>-->
 
 
 
@@ -83,7 +86,7 @@
 </span></label>
                     <div class="col col-8 ">
                         <div class="form-check-inline"  v-for ="(autofiled,index) in inputAuto"  >
-                            <input class="form-check-input"  v-model="msValue[index]" :name="inputName+'[]'"  :type="inputType" :value="autofiled[dValue]" :id="inputName+index">
+                            <input class="form-check-input"  v-model="msValue[index]" :name="inputName+'['+index+']'"  :type="inputType" :value="autofiled[dValue]" :id="inputName+index">
                             <label class="form-check-label" :for="inputName+index">
                                 {{forNice(autofiled[dText])}}
                             </label>
@@ -183,8 +186,7 @@
 
 
 
-                    <!--<div class="btn btn-success" v-if="inputMultiple" @click="addinput()">add </div>-->
-                    <!--<div class="btn btn-danger" v-if="inputMultiple" v-on:click="removeinput(input.baseValue.inputCount)">Remove </div>-->
+
                 </section>
             </div>
 
@@ -280,7 +282,7 @@
                     break;
 
                 case "checkbox":
-
+                    this.msValue={};
                     break;
                 case "radio":
                     this.msValid="is-valid";
@@ -438,7 +440,7 @@
                 }else {
                     this.msValid=" ";
                 }
-
+                console.log(val);
                 this.$parent.setInputData(this.inputName,val);
 
             }

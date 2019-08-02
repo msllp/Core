@@ -470,7 +470,7 @@ class MSForm
             //'required'=>true,
             'validation'=>[
                 // 'minSize'=>5,
-                'required'=>1
+                'required'=>0
             ],
             //'inputClass'=>[],
             //'formClass'=>[],
@@ -495,9 +495,15 @@ class MSForm
 
         if(array_key_exists('validation',$data)){
 
-            if(array_key_exists( 'required',$data['validation']) && $data['validation'] ['required'])
+            if(array_key_exists( 'required',$data['validation']) && $data['validation']['required']){
+                //(array_key_exists('perfix',$array))?$array['perfix'].= " ":null;
 
-                (array_key_exists('perfix',$array))?$array['perfix'].= " ":$array['perfix']= " ";
+                $array['validation']['required']=$data['validation']['required'];
+
+
+            }
+
+
             if(array_key_exists('existIn',$data['validation']))$array['verifyBy']=\MS\Core\Helper\MSForm::getDataFromTable($data['validation']['existIn']);
 
 

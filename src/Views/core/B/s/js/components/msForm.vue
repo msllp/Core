@@ -23,7 +23,7 @@
                 <div  class="collapse card card-body" :class="{ 'show': id === 0 }" :id="section.id+'_target'" :aria-labelledby="section.id"  style="border-radius: 0px">
                     <!--<table class="table table-bordered">-->
                     <div class="row">
-                    <inputtext class="col col-12" v-for="(inputRaw,id2) in section.inputs" :key="inputRaw.name.toLowerCase()" :ref="inputRaw.name.toLowerCase()" v-bind:ms-data="inputRaw"   v-bind:ms-group-index="id" ></inputtext>
+                    <inputtext class="col col-6" v-for="(inputRaw,id2) in section.inputs" :key="inputRaw.name.toLowerCase()" :ref="inputRaw.name.toLowerCase()" v-bind:ms-data="inputRaw"   v-bind:ms-group-index="id" ></inputtext>
                     </div>
                         <!--</table>-->
                 </div>
