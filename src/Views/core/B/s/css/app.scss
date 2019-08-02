@@ -529,3 +529,38 @@ div{
     }
 
 }
+
+
+/* width */
+::-webkit-scrollbar {
+    width: 12px;
+    cursor: grabbing;
+
+}
+
+
+
+/* Track */
+::-webkit-scrollbar-track {
+    background:  rgba(0,0,0,0.1);
+    -webkit-box-shadow: inset 0px 0px 6px rgba(0,0,0,0.3);
+
+
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgba(23,162,184,0.5);
+   // outline: 1px solid slategrey;
+    cursor: grabbing;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(23,162,184,0.8);
+    -webkit-box-shadow: inset 0 0 6px rgba(0,123,255,0.2);
+    transition: all 2s ease-in-out;
+
+}
+
+

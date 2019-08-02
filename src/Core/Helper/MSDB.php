@@ -10,6 +10,7 @@ namespace MS\Core\Helper;
 
 use \Illuminate\Support\Facades\Schema;
 use \Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 //use Illuminate\Notifications\Notification;
 
@@ -17,11 +18,13 @@ class MSDB implements MasterNoSql
 {
 
 
-    public $model,$database,$masterNamespace,$dataToProcess;
+    public $model,$database,$masterNamespace,$dataToProcess,$e;
 
     public $ms_id="0";
 
     public $r=null;
+
+    private $filePaths=[];
 
     public function attachRequest($r){
         $this->r=$r;
@@ -372,25 +375,22 @@ class MSDB implements MasterNoSql
                     ($v)?$rArray[$k]=true:$rArray[$k]=false;
                     break;
                 case 'array':
-                    if($k=="modIcon"){
 
-
-                    }
                     if(($this->r !="") && $this->r->hasFile($k) ){
-
+                        $fileData=[];
                         foreach ($v as $k1=>$v1){
                         //dd($v1->isValid());
                         if($v1->isValid()){
-                            $this->storeFileFromRequest($v1,$k);
+                            $fileData[]=$this->storeFileFromRequest($v1,$k);
 
                         }
                         }
-                        dd($this->r->file($k));
-                        //
-                        dd($k);
+                        $rArray[$k]=(string)collect($fileData)->toJson();
 
+                    }else{
+                        $rArray[$k]=(string)collect($v)->toJson();
                     }
-                    $rArray[$k]=(string)collect($v)->toJson();
+
                     break;
             }
 
@@ -424,7 +424,7 @@ class MSDB implements MasterNoSql
                         $ex3[$k1]=$this->dataToProcess[$v1];
                     }
                 }
-                $path['path']=implode(DS,$ex3);
+                $path['path']=implode("/",$ex3);
 
                 $returnData=$path;
                 break;
@@ -445,12 +445,42 @@ class MSDB implements MasterNoSql
 
                 $storeData=$this->getArrayFromString($inputData['storeTo']);
                 //dd();
-                dd($file->storeAs($storeData['path'], $storeData['filename'].'.'.$file->getClientOriginalExtension(), $storeData['driver']));
+
+
+                $storeData['filename'].='.'.$file->getClientOriginalExtension();
+                //dd(Storage::disk($storeData['driver'])->exists(implode("/",[ str_replace('\\','/',$storeData['path']),$storeData['filename'] ])));
+                if(Storage::disk($storeData['driver'])->exists(implode("/",[ str_replace('\\','/',$storeData['path']),$storeData['filename'] ]))){
+                    //dd($storeData);
+                    $storeData=$this->FileNameExistSoChangeTheFileName($storeData);
+                }
+                $file->storeAs($storeData['path'], $storeData['filename'], $storeData['driver']);
+                $this->filePaths[]=$storeData;
+                return $storeData;
+                //dd($file->storeAs($storeData['path'], $storeData['filename'].'.'.$file->getClientOriginalExtension(), $storeData['driver']));
             }
 
 
     }
+private function FileNameExistSoChangeTheFileName($fileData){
 
+        $ex1=explode(".",$fileData['filename']);
+        $name=$ex1[0];
+        $ext=$ex1[1];
+
+        $x=1;
+            while(Storage::disk($fileData['driver'])->exists(implode("/",[ str_replace('\\','/',$fileData['path']),$fileData['filename'] ]))){
+                $name=explode('_',$name)[0]  ."_".$x;
+                $filname=implode('.',[$name,$ext]);
+
+                //var_dump($x);
+                $fileData['filename']=$filname;
+               // var_dump();
+                $x++;
+            }
+        return $fileData;
+        dd($fileData);
+
+}
 
     /**
      * Edit Row From any valid Column Value
@@ -634,6 +664,7 @@ class MSDB implements MasterNoSql
         $validator = Validator::make( $data,$this->makeRulesForValidation($rules),$message,$attr);
         $e=$validator->errors();
         $this->dataToProcess=$data;
+        $this->e=$e;
         if(count($e)< 1){
             return true;
         }
@@ -647,7 +678,7 @@ class MSDB implements MasterNoSql
 
     }
 
-    public function toJason(){
+    public function toJson(){
 
         $c=collect($this->dataToProcess)->toJson();
         return $c;
@@ -655,12 +686,12 @@ class MSDB implements MasterNoSql
     public function toArray(){
 
         //$c=collect($this->dataToProcess)->toJson();
-        return $this->dataToProcess;
+        return $this->e;
     }
 
     public function errors(){
 
-        return [ 'errors'=> $this->toArray()->toArray()];
+        return [ 'errors'=> $this->toArray()];
     }
 
 
