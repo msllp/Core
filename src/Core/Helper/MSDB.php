@@ -21,6 +21,12 @@ class MSDB implements MasterNoSql
 
     public $ms_id="0";
 
+    public $r=null;
+
+    public function attachRequest($r){
+        $this->r=$r;
+        return $this;
+    }
     public function __construct(string $nameSpace, string $id=null, array $perFix=[])
     {
 
@@ -340,7 +346,9 @@ class MSDB implements MasterNoSql
 
         $rArray=[];
         foreach ($array as $k=>$v){
-//var_dump(gettype($v));
+
+            //var_dump($k.": ");
+            //var_dump(gettype($v));
             switch (gettype($v)){
                 case 'integer':
                     $rArray[$k]=$v;
@@ -353,6 +361,7 @@ class MSDB implements MasterNoSql
                    // $rArray[$k]=(string)"";
                     break;
                 case 'object':
+                   // dd($v);
                     $rArray[$k]=(string)collect($v->toArray())->toJson();
                     break;
                 case 'string':
@@ -363,6 +372,24 @@ class MSDB implements MasterNoSql
                     ($v)?$rArray[$k]=true:$rArray[$k]=false;
                     break;
                 case 'array':
+                    if($k=="modIcon"){
+
+
+                    }
+                    if(($this->r !="") && $this->r->hasFile($k) ){
+
+                        foreach ($v as $k1=>$v1){
+                        //dd($v1->isValid());
+                        if($v1->isValid()){
+                            $this->storeFileFromRequest($v1,$k);
+
+                        }
+                        }
+                        dd($this->r->file($k));
+                        //
+                        dd($k);
+
+                    }
                     $rArray[$k]=(string)collect($v)->toJson();
                     break;
             }
@@ -373,6 +400,55 @@ class MSDB implements MasterNoSql
         if(!array_key_exists('updated_at',$array))$rArray['updated_at']=now()->toDateTimeString();
        return $rArray;
         dd($rArray);
+    }
+
+    private function getArrayFromString($str,$type=1){
+        $returnData=[];
+        switch ($type){
+            case 1 : // storeTo => Path to Save File
+                //dd($str);
+                $ex1=explode(':',$str);
+                $path['driver']=$ex1[0];
+                $ex2=explode('->',$ex1[1]);
+                $path['filename']=last($ex2);
+                //dd($ex2);
+                unset($ex2[array_key_last($ex2)]);
+               // dd($this->dataToProcess);
+                if(array_key_exists($path['filename'],$this->dataToProcess)){
+
+                    $path['filename']=$this->dataToProcess[$path['filename']];
+                }
+                $ex3=explode('.',$ex2[0]);
+                foreach ($ex3 as $k1=>$v1){
+                    if(array_key_exists($v1,$this->dataToProcess)){
+                        $ex3[$k1]=$this->dataToProcess[$v1];
+                    }
+                }
+                $path['path']=implode(DS,$ex3);
+
+                $returnData=$path;
+                break;
+        }
+
+        return $returnData;
+    }
+    private function storeFileFromRequest($file,$inputName){
+
+        //dd($inputName);
+
+            //dd(collect($this->model->base_Field)->where('name',$inputName."0")->first());
+        $inputData=collect($this->model->base_Field)->where('name',$inputName);
+      //  dd($inputData->count());
+            if(($inputData->count()>0) && array_key_exists('storeTo',$inputData->first())){
+                $inputData=$inputData->first();
+                $storeTo=$inputData['storeTo'];
+
+                $storeData=$this->getArrayFromString($inputData['storeTo']);
+                //dd();
+                dd($file->storeAs($storeData['path'], $storeData['filename'].'.'.$file->getClientOriginalExtension(), $storeData['driver']));
+            }
+
+
     }
 
 
@@ -557,7 +633,7 @@ class MSDB implements MasterNoSql
         $attr=$b::getAllAttr($this->ms_id,$rules);
         $validator = Validator::make( $data,$this->makeRulesForValidation($rules),$message,$attr);
         $e=$validator->errors();
-        $this->dataToProcess=$e;
+        $this->dataToProcess=$data;
         if(count($e)< 1){
             return true;
         }

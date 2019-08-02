@@ -13,7 +13,12 @@ return
         'MS-CORE'=>[
             'driver' => 'local',
             'root' => base_path('MS'),
+        ],
+        'MS-MASTER-Storage'=>[
+            'driver' => 'local',
+            'root' => base_path('MS'.DS.'AppData'),
         ]
+
     ]
 
 ;
