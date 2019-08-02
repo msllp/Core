@@ -223,10 +223,13 @@ class MSDB implements MasterNoSql
      * @param array $uniqArray
      * @return bool
      */
+
     public function rowAdd(array $columnArray, array $uniqArray=[]):bool
     {
         if(!array_key_exists('created_at',$columnArray))$columnArray['created_at']=now()->toDateTimeString();
-        if(!array_key_exists('updated_at',$columnArray))$columnArray['updated_at']=now()->toDateTimeString();
+        $columnArray= $this->makeRowSafe($columnArray);
+    //    dd($this->makeRowSafe($columnArray));
+
         try{
 
             $connection=$this->model->getConnectionName();
@@ -237,13 +240,13 @@ class MSDB implements MasterNoSql
             $fieldCollection=collect($this->model->base_Field);
 
             foreach ($this->model->base_Field as $input){
+
                 if(array_key_exists('validation',$input) && is_array($input['validation']) ){
-                    if(in_array('unique',$input['validation']) or (array_key_exists('unique',$input['validation']) && $input['validation']['unique'])  ){
+                    if( array_key_exists('unique',$input['validation']) && $input['validation']['unique']){
                         $uniqArray[$input['name']]=$input;
                     }
 
-
-
+                  //  var_dump(array_key_exists('unique',$input['validation']));
                 }
                 switch ($input['input']){
                     case 'generated':
@@ -268,6 +271,7 @@ class MSDB implements MasterNoSql
 
 
             }
+          //  dd($uniqArray);
            // dd($columnArray);
 
             $valdationError=0;
@@ -296,7 +300,7 @@ class MSDB implements MasterNoSql
 
                 if($valdationError==true)
             if(count($valdationErrorArray) < 1 )$valdationError=0;
-
+      //   dd($valdationErrorArray);
             }
            // dd($valdationErrorArray);
            // dd($valdationError==false);
@@ -331,6 +335,46 @@ class MSDB implements MasterNoSql
 
         // TODO: Implement rowAdd() method.
     }
+
+    private function makeRowSafe($array){
+
+        $rArray=[];
+        foreach ($array as $k=>$v){
+//var_dump(gettype($v));
+            switch (gettype($v)){
+                case 'integer':
+                    $rArray[$k]=$v;
+                    break;
+                case 'double':
+                    $rArray[$k]=$v;
+                    break;
+                case 'NULL':
+                   // dd($k);
+                   // $rArray[$k]=(string)"";
+                    break;
+                case 'object':
+                    $rArray[$k]=(string)collect($v->toArray())->toJson();
+                    break;
+                case 'string':
+                   // dd($v);
+                    if($v!="")$rArray[$k]=(string)$v;
+                    break;
+                case 'boolean':
+                    ($v)?$rArray[$k]=true:$rArray[$k]=false;
+                    break;
+                case 'array':
+                    $rArray[$k]=(string)collect($v)->toJson();
+                    break;
+            }
+
+
+        }
+
+        if(!array_key_exists('updated_at',$array))$rArray['updated_at']=now()->toDateTimeString();
+       return $rArray;
+        dd($rArray);
+    }
+
 
     /**
      * Edit Row From any valid Column Value

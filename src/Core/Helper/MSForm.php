@@ -96,8 +96,7 @@ class MSForm
         ];
 
     public static $optionalStyleKeysWithDynamicValue=[
-        'inputSize'=>'inputSize',
-
+        'inputSize'=>'inputSize'
     ];
     public $namespace,$id,$perFix,$data,$msdb,$fields,$dbMaster;
     public $newForm=true;
