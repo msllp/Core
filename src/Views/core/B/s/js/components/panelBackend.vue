@@ -1,7 +1,12 @@
 <template>
     <div>
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
-        <a class="navbar-brand" href="#">Navbar</a>
+        <div class=" sticky-top" style="background: linear-gradient(to right, rgba(255, 81, 47, 1), rgba(221, 36, 118, 1));">
+    <nav class="navbar navbar-expand-lg navbar-dark" style="">
+        <a class="navbar-brand" href="#">
+            
+            <img src="/images/logo_final.png" style="max-height:40px;">
+            
+        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -35,7 +40,7 @@
             </form>
         </div>
     </nav>
-
+        </div>
 
         <div class="container-fluid">
 

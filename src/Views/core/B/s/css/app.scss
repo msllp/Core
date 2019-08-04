@@ -345,7 +345,7 @@ body{
 .ms-nav {
 
     position: absolute;
-    background: linear-gradient(to left, rgba(0,0,255,1), rgba(38,160,218,1));
+    background: linear-gradient(to right, rgba(255, 81, 47, 1), rgba(221, 36, 118, 1));
     color:white;
 
 
@@ -375,7 +375,7 @@ body{
 }
 
 .ms-live-box-full{
-    padding-left: 70px;
+    padding-left: 80px;
 }
 
 @keyframes animate2 {
@@ -391,17 +391,17 @@ body{
 }
 
 .ms-nav > li > a > span {
-    //  animation: animate3 ease-in;
+      animation: animate3 ease-in;
     animation-delay: 0s;
-    animation-duration: 200ms;
+    animation-duration: 350ms;
     display: inline-block;
 }
 
 .ms-nav > li > a  :first-child {
-    //   animation: animate3 reverse;
+      animation: animate3 ease-in;
     animation-delay: 0s;
 
-    animation-duration: 200ms;
+    animation-duration: 350ms;
 
 }
 
@@ -410,13 +410,13 @@ body{
 
 
     0%{
-        transform: translateX(-1000px) ;
+        //transform: translateX(-100px) ;
         opacity: 0;
         //  border-radius: 50%;
     }
 
     100%{
-        transform: translateX(0) ;
+      //  transform: translateX(0) ;
         opacity: 1;
         //border-radius: 0;
     }

@@ -11,18 +11,23 @@
 
             <a
                 href="#"
-                @click.prevent="openProjectLink"
+
                 class="menu__title"
             >
-                <i class="fa fa-home menu__icon" aria-hidden="true"></i>
-               <span  v-if="msNavigationOn">Navigation</span>
+                <i class="fas fa-location-arrow menu__icon" :class="{
+'ms-main-btn-fix':!msNavigationOn,
+'ms-animation':msNavigationOn,
+'fa-rotate-180':msNavigationOn,
+
+}" aria-hidden="true"></i>
+               <span v-if="msNavigationOn" :class="{'ms-animation':msNavigationOn}">Navigation</span>
             </a>
         </li>
 
         <li>
             <a
                 href="#"
-                @click.prevent="updateMenu('home')"
+                @click.prevent="updateMenu($event,'home')"
                 :class="highlightSection('home')"
             >
                 <i class="fa fa-home menu__icon" aria-hidden="true"></i>
@@ -33,7 +38,7 @@
         <li>
             <a
                 href="#"
-                @click.prevent="updateMenu('products')"
+                @click.prevent="updateMenu($event,'products')"
                 :class="highlightSection('products')"
             >
                 <i class="fa fa-tag menu__icon" aria-hidden="true"></i>
@@ -46,7 +51,7 @@
         <li>
             <a
                 href="#"
-                @click.prevent="updateMenu('customers')"
+                @click.prevent="updateMenu($event,'customers')"
                 :class="highlightSection('customers')"
             >
                 <i class="fa fa-users menu__icon" aria-hidden="true"></i>
@@ -58,7 +63,7 @@
         <li>
             <a
                 href="#"
-                @click.prevent="updateMenu('account')"
+                @click.prevent="updateMenu($event,'account')"
                 :class="highlightSection('account')"
             >
                 <i class="fa fa-user menu__icon" aria-hidden="true"></i>
@@ -152,12 +157,14 @@
                //this. hideNav()
               //  alert('You could open the project frontend in another tab here, so the logged admin could see changes made to the project ;)');
             },
-            updateMenu(context) {
+            updateMenu(event,context) {
                 this.contextSection = context;
                 this.menuItens = this.menuData[context];
+                console.log(event.offsetY);
 
             },
             highlightSection(section) {
+               // console.log(this.contextSection);
                 return {
                     'menu__link': true,
                     'menu__link--active': section === this.contextSection,
@@ -176,6 +183,7 @@
             openSection(item) {
                 this.activeSubMenu = item.txt;
                 this.$router.push(this.getUrl(item));
+
                 window.bus.$emit('menu/closeMobileMenu');
             },
             getUrl(item) {
@@ -190,7 +198,7 @@
                     this.msNavClass=" ms-nav menu__top_hidden";
                 }else{
                     this.msNavigationOn=true
-                    this.msNavClass=" ms-nav";
+                    this.msNavClass=" ms-nav  ms-animation";
                     this.msContextClass="";
                 }
                 this.$parent.setNavOn(this.msNavigationOn,event);
@@ -208,3 +216,13 @@
         }
     }
 </script>
+<style>
+.ms-main-btn-fix{
+    margin-left: 15px;
+
+    transition: all 350ms ease-in-out;
+}
+    .ms-animation,.menu__top_hidden{
+        transition: all 350ms ease-in-out;
+    }
+</style>
