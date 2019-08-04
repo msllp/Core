@@ -80,15 +80,17 @@
         }
         ,
         methods:{
-            setNavOn(show=false){
+            setNavOn(show=false,event){
                 if(!show){
                     this.msNavOn=false;
                 }else {
                     this.msNavOn=true
                 }
 
-                    console.log(this.msNavOn);
-            }
+                console.log(event.offsetY);
+
+            },
+
 
         }
 

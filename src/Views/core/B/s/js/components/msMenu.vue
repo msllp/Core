@@ -7,7 +7,7 @@
 
     <ul class="menu" :class="msNavClass">
 
-        <li class="menu__top" @click.prvent="hideNav()"  >
+        <li class="menu__top" @click.prvent="hideNav($event)"  >
 
             <a
                 href="#"
@@ -182,7 +182,7 @@
                 let sectionSlug = kebabCase(item.txt);
                 return `${item.link}/${sectionSlug}`;
             },
-            hideNav(show=false){
+            hideNav(event){
 
                 if(this.msNavigationOn){
                     this.msNavigationOn=false;
@@ -193,7 +193,7 @@
                     this.msNavClass=" ms-nav";
                     this.msContextClass="";
                 }
-                this.$parent.setNavOn(this.msNavigationOn);
+                this.$parent.setNavOn(this.msNavigationOn,event);
 
 
             }

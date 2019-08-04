@@ -12,6 +12,8 @@ return[
 
     'backend_prefix'=>"admin",
 
+    'ms_prefix'=>"MS",
+
     'Modules'=>
 
     [

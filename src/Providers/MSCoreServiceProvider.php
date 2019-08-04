@@ -7,6 +7,8 @@
  */
 
 namespace MS\Provider;
+use Illuminate\Http\Request;
+
 define("MSCORE_UI_STATUS_1","B\MAS:CORE_UI_Status_1:StatusBoolean->StatusName");
 define('DS',DIRECTORY_SEPARATOR);
 
@@ -20,7 +22,7 @@ class MSCoreServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     public function boot()
     {
-        \MS\Core\Helper\Comman::loadBack();
+        //\MS\Core\Helper\Comman::loadBack();
         $this->loadTranslationsFrom(  dirname(__DIR__) .DS.'Lang', 'MS');
 
         $this->loadViewsFrom(  dirname(__DIR__) .DS.'Views', 'MS');
@@ -99,17 +101,37 @@ class MSCoreServiceProvider extends \Illuminate\Support\ServiceProvider
     {
 
 
-
         $this->mergeConfigFrom(
             dirname(__DIR__).DS.'Config/Auth.php', base_path('config/auth.php')
         );
 
-
+        $this->mergeConfigFrom(
+            dirname(__DIR__).DS.'Config/MS.php', 'MS'
+        );
 
       //  \Config::set('app.url','http://hdtuto.com/');
       //  dd(dirname(__DIR__));
         $this->mergeConfigFrom(
             dirname(__DIR__).DS.'Config/Filesystem.php', 'filesystems.disks'
         );
+
+
+        \MS\Core\Helper\Comman::loadBack();
+        //\MS\Core\Helper\Comman::loadBack();
+       // dd(config('MS'));
+        \Route::prefix(config('MS.ms_prefix'))->group(function () {
+
+//    Route::get('/', function () {
+//        return redirect()->action('\B\Panel\Controller@index');
+//    });
+
+            \Route::get('test',function (Request $r){
+
+                return \MS\Core\Test\Master::Test($r);
+
+            })->name('MS.Test');
+
+
+        });
     }
 }
