@@ -61,6 +61,10 @@ Vue.component('msform', require('./components/msForm.vue').default);
 Vue.component('msinvoice', require('./components/msInvoice.vue').default);
 Vue.component('msgst', require('./components/msGST.vue').default);
 Vue.component('msmenu', require('./components/msMenu.vue').default);
+Vue.component('msviewpanel', require('./MS/msViewpanel.vue').default);
+Vue.component('msdashboard', require('./MS/msDashboard.vue').default);
+
+Vue.component('msmenubar', require('./MS/msMenubar.vue').default);
 
 import MS from './MS';
 

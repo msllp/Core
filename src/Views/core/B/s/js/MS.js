@@ -191,7 +191,37 @@ export default {
                 .split(' ')
                 .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
                 .join(' ');
-        }
+        },
+
+        ms_rand(length,type=1) {
+
+            switch (type) {
+
+                case 1:
+                var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                break;
+
+                case 2:
+                    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+                    break;
+
+                case 3:
+                    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                    break;
+
+                case 4:
+                    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%^&*()_+{}|:';
+                    break;
+
+            }
+    var result           = '';
+
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+}
     },
 
 

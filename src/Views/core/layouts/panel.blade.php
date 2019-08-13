@@ -1,5 +1,5 @@
 @extends('MS::core.layouts.root')
 @section('body')
 
-<panelbackend></panelbackend>
+<msdashboard></msdashboard>
 @endsection
