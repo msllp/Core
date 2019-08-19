@@ -1,5 +1,5 @@
 <template>
-    <div  class="   "   contextmenu.prevent="rightClick($event)">
+    <div  class=" ms-live-tab  "   contextmenu.prevent="rightClick($event)">
         <ul class="flex border-b cursor-pointer">
 
             <li
@@ -154,6 +154,9 @@
 <style scoped>
     .shadow-lg{
         transition: all 400ms ease-in-out;
+    }
+    .ms-live-tab{
+        padding-top:80px
     }
 
 </style>

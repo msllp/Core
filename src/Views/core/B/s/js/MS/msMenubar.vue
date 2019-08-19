@@ -43,7 +43,7 @@
                 <i class="fa fa-tag menu__icon" aria-hidden="true"></i>
 
                 <span  v-if="msNavigationOn">  Products</span>
-                <i class="fa fa-chevron-right menu__arrow-icon" aria-hidden="true"></i>
+                <i class="fa fa-chevron-right menu__arrow-icon float-right" aria-hidden="true"></i>
             </a>
         </li>
 
@@ -199,6 +199,16 @@
                 let sectionSlug = kebabCase(item.txt);
                 return `${item.link}/${sectionSlug}`;
             },
+            fromOtherCom(type=0,data=null){
+                console.log(type)
+                switch (type) {
+                    case 'hideNsv':
+                        this.msNavigationOn=false;
+                        this.msContextClass="";
+                        this.msNavClass=" ms-nav menu__top_hidden";
+                        break;
+                }
+            },
             hideNav(event){
 
                 if(this.msNavigationOn){
@@ -242,6 +252,8 @@
    }
     .context-menu-container{
         margin-left:252px ;
+        top:80px;
+        min-width: 200px;
         @apply bg-teal-400;
         @apply border-t;
         @apply fixed;
@@ -284,5 +296,9 @@
     @apply border-b;
 
 }
+    .ms-nav{
+        top: 80px;
+        cursor:ponter;
+    }
 
 </style>
