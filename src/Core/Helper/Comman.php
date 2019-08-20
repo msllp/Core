@@ -78,7 +78,7 @@ class Comman
                 break;
 
             case '1':
-                $characters = '0123456789';
+                $characters = '123456789';
                 break;
 
             case '2':

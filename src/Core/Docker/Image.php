@@ -28,17 +28,18 @@ class Image
     public function setName($data){
 
         $this->imageName=$data;
-
+    return $this;
     }
 
 
     public function setBaseImage($data){
 
         $this->from=$data;
-
+        return $this;
     }
     public function setWorkdir($data){
         $this->workdir=$data;
+        return $this;
     }
 
 
@@ -46,29 +47,47 @@ class Image
     public function env($data){
 
         $this->env[]=$data;
+        return $this;
 
     }
     public function run($data){
 
         $this->run[]=$data;
+        return $this;
 
     }
     public function copy($data){
         $this->copy[]=$data;
+        return $this;
     }
     public function out($data){
 
         $this->expose[]=$data;
+        return $this;
 
     }
     public function vol($data){
 
         $this->vol[]=$data;
+        return $this;
 
+    }
+
+    public function getImageName(){
+        return $this->imageName;
+
+    }
+    public function getTag(){
+        return $this->tag;
+    }
+
+    public function getImageForCompose(){
+        return implode(':',[$this->imageName,$this->tag]);
     }
 
     public function makeImage(){
         $m=new Box();
+        dd($m->makeFromImage($this));
 
        // dd($m->makeFromImage($this));
         //$this->makeDockerFile();
@@ -153,7 +172,7 @@ class Image
         $this->setBaseImage("webdevops/php-apache:7.3");
         $this->env(['PHP_DATE_TIMEZONE'=>"Asia/Kolkata",'PHP_MEMORY_LIMIT'=>"1073741824","WEB_ALIAS_DOMAIN"=>"nc1.msllp.in","PHP_MAX_EXECUTION_TIME"=>"300","PHP_POST_MAX_SIZE"=>"50M","PHP_UPLOAD_MAX_FILESIZE"=>"50MB"]);
         $this->copy(['conf/etc/httpd/vhost.conf'=>'/opt/docker/etc/httpd/vhost.conf',]);
-        $this->run(['apt update -y','apt upgrade -y','apt install apt-utils -y','apt install curl  -y','apt install git -y','cd /app','cd /app && curl -sL https://deb.nodesource.com/setup_12.x | bash && apt-get install nodejs -y','git clone https://github.com/msllp/Laravel_boilerplate.git /app','cd /app && curl -s https://getcomposer.org/installer | php','cd /app && composer install','cd /app && npm install','cd /app && npm update',' chown -R $USER:www-data storage','chmod -R a+rX /app/storage','chmod -R a+rX /app/MS']);
+        $this->run(['apt update -y','apt upgrade -y','apt install apt-utils -y','apt install curl  -y','apt install git -y','cd /app','cd /app && curl -sL https://deb.nodesource.com/setup_12.x | bash && apt-get install nodejs -y','git clone https://github.com/msllp/Laravel_boilerplate.git /app','cd /app && curl -s https://getcomposer.org/installer | php','cd /app && composer install','cd /app && npm install','cd /app && npm update','cd /app && chown -R www-data:www-data /app','chmod -R 777 /app']);
         $this->vol(['/app']);
         $this->setWorkdir('/app');
         $this->out(['80','443','90','22']);
