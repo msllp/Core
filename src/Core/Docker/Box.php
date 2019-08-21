@@ -163,5 +163,12 @@ public function addService($data){
 $this->services[$data['name']]=$data;
 }
 
+    public function deleteContainerCommand($name){
 
+        $comman="docker container rm ".$name;
+    }
+
+    public function stopContainerCommand($name){
+        $comman="docker stop web ".$name;
+    }
 }

@@ -200,7 +200,7 @@
                 return `${item.link}/${sectionSlug}`;
             },
             fromOtherCom(type=0,data=null){
-                console.log(type)
+                //console.log(type)
                 switch (type) {
                     case 'hideNsv':
                         this.msNavigationOn=false;
@@ -231,7 +231,9 @@
             },
         },
         mounted() {
-            this.msNavigationOn=this.msNav;
+            console.log(Boolean(Number(this.msNav)));
+            this.msNavigationOn=Boolean(Number(this.msNav));
+            if(this.msNavigationOn && ( window.innerWidth < 800  ))this.msNavigationOn=0;
         }
     }
 </script>

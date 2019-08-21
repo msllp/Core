@@ -131,6 +131,14 @@ class Image
     }
 
 
+
+    public function deleteImageCommand($name){
+
+        $comman="docker rmi ".$name;
+    }
+
+
+
     public function makeDockerFile(){
 
         $basePath=[base_path(implode(DS,DEFAULT_IMAGE_DIR))];

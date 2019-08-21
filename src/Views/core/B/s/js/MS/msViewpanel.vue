@@ -69,6 +69,7 @@
         name: "msviewpanel",
         props:{},
         mounted(){
+           if ( window.innerWidth < 800  )this.maxTabLimit=3;
             let sampleData=[
                 {
                     tabCode:'01',
@@ -141,6 +142,8 @@
                     console.log("Limite: "+this.maxTabLimit+" current lenth: "+this.allTab.length);
 
                 }
+
+
 
 
             }
