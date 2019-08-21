@@ -8,15 +8,15 @@
 
 namespace MS\Core\Docker;
 define('DEFAULT_CONTAINER_DIR',["MS","Deploy",'Docker']);
-
-use function GuzzleHttp\Psr7\str;
+use Symfony\Component\Yaml\Yaml;
+//nuse function GuzzleHttp\Psr7\str;
 
 class Box
 {
 public $services=[];
 public $userId,$image,$expose;
 
-public $v="3.3";
+public $v="3.7";
 public function __construct($user=001)
 {
     $this->userId=$user;
@@ -35,19 +35,33 @@ public function makeFromImage(Image $image){
 
     $this->addService($data);
     $data['name'].="_20";
+    $data['containerName'].="_20";
+
     $data['image']=$image->getImageForCompose();
     $data['ports']=$this->makeExpose($ports);
     $this->addService($data);
     $this->makeDockerCompose();
-    dd();
+    dd($this->up());
 
 
+}
+
+public function up(){
+    //dd($this);
+    chdir("../");
+    chdir(implode('/',DEFAULT_CONTAINER_DIR));
+
+    $excuteComman="docker-compose rm -f";
+    $excuteComman="docker-compose up";
+    system($excuteComman);
+  //  dd($excuteComman);
+    dd(system($excuteComman));
 }
 
     public function makeDockerCompose(){
         //dd($this);
         $text=[];
-        $text[]=implode(':',['version','"'.$this->v.'"']);
+        $text[]=implode(':',['version',' "'.$this->v.'"']);
         $text[]=" ";
         $text[]=" ";
         $text[]=" ";
@@ -61,16 +75,17 @@ public function makeFromImage(Image $image){
             $data['services'][$vd['name']]['container_name']=$vd['containerName'];
             $data['services'][$vd['name']]['ports']=$vd['ports'];
 
-            $text[]='"'.$vd['name'].'":';
-            $text[]=implode(':',['  image',"msllp/".$vd['image']]);
-            $text[]=implode(':',['  container_name',$vd['containerName']]);
-            $text[]=implode(':',['  ports',
+            $text[]='   "'.$vd['name'].'":';
+            $text[]=implode(':',['      image'," msllp/".$vd['image']]);
+            $text[]=implode(':',['      container_name'," ".$vd['containerName']]);
+            $text[]=implode(':',['      ports',
             "
             -".implode('
             -',  $vd['ports']) ]);
+            $text[]=" ";
 
         }
-        dd(\Symfony\Component\Yaml\Yaml::dump($array)($data));
+       // dd(Yaml::dump($data));
         $rText=implode('
 ',$text);
     //    dd($this);
@@ -82,7 +97,7 @@ public function makeFromImage(Image $image){
 
         $file=fopen(implode(DS,$basePath), "w");
         fwrite($file, $rText);
-        dd($rText);
+       // dd($rText);
 }
 
 
@@ -105,7 +120,7 @@ public function makeFromImage(Image $image){
 
         foreach ($array as $port){
             $p=$this->findSafePort();
-            $data[$p]='"'.implode(':',[$p,$port]).'"' ;
+            $data[$p]=' "'.implode(':',[$p,$port]).'"' ;
         }
         return $data;
     }
