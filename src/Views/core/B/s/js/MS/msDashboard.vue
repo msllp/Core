@@ -2,10 +2,11 @@
 
     <div>
         <div class="fixed w-full" >
-            <nav class="flex items-center justify-between flex-wrap bg-teal-100 p-6 lg:p-1  object-cover " style="min-height: 70px;">
+            <nav class="flex items-center justify-between flex-wrap bg-teal-100  lg:p-1  object-cover " style="min-height: 70px;">
                 <div v-on:click="hideNavBar($event)" class="flex items-center flex-shrink-0 text-black mr-6">
-                    <svg   class="fill-current h-8 w-8 mr-2 ms-company-logo" width="54" height="54" viewBox="0 0 54 54" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 22.1c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05zM0 38.3c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05z"/></svg>
-                    <span :class="{'hidden':!msNavBar}" class="font-semibold text-xl tracking-tight">Company Name</span>
+
+                    <img src="/images/logo.png" class="fill-current h-12 mr-2 ms-company-logo hover:shadow-outline hover:bg-gray-200" >
+                    <div :class="{'hidden':!msNavBar}" class="font-semibold"> Cloud Services</div>
                 </div>
                 <div class="block lg:hidden">
                     <button v-on:click="clickToggaleButton" class="flex items-center px-3 py-2 border rounded text-black-200 text-black-200 hover:text-white hover:border-white">
@@ -149,8 +150,9 @@
     .ms-livebox-full{
         padding-left: 82px;
     }
-    .ms-company-logo{
+    .ms-company-logo {
         cursor: pointer;
+        max-height:70px;
     }
     .hidden{
         @appply hidden;

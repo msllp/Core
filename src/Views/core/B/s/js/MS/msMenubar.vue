@@ -175,6 +175,7 @@
             getUrl(item) {
                 let data={};
                 data.modUrl=item.link;
+                this.closeContextMenu();
                 //data.modCode="MAS";
                 data.modDView=item.txt;
                 this.$parent.driveRequestFromNavToLiveTab(data);

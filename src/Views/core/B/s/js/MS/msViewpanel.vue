@@ -138,7 +138,17 @@
             },
             addActionToTab(data){
                 //delete this.allTab[this.currentTab];
-                this.allTab[this.currentTab].modDView=data.modDView;
+                console.log(this.allTab.length);
+
+                if(this.allTab.length < 1){
+                    data.tabCode=this.ms_rand(5,1);
+                    data.modCode="MAS";
+
+                    this.addNewTab(data);
+                }else{
+                    this.allTab[this.currentTab].modDView=data.modDView;
+                }
+                //
 
                 this.$refs[this.currentTab][0].updateTab(data);
             }
