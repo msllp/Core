@@ -1,114 +1,53 @@
 export default {
 
     // home is a section without childs, set as an empty array
-    home: [],
+   // home: [],
 
-    products: [
-
-        {
-            type: 'title',
-            txt: 'Products',
-            icon: 'fa fa-tag context-menu__title-icon',
-        },
-
-        {
-            type: 'link',
-            txt: 'List Products',
-            link: '/page',
-        },
-
-        {
-            type: 'link',
-            txt: 'Add New Product',
-            link: '/page',
-        },
-
-        {
-            type: 'link',
-            txt: 'Manage Categories',
-            link: '/page',
-        },
-
-    ],
-
-    customers: [
+    docker: [
 
         {
             type: 'title',
-            txt: 'Customers',
-            icon: 'fa fa-users context-menu__title-icon',
+            txt: 'Docker Functions',
+            icon: ' fab fa-docker '
         },
 
         {
             type: 'link',
-            txt: 'List Customers',
-            link: '/page',
+            txt: 'Make Image',
+            link: '/DCM/action/make/image',
+            icon:'fas fa-compact-disc'
         },
 
         {
             type: 'link',
-            txt: 'List Contacts',
+            txt: 'Make Container',
             link: '/page',
-        },
-
-        {
-            type: 'link',
-            txt: 'List Newsletters',
-            link: '/page',
-        },
-
-    ],
-
-    account: [
-
-        {
-            type: 'title',
-            txt: 'My Account',
-            icon: 'fa fa-user context-menu__title-icon',
-        },
-
-        {
-            type: 'link',
-            txt: 'Change Password',
-            link: '/page',
-        },
-
-        {
-            type: 'link',
-            txt: 'Change Settings',
-            link: '/page',
-        },
-
-        {
-            type: 'link',
-            txt: 'Logout',
-            link: '/page',
+            icon:'fas fa-laptop-code'
         },
 
         {
             type: 'title',
-            txt: 'Change Subscription',
-            icon: 'fa fa-credit-card context-menu__title-icon',
+            txt: 'Manage Docker',
+            icon: ' fas fa-cogs '
         },
 
         {
             type: 'link',
-            txt: 'Plans',
+            txt: 'Manage Image',
             link: '/page',
+            icon:'fas fa-compact-disc'
         },
 
         {
             type: 'link',
-            txt: 'Payment Settings',
+            txt: 'Manage Container',
             link: '/page',
+            icon:'fas fa-laptop-code'
         },
 
-        {
-            type: 'link',
-            txt: 'Payment History',
-            link: '/page',
-        },
+    ]
 
-    ],
+
+
 
 };

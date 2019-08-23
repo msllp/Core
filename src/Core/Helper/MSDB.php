@@ -12,6 +12,8 @@ use \Illuminate\Support\Facades\Schema;
 use \Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use phpDocumentor\Reflection\Types\Mixed_;
+
 //use Illuminate\Notifications\Notification;
 
 class MSDB implements MasterNoSql
@@ -60,6 +62,9 @@ class MSDB implements MasterNoSql
         $this->mod_Tables[$this->ms_id]=$this->model->ms_base::getTableArray($this->ms_id);
     }
 
+    private static $dbStore=['MS','DB','Master' ];
+
+    private static $dbSource=['MS','DB','Master','blank','blank' ];
 
     /**
      * Static Raw drop Table Function
@@ -192,12 +197,43 @@ class MSDB implements MasterNoSql
      * @param bool $perFix
      * @return bool
      */
+
+    public static function massMigrate($namespace,$id,$perFix=[]){
+
+        if ( is_array($id)  ){
+
+
+            if(count($perFix)>0){
+
+            }else{
+
+                foreach ($id as $name){
+                    $m=new Self($namespace,$name,$perFix);
+                    $m->migrate();
+                }
+
+            }
+
+
+        }else {
+
+
+            $m=new Self($namespace,$id,$perFix);
+            $m->migrate();
+
+
+        }
+    return true;
+
+    }
+
     public function migrate($id=false, $perFix=false):bool {
 
-        if (is_array($id) && is_array($perFix)){
+        if ( (is_array($id) && is_array($perFix)) && ( count($id) == count($perFix) ) ){
 
 
         }else{
+
 
             $table=$this->model->getTable();
             $connection=$this->model->getConnectionName();
@@ -705,5 +741,31 @@ private function FileNameExistSoChangeTheFileName($fileData){
         dd($outArray);
     }
 
+    public static function getDBPath(){
+        return base_path( implode(DS,self::$dbStore) );
+    }
+    public static function getBlankDBPath(){
+        return base_path( implode(DS,self::$dbSource) );
+    }
+    public static function makeDB(string $name){
+        $path['storePath']=implode(DS,[self::getDBPath(),$name]) ;
+        $path['sourcePath']=self::getBlankDBPath();
+      //  dd($path);
+        return copy ( $path['sourcePath'],  $path['storePath'] );
+    }
 
+    public static function deleteDB(string $name){
+        if(!self::checkDB($name))return false;
+        $path['sorcePath']=implode(DS,[self::getDBPath(),$name]) ;
+        return unlink($path['sorcePath']);
+    }
+
+    public static function checkDB(string $name){
+        $path['sorcePath']=implode(DS,[self::getDBPath(),$name]) ;
+        return file_exists($path['sorcePath']);
+    }
+
+    public static function backDB(string $name=null){
+
+    }
 }

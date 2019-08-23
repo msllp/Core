@@ -86,7 +86,7 @@ class Comman
                 break;
 
             case '3':
-                $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                $charactmarge_databaseers = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
                 break;
 
             case '4':
@@ -172,6 +172,7 @@ class Comman
 
         $loadArray=config('database.connections');
         $loadArray=array_merge($loadArray,self::loadDBForModule($Config));
+      //  dd($loadArray);
         \Config::set('database.connections',$loadArray);
 
     }

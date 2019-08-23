@@ -28,7 +28,7 @@
                 v-on:click="addNewTab({ tabCode:'01',
                     modCode:'New Tab',
             modDView:'New Tab',
-            modUrl:'/MAS',
+            modUrl:'/newtab',
             data:''})"
             > <span class="fa fa-plus p-3 border-l border-r border-t "></span></li>
 
@@ -44,8 +44,7 @@
                 'visible p-3 ':checkActive(index)
                 }"
                    >
-               <h1>{{tab.modDView}}</h1>
-                </div>
+                    <mswindow :ms-data="tab"  :index="index"  :ref= "index" > </mswindow>
 
 
             </div>
@@ -59,7 +58,7 @@
         </div>
 
     </div>
-
+    </div>
 </template>
 
 <script>
@@ -74,16 +73,10 @@
                 {
                     tabCode:'01',
                     modCode:"MAS",
-                    modDView:"Company",
-                    modUrl:"/MAS",
+                    modDView:"Make image for Container",
+                    modUrl:"/DCM/action/make/image",
                     data:""
                 },
-                    {
-                        tabCode:'02',
-                        modCode:"PM",
-                        modDView:"Products",
-                        modUrl:"/PM"
-                    }
 
                 ];
             this.currentTab=0;
@@ -142,10 +135,12 @@
                     console.log("Limite: "+this.maxTabLimit+" current lenth: "+this.allTab.length);
 
                 }
+            },
+            addActionToTab(data){
+                //delete this.allTab[this.currentTab];
+                this.allTab[this.currentTab].modDView=data.modDView;
 
-
-
-
+                this.$refs[this.currentTab][0].updateTab(data);
             }
 
         },

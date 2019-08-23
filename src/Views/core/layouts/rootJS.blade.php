@@ -26,6 +26,6 @@
     @yield('body')
 </div>
 <script src="{{ asset("b/js/app.js") }}?{{\MS\Core\Helper\Comman::random(10)}}" type="text/javascript" defer></script>
-
+<script>@yield('js')</script>
 </body>
 </html>

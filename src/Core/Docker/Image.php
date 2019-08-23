@@ -87,8 +87,8 @@ class Image
 
     public function makeImage(){
         $m=new Box();
-        dd($m->makeFromImage($this));
-
+      //  dd();
+       // $m->makeFromImage($this);
        // dd($m->makeFromImage($this));
         //$this->makeDockerFile();
         //$this->deleteALlImages();
@@ -134,7 +134,7 @@ class Image
 
     public function deleteImageCommand($name){
 
-        $comman="docker rmi ".$name;
+        $comman="docker image rm ".$name." -f";
     }
 
 
@@ -185,6 +185,19 @@ class Image
         $this->setWorkdir('/app');
         $this->out(['80','443','90','22']);
 
+
+    }
+
+    private function addImageEntryToDB($data){
+
+        dd($data);
+    }
+    private function deleteImageEntryToDB($data){
+
+        dd($data);
+    }
+
+    private function editImageEntryToDB($data){
 
     }
 }

@@ -115,6 +115,10 @@ class MSCoreServiceProvider extends \Illuminate\Support\ServiceProvider
             dirname(__DIR__).DS.'Config/Filesystem.php', 'filesystems.disks'
         );
 
+        $this->mergeConfigFrom(
+            dirname(__DIR__).DS.'Config/Database.php', 'database.connections'
+        );
+
 
         \MS\Core\Helper\Comman::loadBack();
         //\MS\Core\Helper\Comman::loadBack();

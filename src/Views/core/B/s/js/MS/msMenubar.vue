@@ -33,43 +33,18 @@
                 <span  v-if="msNavigationOn"> Home</span>
             </a>
         </li>
+<li v-for="(menu,index) in menuData">
 
-        <li >
-            <a
-                href="#"
-                @click.prevent="updateMenu($event,'products')"
-                :class="highlightSection('products')"
-            >
-                <i class="fa fa-tag menu__icon" aria-hidden="true"></i>
-
-                <span  v-if="msNavigationOn">  Products</span>
-                <i class="fa fa-chevron-right menu__arrow-icon float-right" aria-hidden="true"></i>
-            </a>
-        </li>
-
-        <li>
-            <a
-                href="#"
-                @click.prevent="updateMenu($event,'customers')"
-                :class="highlightSection('customers')"
-            >
-                <i class="fa fa-users menu__icon" aria-hidden="true"></i>
-                <span  v-if="msNavigationOn"> Customers </span>
-                <i class="fa fa-chevron-right menu__arrow-icon" aria-hidden="true"></i>
-            </a>
-        </li>
-
-        <li>
-            <a
-                href="#"
-                @click.prevent="updateMenu($event,'account')"
-                :class="highlightSection('account')"
-            >
-                <i class="fa fa-user menu__icon" aria-hidden="true"></i>
-                <span  v-if="msNavigationOn">  Account</span>
-                <i class="fa fa-chevron-right menu__arrow-icon" aria-hidden="true"></i>
-            </a>
-        </li>
+    <a
+        href="#"
+        @click.prevent="updateMenu($event,index)"
+        :class="highlightSection(index)"
+    >
+        <i :class="menu[0].icon" class="menu__icon" aria-hidden="true"></i>
+        <span  v-if="msNavigationOn"> {{forNice(index)}}</span>
+        <i class="fa fa-chevron-right menu__arrow-icon float-right" aria-hidden="true"></i>
+    </a>
+</li>
 
     </ul>
 
@@ -93,9 +68,9 @@
 
                             <h5 v-if="item.type === 'title'" class="context-menu__title">
 
-                                <i :class="item.icon" aria-hidden="true"></i>
+                                <i  v-if="item.hasOwnProperty('icon')" :class="item.icon" aria-hidden="true"></i>
 
-                                {{item.txt}}
+                                {{forNice(item.txt)}}
 
                                 <a
                                     v-if="index === 0"
@@ -108,15 +83,17 @@
 
                             </h5>
 
+                            <h5 v-else >
+                            <i style="min-width: 36px;"  v-if="item.hasOwnProperty('icon')" :class="item.icon" class="text-center menu__icon" aria-hidden="true"></i>
                             <a
-                                v-else
+
                                 href="#"
                                 @click.prevent="openSection(item)"
                                 :class="subMenuClass(item.txt)"
                             >
                                 {{item.txt}}
                             </a>
-
+                            </h5>
                         </li>
 
                     </ul>
@@ -191,13 +168,19 @@
             },
             openSection(item) {
                 this.activeSubMenu = item.txt;
-                this.$router.push(this.getUrl(item));
-
-                window.bus.$emit('menu/closeMobileMenu');
+               // this.$router.push(this.getUrl(item));
+                this.getUrl(item);
+              //  window.bus.$emit('menu/closeMobileMenu');
             },
             getUrl(item) {
-                let sectionSlug = kebabCase(item.txt);
-                return `${item.link}/${sectionSlug}`;
+                let data={};
+                data.modUrl=item.link;
+                //data.modCode="MAS";
+                data.modDView=item.txt;
+                this.$parent.driveRequestFromNavToLiveTab(data);
+
+                // let sectionSlug = kebabCase(item.txt);
+                // return `${item.link}/${sectionSlug}`;
             },
             fromOtherCom(type=0,data=null){
                 //console.log(type)
@@ -231,7 +214,7 @@
             },
         },
         mounted() {
-            console.log(Boolean(Number(this.msNav)));
+
             this.msNavigationOn=Boolean(Number(this.msNav));
             if(this.msNavigationOn && ( window.innerWidth < 800  ))this.msNavigationOn=0;
         }
@@ -264,7 +247,8 @@
         margin-left:82px ;
     }
     .context-menu__title{
-
+    @apply border-t;
+        @apply mt-2;
     }
     .menu__icon{
         @apply pr-2;
