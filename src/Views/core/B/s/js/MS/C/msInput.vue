@@ -3,7 +3,29 @@
 
 
 
-        <div v-if="true">
+        <div class="flex p-2">
+
+            <span class="w-4/12 mr-2">{{inputVname}}</span>
+
+            <input v-if="inputType == 'text'" class="w-10/12 border focus:outline-none focus:shadow-outline">
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <div v-if="false">
             <section v-if="(inputType != 'locked')&&(inputType != 'radio')&&(inputType != 'checkbox')&&(inputType != 'option')&&(inputType != 'multioption')&&(inputType != 'file')&&(inputType != 'multifile')"  v-for="(input,key) in finalInput" :title="inputInfo">
                 <div  class="row align-items-center form-group" >
 
@@ -54,42 +76,42 @@
             <div  class="row form-group"  v-if="(inputType == 'radio')" :title="inputInfo">
 
 
-                    <label class="col col " :class="{
+                <label class="col col " :class="{
                     'ms-error':(msValid == 'is-invalid')
                     }">
 <span class="row" >
                         <span class="col col-8">{{ forNice(inputVname) }}</span>
                         <span class="col col" ><span v-if="inputRequired" class=" text-danger fa fa-asterisk ms-spin"></span> </span>
 </span>
-                        </label><br>
+                </label><br>
 
-                    <div class="col col-8">
-                        <div class="form-check-inline "  v-for ="(autofiled,index) in inputAuto" >
-                            <input class="form-check-input" :name="inputName"  v-model="msValue"  :type="inputType" :value="autofiled[dValue]" :id="inputName+index"  >
-                            <label class="form-check-label" :for="inputName+index" >
-                                {{forNice(autofiled[dText])}}
-                            </label>
+                <div class="col col-8">
+                    <div class="form-check-inline "  v-for ="(autofiled,index) in inputAuto" >
+                        <input class="form-check-input" :name="inputName"  v-model="msValue"  :type="inputType" :value="autofiled[dValue]" :id="inputName+index"  >
+                        <label class="form-check-label" :for="inputName+index" >
+                            {{forNice(autofiled[dText])}}
+                        </label>
 
-                        </div>
                     </div>
+                </div>
 
 
             </div>
 
             <div  class="row form-group"  v-if="(inputType == 'checkbox')" :title="inputInfo">
 
-                    <label class="col" :class="{
+                <label class="col" :class="{
                     'ms-error':(msValid == 'is-invalid')
                     }"> <span class="row" >
                         <span class="col col-8">{{ forNice(inputVname) }}</span>
                         <span class="col col" ><span v-if="inputRequired" class=" text-danger fa fa-asterisk ms-spin"></span> </span>
 </span></label>
-                    <div class="col col-8 ">
-                        <div class="form-check-inline"  v-for ="(autofiled,index) in inputAuto"  >
-                            <input class="form-check-input"  v-model="msValue[index]" :name="inputName+'['+index+']'"  :type="inputType" :value="autofiled[dValue]" :id="inputName+index">
-                            <label class="form-check-label" :for="inputName+index">
-                                {{forNice(autofiled[dText])}}
-                            </label>
+                <div class="col col-8 ">
+                    <div class="form-check-inline"  v-for ="(autofiled,index) in inputAuto"  >
+                        <input class="form-check-input"  v-model="msValue[index]" :name="inputName+'['+index+']'"  :type="inputType" :value="autofiled[dValue]" :id="inputName+index">
+                        <label class="form-check-label" :for="inputName+index">
+                            {{forNice(autofiled[dText])}}
+                        </label>
                     </div>
 
 
@@ -100,18 +122,18 @@
 
 
             <div  class="form-group"  v-if="(inputType == 'locked') || (inputType == 'auto')" style="margin-left: 0px;cursor: help" :title="inputInfo" >
-              <div class="row">
+                <div class="row">
 
-                  <label class="col" >{{ forNice(inputVname) }} </label>
-                  <div class="col col-8">
-                      <div class="form-control text-info text-muted disabled" >
-                          {{forNice(dValue)}}
+                    <label class="col" >{{ forNice(inputVname) }} </label>
+                    <div class="col col-8">
+                        <div class="form-control text-info text-muted disabled" >
+                            {{forNice(dValue)}}
 
-                      </div>
-                  </div>
+                        </div>
+                    </div>
 
 
-              </div>
+                </div>
 
                 <input  type="hidden" v-model="dValue" :name="inputName">
             </div>
@@ -166,22 +188,26 @@
                     </label>
 
                     <div class="col col-8">
-                    <div class="input-group" data-toggle="tooltip" data-placement="left">
+                        <div class="input-group" data-toggle="tooltip" data-placement="left">
 
-                        <div v-if="input.inputPrefix" class="input-group-prepend">
-                            <i :class="'fa fa-'+input.inputPrefix+ ' input-group-text' " ></i>
+                            <div v-if="input.inputPrefix" class="input-group-prepend">
+                                <i :class="'fa fa-'+input.inputPrefix+ ' input-group-text' " ></i>
+                            </div>
+
+                            <input v-if="inputType == 'file'" :type="inputType"  :name="inputName"  :class="'form-control '+msValid"  @change="loadFilestoLocal" :aria-describedby="inputName" >
+                            <input multiple v-if="inputType == 'multifile'"  type="file"  :name="inputName"  :class="'form-control '+msValid"  @change="loadFilestoLocal" :aria-describedby="inputName" >
+
+
+                            <div v-if="inputPerfix" class="input-group-append ">
+                                <i :class="'fa fa-'+inputPerfix+ ' input-group-text' " ></i>
+                            </div>
+
                         </div>
-
-                        <input v-if="inputType == 'file'" :type="inputType"  :name="inputName"  :class="'form-control '+msValid"  @change="loadFilestoLocal" :aria-describedby="inputName" >
-                        <input multiple v-if="inputType == 'multifile'"  type="file"  :name="inputName"  :class="'form-control '+msValid"  @change="loadFilestoLocal" :aria-describedby="inputName" >
-
-
-                        <div v-if="inputPerfix" class="input-group-append ">
-                            <i :class="'fa fa-'+inputPerfix+ ' input-group-text' " ></i>
-                        </div>
-
                     </div>
-                    </div>
+
+
+
+
 
                 </section>
             </div>
@@ -204,13 +230,13 @@
 </template>
 
 <script>
-    import  MS  from '../MS';
-    import  MDD from 'mobile-device-detect';
-    //console.log(MS);
+    import MS from '../MS';
+    // import  MDD from 'mobile-device-detect';
+    // //console.log(MS);
     export default {
 
-        name: 'inputtext',
-        mixins: [MS,MDD],
+        name: 'msinput',
+        mixins: [MS],
         props:{
             'msData':{
                 type: Object,
@@ -290,7 +316,7 @@
 
             //   var finalArray= this.makeArrayForInput(this);
 
-            this.setFinalInput(this.makeArrayForInput(this));
+            this.setFinalInput(this.makeArrayForInput (this));
 
             if(!this.$root.checkGroupExist(this.groupInput)){
                 this.$root.setUpGroup(this.groupInput);

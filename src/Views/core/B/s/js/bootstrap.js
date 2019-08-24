@@ -54,28 +54,29 @@ var appDir = path.dirname(require.main.filename);
 
 
 
-Vue.component('inputtext', require('./components/inputText.vue').default);
-Vue.component('panelbackend', require('./components/panelBackend.vue').default);
-Vue.component('msinput', require('./components/msInput.vue').default);
-Vue.component('msform', require('./components/msForm.vue').default);
-Vue.component('msinvoice', require('./components/msInvoice.vue').default);
-Vue.component('msgst', require('./components/msGST.vue').default);
+//Vue.component('inputtext', require('./components/inputText.vue').default);
+//Vue.component('panelbackend', require('./components/panelBackend.vue').default);
+//Vue.component('msform', require('./components/msForm.vue').default);
+//Vue.component('msinvoice', require('./components/msInvoice.vue').default);
+//Vue.component('msgst', require('./components/msGST.vue').default);
+Vue.component('msinput', require('./MS/C/msInput.vue').default);
+Vue.component('msform', require('./MS/C/msForm.vue').default);
 Vue.component('msmenu', require('./components/msMenu.vue').default);
 Vue.component('msviewpanel', require('./MS/msViewpanel.vue').default);
 Vue.component('msdashboard', require('./MS/msDashboard.vue').default);
 Vue.component('mswindow', require('./MS/msWindow.vue').default);
 Vue.component('msmenubar', require('./MS/msMenubar.vue').default);
 Vue.component('msdockerdashboard', require('E:/MS-Master/Projects/FrameworkPHP/gst_invoice/Master/MS/B/M/DCM/V/Vue/dockerMasterDashboard.vue').default);
+
+//Components
+
+
 import MS from './MS';
 
-Vue.mixin(MS);
- Vue.extend({
-     mixins: [MS]
- })
+
 
 const app = new Vue({
-    el: '#msapp'
-    ,
+    el: '#msapp',
     mixins: [MS],
     methods:{
         getModBtn:function(url){

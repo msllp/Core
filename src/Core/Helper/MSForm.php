@@ -46,32 +46,35 @@ class MSForm
             $btn['Class']=['btn'];
             switch ($type){
                 case 'back';
-                    if(array_key_exists('btnColor',$btnData)) unset($btnData['btnColor']) ;
+                    if(is_array($btnData) && array_key_exists('btnColor',$btnData)) unset($btnData['btnColor']) ;
                     $btn['Class'][]='btn-primary';
                     break;
 
                 case 'add';
-                    if(array_key_exists('btnColor',$btnData)) unset($btnData['btnColor']) ;
+              //  dd($btnData);
+                    if(is_array($btnData) && array_key_exists('btnColor',$btnData)) unset($btnData['btnColor']) ;
                     $btn['Class'][]='btn-success';
                     break;
 
                 case 'edit';
-                    if(array_key_exists('btnColor',$btnData)) unset($btnData['btnColor']) ;
+                    if(is_array($btnData) && array_key_exists('btnColor',$btnData)) unset($btnData['btnColor']) ;
                     $btn['Class'][]='btn-warning';
                     break;
 
 
                 case 'delete';
-                    $btn['Class'][]='btn-default';
+                    if(is_array($btnData) && array_key_exists('btnColor',$btnData)) unset($btnData['btnColor']) ;
+                    $btn['Class'][]='btn-danger';
                     break;
             }
 
-            if(array_key_exists('btnIcon',$btnData) && $btnData['btnIcon']== "")unset($btnData['btnIcon']);
-            if(array_key_exists('route',$btnData))$btnData['route']=route($btnData['route']);
-            $btnData['btnClass']=implode(' ',$btn['Class']);
+            if(is_array($btnData) && array_key_exists('btnIcon',$btnData) && $btnData['btnIcon']== "")unset($btnData['btnIcon']);
+            if(is_array($btnData) && array_key_exists('route',$btnData))$btnData['route']=route($btnData['route']);
+           //dd($type. $btnData);
+            if(is_array($btnData))$btnData['btnClass']=implode(' ',$btn['Class']);
             if(in_array($type,$this->accessAction))
             $returnData[$type]=$btnData;
-        }
+             }
 
 
 

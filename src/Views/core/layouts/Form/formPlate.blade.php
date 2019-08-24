@@ -1,4 +1,4 @@
-@extends('MS::core.layouts.root')
+@extends('MS::core.layouts.rootJS')
 @section('body')
 
 <?php
@@ -11,9 +11,6 @@ $json=collect($form)->toJson();
 <msform :ms-data="{{$json}}" key="msFrom" ref="msFrom"></msform>
 
 
-        <form>
-
-        </form>
 
 
 @endsection
