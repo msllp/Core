@@ -112,11 +112,13 @@
 <script>
     import menuData from '../components/support/menu-data';
     import kebabCase from 'lodash/kebabCase';
+    import MS from './C/MS';
 
 
     export default {
         name: "msmenubar",
         name: 'msMenu',
+        mixins:[MS],
         props:{
             'msNav':{
                 type: Boolean,

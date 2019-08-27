@@ -67,6 +67,7 @@
     export default {
         name: "msviewpanel",
         props:{},
+        mixins:[MS],
         mounted(){
            if ( window.innerWidth < 800  )this.maxTabLimit=3;
             let sampleData=[

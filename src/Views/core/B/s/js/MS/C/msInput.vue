@@ -3,15 +3,73 @@
 
 
 
-        <div class="flex p-2">
+        <div class="inline-flex p-2" >
 
-            <span class="w-4/12 mr-2">{{inputVname}}</span>
 
-            <input v-if="inputType == 'text'" class="w-10/12 border focus:outline-none focus:shadow-outline">
+            <span class="w-4/12 mr-2 select-none">{{inputVname}}</span>
+
+            <div v-if="inputPrefix" class="input-group-prepend">
+                <i :class="inputPrefix" ></i>
+            </div>
+            <div v-if="inputType == 'text'">
+            <input :type="inputType" autocomplete="off" class="w-11/12 border focus:outline-none focus:shadow-outline" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
+            </div>
+
+            <div v-else-if="inputType == 'password'" class="select-none" :class="{'inline-block':inputPasswordVisible,'inline-flex':!inputPasswordVisible,}">
+
+                <input :type="inputType" autocomplete="off"  class="block border focus:outline-none focus:shadow-outline" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
+
+              <div class="msPasswordVisible" v-on:click="visiblePassowrd"
+
+              >
+              <i :class="{
+                'far fa-eye mr-2':inputPasswordVisible,
+                'far fa-eye-slash':!inputPasswordVisible,
+                'object-center':true,
+                }"></i>
+
+                  <div v-if="inputPasswordVisible" :class="{
+                'inline-block':true,
+
+                }">
+                      {{msValue}}
+                  </div>
+              </div>
+
+
+            </div>
+
+
+            <div v-else-if="inputType == 'email'">
+                <input :type="inputType" autocomplete="off" class="w-11/12 border focus:outline-none focus:shadow-outline" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
+            </div>
+
+            <div v-else-if="inputType == 'number'">
+                <input :type="inputType" autocomplete="off" class="w-11/12 border focus:outline-none focus:shadow-outline" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
+            </div>
+
+            <div v-if="inputPerfix" class="input-group-append ">
+
+                <i :class="inputPerfix" >
+                    <span v-if="inputRequired" class=" text-danger fa fa-asterisk ms-spin"></span>
+                </i>
+            </div>
+
+
 
         </div>
 
+    <div v-if="hasAutofield" class="flex">
 
+        <div  class="w-full block">
+
+            <div v-for ="autofiled in inputAuto" :value="autofiled.dValue" class="bg-gray-200 p-1 bprder m-1" v-on:click="setFinalInputFromAuto(autofiled.dValue)">
+                {{autofiled.dText}}
+            </div>
+        </div>
+
+
+    </div>
 
 
 
@@ -328,7 +386,11 @@
             this.$parent.setInputData(this.inputName,this.msValue);
 
 
-
+            // this.inputAuto.push({
+            //         dText: 'hello',
+            //         dValue:10,
+            //     }
+            // );
 
             // console.log( this.inputValidation);
         },
@@ -362,7 +424,7 @@
             },
 
             isM(){
-                console.log(this.isMobile());
+               // console.log(this.isMobile());
                 return this.isMobile();
             },
             loadFilestoLocal(event){
@@ -373,42 +435,17 @@
 
                 //    console.log(this.$parent.msFormDataFinal);
 
-            }
+            },
+            hasAutofield(event){
+                if(this.inputAuto.length>0)return true;
+                //this.hasAutofieldBool=true;
 
-
-        },
-        data: function () {
-            return {
-                msValid: 0,
-                msValue:'',
-                msMinCharValidation:0,
-                inputValidation:[],
-                inputAuto:[],
-                inputError:new Object(),
-                inputName:'',
-                inputVname:'',
-                inputPrefix:'',
-                inputPerfix:'',
-                inputOnly:false,
-                inputType:'text',
-                inputRequired:false,
-                dValue:'',
-                dText:'',
-                finalInput:new Object({}),
-                inputMultiple:false,
-                inputCount:0,
-                groupInput:[],
-                inputInfo:"",
-            }
-        }
-        ,
-        computed: {
-
-
-        },
-        watch: {
-            msValue: function(val, oldVal) {
-
+                return false;
+            },
+            setFinalInputFromAuto(value){
+               this.msValue=value;
+            },
+            inpututProcess(val, oldVal){
                 if(this.inputRequired){
 
                     var error=0;
@@ -462,15 +499,66 @@
                 }else {
                     this.msValid=" ";
                 }
-                console.log(val);
+                //  console.log(val);
                 this.$parent.setInputData(this.inputName,val);
 
+            }
+            ,visiblePassowrd(){
+                if(this.inputPasswordVisible)
+                {
+                    this.inputPasswordVisible=false;
+                //    this.inputType='password';
+                }else {
+                    this.inputPasswordVisible=true;
+                  //  this.inputType='text';
+                }
+
+
+            }
+
+        },
+        data: function () {
+            return {
+                msValid: 0,
+                msValue:'',
+                msMinCharValidation:0,
+                inputValidation:[],
+                inputAuto:[],
+                inputError:new Object(),
+                inputName:'',
+                inputVname:'',
+                inputPrefix:'',
+                inputPerfix:'',
+                inputOnly:false,
+                inputType:'text',
+                inputRequired:false,
+             //   dValue:'',
+          //      dText:'',
+                finalInput:new Object({}),
+                inputMultiple:false,
+                inputCount:0,
+                groupInput:[],
+                inputInfo:"",
+                inputPasswordVisible:false,
+               // hasAutofieldBool:false,
+            }
+        }
+        ,
+        computed: {
+
+
+        },
+        watch: {
+            msValue: function(val, oldVal) {
+
+               this.inpututProcess(val,oldVal);
             }
         }
     }
 </script>
 
 <style>
+
     .margin-fix{
 
 
@@ -565,6 +653,17 @@
         border-radius:0px;
     }
 
+
+    .msPasswordVisible{
+        @apply pl-2;
+        @apply pr-2;
+        @apply border-r;
+        @apply border-t;
+        @apply border-b;
+        @apply bg-blue-300;
+        @apply block;
+
+    }
 
 
 </style>

@@ -21,7 +21,7 @@ export default {
         {
             type: 'link',
             txt: 'Make Container',
-            link: '/page',
+            link: '/MAS',
             icon:'fas fa-laptop-code'
         },
 

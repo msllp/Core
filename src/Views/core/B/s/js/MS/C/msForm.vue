@@ -6,20 +6,38 @@
 
 
 
-        <div class="w-full rounded overflow-hidden shadow-lg"  v-for="(section,id,key) in  msFormData">
+        <div class="w-full rounded  border-t overflow-hidden shadow-lg mb-4 bg-gray-100"  v-for="(section,id,key) in  msFormData">
 
-            <div class=" w-full px-6 py-4 cursor-pointer">
-                <div class="font-bold text-xl mb-2 border-b ">{{section.gruoupHeading}}</div>
-                <p class="text-gray-700 text-base">
-                    <msinput class="" v-for="(inputRaw,id2) in section.inputs" :key="inputRaw.name.toLowerCase()" :ref="inputRaw.name.toLowerCase()" v-bind:ms-data="inputRaw"   v-bind:ms-group-index="id" ></msinput>
-                </p>
+            <div class=" w-full px-6 py-4 cursor-pointer"  :class="{ 'show': id === 0 , }" :id="section.id+'_target'" :aria-labelledby="section.id" >
+                <div class="font-bold text-xl mb-2 border-b ">{{section.gruoupHeading}}
+
+                    <div  class="expand-btn"
+                          :style="{
+
+                          'opacity':checkImHiddenOrNot(section)
+                          }"
+                          :class="{'bg-gray-200':!checkImHiddenOrNot(section),
+                    'bg-gray-500':checkImHiddenOrNot(section)}"  v-on:click.prevent="showCollapse(section.id)"><i :class="{
+                    'fas fa-search-minus ':!checkImHiddenOrNot(section),
+                    'fas fa-search-plus ':checkImHiddenOrNot(section)
+
+                    }"  ></i> </div>
+                    <div class="btn btn-outline-danger" v-if="checkMutlipleSub(section)" v-on:click.prevent="removeInputGroup(id,section.rootId)"><i class="fa fa-times-circle "></i> </div>
+
+                </div>
+                <div class="text-gray-700 text-base w-full inline-flex"  v-bind:class="{
+'hidden':checkImHiddenOrNot(section)
+}"  >
+                    <msinput class="w-full"  :class="section.inputs[id2].inputSize" v-for="(inputRaw,id2) in section.inputs" :key="inputRaw.name.toLowerCase()" :ref="inputRaw.name.toLowerCase()" v-bind:ms-data="inputRaw"   v-bind:ms-group-index="id" ></msinput>
+                </div>
+
             </div>
 
         </div>
 
         <div class="w-full rounded overflow-hidden shadow-lg">
         <div class=" px-6 py-4 border-t">
-            <div class="inline-flex w-full cursor-pointer">
+            <div class="inline-flex w-full cursor-pointer text-center">
                 <span class="w-1/3 bg-gray-200  hover:bg-gray-400 border-t border-b  border-l px-3 py-1 text-sm font-semibold text-gray-700">#photography</span>
                 <span class="w-1/3 bg-gray-200  hover:bg-gray-400 border-t border-b px-3 py-1 text-sm font-semibold text-gray-700">#travel</span>
                 <span class="w-1/3 bg-gray-200  hover:bg-gray-400 border-t border-b  border-r px-3 py-1 text-sm font-semibold text-gray-700">#winter</span>
@@ -155,7 +173,8 @@
                 msActionBtn:null,
                 msFormDataFinal:{},
                 msQ:{},
-                msViewIcon:"fa-eye"
+                msViewIcon:"fa-eye",
+                msCurrentTab:null,
             }
         },
         methods:{
@@ -165,7 +184,9 @@
             showCollapse:function(id,event){
                 // this.msclass +=' show';
                 if(this.checkLastActive())
-                    $("#"+id).collapse('toggle');
+                    this.msCurrentTab=id;
+               // console.log(section.id);
+                    //$("#"+id).collapse('toggle');
                 // event.target.tagName
                 //console.log(this.section.class);
             },
@@ -323,6 +344,26 @@
 
             }
 
+
+            ,checkImHiddenOrNot(section){
+
+              //  if()this.msCurrentTab=section.id;
+
+                if(this.msCurrentTab!=null){
+
+                     //   console.log(this.msCurrentTab==section.id);
+                        if(this.msCurrentTab==section.id)return false;
+                        return true;
+
+
+
+                }
+                    //&& (this.msCurrentTab != section.id))return true;
+                this.msCurrentTab=section.id;
+                return false;
+
+            }
+
         }
 
 
@@ -332,6 +373,25 @@
 <style scoped>
     .btn{
         text-transform: capitalize;
+    }
+
+    .expand-btn{
+        @apply block;
+
+        @apply text-center;
+        @apply inline-flex;
+        @apply rounded;
+        @apply pl-2 pr-2 pt-1 pb-1;
+        @apply mb-3;
+        @apply float-right;
+        @apply inset-y-0;
+        @apply inset-y-0;
+
+    }
+
+    .hiiden{
+
+        transition: all 1s ease-in-out;
     }
 
 </style>

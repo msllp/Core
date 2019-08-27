@@ -165,8 +165,9 @@ class MSForm
                                         implode(" ",
                                             [
                                                 //implode("-",['col','xs',$strExploded[0]]),
-                                                implode("-",['col','sm',$strExploded[0]]),
-                                                implode("-",['col','md',$strExploded[1]]),
+                                                implode("-",['w',$strExploded[0]]),
+                                                implode("-",[implode(':',['sm','w']),$strExploded[0]]),
+                                                implode("-",[implode(':',['lg','w']),$strExploded[1]]),
                                      //           implode("-",['col','lg',$strExploded[3]])
                                         ]
                                         )
@@ -177,19 +178,19 @@ class MSForm
                                         implode(" ",
                                             [
                                                 //implode("-",['col','xs',$strExploded[0]]),
-                                                implode("-",['col','sm',$strExploded[0]]),
-                                                implode("-",['col','md',$strExploded[1]]),
-                                                implode("-",['col','lg',$strExploded[2]])]
+                                                implode("-",[implode(':',['sm','w']),$strExploded[0]]),
+                                                implode("-",[implode(':',['md','w']),$strExploded[1]]),
+                                                implode("-",[implode(':',['lg','w']),$strExploded[2]])]
                                         )
                                     ;
                                     break;
                                 case 4:
                                     $array[$value]=
                                         implode(" ",
-                                        [implode("-",['col','xs',$strExploded[0]]),
-                                        implode("-",['col','sm',$strExploded[1]]),
-                                        implode("-",['col','md',$strExploded[2]]),
-                                        implode("-",['col','lg',$strExploded[3]])]
+                                        [implode("-",[implode(':',['sm','w']),$strExploded[0]]),
+                                        implode("-",[implode(':',['md','w']),$strExploded[1]]),
+                                        implode("-",[implode(':',['lg','w']),$strExploded[2]]),
+                                        implode("-",[implode(':',['xl','w']),$strExploded[3]])]
                                         )
                                         ;
                                     break;
@@ -198,7 +199,10 @@ class MSForm
 
 
                         }else{
-                            $array[$value]="col-".$data['style'][$key];
+                            if(array_key_exists('style',$data) && array_key_exists($key,$data['style'])) {
+
+                                    $array[$value] = implode('-',["w" , implode("/",[$data['style'][$key],12])]);
+                            }
                         }
                         break;
                 }

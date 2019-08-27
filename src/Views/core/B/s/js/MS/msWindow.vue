@@ -36,7 +36,7 @@
         },
 
         mounted() {
-            this
+            this.getGetLink(data.modUrl,this)
             console.log(this.getGetLink(this.msData.modUrl,this));
         },
         methods:{
