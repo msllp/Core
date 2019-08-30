@@ -1,22 +1,20 @@
 <template>
 
-    <div style="padding-bottom: 75px;" class="">
+    <div style="padding-bottom: 75px;" class="bg-white border">
 
     <div class="block ">
 
 
 
-        <div class="w-full rounded  border-t overflow-hidden shadow-lg mb-4 bg-gray-100"  v-for="(section,id,key) in  msFormData">
+        <div class="w-full rounded  border-t shadow-lg mb-4 bg-gray-100"  v-for="(section,id,key) in  msFormData">
 
-            <div class=" w-full px-6 py-4 cursor-pointer"  :class="{ 'show': id === 0 , }" :id="section.id+'_target'" :aria-labelledby="section.id" >
-                <div class="font-bold text-xl mb-2 border-b ">{{section.gruoupHeading}}
-
-                    <div  class="expand-btn"
-                          :style="{
+            <div class=" w-full px-3 py-2 cursor-pointer mb-2 border-b"  :class="{ 'show': id === 0 , }" :id="section.id+'_target'" :aria-labelledby="section.id" >
+                <div class="font-bold text-md border-b pb-2  ">  <div  class="expand-btn"
+                                                                      :style="{
 
                           'opacity':checkImHiddenOrNot(section)
                           }"
-                          :class="{'bg-gray-200':!checkImHiddenOrNot(section),
+                                                                      :class="{'bg-gray-200':!checkImHiddenOrNot(section),
                     'bg-gray-500':checkImHiddenOrNot(section)}"  v-on:click.prevent="showCollapse(section.id)"><i :class="{
                     'fas fa-search-minus ':!checkImHiddenOrNot(section),
                     'fas fa-search-plus ':checkImHiddenOrNot(section)
@@ -24,12 +22,27 @@
                     }"  ></i> </div>
                     <div class="btn btn-outline-danger" v-if="checkMutlipleSub(section)" v-on:click.prevent="removeInputGroup(id,section.rootId)"><i class="fa fa-times-circle "></i> </div>
 
+                    {{section.gruoupHeading}}
                 </div>
-                <div class="text-gray-700 text-base w-full inline-flex"  v-bind:class="{
-'hidden':checkImHiddenOrNot(section)
-}"  >
-                    <msinput class="w-full"  :class="section.inputs[id2].inputSize" v-for="(inputRaw,id2) in section.inputs" :key="inputRaw.name.toLowerCase()" :ref="inputRaw.name.toLowerCase()" v-bind:ms-data="inputRaw"   v-bind:ms-group-index="id" ></msinput>
+
+                <div >
+
+
+
+                    <div class="text-gray-700 text-base flex flex-wrap"  v-bind:class="{
+                'hidden':checkImHiddenOrNot(section),
+                // 'flex':onMobile,
+                // 'flex':!onMobile
+                }">
+
+                        <msinput class="w-1/2"  :class="section.inputs[id2].inputSize" v-for="(inputRaw,id2) in section.inputs" :key="inputRaw.name.toLowerCase()" :ref="inputRaw.name.toLowerCase()" v-bind:ms-data="inputRaw"   v-bind:ms-group-index="id" :ms-input-index="id2" >
+                        </msinput>
+                    </div>
+
+
+
                 </div>
+
 
             </div>
 
@@ -37,10 +50,17 @@
 
         <div class="w-full rounded overflow-hidden shadow-lg">
         <div class=" px-6 py-4 border-t">
-            <div class="inline-flex w-full cursor-pointer text-center">
-                <span class="w-1/3 bg-gray-200  hover:bg-gray-400 border-t border-b  border-l px-3 py-1 text-sm font-semibold text-gray-700">#photography</span>
-                <span class="w-1/3 bg-gray-200  hover:bg-gray-400 border-t border-b px-3 py-1 text-sm font-semibold text-gray-700">#travel</span>
-                <span class="w-1/3 bg-gray-200  hover:bg-gray-400 border-t border-b  border-r px-3 py-1 text-sm font-semibold text-gray-700">#winter</span>
+            <div class="inline-flex w-full cursor-pointer text-center" :class="{'opacity-50 cursor-not-allowed':allErrors.length>0}" >
+             <span
+                 @click.prevent="formActionFromBtn(index)"
+                 class="w-1/3 bg-gray-200  hover:bg-gray-400 border-t border-b  border-r px-3 py-1 text-sm font-semibold text-gray-700"
+
+                      v-for="(msBtn,index) in msActionBtn" type="button" v-bind:class="[msBtn.btnClass]"
+
+                >
+                       <i v-if="msBtn.hasOwnProperty('btnIcon')" :class="msBtn.btnIcon"></i> {{displauActionBtnText(msBtn)}}
+
+                    </span>
             </div>
         </div>
 
@@ -48,6 +68,20 @@
 
 
     </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         <div v-if="false">
@@ -160,7 +194,7 @@
                 },this);
             }
             // this.msFormData= this.msData.formData;
-
+            if ( window.innerWidth < 800  )this.onMobile=true;
         },
         data: function () {
             return {
@@ -175,6 +209,8 @@
                 msQ:{},
                 msViewIcon:"fa-eye",
                 msCurrentTab:null,
+                onMobile:false,
+                allErrors:[],
             }
         },
         methods:{
@@ -267,7 +303,7 @@
                 if(actionBtn.hasOwnProperty('btnText'))str=str+actionBtn.btnText;
 
 
-                return str;
+                return this.forNice(str);
 
             },
             getAllData(link){
@@ -280,9 +316,11 @@
                 for(var propertyName in this.msFormDataFinal) {
                     //console.log(propertyName);
                     if(this.msFormDataFinal[propertyName] instanceof Object){
+
                         for(var file in this.msFormDataFinal[propertyName]){
                             formData.append(propertyName+"["+file+"]",this.msFormDataFinal[propertyName][file]);
                         }
+
                     }else{
 
                         formData.append(propertyName,this.msFormDataFinal[propertyName]);
@@ -363,6 +401,17 @@
                 return false;
 
             }
+            ,formActionFromBtn(id){
+
+                if(this.allErrors.length<1){
+
+                    var route=this.msData.actionButton[id].route;
+                    return this.getAllData(route);
+
+                    console.log(this.msData.actionButton[id].route);
+                }
+                console.log(this.msData.actionButton[id].route);
+            }
 
         }
 
@@ -382,8 +431,8 @@
         @apply inline-flex;
         @apply rounded;
         @apply pl-2 pr-2 pt-1 pb-1;
-        @apply mb-3;
-        @apply float-right;
+        @apply mr-2;
+        @apply float-left;
         @apply inset-y-0;
         @apply inset-y-0;
 

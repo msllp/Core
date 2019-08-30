@@ -41,7 +41,8 @@
                 <div
                     :class="{
                 'hidden':!checkActive(index),
-                'visible p-3 ':checkActive(index)
+                'visible ':checkActive(index),
+
                 }"
                    >
                     <mswindow :ms-data="tab"  :index="index"  :ref= "index" > </mswindow>

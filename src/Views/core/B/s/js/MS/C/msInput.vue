@@ -3,27 +3,34 @@
 
 
 
-        <div class="inline-flex p-2" >
+        <div :class="{
+
+        }" class=" p-2" >
 
 
-            <span class="w-4/12 mr-2 select-none">{{inputVname}}</span>
 
-            <div v-if="inputPrefix" class="input-group-prepend">
-                <i :class="inputPrefix" ></i>
+
+
+            <div v-if="inputType == 'locked'" class="flex flex-wrap">
+                <span class=" select-none" :class="{'w-4/12 mr-2':!onMobile}">{{inputVname}}</span>
+                <i class="fas p2 ml-2 mt-1 fa-qrcode mr-2"></i><input :type="inputType" disabled autocomplete="off" class="text-center border focus:outline-none focus:shadow-outline" :class="{'w-11/12':onMobile}" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
             </div>
-            <div v-if="inputType == 'text'">
-            <input :type="inputType" autocomplete="off" class="w-11/12 border focus:outline-none focus:shadow-outline" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
+
+            <div v-if="inputType == 'text'"  class="flex flex-wrap">
+            <span class=" select-none lg:mr-2" >{{inputVname}}</span>
+            <input :type="inputType" autocomplete="off" class=" border focus:outline-none focus:shadow-outline lg:flex-1" :class="{'w-full':onMobile}" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
             </div>
 
-            <div v-else-if="inputType == 'password'" class="select-none" :class="{'inline-block':inputPasswordVisible,'inline-flex':!inputPasswordVisible,}">
+            <div v-else-if="inputType == 'password'" class="select-none flex flex-wrap" >
 
-                <input :type="inputType" autocomplete="off"  class="block border focus:outline-none focus:shadow-outline" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
+                <span class=" select-none lg:flex-1" :class="{'w-full':!onMobile}">{{inputVname}}</span>
+                <input :type="inputType" autocomplete="off"  class="msPasswordInput focus:outline-none focus:shadow-outline lg:flex-1 "  :class="{'w-9/12':onMobile}" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
 
-              <div class="msPasswordVisible" v-on:click="visiblePassowrd"
+                <div class="msPasswordVisible" :class="{'w-3/12':onMobile}" v-on:click="visiblePassowrd"
 
               >
               <i :class="{
-                'far fa-eye mr-2':inputPasswordVisible,
+                'far fa-eye':inputPasswordVisible,
                 'far fa-eye-slash':!inputPasswordVisible,
                 'object-center':true,
                 }"></i>
@@ -32,34 +39,69 @@
                 'inline-block':true,
 
                 }">
-                      {{msValue}}
+
                   </div>
               </div>
 
 
+                <span v-if="inputPasswordVisible" class="w-full bg-info-100 mt-21 border text-bold">{{msValue}}</span>
+
+
+              </div>
+
+            <div v-else-if="inputType == 'email'" lass="flex flex-wrap">
+                <span class=" select-none lg:mr-2" >{{inputVname}}</span>
+                <input :type="inputType" style="min-width: 60%;" autocomplete="off" class="border focus:outline-none focus:shadow-outline"  :class="{'w-full':onMobile}"  :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
+            </div>
+
+            <div v-else-if="inputType == 'number'" lass="flex flex-wrap">
+                <span class=" select-none lg:mr-2" >{{inputVname}}</span>
+                <input :type="inputType" style="min-width: 50%;" autocomplete="off" class="border focus:outline-none focus:shadow-outline"  :class="{'w-full':onMobile}"  :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
             </div>
 
 
-            <div v-else-if="inputType == 'email'">
-                <input :type="inputType" autocomplete="off" class="w-11/12 border focus:outline-none focus:shadow-outline" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
+            <div v-if="inputType == 'file'" class="flex flex-wrap">
+                <span class=" select-none" :class="{'w-4/12 mr-2':!onMobile}">{{inputVname}}</span>
+                <input :type="inputType"  class="text-center border focus:outline-none focus:shadow-outline " :class="{'w-11/12':onMobile}" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
             </div>
 
-            <div v-else-if="inputType == 'number'">
-                <input :type="inputType" autocomplete="off" class="w-11/12 border focus:outline-none focus:shadow-outline" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
+            <div v-if="inputType == 'radio'" class="flex flex-wrap">
+                <span class=" select-none" :class="{'w-4/12 mr-2':!onMobile,'w-full':onMobile}">{{inputVname}}</span>
+
+                <div :class="{
+                'select-none flex-1 border-l p-1 mr-1 border-b':true,
+                'bg-blue-200 shadow':msValue==radio[msData.verifyBy.value],
+
+                }"  v-for="(radio,key) in msData.verifyBy.msdata" v-on:click="customSetValue(radio[msData.verifyBy.value])">
+                    <i class="far" :class="{
+                    'fa-check-square text-green-500':msValue==radio[msData.verifyBy.value],
+                    'fa-square text-blue-500':msValue!=radio[msData.verifyBy.value],
+                     }"></i>  {{ forNice(radio[msData.verifyBy.text]) }}
+                </div>
+
+
+
             </div>
 
-            <div v-if="inputPerfix" class="input-group-append ">
 
-                <i :class="inputPerfix" >
-                    <span v-if="inputRequired" class=" text-danger fa fa-asterisk ms-spin"></span>
-                </i>
+            <div  v-if="msValid == 'is-invalid'" class="flex flex-wrap">
+
+                <small v-if="msValid == 'is-invalid'" class="text-left bg-red-200 w-full" :id="inputName +'_error'" >
+
+                    <div v-for="item in inputError" class="" role="alert" style="font-size: smaller;
+    padding: 5px;">
+                        {{ item }}
+                    </div>
+
+                </small>
+
             </div>
 
 
 
         </div>
 
-    <div v-if="hasAutofield" class="flex">
+    <div v-if="hasAutofield()" class="flex">
 
         <div  class="w-full block">
 
@@ -282,6 +324,8 @@
             </small>
 
         </div>
+
+
     </div>
 
 
@@ -303,7 +347,13 @@
             'msGroupIndex':{
                 type: Number,
                 required: true
+            },
+            'msGroupIndex':{
+                type: Number,
+                required: true
             }
+
+
         },
 
         mounted() {
@@ -376,16 +426,16 @@
 
             this.setFinalInput(this.makeArrayForInput (this));
 
-            if(!this.$root.checkGroupExist(this.groupInput)){
-                this.$root.setUpGroup(this.groupInput);
-            }
+            // if(!this.$ref['msFrom'].checkGroupExist(this.groupInput)){
+            //     this.$ref['msFrom'].setUpGroup(this.groupInput);
+            // }
             // if((this.inputType == "locked")|| (this.inputType == "auto") ){
             //     this.msValue=this.dValue;
             //     //this.$parent.setInputData(this.inputName,this.dValue);
             // }
             this.$parent.setInputData(this.inputName,this.msValue);
 
-
+            if ( window.innerWidth < 800  )this.onMobile=true;
             // this.inputAuto.push({
             //         dText: 'hello',
             //         dValue:10,
@@ -397,11 +447,13 @@
         methods:{
 
             setError:function () {
+
                 this.msValid="is-invalid";
 
             },
             setErrorZero:function(){
                 this.msValid="is-valid";
+                this.$parent.in
                 this.inputError=new Object();
             },
             getValue:function () {
@@ -437,6 +489,7 @@
 
             },
             hasAutofield(event){
+                if(this.inputType == "text")
                 if(this.inputAuto.length>0)return true;
                 //this.hasAutofieldBool=true;
 
@@ -514,6 +567,9 @@
                 }
 
 
+            },
+            customSetValue(val){
+                this.msValue=val;
             }
 
         },
@@ -540,6 +596,7 @@
                 groupInput:[],
                 inputInfo:"",
                 inputPasswordVisible:false,
+                onMobile:false
                // hasAutofieldBool:false,
             }
         }
@@ -663,7 +720,15 @@
         @apply bg-blue-300;
         @apply block;
 
-    }
+        @apply text-center;
 
+
+    }
+    .msPasswordInput{
+        @apply block;
+        @apply border;
+        @apply flex-wrap;
+
+    }
 
 </style>

@@ -497,7 +497,7 @@ class MSDB implements MasterNoSql
 
 
     }
-private function FileNameExistSoChangeTheFileName($fileData){
+    private function FileNameExistSoChangeTheFileName($fileData){
 
         $ex1=explode(".",$fileData['filename']);
         $name=$ex1[0];
@@ -532,8 +532,10 @@ private function FileNameExistSoChangeTheFileName($fileData){
         $fields=$this->model->base_Field;
         if(!array_key_exists('updated_at',$columnArray))$columnArray['updated_at']=now()->toDateTimeString();
         if(count($identifier) < 2){
-            dd(reset($identifier));
-            //$objFields=collect($fields)->where(array_key_first($identifier),reset($identifier) );
+           // dd(reset($identifier));
+            $objFields=collect($fields)->where(array_key_first($identifier),reset($identifier) );
+            \DB::connection($connection)->table($table)->update( $columnArray);
+            return true;
         }else{
 
             $objFields=collect($fields)->where('name',array_key_first($identifier))->count();

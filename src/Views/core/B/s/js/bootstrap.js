@@ -95,9 +95,14 @@ const app = new Vue({
             
             for (var inputName in Data){
                 var key=inputName.toString().toLowerCase();
-                console.log(this.$refs['msFrom'].$refs[key][0].setError());
-                this.$refs['msFrom'].$refs[key][0].setError();
-                this.$refs['msFrom'].$refs[key][0].inputError=Data[inputName];
+            //
+                if(this.$refs['msFrom'].$refs.hasOwnProperty(key) && this.$refs['msFrom'].$refs[key].hasOwnProperty(0)){
+                    this.$refs['msFrom'].$refs[key][0].setError();
+                    this.$refs['msFrom'].$refs[key][0].inputError=Data[inputName];
+                    this.$refs['msFrom'].allErrors.push(Data[inputName]);
+                }
+
+
             }
             
          //    this.mserror.forEach(function(value, index) {

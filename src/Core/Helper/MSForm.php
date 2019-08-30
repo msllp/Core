@@ -42,29 +42,29 @@ class MSForm
     private function  make4VueButtonArray($data){
         $returnData=[];
         foreach ($data as $type =>$btnData){
-
-            $btn['Class']=['btn'];
+            $btn['Class']=[];
+            //$btn['Class']=['btn'];
             switch ($type){
                 case 'back';
                     if(is_array($btnData) && array_key_exists('btnColor',$btnData)) unset($btnData['btnColor']) ;
-                    $btn['Class'][]='btn-primary';
+                    //$btn['Class'][]='btn-primary';
                     break;
 
                 case 'add';
               //  dd($btnData);
                     if(is_array($btnData) && array_key_exists('btnColor',$btnData)) unset($btnData['btnColor']) ;
-                    $btn['Class'][]='btn-success';
+                    //$btn['Class'][]='btn-success';
                     break;
 
                 case 'edit';
                     if(is_array($btnData) && array_key_exists('btnColor',$btnData)) unset($btnData['btnColor']) ;
-                    $btn['Class'][]='btn-warning';
+                    //$btn['Class'][]='btn-warning';
                     break;
 
 
                 case 'delete';
                     if(is_array($btnData) && array_key_exists('btnColor',$btnData)) unset($btnData['btnColor']) ;
-                    $btn['Class'][]='btn-danger';
+                    //$btn['Class'][]='btn-danger';
                     break;
             }
 
@@ -76,7 +76,7 @@ class MSForm
             $returnData[$type]=$btnData;
              }
 
-
+//dd($returnData);
 
         return $returnData;
     //dd($returnData);
@@ -122,8 +122,10 @@ class MSForm
             $d=$m->rowGet();
 
             $rdata['msdata']=$d;
+
             $rdata['value']=$ex2[0];
             $rdata['text']=$ex2[1];
+
             return $rdata;
 
 

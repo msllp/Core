@@ -36,7 +36,9 @@
         },
 
         mounted() {
-            this.getGetLink(data.modUrl,this)
+            data=new Object();
+            data.modUrl="http://gst.ms/MAS";
+            this.getGetLink(data.modUrl,this);
             console.log(this.getGetLink(this.msData.modUrl,this));
         },
         methods:{
