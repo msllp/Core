@@ -549,6 +549,7 @@ class MSForm
         $this->returnHTML['actionButton']=$this->viewActionBtn();
      //   $this->returnHTML[]='</div>';
       //  dd($this->returnHTML);
+        return view("MS::core.layouts.Form.formPlateRaw")->with("form",$this->returnHTML);
         return view("MS::core.layouts.Form.formPlate")->with("form",$this->returnHTML);
         return view("MS::core.layouts.Form.formPlate")->with("form",implode("",$this->returnHTML));
         return implode("",$this->returnHTML);

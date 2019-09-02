@@ -1,6 +1,5 @@
 export default {
     methods: {
-
         validatePassword (pass,length=8,strenth=3) {
 
         switch (strenth) {

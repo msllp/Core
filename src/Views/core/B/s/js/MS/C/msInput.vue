@@ -74,8 +74,8 @@
 
                 }"  v-for="(radio,key) in msData.verifyBy.msdata" v-on:click="customSetValue(radio[msData.verifyBy.value])">
                     <i class="far" :class="{
-                    'fa-check-square text-green-500':msValue==radio[msData.verifyBy.value],
-                    'fa-square text-blue-500':msValue!=radio[msData.verifyBy.value],
+                    'fa-check-circle text-green-500':msValue==radio[msData.verifyBy.value],
+                    'fa-circle text-blue-500':msValue!=radio[msData.verifyBy.value],
                      }"></i>  {{ forNice(radio[msData.verifyBy.text]) }}
                 </div>
 
@@ -83,6 +83,23 @@
 
             </div>
 
+            <div v-if="inputType == 'checkbox'" class="flex flex-wrap">
+                <span class=" select-none" :class="{'w-4/12 mr-2':!onMobile,'w-full':onMobile}">{{inputVname}}</span>
+
+                <div :class="{
+                'select-none flex-1 border-l p-1 mr-1 border-b':true,
+                'bg-blue-200 shadow':in_array( radio[msData.verifyBy.value], inputChecked),
+
+                }"  v-for="(radio,key) in msData.verifyBy.msdata" v-on:click="customSetValue(radio[msData.verifyBy.value])">
+                    <i class="far" :class="{
+                    'fa-check-square text-green-500': in_array( radio[msData.verifyBy.value], inputChecked),
+                    'fa-square text-blue-500':!in_array( radio[msData.verifyBy.value], inputChecked),
+                     }"></i>  {{ forNice(radio[msData.verifyBy.text]) }}
+                </div>
+
+
+
+            </div>
 
             <div  v-if="msValid == 'is-invalid'" class="flex flex-wrap">
 
@@ -569,14 +586,34 @@
 
             },
             customSetValue(val){
-                this.msValue=val;
+                if(this.inputType== 'checkbox'){
+                if(!this.in_array(val,this.inputChecked)){
+                    this.inputChecked.push(val);
+
+
+                }else {
+                    this.inputChecked=this.inputChecked.filter(function(ele){
+                        return ele != val;
+                    });
+
+                }
+                    this.msValue=this.inputChecked;
+
+                }else{
+                    this.msValue=val;
+                }
+
+
+            },
+            makeInputName(key){
+                return this.inputVname+"["+key+"]";
             }
 
         },
         data: function () {
             return {
                 msValid: 0,
-                msValue:'',
+                msValue:null,
                 msMinCharValidation:0,
                 inputValidation:[],
                 inputAuto:[],
@@ -596,7 +633,8 @@
                 groupInput:[],
                 inputInfo:"",
                 inputPasswordVisible:false,
-                onMobile:false
+                onMobile:false,
+                inputChecked:[]
                // hasAutofieldBool:false,
             }
         }
