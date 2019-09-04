@@ -71,7 +71,7 @@ Vue.component('msdockerdashboard', require('E:/MS-Master/Projects/FrameworkPHP/g
 //Components
 
 
-import MS from './MS';
+import MS from './MS/C/MS';
 
 
 
@@ -97,9 +97,17 @@ const app = new Vue({
                 var key=inputName.toString().toLowerCase();
             //
                 if(this.$refs['msFrom'].$refs.hasOwnProperty(key) && this.$refs['msFrom'].$refs[key].hasOwnProperty(0)){
+                   // console.log(inputName);
                     this.$refs['msFrom'].$refs[key][0].setError();
                     this.$refs['msFrom'].$refs[key][0].inputError=Data[inputName];
-                    this.$refs['msFrom'].allErrors.push(Data[inputName]);
+                    this.$refs['msFrom'].allErrors.push(
+                        {
+                            inputName:inputName,
+                            errors:Data[inputName]
+                        }
+
+
+                    );
                 }
 
 

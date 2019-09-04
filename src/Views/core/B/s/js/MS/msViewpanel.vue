@@ -63,7 +63,7 @@
 </template>
 
 <script>
-    import  MS  from '../MS';
+    import  MS  from './C/MS';
     import  MDD from 'mobile-device-detect';
     export default {
         name: "msviewpanel",

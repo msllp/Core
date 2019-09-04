@@ -9,7 +9,7 @@
 </template>
 
 <script>
-    import  MS  from '../MS';
+    import  MS  from './C/MS';
         import msdockerdashboard from 'E:/MS-Master/Projects/FrameworkPHP/gst_invoice/Master/MS/B/M/DCM/V/Vue/dockerMasterDashboard';
     export default {
         name: "mswindow",

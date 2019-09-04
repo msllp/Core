@@ -688,19 +688,41 @@ class MSDB implements MasterNoSql
 
     }
 
+    private function filterData($data){
+
+        $fData=[];
+        foreach ($data as $k=>$v ){
+
+            if($v!='null' && $v!='' && $v!=' ')$fData[$k]=$v;
+        }
+       // dd($fData);
+        return $fData;
+    }
 
     public function checkRulesForData($r){
-        $b=implode('\\',[$this->masterNamespace,'B']);
-        $data=$r->all();
-       $rules= $b::getAllRules($this->ms_id);
 
+
+
+        $b=implode('\\',[$this->masterNamespace,'B']);
+        $data= $this->filterData($r->all()) ;
+       $rules= $b::getAllRules($this->ms_id);
+//dd($rules);
        //dd($b::getAllMessage($this->ms_id,$rules));
        //foreach ()
         //displayFromdd($b::getAllAttr($this->ms_id,$rules));
         $message=$b::getAllMessage($this->ms_id,$rules);
+      //  dd($message);
         $attr=$b::getAllAttr($this->ms_id,$rules);
+//dd($this->makeRulesForValidation($rules))
+
+       // dd($r->validate($this->makeRulesForValidation($rules),$message,$attr));
+
         $validator = Validator::make( $data,$this->makeRulesForValidation($rules),$message,$attr);
+
+        //$validator->passes();
+        //dd($validator->errors());
         $e=$validator->errors();
+       // dd($e);
         $this->dataToProcess=$data;
         $this->e=$e;
         if(count($e)< 1){
@@ -737,10 +759,26 @@ class MSDB implements MasterNoSql
 
         $outArray=[];
         foreach ($data as $inputName=>$inputRules){
-            $outArray[$inputName]=implode('|',$inputRules);
+
+
+           // $inputRules=  array_merge(['bail'],$inputRules);
+            //var_dump($inputRules);
+         //   switch ( $iputRules)
+            $ruleAdded=0;
+            //var_dump($inputRules);
+            if (in_array('required',$inputRules)){
+         //     unset($inputRules[array_search('required',$inputRules)]);
+           //     $inputRules=array_merge($inputRules,['required']);
+              //  dd( $inputRules);
+                $outArray[$inputName]=implode('|',$inputRules);
+                $ruleAdded=1;
+            }
+            if(!$ruleAdded)$outArray[$inputName]=implode('|',$inputRules);
         }
+
+       // dd($outArray);
         return $outArray;
-        dd($outArray);
+
     }
 
     public static function getDBPath(){

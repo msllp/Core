@@ -3,28 +3,26 @@
 
 
 
-        <div :class="{
-
-        }" class=" p-2" >
+        <div  class=" p-2" >
 
 
 
 
 
-            <div v-if="inputType == 'locked'" class="flex flex-wrap">
+            <div v-if="inputType == 'locked'" class="flex flex-wrap" :class="msValid">
                 <span class=" select-none" :class="{'w-4/12 mr-2':!onMobile}">{{inputVname}}</span>
                 <i class="fas p2 ml-2 mt-1 fa-qrcode mr-2"></i><input :type="inputType" disabled autocomplete="off" class="text-center border focus:outline-none focus:shadow-outline" :class="{'w-11/12':onMobile}" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
             </div>
 
             <div v-if="inputType == 'text'"  class="flex flex-wrap">
             <span class=" select-none lg:mr-2" >{{inputVname}}</span>
-            <input :type="inputType" autocomplete="off" class=" border focus:outline-none focus:shadow-outline lg:flex-1" :class="{'w-full':onMobile}" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
-            </div>
+            <input :index="msInputIndex" :type="inputType"  autocomplete="off" class=" border focus:outline-none focus:shadow-outline lg:flex-1" :class="{'w-full':onMobile}" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
+            </div :class="msValid">
 
-            <div v-else-if="inputType == 'password'" class="select-none flex flex-wrap" >
+            <div v-else-if="inputType == 'password'" class="select-none flex flex-wrap" :class="msValid">
 
                 <span class=" select-none lg:flex-1" :class="{'w-full':!onMobile}">{{inputVname}}</span>
-                <input :type="inputType" autocomplete="off"  class="msPasswordInput focus:outline-none focus:shadow-outline lg:flex-1 "  :class="{'w-9/12':onMobile}" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
+                <input :index="msInputIndex" :type="inputType" autocomplete="off"  class="msPasswordInput focus:outline-none focus:shadow-outline lg:flex-1 "  :class="{'w-9/12':onMobile}" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
 
                 <div class="msPasswordVisible" :class="{'w-3/12':onMobile}" v-on:click="visiblePassowrd"
 
@@ -49,23 +47,23 @@
 
               </div>
 
-            <div v-else-if="inputType == 'email'" lass="flex flex-wrap">
+            <div v-else-if="inputType == 'email'" class="flex flex-wrap" :class="msValid">
                 <span class=" select-none lg:mr-2" >{{inputVname}}</span>
-                <input :type="inputType" style="min-width: 60%;" autocomplete="off" class="border focus:outline-none focus:shadow-outline"  :class="{'w-full':onMobile}"  :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
+                <input :index="msInputIndex" :type="inputType" style="min-width: 60%;" autocomplete="off" class="border focus:outline-none focus:shadow-outline"  :class="{'w-full':onMobile}"  :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
             </div>
 
-            <div v-else-if="inputType == 'number'" lass="flex flex-wrap">
+            <div v-else-if="inputType == 'number'" class="flex flex-wrap" :class="msValid">
                 <span class=" select-none lg:mr-2" >{{inputVname}}</span>
-                <input :type="inputType" style="min-width: 50%;" autocomplete="off" class="border focus:outline-none focus:shadow-outline"  :class="{'w-full':onMobile}"  :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
+                <input :index="msInputIndex" :type="inputType" style="min-width: 50%;" autocomplete="off" class="border focus:outline-none focus:shadow-outline"  :class="{'w-full':onMobile}"  :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
             </div>
 
 
-            <div v-if="inputType == 'file'" class="flex flex-wrap">
+            <div v-if="inputType == 'file'" class="flex flex-wrap" :class="msValid"  >
                 <span class=" select-none" :class="{'w-4/12 mr-2':!onMobile}">{{inputVname}}</span>
-                <input :type="inputType"  class="text-center border focus:outline-none focus:shadow-outline " :class="{'w-11/12':onMobile}" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
+                <input :index="msInputIndex" :type="inputType"  class="text-center border focus:outline-none focus:shadow-outline " :class="{'w-11/12':onMobile}" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
             </div>
 
-            <div v-if="inputType == 'radio'" class="flex flex-wrap">
+            <div v-if="inputType == 'radio'" class="flex flex-wrap" :class="msValid">
                 <span class=" select-none" :class="{'w-4/12 mr-2':!onMobile,'w-full':onMobile}">{{inputVname}}</span>
 
                 <div :class="{
@@ -83,7 +81,7 @@
 
             </div>
 
-            <div v-if="inputType == 'checkbox'" class="flex flex-wrap">
+            <div v-if="inputType == 'checkbox'" class="flex flex-wrap" :class="msValid">
                 <span class=" select-none" :class="{'w-4/12 mr-2':!onMobile,'w-full':onMobile}">{{inputVname}}</span>
 
                 <div :class="{
@@ -101,9 +99,9 @@
 
             </div>
 
-            <div  v-if="msValid == 'is-invalid'" class="flex flex-wrap">
+            <div  v-if="msValid == 'is-invalid'" class="flex flex-wrap"  >
 
-                <small v-if="msValid == 'is-invalid'" class="text-left bg-red-200 w-full" :id="inputName +'_error'" >
+                <small class="text-left bg-red-200 w-full" >
 
                     <div v-for="item in inputError" class="" role="alert" style="font-size: smaller;
     padding: 5px;">
@@ -349,7 +347,7 @@
 </template>
 
 <script>
-    import MS from '../MS';
+    import MS from './MS';
     // import  MDD from 'mobile-device-detect';
     // //console.log(MS);
     export default {
@@ -365,7 +363,7 @@
                 type: Number,
                 required: true
             },
-            'msGroupIndex':{
+            'msInputIndex':{
                 type: Number,
                 required: true
             }
@@ -554,15 +552,38 @@
                         if(error)error=0;
                     }else {
                         error=1;
-                        this.inputError.MinLen="Min. "+inputLen+" char. required";
+
+                       var  str="";
+
+                        switch (this.inputType) {
+                            case 'checkbox':
+                                this.inputError.MinLen="Min. "+inputLen+" Selection required";
+                                break;
+                            default:
+                                this.inputError.MinLen="Min. "+inputLen+" char. required";
+                                break ;
+                        }
+
+
+
                     }
 
 
                     if (!error) {
                         //this.$parent.msFormDataValue[];
+
+                        this.$parent.removeError(this.inputName);
                         this.msValid="is-valid";
                     }else{
+                        this.$parent.setError(
 
+                        {
+                            inputName:this.inputName,
+                                errors:this.inputError
+                        }
+
+
+                        );
                         this.msValid="is-invalid";
                     }
 
@@ -767,6 +788,15 @@
         @apply border;
         @apply flex-wrap;
 
+    }
+    .is-invalid{
+        @apply border;
+        @apply border-red-600;
+
+    }
+    .is-invalid > span{
+        @apply text-red-600;
+        @apply font-medium;
     }
 
 </style>

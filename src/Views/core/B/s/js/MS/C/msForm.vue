@@ -150,7 +150,7 @@
 </template>
 
 <script>
-    import MS from '../MS';
+    import MS from './MS';
    /// console.log(MS);
     export default {
         name: "msform",
@@ -337,7 +337,8 @@
 
                 var data =  this.postLink(link,formData,this);
 
-                //console.log(data);
+
+              //  console.log(data);
                 // console.log($('form'));
 
 
@@ -379,6 +380,20 @@
 
 
                 this.$parent.setMsError(data,this.$refs);
+
+            },
+            setError(data){
+                this.allErrors.push(data);
+            }
+            ,
+            removeError(key){
+
+               // console.log(key);
+                var fkey=this.allErrors.findIndex(o => o.inputName == key);
+              //  console.log(fkey);
+                if(fkey != -1)this.allErrors.splice(fkey,1);
+
+
 
             }
 
