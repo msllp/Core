@@ -10,19 +10,19 @@
 
 
             <div v-if="inputType == 'locked'" class="flex flex-wrap" :class="msValid">
-                <span class=" select-none" :class="{'w-4/12 mr-2':!onMobile}">{{inputVname}}</span>
-                <i class="fas p2 ml-2 mt-1 fa-qrcode mr-2"></i><input :type="inputType" disabled autocomplete="off" class="text-center border focus:outline-none focus:shadow-outline" :class="{'w-11/12':onMobile}" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
+                <span class=" select-none lg:mr-2" >{{inputVname}}</span>
+                <i class="fas p2 ml-2 mt-1 fa-qrcode mr-2"></i><input :type="inputType" disabled autocomplete="off" class="text-center border focus:outline-none focus:shadow-outline lg:flex-1" :class="{'w-full':onMobile}" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
             </div>
 
-            <div v-if="inputType == 'text'"  class="flex flex-wrap">
+            <div v-if="inputType == 'text'"  class="flex flex-wrap" :class="msValid">
             <span class=" select-none lg:mr-2" >{{inputVname}}</span>
-            <input :index="msInputIndex" :type="inputType"  autocomplete="off" class=" border focus:outline-none focus:shadow-outline lg:flex-1" :class="{'w-full':onMobile}" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
-            </div :class="msValid">
+            <input :index="msInputIndex"  :placeholder="'Enter '+inputVname+' here'" :type="inputType"  autocomplete="off" class=" border focus:outline-none focus:shadow-outline lg:flex-1" :class="{'w-full':onMobile}" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
+            </div >
 
             <div v-else-if="inputType == 'password'" class="select-none flex flex-wrap" :class="msValid">
 
                 <span class=" select-none lg:flex-1" :class="{'w-full':!onMobile}">{{inputVname}}</span>
-                <input :index="msInputIndex" :type="inputType" autocomplete="off"  class="msPasswordInput focus:outline-none focus:shadow-outline lg:flex-1 "  :class="{'w-9/12':onMobile}" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
+                <input :index="msInputIndex"  :placeholder="'Enter '+inputVname+' here'" :type="inputType" autocomplete="off"  class="msPasswordInput focus:outline-none focus:shadow-outline lg:flex-1 "  :class="{'w-9/12':onMobile}" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
 
                 <div class="msPasswordVisible" :class="{'w-3/12':onMobile}" v-on:click="visiblePassowrd"
 
@@ -49,18 +49,18 @@
 
             <div v-else-if="inputType == 'email'" class="flex flex-wrap" :class="msValid">
                 <span class=" select-none lg:mr-2" >{{inputVname}}</span>
-                <input :index="msInputIndex" :type="inputType" style="min-width: 60%;" autocomplete="off" class="border focus:outline-none focus:shadow-outline"  :class="{'w-full':onMobile}"  :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
+                <input :index="msInputIndex" :placeholder="'Enter '+inputVname+' here'" :type="inputType" style="min-width: 60%;" autocomplete="off" class="border focus:outline-none focus:shadow-outline lg:flex-1"  :class="{'w-full':onMobile}"  :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
             </div>
 
             <div v-else-if="inputType == 'number'" class="flex flex-wrap" :class="msValid">
                 <span class=" select-none lg:mr-2" >{{inputVname}}</span>
-                <input :index="msInputIndex" :type="inputType" style="min-width: 50%;" autocomplete="off" class="border focus:outline-none focus:shadow-outline"  :class="{'w-full':onMobile}"  :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
+                <input :index="msInputIndex" :type="inputType" style="min-width: 50%;" autocomplete="off" class="border focus:outline-none focus:shadow-outline lg:flex-1"  :class="{'w-full':onMobile}"  :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
             </div>
 
 
             <div v-if="inputType == 'file'" class="flex flex-wrap" :class="msValid"  >
-                <span class=" select-none" :class="{'w-4/12 mr-2':!onMobile}">{{inputVname}}</span>
-                <input :index="msInputIndex" :type="inputType"  class="text-center border focus:outline-none focus:shadow-outline " :class="{'w-11/12':onMobile}" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
+                <span class=" select-none  lg:mr-2">{{inputVname}}</span>
+                <input :index="msInputIndex" :type="inputType"  class="text-center border focus:outline-none focus:shadow-outline lg:flex-1 " :class="{'w-full':onMobile}" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
             </div>
 
             <div v-if="inputType == 'radio'" class="flex flex-wrap" :class="msValid">
@@ -98,6 +98,20 @@
 
 
             </div>
+
+
+
+            <div v-if="inputType == 'date'" class="flex flex-wrap" :class="msValid"  >
+                <span class=" select-none lg:mr-2" >{{inputVname}}</span>
+                <input :index="msInputIndex" :type="inputType"  class="text-center border focus:outline-none focus:shadow-outline lg:flex-1" :class="{'w-full':onMobile}" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
+            </div>
+
+            <div v-if="inputType == 'textarea'" class="flex flex-wrap" :class="msValid"  >
+                <span class=" select-none lg:mr-2" >{{inputVname}}</span>
+                <textarea :index="msInputIndex" :type="inputType"  class="border focus:outline-none focus:shadow-outline lg:flex-1" :class="{'w-full':onMobile}"  :name="inputName"  v-model="msValue" :id="msData.msGroupIndex"> </textarea>
+            </div>
+
+
 
             <div  v-if="msValid == 'is-invalid'" class="flex flex-wrap"  >
 
@@ -448,9 +462,21 @@
             //     this.msValue=this.dValue;
             //     //this.$parent.setInputData(this.inputName,this.dValue);
             // }
+            if(this.inputType == 'date'){
+                var utc =new Date().toISOString( 'en',{ timeZone: 'Asia/Kolkata'}).slice(0, 10);
+
+                var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+                var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, 10);
+
+        //   console.log((new Date(Date.now() - tzoffset)).getTimezoneOffset());
+
+               this.msValue=localISOTime;
+            }
             this.$parent.setInputData(this.inputName,this.msValue);
 
             if ( window.innerWidth < 800  )this.onMobile=true;
+
+
             // this.inputAuto.push({
             //         dText: 'hello',
             //         dValue:10,
