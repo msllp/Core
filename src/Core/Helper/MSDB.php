@@ -629,9 +629,16 @@ class MSDB implements MasterNoSql
 
     }
 
-    public function displayFrom(){
+    public function displayFrom($formId=null){
 
-        $f=new \MS\Core\Helper\MSForm($this->masterNamespace,$this->database['id']);
+        if($formId != null){
+            
+            $f=new \MS\Core\Helper\MSForm($this->masterNamespace,$this->database['id'],null,['formID'=>$formId]);
+        }else{
+            $f=new \MS\Core\Helper\MSForm($this->masterNamespace,$this->database['id']);
+        }
+
+
        return $f->fromModel($this)->view();
     }
 

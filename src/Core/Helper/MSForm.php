@@ -9,11 +9,51 @@
 namespace MS\Core\Helper;
 
 
+use function GuzzleHttp\default_user_agent;
+
 class MSForm
 {
 
 
-    public function __construct(string $namespace,string $id=null,string $perFix=null,array $data=[])
+
+    public $returnHTML =[
+        //   '<div  class="accordion">'
+    ];
+
+
+    public static $optionalStyleKeys=[
+        'prefix'=>'prefix',
+        'perfix'=>'perfix',
+        'inputClass'=>'inputClass',
+        'formClass'=>'formClass',
+        'onlyInput'=>'inputOnly',
+
+
+    ];
+
+    public static $optionalStyleKeysWithDynamicValue=[
+        'inputSize'=>'inputSize'
+    ];
+    public $namespace,$id,$perFix,$data,$msdb,$fields,$dbMaster,$action;
+    public $newForm=true;
+
+    public $accessAction=['add','back'];
+
+    public $attachedAction=[];
+
+    public $formID=null;
+
+
+
+
+    /**
+     * MSForm constructor.
+     * @param \MS\Core\Helper\string $namespace
+     * @param \MS\Core\Helper\string|null $id
+     * @param \MS\Core\Helper\string|null $perFix
+     * @param array $data
+     */
+    public function __construct(string $namespace, string $id=null, string $perFix=null, array $data=[])
     {
 
         $this->namespace=$namespace;
@@ -25,7 +65,23 @@ class MSForm
        // $this->actionButton=[];
 
 
+        foreach ($data as $v=>$k){
 
+            switch ($v){
+
+                case 'formID':
+                    //dd($this);
+                  $this->formID=$k;
+                    break;
+
+                default:
+                    break;
+
+            }
+
+        //    dd($this);
+
+        }
 
 
 
@@ -35,34 +91,40 @@ class MSForm
 
 
 
-    public $returnHTML =[
-         //   '<div  class="accordion">'
-        ];
+    /**
+     * @return array
+     */
+    private function getAttachedAction()
+    {
+        return $this->attachedAction;
+    }
 
-
-    public static $optionalStyleKeys=[
-        'prefix'=>'prefix',
-        'perfix'=>'perfix',
-        'inputClass'=>'inputClass',
-        'formClass'=>'formClass',
-        'onlyInput'=>'inputOnly',
-
-
-        ];
-
-    public static $optionalStyleKeysWithDynamicValue=[
-        'inputSize'=>'inputSize'
-    ];
-    public $namespace,$id,$perFix,$data,$msdb,$fields,$dbMaster;
-    public $newForm=true;
-
-    public $accessAction=['add','back'];
+    /**
+     * @return mixed
+     */
+    private function getAction()
+    {
+        return $this->action;
+    }
 
 
 
     private function viewActionBtn(){
+//$this->attachedAction[]='add';
+        if(count($this->getAttachedAction())>0){
 
-        return  $this->make4VueButtonArray($this->action);
+            $mData=[];
+            $allAction=$this->getAction();
+            $attachedAction=$this->getAttachedAction();
+            foreach ( $attachedAction as $v){
+            if(array_key_exists($v,$allAction))$mData[$v]=$allAction[$v];
+            }
+            //dd($mData);
+            return  $this->make4VueButtonArray($mData);
+        }else{
+            return  $this->make4VueButtonArray($this->getAction());
+        }
+
         return view("MS::core.layouts.Form.button.buttonGroup")->with('data',$this->action)->render();
         dd($this);
     }
@@ -294,6 +356,19 @@ class MSForm
 //
 //    }
 
+    /**
+     *
+     * This is a Function to add action button to form with action ID .
+     * This action ID should described in Table File.
+     * @param $actioId
+     * @return void
+     *
+     */
+    public function attachAction($actioId):void {
+
+    $this->attachedAction[]=$actioId;
+
+    }
     private function make4Vue($str){
             $str= strtolower(str_replace(' ','_',$str)) ;
             return $str;
@@ -318,6 +393,7 @@ class MSForm
 //                $title=>$fieldsArray
 //
 //            ];
+         //   dd($fieldsArray);
             foreach ($fieldsArray as $fieldName){
                 $aray=$this->getFieldFromFields($fieldName);
 //                if(array_key_exists('fieldGroupMultiple',$this->dbMaster) && $this->dbMaster['fieldGroupMultiple'])
@@ -455,8 +531,35 @@ class MSForm
 
         if(array_key_exists('fieldGroup',$this->dbMaster)){
             $getFields=true;
-            $fields=$this->makeFieldsFromGroup($this->dbMaster['fieldGroup'])  ;
-            $this->returnHTML['formData']=$fields;
+
+            if($this->formID != null){
+              //  dd($this);
+                if(array_key_exists($this->formID,$this->dbMaster['MSforms'])){
+//dd($this);
+                    $data=$this->dbMaster['MSforms'][$this->formID];
+                  //  dd( $data);
+                        $fData=[];
+                    foreach ($data['groups'] as $k){
+                        if(array_key_exists($k,$this->dbMaster['fieldGroup']))$fData[$k]=$this->dbMaster['fieldGroup'][$k];
+                    }
+                }
+//dd($fData);
+
+                $fields=$this->makeFieldsFromGroup($fData)  ;
+                $this->returnHTML['formData']=$fields;
+           //     if()mod_Tables
+
+
+            }else{
+
+                $fields=$this->makeFieldsFromGroup($this->dbMaster['fieldGroup'])  ;
+                $this->returnHTML['formData']=$fields;
+
+            }
+
+
+
+
 //            if(array_key_exists('fieldGroupMultiple',$this->dbMaster))
 //            {
 //                $this->returnHTML['multipleGroup']= $this-> map4Vue( $this->dbMaster['fieldGroupMultiple']);
