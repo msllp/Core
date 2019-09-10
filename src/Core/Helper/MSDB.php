@@ -629,10 +629,10 @@ class MSDB implements MasterNoSql
 
     }
 
-    public function displayFrom($formId=null){
+    public function displayForm($formId=null){
 
         if($formId != null){
-            
+
             $f=new \MS\Core\Helper\MSForm($this->masterNamespace,$this->database['id'],null,['formID'=>$formId]);
         }else{
             $f=new \MS\Core\Helper\MSForm($this->masterNamespace,$this->database['id']);
