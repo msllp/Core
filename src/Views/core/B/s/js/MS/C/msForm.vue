@@ -1,6 +1,14 @@
 <template>
 
-    <div style="padding-bottom: 75px;" class="bg-white border">
+    <div  class="bg-white border">
+        <div v-if="msData.hasOwnProperty('formTitle')"  clasa="w-full">
+            <div class="px-5 py-2 text-xl bg-blue-200 font-medium  subpixel-antialiased  select-none">
+            <i class="fab fa-wpforms pr-2 text-black-500 fa-2x"></i>
+                {{ msData.formTitle }}
+            </div>
+
+        </div>
+
 
     <div class="block ">
 
@@ -378,12 +386,58 @@
 
                 //    console.log(data);
 
+     //           this.$emit('setMsError',data,this.$refs);
 
-                this.$parent.setMsError(data,this.$refs);
+       //         this.$refs.msFrom.setMsError(data,this.$refs);
+
+                //this.$root.setMsError(data,this.$refs);
+                this.setMsError(data);
 
             },
             setError(data){
                 this.allErrors.push(data);
+
+
+
+            },
+            setMsError:function (Data) {
+
+                this.mserror=Data;
+                //  console.log(Data);
+
+                //  console.log(Data);
+
+                for (var inputName in Data){
+                    var key=inputName.toString().toLowerCase();
+                    //
+                    if(this.$refs.hasOwnProperty(key) && this.$refs[key].hasOwnProperty(0)){
+                        // console.log(inputName);
+                        this.$refs[key][0].setError();
+                        this.$refs[key][0].inputError=Data[inputName];
+                        this.allErrors.push(
+                            {
+                                inputName:inputName,
+                                errors:Data[inputName]
+                            }
+
+
+                        );
+                    }
+
+
+                }
+
+                //    this.mserror.forEach(function(value, index) {
+                //        var key=value.name.toString();
+                //        this.$refs[key].setError();
+                //        this.$refs[key].inputError=value.msg;
+                //
+                // //       console.log(this.$refs[key].getValue());
+                //
+                //    },this)
+                this.mserrorCount=true;
+                //   console.log(this.mserror);
+
             }
             ,
             removeError(key){

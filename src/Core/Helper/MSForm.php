@@ -542,10 +542,13 @@ class MSForm
                     foreach ($data['groups'] as $k){
                         if(array_key_exists($k,$this->dbMaster['fieldGroup']))$fData[$k]=$this->dbMaster['fieldGroup'][$k];
                     }
+//dd($data);
+                    $this->returnHTML['formTitle']=$data['title'];
                 }
 //dd($fData);
 
                 $fields=$this->makeFieldsFromGroup($fData)  ;
+             //   dd($fields);
                 $this->returnHTML['formData']=$fields;
            //     if()mod_Tables
 
@@ -660,7 +663,7 @@ class MSForm
         $this->returnHTML['actionButton']=$this->viewActionBtn();
      //   $this->returnHTML[]='</div>';
       //  dd($this->returnHTML);
-      //  return view("MS::core.layouts.Form.formPlateRaw")->with("form",$this->returnHTML);
+      // return view("MS::core.layouts.Form.formPlateRaw")->with("form",$this->returnHTML);
         return view("MS::core.layouts.Form.formPlate")->with("form",$this->returnHTML);
         return view("MS::core.layouts.Form.formPlate")->with("form",implode("",$this->returnHTML));
         return implode("",$this->returnHTML);

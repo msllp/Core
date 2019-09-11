@@ -68,6 +68,7 @@ postLink(link,data,classFor){
             Freturn.data=response.data;
         })
         .catch(function (error) {
+            console.log(error.response.status);
             Freturn.error=error.response.data.errors;
             // console.log(error.response.data);
             classFor.setAllMsError(Freturn.error);
