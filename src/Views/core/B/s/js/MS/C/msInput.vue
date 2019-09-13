@@ -106,10 +106,26 @@
                 <input :index="msInputIndex" :type="inputType"  class="text-center border focus:outline-none focus:shadow-outline lg:flex-1" :class="{'w-full':onMobile}" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
             </div>
 
+            <div v-if="inputType == 'time'" class="flex flex-wrap" :class="msValid"  >
+                <span class=" select-none lg:mr-2" >{{inputVname}}</span>
+                <input :index="msInputIndex" :type="inputType"  class="text-center border focus:outline-none focus:shadow-outline lg:flex-1" :class="{'w-full':onMobile}" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
+            </div>
+
             <div v-if="inputType == 'textarea'" class="flex flex-wrap" :class="msValid"  >
                 <span class=" select-none lg:mr-2" >{{inputVname}}</span>
                 <textarea :index="msInputIndex" :type="inputType"  class="border focus:outline-none focus:shadow-outline lg:flex-1" :class="{'w-full':onMobile}"  :name="inputName"  v-model="msValue" :id="msData.msGroupIndex"> </textarea>
             </div>
+
+            <div v-if="inputType == 'option'" class="flex flex-wrap" :class="msValid">
+
+                <span class=" select-none" :class="{'w-4/12 mr-2':!onMobile,'w-full':onMobile}">{{inputVname}}</span>
+
+                <select :name="inputName" class="border focus:outline-none focus:shadow-outline lg:flex-1" :class="{'w-full':onMobile}" size="1" v-model="msValue" >
+                    <option v-for="(radio,key) in msData.verifyBy.msdata" v-bind:value="radio[msData.verifyBy.value]" > {{ forNice(radio[msData.verifyBy.text]) }}</option>
+                </select>
+
+            </div>
+
 
 
 
@@ -634,6 +650,7 @@
             },
             customSetValue(val){
                 if(this.inputType== 'checkbox'){
+
                 if(!this.in_array(val,this.inputChecked)){
                     this.inputChecked.push(val);
 

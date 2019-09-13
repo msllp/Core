@@ -66,6 +66,7 @@ Vue.component('msviewpanel', require('./MS/msViewpanel.vue').default);
 Vue.component('msdashboard', require('./MS/msDashboard.vue').default);
 Vue.component('mswindow', require('./MS/msWindow.vue').default);
 Vue.component('msmenubar', require('./MS/msMenubar.vue').default);
+Vue.component('msdatatable', require('./MS/msDatatable.vue').default);
 Vue.component('msdockerdashboard', require('E:/MS-Master/Projects/FrameworkPHP/gst_invoice/Master/MS/B/M/DCM/V/Vue/dockerMasterDashboard.vue').default);
 
 //Components

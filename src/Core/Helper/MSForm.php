@@ -327,34 +327,7 @@ class MSForm
 
     }
 
-//    private function makeFieldsFromGroup_old($groupArray){
-//            $returnArray=[];
-//
-//            foreach ($groupArray as $title=>$fieldsArray){
-//                $returnArray[]=[
-//                    'vName'=>$title,
-//                    'input'=>'gourpHeading',
-//                    $title=>$fieldsArray
-//
-//                ];
-//                foreach ($fieldsArray as $fieldName){
-//                    $aray=$this->getFieldFromFields($fieldName);
-//                    if(array_key_exists('fieldGroupMultiple',$this->dbMaster))
-//                    $aray['groupInput']=$this->dbMaster['fieldGroupMultiple'];
-//
-//                    $returnArray[]=$aray;
-//                }
-//
-//                $returnArray[]=[
-//                    'vName'=>$title,
-//                    'input'=>'gourpEnd',
-//
-//                ];
-//
-//            }
-//    return $returnArray;
-//
-//    }
+
 
     /**
      *

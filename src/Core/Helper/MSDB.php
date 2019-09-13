@@ -86,6 +86,7 @@ class MSDB implements MasterNoSql
                     foreach ($columnArray as $value) {
 
                         if(array_key_exists('name',$value) && array_key_exists('name',$value) )
+                          if(!array_key_exists('type',$value))$value['type']='string';
                             self::makeTableColumnWhenTableMaking($table,$value['name'],$value['type']);
                     }
 
@@ -641,6 +642,20 @@ class MSDB implements MasterNoSql
 
        return $f->fromModel($this)->view();
     }
+
+    public function viewData($viewId=null){
+
+        if($viewId != null){
+
+            $f=new \MS\Core\Helper\MSTable($this->masterNamespace,$this->database['id'],null,['viewID'=>$viewId]);
+        }else{
+            $f=new \MS\Core\Helper\MSTable($this->masterNamespace,$this->database['id']);
+        }
+        //dd($f);
+
+        return $f->fromModel($this)->view();
+    }
+
 
     public function notify(){
 

@@ -2,13 +2,12 @@
 
     <div  class="bg-white border">
         <div v-if="msData.hasOwnProperty('formTitle')"  clasa="w-full">
-            <div class="px-5 py-2 text-xl bg-blue-200 font-medium  subpixel-antialiased  select-none">
-            <i class="fab fa-wpforms pr-2 text-black-500 fa-2x"></i>
+            <div class="px-5 py-2 text-xl bg-blue-200 font-medium  subpixel-antialiased  select-none  cursor-not-allowed">
+            <i class="fab fa-wpforms pr-2 text-black-500 hover:font-bold"></i>
                 {{ msData.formTitle }}
             </div>
 
         </div>
-
 
     <div class="block ">
 
@@ -77,22 +76,7 @@
 
     </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <div v-if="false">
+    <div v-if="false">
         <h1></h1>
         <form class="ms-form" enctype="multipart/form-data" type="post">
 
