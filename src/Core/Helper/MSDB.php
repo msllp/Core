@@ -20,7 +20,7 @@ class MSDB implements MasterNoSql
 {
 
 
-    public $model,$database,$masterNamespace,$dataToProcess,$e;
+    public $model,$database,$masterNamespace,$dataToProcess,$e,$fTableName,$connection;
 
     public $ms_id="0";
 
@@ -53,13 +53,26 @@ class MSDB implements MasterNoSql
         if(count($perFix)>0 )$this->database['perfix']=$perFix;
         //if()
 
+
+
+
+
         if(array_key_exists('perfix',$this->database)) {
             $this->model = new $this->database['namespace'] ($nameSpace, $id, $this->database['perfix']);
         }else{
             $this->model = new $this->database['namespace'] ($nameSpace, $id);
         }
+
+
         //parent::__construct($nameSpace, $id, $perFix);
         $this->mod_Tables[$this->ms_id]=$this->model->ms_base::getTableArray($this->ms_id);
+
+
+        $connection=$this->model->getConnectionName();
+        $tableName=$this->model->getTable();
+        $this->fTableName=$tableName;
+        $this->connection=$connection;
+        $this->MSmodel =\DB::connection($connection)->table($tableName);
     }
 
     private static $dbStore=['MS','DB','Master' ];
@@ -270,6 +283,11 @@ class MSDB implements MasterNoSql
      * @return bool
      */
 
+    public function rowAll(){
+
+        return $this->MSmodel->get()->toArray();
+
+    }
     public function rowAdd(array $columnArray, array $uniqArray=[]):bool
     {
         if(!array_key_exists('created_at',$columnArray))$columnArray['created_at']=now()->toDateTimeString();
@@ -829,5 +847,23 @@ class MSDB implements MasterNoSql
 
     public static function backDB(string $name=null){
 
+    }
+
+    public function ForPagination($page){
+        $page=$page->all()['page'];
+       // \Paginator::setCurrentPage($page);
+        $data= [
+'fromV'=>[
+
+
+           // 'tableTitle'=>"",
+           // 'tableColumns'=>[],
+            'tableData'=>$this->MSmodel->paginate( 1, ['*'], 'page', $page )
+
+]
+        ];
+
+        return response()->json(  $data ,200);
+       // return $this->MSmodel->paginate( 1, ['*'], 'page', $page );
     }
 }

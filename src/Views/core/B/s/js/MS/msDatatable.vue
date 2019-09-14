@@ -1,85 +1,117 @@
 <template>
     <div>
 
-        <h3 class="title is-3">Vue v1 Search and Pagination</h3>
-        <h5 class="subtitle is-5">
-            credit :
-            <a href="http://bulma.io/">bulma</a>,
-            <a href="https://vuejs.org/">vuejs</a>,
-            <a href="http://chancejs.com/">chancejs</a>,
-            <a href="http://lodash.com/">lodash</a>
-        </h5>
-        <div class="box m-form">
-            <label class="label">Search Person Name</label>
-            <div class="control is-grouped">
-                <p class="control is-expanded">
-                    <input class="input" v-model="searchItem" v-on:keyup="searchInTheList(searchItem)" type="text" placeholder="Find a person">
-                    <span class="help is-dark"><strong>{{filteredItems.length | numeral}}</strong> of {{items.length | numeral}} person found</span>
-                </p>
-                <p class="control">
-                    <a class="button is-info" v-on:click="clearSearchItem" v-bind:class="{'is-disabled': searchItem==''}">
-                        Clear
-                    </a>
-                </p>
-            </div>
-        </div>
-        <div class="box m-tags">
-            <span><strong>{{selectedItems.length}}</strong> person selected</span>
-            <div class="m-tags-items">
-                <a v-for="item in selectedItems" v-on:click="removeSelectedItem(item)" class="tag is-dark is-small">
-                    {{item.name}}
-                    <button class="delete is-small"></button>
-                </a>
-            </div>
-        </div>
-        <nav class="pagination m-pagination">
-            <a class="button" v-on:click="selectPage(this.pagination.currentPage-1)" v-bind:class="{'is-disabled': this.pagination.currentPage==this.pagination.items[0] || this.pagination.items.length==0}">Previous</a>
-            <a class="button" v-on:click="selectPage(this.pagination.currentPage+1)" v-bind:class="{'is-disabled': this.pagination.currentPage==this.pagination.items[this.pagination.items.length-1] || this.pagination.items.length==0}">Next page</a>
-            <ul>
-                <li>
-                    <a class="button" v-on:click="selectPage(pagination.items[0])" v-bind:class="{'is-disabled': this.pagination.currentPage==this.pagination.items[0] || this.pagination.items.length==0}">
-                        First
-                    </a>
-                </li>
-                <li class="is-space"></li>
-                <li v-for="item in pagination.filteredItems">
-                    <a class="button" v-on:click="selectPage(item)" v-bind:class="{'is-info': item == pagination.currentPage}">{{item | numeral}}</a>
-                </li>
-                <li class="is-space"></li>
-                <li>
-                    <a class="button" v-on:click="selectPage(pagination.items[pagination.items.length-1])" v-bind:class="{'is-disabled': this.pagination.currentPage==this.pagination.items[this.pagination.items.length-1] || this.pagination.items.length==0}">
-                        Last
-                    </a>
-                </li>
-            </ul>
-        </nav>
-        <div class="m-table">
-            <table class="table is-bordered is-striped is-narrow">
-                <tr>
-                    <th class="m-table-index">#</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Address</th>
-                    <th>Phone</th>
-                    <th></th>
+        <div>
+
+            <table class="table-auto">
+
+                <tr class="border">
+                    <th v-for="column in msAllData.fromV.tableColumns" class="border"> {{  column.vName }}</th>
                 </tr>
-                <tr v-for="item in paginatedItems">
-                    <td>{{item.key}}</td>
-                    <td>{{item.name}}</td>
-                    <td>{{item.email}}</td>
-                    <td>{{item.address}}</td>
-                    <td>{{item.phone}}</td>
-                    <td><a class="button is-info is-outlined" v-on:click="selectItem(item)">Select</a></td>
+
+                <tr v-for="row in msAllData.fromV.tableData.data" class="border">
+
+                    <td  v-for="column,index in msAllData.fromV.tableColumns"  class="border">
+                        {{ column.type }}
+                        {{ row[index] }}
+                    </td>
+
                 </tr>
+
             </table>
+            <div class="bg-blue-300" v-on:click="getDataFromSerevr(msAllData.fromV.tableData.prev_page_url)" > Prev </div>
+            <div class="bg-blue-300" v-on:click="getDataFromSerevr(msAllData.fromV.tableData.next_page_url)" > Next </div>
+
+
+
         </div>
 
-    </div>
+
+        <div v-if="false">
+            <h3 class="title is-3">Vue v1 Search and Pagination</h3>
+            <h5 class="subtitle is-5">
+                credit :
+                <a href="http://bulma.io/">bulma</a>,
+                <a href="https://vuejs.org/">vuejs</a>,
+                <a href="http://chancejs.com/">chancejs</a>,
+                <a href="http://lodash.com/">lodash</a>
+            </h5>
+            <div class="box m-form">
+                <label class="label">Search Person Name</label>
+                <div class="control is-grouped">
+                    <p class="control is-expanded">
+                        <input class="input" v-model="searchItem" v-on:keyup="searchInTheList(searchItem)" type="text" placeholder="Find a person">
+                        <span class="help is-dark"><strong>{{filteredItems.length | numeral}}</strong> of {{items.length | numeral}} person found</span>
+                    </p>
+                    <p class="control">
+                        <a class="button is-info" v-on:click="clearSearchItem" v-bind:class="{'is-disabled': searchItem==''}">
+                            Clear
+                        </a>
+                    </p>
+                </div>
+            </div>
+            <div class="box m-tags">
+                <span><strong>{{selectedItems.length}}</strong> person selected</span>
+                <div class="m-tags-items">
+                    <a v-for="item in selectedItems" v-on:click="removeSelectedItem(item)" class="tag is-dark is-small">
+                        {{item.name}}
+                        <button class="delete is-small"></button>
+                    </a>
+                </div>
+            </div>
+            <nav class="pagination m-pagination">
+                <a class="button" v-on:click="selectPage(this.pagination.currentPage-1)" v-bind:class="{'is-disabled': this.pagination.currentPage==this.pagination.items[0] || this.pagination.items.length==0}">Previous</a>
+                <a class="button" v-on:click="selectPage(this.pagination.currentPage+1)" v-bind:class="{'is-disabled': this.pagination.currentPage==this.pagination.items[this.pagination.items.length-1] || this.pagination.items.length==0}">Next page</a>
+                <ul>
+                    <li>
+                        <a class="button" v-on:click="selectPage(pagination.items[0])" v-bind:class="{'is-disabled': this.pagination.currentPage==this.pagination.items[0] || this.pagination.items.length==0}">
+                            First
+                        </a>
+                    </li>
+                    <li class="is-space"></li>
+                    <li v-for="item in pagination.filteredItems">
+                        <a class="button" v-on:click="selectPage(item)" v-bind:class="{'is-info': item == pagination.currentPage}">{{item | numeral}}</a>
+                    </li>
+                    <li class="is-space"></li>
+                    <li>
+                        <a class="button" v-on:click="selectPage(pagination.items[pagination.items.length-1])" v-bind:class="{'is-disabled': this.pagination.currentPage==this.pagination.items[this.pagination.items.length-1] || this.pagination.items.length==0}">
+                            Last
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="m-table">
+                <table class="table is-bordered is-striped is-narrow">
+                    <tr>
+                        <th class="m-table-index">#</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Address</th>
+                        <th>Phone</th>
+                        <th></th>
+                    </tr>
+                    <tr v-for="item in paginatedItems">
+                        <td>{{item.key}}</td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.email}}</td>
+                        <td>{{item.address}}</td>
+                        <td>{{item.phone}}</td>
+                        <td><a class="button is-info is-outlined" v-on:click="selectItem(item)">Select</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+
+        </div>
 </template>
 
 <script>
+    import MS from './C/MS';
+
     export default {
         name: "msDatatable",
+        mixins:[MS],
         props:{
             'msData':{
                 type: Object,
@@ -90,7 +122,7 @@
         data:function () {
             return {
                 searchItem: '',
-                items: items,
+                items: this.msData.fromV.tableData,
                 filteredItems: [],
                 paginatedItems: [],
                 selectedItems: [],
@@ -100,14 +132,16 @@
                     itemPerPage: 8,
                     items: [],
                     filteredItems: [],
-                }
+                },
+                msAllData:this.msData,
             }
         },
         ready() {
             this.filteredItems = this.items
             this.buildPagination()
             this.selectPage(1)
-        },clearSearchItem(){
+        },
+        clearSearchItem(){
             this.searchItem = undefined
             this.searchInTheList('')
         },
@@ -185,6 +219,19 @@
             this.searchInTheList(this.searchItem, this.pagination.currentPage)
         },
         methods:{
+            setHtml(data){
+                //console.log(data);
+
+                this.msAllData.fromV.tableData=data.fromV.tableData;
+                //this.msAllData.fromV.tableColumns=this.msData.fromV.tableColumns;
+                //this.msAllData.fromV.tableTitle=this.msData.fromV.tableColumns;
+            },
+            getDataFromSerevr(link){
+                var data = this.getGetLink(link,this);
+
+            },
+
+
             clearSearchItem(){
                 this.searchItem = undefined
                 this.searchInTheList('')

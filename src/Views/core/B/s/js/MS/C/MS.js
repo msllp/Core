@@ -29,7 +29,7 @@ validateLen(str,size=1){
 },
 
 getGetLink(url,classFor){
-    url=url+"?dataLink=true"
+ //   url=url+"?dataLink=true"
     var returnX="";
     var self = classFor ;
 
@@ -49,6 +49,8 @@ getGetLink(url,classFor){
         .finally( response => {
         });
 
+
+    return returnX;
 
 
 },
