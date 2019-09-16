@@ -34,7 +34,7 @@
 
         </ul>
 
-        <div >
+        <div class="flex flex-wrap">
             <div v-for="(tab,index) in allTab" class="flex">
 
 

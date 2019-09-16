@@ -79,6 +79,8 @@ class MSDB implements MasterNoSql
 
     private static $dbSource=['MS','DB','Master','blank','blank' ];
 
+    public $perPage=1;
+
     /**
      * Static Raw drop Table Function
      * @param string $tableName
@@ -852,13 +854,13 @@ class MSDB implements MasterNoSql
     public function ForPagination($page){
         $page=$page->all()['page'];
        // \Paginator::setCurrentPage($page);
+
+
         $data= [
-'fromV'=>[
-
-
+            'fromV'=>[
            // 'tableTitle'=>"",
            // 'tableColumns'=>[],
-            'tableData'=>$this->MSmodel->paginate( 1, ['*'], 'page', $page )
+            'tableData'=>$this->MSmodel->paginate( $this->perPage, ['*'], 'page', $page )
 
 ]
         ];

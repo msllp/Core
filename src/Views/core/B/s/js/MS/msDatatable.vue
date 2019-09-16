@@ -19,9 +19,33 @@
                 </tr>
 
             </table>
-            <div class="bg-blue-300" v-on:click="getDataFromSerevr(msAllData.fromV.tableData.prev_page_url)" > Prev </div>
-            <div class="bg-blue-300" v-on:click="getDataFromSerevr(msAllData.fromV.tableData.next_page_url)" > Next </div>
+            <div  class="flex flex-wrap " >
+                <div class="w-8/12">Showing {{ msAllData.fromV.tableData.from }} to {{ msAllData.fromV.tableData.to }}of {{msAllData.fromV.tableData.total}} entries</div>
+                <div class="w-4/12text-right">Page: {{msAllData.fromV.tableData.current_page }} / {{ msAllData.fromV.tableData.last_page }}</div>
 
+            </div>
+            <div  class="flex flex-wrap text-center cursor-pointer" >
+                <div class="ms-btn flex-1" :class="{
+                'cursor-not-allowed':(msAllData.fromV.tableData.prev_page_url == null)}" v-on:click="getDataFromSerevr(msAllData.fromV.tableData.prev_page_url)" >
+                    <i class="fas fa-angle-left"></i>
+                </div>
+
+                <div class="ms-btn flex-1" :class="{
+                'bg-blue-200':(msAllData.fromV.tableData.current_page == n),
+                'bg-blue-400':(msAllData.fromV.tableData.current_page != n),
+                'text-white':(msAllData.fromV.tableData.current_page != n),
+                'cursor-not-allowed':(msAllData.fromV.tableData.current_page == n)
+                }" v-for="n in msAllData.fromV.tableData.last_page"
+                     v-on:click="getPage(n)"
+                > {{ n }} {{(msAllData.fromV.tableData.current_page == n)  }}</div>
+
+                <div class="ms-btn  flex-1"  :class="{
+                'cursor-not-allowed':(msAllData.fromV.tableData.next_page_url == null)}" v-on:click="getDataFromSerevr(msAllData.fromV.tableData.next_page_url)" >
+                    <i class="fas fa-angle-right"></i> </div>
+                <div class="ms-btn  flex-1"  :class="{
+                'cursor-not-allowed':(msAllData.fromV.tableData.next_page_url == null)}" v-on:click="getDataFromSerevr(msAllData.fromV.tableData.next_page_url)" >
+                    <i class="fas fa-angle-double-right"></i> </div>
+            </div>
 
 
         </div>
@@ -133,13 +157,17 @@
                     items: [],
                     filteredItems: [],
                 },
+
                 msAllData:this.msData,
+                msPath:this.msData.fromV.tableData.path,
+
             }
         },
         ready() {
             this.filteredItems = this.items
             this.buildPagination()
             this.selectPage(1)
+
         },
         clearSearchItem(){
             this.searchItem = undefined
@@ -230,7 +258,27 @@
                 var data = this.getGetLink(link,this);
 
             },
+            getPage(page){
+                var data=[
+                {
+                    name:'page',
+                    value:page
+                }];
 
+
+                var link=this.makeLink(data);
+                this.getDataFromSerevr(link)
+                //console.log(link);
+
+            },makeLink(parameter){
+                var q=[];
+               //let para ;
+                for(var para in parameter){
+                    q.push(parameter[para].name+'='+parameter[para].value);
+                }
+
+                return this.msPath+"?"+q.join();
+            },
 
             clearSearchItem(){
                 this.searchItem = undefined

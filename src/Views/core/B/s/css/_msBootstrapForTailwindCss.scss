@@ -6,3 +6,20 @@
 @tailwind components;
 
 @tailwind utilities;
+
+
+.ms-btn{
+    //@apply bg-gray-300;
+
+    @apply border-t;
+    @apply border-b;
+    @apply border-r;
+    @apply px-3 py-1;
+    @apply text-sm;
+    @apply font-semibold;
+  //  @apply text-gray-700;
+}
+
+.ms-btn:hover{
+    //@apply bg-gray-400;
+}

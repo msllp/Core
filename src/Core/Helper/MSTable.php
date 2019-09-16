@@ -20,7 +20,7 @@ class MSTable
     public $namespace,$id,$perFix,$data,$msdb,$fields,$dbMaster,$action;
     public $viewID=null;
     public $attachedAction=[];
-
+    public $perPage=1;
        /**
         * MSForm constructor.
         * @param \MS\Core\Helper\string $namespace
@@ -88,7 +88,7 @@ class MSTable
                 $fArray[$vueData['fc']]=$this->makeArrayForColumns($this->dbMaster['MSViews'][$this->viewID]['groups'] );
                // dd($this->msdb->rowAll());
                 //dd($this->dbMaster['MSViews'][$this->viewID]['paginationLink']);
-                $fArray[$vueData['data']]=$this->msdb->MSmodel->paginate(1)->withPath(route($this->dbMaster['MSViews'][$this->viewID]['paginationLink']));
+                $fArray[$vueData['data']]=$this->msdb->MSmodel->paginate($this->perPage)->withPath(route($this->dbMaster['MSViews'][$this->viewID]['paginationLink']));
 
            // dd($this->msdb->MSmodel->paginate(1));
             }
