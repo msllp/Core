@@ -18,6 +18,7 @@ class MSTable
     public $returnHTML =[];
 
     public $namespace,$id,$perFix,$data,$msdb,$fields,$dbMaster,$action;
+    public $dynamicData=[];
     public $viewID=null;
     public $attachedAction=[];
     public $perPage=1;
@@ -66,8 +67,9 @@ class MSTable
         $this->msdb=$dbClass;
         $this->action=$this->fields=$this->msdb->model->ms_action;;
         $this->fields=$this->msdb->model->base_Field;
-        if(count($data)>0)$this->newForm=false;
+       // if(count($data)>0)$this->newForm=false;
         $this->makeTable();
+      //  dd($this);
         return $this;
     }
 
@@ -78,6 +80,7 @@ class MSTable
                 'n'=>'tableTitle',
                 'fc'=>'tableColumns',
                 'data'=>'tableData',
+                'ddata'=>'tableFromOther'
 
             ];
 
@@ -90,6 +93,7 @@ class MSTable
                 //dd($this->dbMaster['MSViews'][$this->viewID]['paginationLink']);
                 $fArray[$vueData['data']]=$this->msdb->MSmodel->paginate($this->perPage)->withPath(route($this->dbMaster['MSViews'][$this->viewID]['paginationLink']));
 
+                $fArray[$vueData['ddata']]=$this->dynamicData;
            // dd($this->msdb->MSmodel->paginate(1));
             }
         $fArray[$vueData['data']]->links();
@@ -117,6 +121,24 @@ class MSTable
 
                     if(!array_key_exists($colName,$allFileds)){
                         $colD=collect($this->fields)->where('name',$colName)->first();
+
+
+                        switch ($colD['input']){
+                            case 'radio':
+                              //  dd($colD);
+
+                                if(array_key_exists('validation',$colD)){
+                                    if(array_key_exists('existIn',$colD['validation'])){
+                                        $this->dynamicData[$colD['name']]=\MS\Core\Helper\MSForm::getDataFromTable($colD['validation']['existIn']);
+                                        //dd(\MS\Core\Helper\MSForm::getDataFromTable($colD['validation']['existIn']));
+                                    }
+                                }
+
+                                break;
+
+                            default:
+                                break;
+                        }
 
                         switch ($colName){
 
@@ -151,6 +173,7 @@ class MSTable
 
 
         }
+      //  dd($this);
         return $allFileds;
         //dd($allFileds);
         //dd(collect($$this->fields)->where('name',));

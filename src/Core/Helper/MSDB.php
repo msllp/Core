@@ -852,18 +852,31 @@ class MSDB implements MasterNoSql
     }
 
     public function ForPagination($page){
-        $page=$page->all()['page'];
-       // \Paginator::setCurrentPage($page);
+        $input=$page->all();
+        $data=[];
+        $page=$input['page'];
+      //  dd($input);
+        
+        if(array_key_exists('page',$input) && array_key_exists('q',$input) &&  array_key_exists('by',$input) ){
 
+            $data['fromV']= [
+                // 'tableTitle'=>"",
+                // 'tableColumns'=>[],
+                'tableData'=>$this->MSmodel->where($input['by'],'like',"%".$input['q']."%")->paginate( $this->perPage, ['*'], 'page', $page )
+            ];
+           // dd($data);
 
-        $data= [
-            'fromV'=>[
-           // 'tableTitle'=>"",
-           // 'tableColumns'=>[],
-            'tableData'=>$this->MSmodel->paginate( $this->perPage, ['*'], 'page', $page )
+        }elseif (array_key_exists('page',$input) ){
+            $data['fromV']= [
+                // 'tableTitle'=>"",
+                // 'tableColumns'=>[],
+                'tableData'=>$this->MSmodel->paginate( $this->perPage, ['*'], 'page', $page )
+            ];
+        }
+        
 
-]
-        ];
+    
+
 
         return response()->json(  $data ,200);
        // return $this->MSmodel->paginate( 1, ['*'], 'page', $page );
