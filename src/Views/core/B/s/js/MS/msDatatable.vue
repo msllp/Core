@@ -31,7 +31,7 @@
 
                 <tr v-for="row in msAllData.fromV.tableData.data" class="border">
 
-                    <td    v-for="column,index in msAllData.fromV.tableColumns"  class="border p-1 text-center">
+                    <td    v-for="column,index in msAllData.fromV.tableColumns"  class="border p-1 text-center cursor-wait" :title="column.vName" >
 
 
                         <span v-if="(column.type =='text') || (column.type =='number') || (column.type =='email') || (column.type =='textarea') || (column.type =='password') || (column.type =='auto')  ">
@@ -57,14 +57,16 @@
                         <span v-if="column.type =='option' && (true)" ></span>
                         <span v-if="column.type =='checkbox' && (true)"  ></span>
                         <span v-if="column.type =='radio' && (true)"  >
-                             <span v-if="msData.fromV.tableFromOther.hasOwnProperty(index)" class="">
+                             <span v-if="msData.fromV.tableFromOther.hasOwnProperty(index)" class=" select-none" >
 
-                            <i class="fas"
+                            <i class="fas "
                             :class="{
-                            'text-green-500':row[index]==1,
+                            'fa-chevron-right':!(row[index]==1||(row[index]== 0)),
+                            'text-blue-500':!(row[index]==1||(row[index]== 0)),
+                            'text-green-500':(row[index]==1) ||(row[index]=='1'),
                             'text-red-500':row[index]==0,
-                            'fa-power-off':row[index]==1,
-                            'fa-power-off':row[index]==0,
+                            'fa-power-off':row[index]==1||(row[index]== 0),
+
 
                             }"
                             ></i>
