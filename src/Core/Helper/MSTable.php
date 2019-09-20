@@ -21,7 +21,7 @@ class MSTable
     public $dynamicData=[];
     public $viewID=null;
     public $attachedAction=[];
-    public $perPage=1;
+    public $perPage=5;
        /**
         * MSForm constructor.
         * @param \MS\Core\Helper\string $namespace
@@ -201,7 +201,7 @@ dd($array);
    // public function
 
     public function view(){
-
+        return view("MS::core.layouts.Table.tablePlateRaw")->with("table",$this->returnHTML);
         return view("MS::core.layouts.Table.tablePlate")->with("table",$this->returnHTML);
     }
 

@@ -36,10 +36,10 @@
         },
 
         mounted() {
-            data=new Object();
+            var data=new Object();
             data.modUrl="http://gst.ms/MAS";
             this.getGetLink(data.modUrl,this);
-            console.log(this.getGetLink(this.msData.modUrl,this));
+            //console.log(this.getGetLink(this.msData.modUrl,this));
         },
         methods:{
             updateTab(data){
@@ -56,12 +56,12 @@
                     el: '#mswindow'+this.index,
                     template:data,
                 });
-                console.log(data);
+               // console.log(data);
             },
 
             setMsError(data){
                 this.data.push(data);
-                console.log(data);
+         //       console.log(data);
             }
         },
         components : {

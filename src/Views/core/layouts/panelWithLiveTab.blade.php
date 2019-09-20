@@ -5,7 +5,7 @@
 
 @section('body')
 
-    <msviewpanel>
+    <msviewpanel >
 
 
     </msviewpanel>

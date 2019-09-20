@@ -20,15 +20,16 @@ class MSDB implements MasterNoSql
 {
 
 
-    public $model,$database,$masterNamespace,$dataToProcess,$e,$fTableName,$connection;
-
+    public $model,$database,$masterNamespace,$e,$fTableName,$connection,$CurrentError;
+public $dataToProcess=[];
+    public $currentFiles=[];
     public $ms_id="0";
 
     public $r=null;
 
     private $filePaths=[];
 
-    public function attachRequest($r){
+    public function attachR($r){
         $this->r=$r;
         return $this;
     }
@@ -79,7 +80,7 @@ class MSDB implements MasterNoSql
 
     private static $dbSource=['MS','DB','Master','blank','blank' ];
 
-    public $perPage=1;
+    public $perPage=5;
 
     /**
      * Static Raw drop Table Function
@@ -331,6 +332,8 @@ class MSDB implements MasterNoSql
                         }
                         break;
 
+
+
                 }
 
 
@@ -409,6 +412,7 @@ class MSDB implements MasterNoSql
 
             //var_dump($k.": ");
             //var_dump(gettype($v));
+           // if($k == 'test10')   dd($this->r->hasFile($k));
             switch (gettype($v)){
                 case 'integer':
                     $rArray[$k]=$v;
@@ -433,15 +437,36 @@ class MSDB implements MasterNoSql
                     break;
                 case 'array':
 
+                    //dd($this->r->hasFile($k));
                     if(($this->r !="") && $this->r->hasFile($k) ){
+
+
+
                         $fileData=[];
-                        foreach ($v as $k1=>$v1){
-                        //dd($v1->isValid());
-                        if($v1->isValid()){
-                            $fileData[]=$this->storeFileFromRequest($v1,$k);
+
+
+
+                        if(array_key_exists('length',$v)){
+                            if($v[0]->isValid()){
+                                $fileData[]=$this->storeFileFromRequest($v[0],$k);
+
+                            }
+                        }else{
+
+                            foreach ($v as $k1=>$v1){
+                                if(gettype($v1) == 'string')dd($k1);
+                                //dd($v1->isValid());
+                                //dd($v);
+                                if($v1->isValid()){
+                                    $fileData[]=$this->storeFileFromRequest($v1,$k);
+                                    
+                                }
+                            }
 
                         }
-                        }
+
+
+
                         $rArray[$k]=(string)collect($fileData)->toJson();
 
                     }else{
@@ -459,6 +484,7 @@ class MSDB implements MasterNoSql
         dd($rArray);
     }
 
+    ///File Store Functions START
     private function getArrayFromString($str,$type=1){
         $returnData=[];
         switch ($type){
@@ -538,7 +564,9 @@ class MSDB implements MasterNoSql
         dd($fileData);
 
 }
+    ///File Store Functions END
 
+    ///Table Functions START
     /**
      * Edit Row From any valid Column Value
      * @param array $identifier
@@ -641,7 +669,7 @@ class MSDB implements MasterNoSql
         return $return;
 
     }
-
+    ///Table Functions END
 
     public function getAllTable(string $connection=null):array {
         if($connection !=""){
@@ -650,10 +678,12 @@ class MSDB implements MasterNoSql
 
     }
 
+    ///View Functions START
     public function displayForm($formId=null){
 
         if($formId != null){
 
+            
             $f=new \MS\Core\Helper\MSForm($this->masterNamespace,$this->database['id'],null,['formID'=>$formId]);
         }else{
             $f=new \MS\Core\Helper\MSForm($this->masterNamespace,$this->database['id']);
@@ -675,7 +705,7 @@ class MSDB implements MasterNoSql
 
         return $f->fromModel($this)->view();
     }
-
+    ///View Functions END
 
     public function notify(){
 
@@ -741,14 +771,14 @@ class MSDB implements MasterNoSql
         return $fData;
     }
 
-    public function checkRulesForData($r){
+    public function checkRulesForData($r=null){
 
-
+        if($r==null)$r=$this->r;
 
         $b=implode('\\',[$this->masterNamespace,'B']);
         $data= $this->filterData($r->all()) ;
        $rules= $b::getAllRules($this->ms_id);
-//dd($rules);
+
        //dd($b::getAllMessage($this->ms_id,$rules));
        //foreach ()
         //displayFromdd($b::getAllAttr($this->ms_id,$rules));
@@ -764,6 +794,8 @@ class MSDB implements MasterNoSql
         //$validator->passes();
         //dd($validator->errors());
         $e=$validator->errors();
+        $this->CurrentError=$e;
+        //dd(count($e));
        // dd($e);
         $this->dataToProcess=$data;
         $this->e=$e;
@@ -856,7 +888,7 @@ class MSDB implements MasterNoSql
         $data=[];
         $page=$input['page'];
       //  dd($input);
-        
+        if(array_key_exists('perpage',$input))$this->perPage=$input['perpage'];
         if(array_key_exists('page',$input) && array_key_exists('q',$input) &&  array_key_exists('by',$input) ){
 
             $data['fromV']= [
@@ -880,5 +912,15 @@ class MSDB implements MasterNoSql
 
         return response()->json(  $data ,200);
        // return $this->MSmodel->paginate( 1, ['*'], 'page', $page );
+    }
+
+
+    public function add(){
+        if(count($this->dataToProcess)>0){
+            return $this->rowAdd($this->dataToProcess);
+        }else{
+            return false;
+        }
+
     }
 }

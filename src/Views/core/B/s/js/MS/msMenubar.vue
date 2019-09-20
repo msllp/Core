@@ -110,7 +110,7 @@
 </template>
 
 <script>
-    import menuData from '../components/support/menu-data';
+   // import menuData from '../components/support/menu-data';
     import kebabCase from 'lodash/kebabCase';
     import MS from './C/MS';
 
@@ -124,13 +124,16 @@
                 type: Boolean,
                 required: true,
                 default:true
+            },'msData2':{
+                type:Object,
+                required: true
             }
         },
         data(){
             return {
                 contextSection: '',
                 menuItens: [],
-                menuData: menuData,
+                menuData: [],
                 activeSubMenu: '',
                 msNavigationOn:true,
                 msNavClass:'ms-nav',
@@ -217,7 +220,11 @@
             },
         },
         mounted() {
-
+             console.log(this.msData2);
+             var test =this.msData2;
+            // console.log(test);
+            this.msData2= test;
+        //    this.menuItens=this.msData;
             this.msNavigationOn=Boolean(Number(this.msNav));
             if(this.msNavigationOn && ( window.innerWidth < 800  ))this.msNavigationOn=0;
         }

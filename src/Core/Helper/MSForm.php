@@ -312,6 +312,7 @@ class MSForm
         $this->fields=$this->msdb->model->base_Field;
         if(count($data)>0)$this->newForm=false;
         $this->makeForm();
+        
         return $this;
 
     }
@@ -319,9 +320,11 @@ class MSForm
     private function getFieldFromFields($name){
         $fields=$this->fields;
         $field=collect($fields)->where('name',$name);
+
         if($field->count()> 0){
             return $field->first();
         }
+
 
 
 
@@ -368,26 +371,33 @@ class MSForm
 //            ];
          //   dd($fieldsArray);
             foreach ($fieldsArray as $fieldName){
-                $aray=$this->getFieldFromFields($fieldName);
+                if(($fieldName == 'created_at') && ($fieldName =='updated_at')) dd($fieldName);
+                if(($fieldName != 'created_at') && ($fieldName !='updated_at')){
+
+
+                    $aray=$this->getFieldFromFields($fieldName);
 //                if(array_key_exists('fieldGroupMultiple',$this->dbMaster) && $this->dbMaster['fieldGroupMultiple'])
 //                    $aray['groupInput']=$this->make4Vue($title);
 
-              //  $returnArray[$this->make4Vue($title)]['inputs'][]= $this->makeDataForVue($aray);
-                $returnArray[$this->make4Vue($title)]['gruoupHeading']=$title;
-                if(array_key_exists('fieldGroupMultiple',$this->dbMaster) && in_array($title,$this->dbMaster['fieldGroupMultiple']))
-                {
-                   // if($aray == null)dd($fieldsArray);
-                 //   if($aray == null)dd($aray);
-                    $returnArray[$this->make4Vue($title)]['inputs'][]= $this->makeDataForVue($aray,true);
-                    $returnArray[$this->make4Vue($title)]['groupDynamic']=true;
+                    //  $returnArray[$this->make4Vue($title)]['inputs'][]= $this->makeDataForVue($aray);
+                    $returnArray[$this->make4Vue($title)]['gruoupHeading']=$title;
+                    if(array_key_exists('fieldGroupMultiple',$this->dbMaster) && in_array($title,$this->dbMaster['fieldGroupMultiple']))
+                    {
+                        // if($aray == null)dd($fieldsArray);
+                        //   if($aray == null)dd($aray);
+                        $returnArray[$this->make4Vue($title)]['inputs'][]= $this->makeDataForVue($aray,true);
+                        $returnArray[$this->make4Vue($title)]['groupDynamic']=true;
 
-                }else{
+                    }else{
+                        //dd($title);
+                        if($aray == null)dd("ERROR 90.3 : Programing Fatal Bug in ".__CLASS__);
 
-                    if($aray == null)dd("ERROR 90.3 : Programing Fatal Bug in ".__CLASS__);
+                        $returnArray[$this->make4Vue($title)]['inputs'][]= $this->makeDataForVue($aray);
+                        $returnArray[$this->make4Vue($title)]['groupDynamic']=false;
+                    }
 
-                    $returnArray[$this->make4Vue($title)]['inputs'][]= $this->makeDataForVue($aray);
-                    $returnArray[$this->make4Vue($title)]['groupDynamic']=false;
                 }
+
 
 
             }
@@ -506,12 +516,13 @@ class MSForm
             $getFields=true;
 
             if($this->formID != null){
-              //  dd($this);
+             //   dd($this->formID);
+                $fData=[];
                 if(array_key_exists($this->formID,$this->dbMaster['MSforms'])){
 //dd($this);
                     $data=$this->dbMaster['MSforms'][$this->formID];
                   //  dd( $data);
-                        $fData=[];
+
                     foreach ($data['groups'] as $k){
                         if(array_key_exists($k,$this->dbMaster['fieldGroup']))$fData[$k]=$this->dbMaster['fieldGroup'][$k];
                     }
@@ -519,6 +530,7 @@ class MSForm
                     $this->returnHTML['formTitle']=$data['title'];
                 }
 //dd($fData);
+
 
                 $fields=$this->makeFieldsFromGroup($fData)  ;
              //   dd($fields);

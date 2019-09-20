@@ -27,7 +27,33 @@ validateLen(str,size=1){
     var re = new RegExp("^(?=.{"+size+",})");
     return  re.test(str);
 },
+        getGetRaw(url,classFor,callBack){
+            //   url=url+"?dataLink=true"
+            var returnX="OK";
 
+
+            let re= axios.get(url)
+                .then(
+                    function(response){
+                        var Handler=classFor;
+                       // classFor.[callBack](response.data);
+                        Handler[callBack](response.data);
+                        returnX=response.data;
+                    }
+                )
+                .catch(function (error) {
+                    // handle error
+                    returnX=error.response.data;
+                    //  console.log(error.response.data);
+                })
+                .finally( response => {
+                });
+
+
+            return  this.returnX;
+
+
+        },
 getGetLink(url,classFor){
  //   url=url+"?dataLink=true"
     var returnX="";
@@ -70,7 +96,8 @@ postLink(link,data,classFor){
             Freturn.data=response.data;
         })
         .catch(function (error) {
-            console.log(error.response.status);
+         //   console.log(error.response.status);
+           // console.log(error.response.data);
             Freturn.error=error.response.data.errors;
             // console.log(error.response.data);
             classFor.setAllMsError(Freturn.error);
@@ -223,8 +250,18 @@ ms_rand(length,type=1) {
         result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     return result;
-}
 },
+        makeGetUrl(path,parameter){
+            var q=[];
+            //let para ;
+            for(var para in parameter){
+                q.push(parameter[para].name+'='+parameter[para].value);
+            }
+
+            return path+"?"+q.join('&');
+        }
+
+}
 
 
 }

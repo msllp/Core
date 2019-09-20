@@ -61,7 +61,7 @@ var appDir = path.dirname(require.main.filename);
 //Vue.component('msgst', require('./components/msGST.vue').default);
 Vue.component('msinput', require('./MS/C/msInput.vue').default);
 Vue.component('msform', require('./MS/C/msForm.vue').default);
-Vue.component('msmenu', require('./components/msMenu.vue').default);
+//Vue.component('msmenu', require('./components/msMenu.vue').default);
 Vue.component('msviewpanel', require('./MS/msViewpanel.vue').default);
 Vue.component('msdashboard', require('./MS/msDashboard.vue').default);
 Vue.component('mswindow', require('./MS/msWindow.vue').default);

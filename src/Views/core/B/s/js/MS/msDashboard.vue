@@ -49,7 +49,7 @@
             </nav>
         </div>
 
-        <ms-menubar ref="msMenull" :ms-nav ="msNavOn" ></ms-menubar>
+        <msmenubar ref="msMenull" :ms-nav ="msNavOn" :ms-data2="msMenuData" ></msmenubar>
 
         <div style=""
         :class="{
@@ -64,19 +64,28 @@
 </template>
 
 <script>
-    import msMenubar from './msMenubar';
+    import  MS  from './C/MS';
+   // import msMenubar from './msMenubar';
     export default {
-        name: "msdashboard",
+        name: "msdashboard", mixins: [MS],
         data() {
             return {
               //  msRoot:app,
                 msNavOn:true,
                 msMenuOn:false,
                 msNavBar:true,
-                windowWidth:window.innerWidth
+                windowWidth:window.innerWidth,
+                msMenuData:{},
+
 
 
             }
+        },props:{
+            'msData':{
+                type: Object,
+                required: true
+            }
+
         }
         ,
         methods:{
@@ -117,6 +126,32 @@
             driveRequestFromNavToLiveTab(data){
 
                     this.$refs['ms-live-tab'].addActionToTab(data);
+            },
+
+            getDataForSideBar(){
+                var data = [
+                    {
+                        name:'accessToken',
+                        value:this.msData.accessToken
+                    },
+
+                    {
+                        name:'type',
+                        value:'json'
+                    },
+                    {
+                        name:'find',
+                        value:'sidebar'
+                    }
+
+                ];
+                var link = this.makeGetUrl(this.msData.path.sidebar,data);
+                this.getGetRaw(link,this,'setMenuData');
+
+            },
+            setMenuData(data){
+
+                this.msMenuData=data.items;
             }
 
 
@@ -124,6 +159,9 @@
         mounted() {
 
             if(this.msNavOn && ( window.innerWidth < 800  ))this.msNavOn=false;
+        },
+        beforeMount(){
+            this.getDataForSideBar();
         }
 
         ,
@@ -134,7 +172,7 @@
 
 
         components : {
-            msMenubar
+          //  msMenubar
         }
     }
 </script>

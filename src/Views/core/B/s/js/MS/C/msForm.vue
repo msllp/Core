@@ -3,7 +3,7 @@
     <div  class="bg-white border">
         <div v-if="msData.hasOwnProperty('formTitle')"  clasa="w-full">
             <div class="px-5 py-2 text-xl bg-blue-200 font-medium  subpixel-antialiased  select-none  cursor-not-allowed">
-            <i class="fab fa-wpforms pr-2 text-black-500 hover:font-bold"></i>
+            <i class="fab fa-wpforms pr-2 font-black-500 hover:font-bold"></i>
                 {{ msData.formTitle }}
             </div>
 
@@ -306,10 +306,15 @@
                 var signLink="http://gst.ms/MAS/core/signRequest";
 
                 for(var propertyName in this.msFormDataFinal) {
-                    //console.log(propertyName);
+
+
                     if(this.msFormDataFinal[propertyName] instanceof Object){
+                        var d=this.$refs[propertyName]
+
+                     //   console.log(d.msValue);
 
                         for(var file in this.msFormDataFinal[propertyName]){
+
                             formData.append(propertyName+"["+file+"]",this.msFormDataFinal[propertyName][file]);
                         }
 
@@ -386,30 +391,38 @@
             },
             setMsError:function (Data) {
 
-                this.mserror=Data;
-                //  console.log(Data);
+                if(Data != undefined){
+                    this.mserror=Data;
+                    //console.log(Data);
+                    alert('Opps,,System need some more inputs please find highlihted inputs.');
+                    //  console.log(Data);
 
-                //  console.log(Data);
+                    for (var inputName in Data){
+                        var key=inputName.toString().toLowerCase();
+                        //
+                        //console.log(inputName);
+                        if(this.$refs.hasOwnProperty(key) && this.$refs[key].hasOwnProperty(0)){
 
-                for (var inputName in Data){
-                    var key=inputName.toString().toLowerCase();
-                    //
-                    if(this.$refs.hasOwnProperty(key) && this.$refs[key].hasOwnProperty(0)){
-                        // console.log(inputName);
-                        this.$refs[key][0].setError();
-                        this.$refs[key][0].inputError=Data[inputName];
-                        this.allErrors.push(
-                            {
-                                inputName:inputName,
-                                errors:Data[inputName]
-                            }
+                            this.$refs[key][0].setError();
+                            this.$refs[key][0].inputError=Data[inputName];
+                            this.allErrors.push(
+                                {
+                                    inputName:inputName,
+                                    errors:Data[inputName]
+                                }
 
 
-                        );
+                            );
+                        }
+                    }
+
+                }else{
+                        alert('Opps,,System had some wrong enviroment to work please reload your page. Sorry & Thank you.');
                     }
 
 
-                }
+
+
 
                 //    this.mserror.forEach(function(value, index) {
                 //        var key=value.name.toString();

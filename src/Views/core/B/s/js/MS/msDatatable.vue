@@ -2,31 +2,47 @@
     <div>
 
         <div>
-            <div  class="flex flex-wrap p-2 " >
-                <div class=" w-1/2 "></div>
-                <div class="shadow-outline w-1/2 ">
+            <div  class="flex flex-wrap border  border-blue-400 p-1" >
 
-                    <div class ="w-1/4 m-2 ">Search </div>
 
-                    <input type="text" class="w-2/4 ml-2 mb-2 border focus:outline-none focus:shadow-outline" v-model="msSearch">
-                    <select   v-model="msSearchBy" class="w-1/4 m-1  border focus:outline-none focus:shadow-outline">
+                <div class="flex-1 p-2 border-blue-300  border-l border-t border-b ">
+                    <div class="flex flex-wrap">
+                    <div class ="flex-1 pr-5">Search </div>
+                    <input type="text" class="flex-1  border focus:outline-none focus:shadow-outline shadow" v-model="msSearch">
+                    <select   v-model="msSearchBy" class="flex-1  border focus:outline-none focus:shadow-outline shadow">
                         <option value="ms0" disabled selected>Please Select Column to search</option>
                         <option :value="index"  v-for="column,index,key in msAllData.fromV.tableColumns"  >{{  column.vName }}</option>
                     </select>
+
+                    </div>
+                </div>
+
+
+
+                <div class="flex-1 border-blue-300 border p-2">
+
+
+                        <div class="flex flex-wrap  ">
+                            <div class ="flex-1 text-right pr-5">Per page rows </div>
+                            <select   v-model="msPerPage" class="flex-1   border focus:outline-none focus:shadow-outline shadow">
+
+                                <option :value="column"  v-for="column,index,key in msPerPageData"  >{{  column }}</option>
+                            </select>
+
+                            <div class ="flex-1 ">to display </div>
+                        </div>
 
 
                 </div>
 
 
 
-
-
             </div>
-            {{msSearchBy}}
+
             <table class="table-auto">
 
-                <tr class="border">
-                    <th v-for="column in msAllData.fromV.tableColumns" class="border"> {{  column.vName }}</th>
+                <tr class="border border-blue-500 border-t-2">
+                    <th v-for="column in msAllData.fromV.tableColumns" class="border bg-blue-200"> {{  column.vName }}</th>
                 </tr>
 
                 <tr v-for="row in msAllData.fromV.tableData.data" class="border">
@@ -84,7 +100,7 @@
 
             </table>
             <div  class="flex flex-wrap " >
-                <div class="w-8/12">Showing {{ msAllData.fromV.tableData.from }} to {{ msAllData.fromV.tableData.to }}of {{msAllData.fromV.tableData.total}} entries</div>
+                <div class="w-8/12">Showing {{ msAllData.fromV.tableData.from }} to {{ msAllData.fromV.tableData.to }} of {{msAllData.fromV.tableData.total}} total entries</div>
                 <div class="w-4/12text-right">Page: {{msAllData.fromV.tableData.current_page }} / {{ msAllData.fromV.tableData.last_page }}</div>
 
             </div>
@@ -138,13 +154,16 @@
                 msAllData:null,
                 msPath:null,
                 msSearchBy:'ms0',
-                msSearch:""
+                msSearch:"",
+                msPerPage:10,
+                msPerPageData:['5','10','20','30','50','100']
 
             }
         },
         beforeMount() {
             this.msAllData=this.msData;
             this.msPath=this.msData.fromV.tableData.path;
+            this.msPerPage= this.msData.fromV.tableData.per_page;
           //  msSearch=this.msAllData.fromV.tableData.columns
 
         },
@@ -166,7 +185,10 @@
                 {
                     name:'page',
                     value:page
-                }
+                }, {
+                        name:'perpage',
+                        value:this.msPerPage
+                    },
                 ];
 
 
@@ -189,12 +211,16 @@
                     {
                         name:'by',
                         value:this.msSearchBy
-                    }
+                    },
+                    {
+                        name:'perpage',
+                        value:this.msPerPage
+                    },
                 ];
 
 
                 var link=this.makeLink(data);
-                this.getDataFromSerevr(link)
+                this.getDataFromSerevr(link);
               //  console.log(link);
 
             }
@@ -236,18 +262,40 @@
 
                 return data;
 
+            },
+            changePerPage(val){
+
+                var data=[
+                    {
+                        name:'page',
+                        value:1
+                    },
+
+                    {
+                        name:'perpage',
+                        value:val
+                    },
+                ];
+
+
+                var link=this.makeLink(data);
+                this.getDataFromSerevr(link);
             }
 
 
         },
         watch:{
-            msSearch(oldVal,newVal){
+            msSearch(newVal,oldVal){
 
                 if((newVal.length > 2) && (this.msSearchBy !="ms0")){
                     this.getSearch(newVal);
 
                 }
                 if((newVal.length == 0 ))this.getPage(1);
+            },msPerPage(newVal,oldVal){
+
+                this.changePerPage(newVal);
+
             }
         }
     }
