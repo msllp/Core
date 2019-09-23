@@ -1,0 +1,44 @@
+.ms-nav-container{
+    z-index: 2501;
+    position: fixed;
+}
+
+.ms-livebox{
+    position: sticky;
+    min-height: 1000px;
+    margin-left:252px;
+    padding-top: 62px;
+    background: #0c5460 cover;
+    z-index: 2500;
+
+}
+.ms-livebox-full{
+   // padding-left: 82px;
+}
+
+
+
+.hidden{
+    transition: all 500ms ease-in-out;
+}
+
+.ms-company-logo {
+    cursor: pointer;
+    max-height:70px;
+}
+
+.ms-hidden-fix{
+    padding-left: 0px;
+}
+
+.ms-hidden-fix-2{
+    padding-top: 10px;
+    padding-left: 0px;
+}
+
+.ms-nav-btn > .fa {
+    margin: 5px;
+}
+.ms-nav-btn > .a {
+    padding-top: 8px;
+}

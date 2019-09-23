@@ -1,0 +1,39 @@
+
+
+
+.ms-nav-mian-div{
+    position: absolute;
+    top:72px;
+    @apply px-3;
+    @apply py-2;
+    @apply bg-blue-300;
+    @applay border;
+    min-width:250px;
+    max-width:250px;
+    @apply select-none;
+
+
+
+}
+
+.ms-nav-div{
+
+
+}
+
+.ms-main-title{
+    @apply w-full;
+    @apply border-b;
+    @apply border-r;
+    @apply mb-2;
+    font-size:12px;
+    @apply cursor-pointer;
+    transition : all 500ms;
+}
+
+.ms-main-title:hover{
+    @apply border;
+    @apply shadow;
+    font-size:18px;
+    transition : all 500ms;
+}

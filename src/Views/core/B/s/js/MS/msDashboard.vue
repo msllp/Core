@@ -1,7 +1,7 @@
 <template>
 
-    <div>
-        <div class="fixed w-full" >
+    <div class="ms-dashboard-container">
+        <div class="fixed w-full ms-nav-container" >
             <nav class="flex items-center justify-between flex-wrap bg-teal-100  lg:p-1  object-cover " style="min-height: 70px;">
                 <div v-on:click="hideNavBar($event)" class="flex items-center flex-shrink-0 text-black mr-6">
 
@@ -49,11 +49,11 @@
             </nav>
         </div>
 
-        <msmenubar ref="msMenull" :ms-nav ="msNavOn" :ms-data2="msMenuData" ></msmenubar>
+        <mssidenav ref="msMenuSide" :ms-nav ="msNavOn"  ></mssidenav>
 
         <div style=""
         :class="{
-        'ms-livebox border-t border-b border-l shadow ':true,
+        'ms-livebox bg-white-200 ':true,
         'ms-livebox-full':!msNavOn
         }"
         >
@@ -75,7 +75,7 @@
                 msMenuOn:false,
                 msNavBar:true,
                 windowWidth:window.innerWidth,
-                msMenuData:{},
+                msMenuData:null,
 
 
 
@@ -146,22 +146,83 @@
 
                 ];
                 var link = this.makeGetUrl(this.msData.path.sidebar,data);
-                this.getGetRaw(link,this,'setMenuData');
+              //  console.log(link);
+               this.getGetRaw(link,this,'setMenuData');
+                   var Han=this.$refs['msMenuSide'];
+
+              //  console.log(this.msMenuData);
+                    console.log(   this.sendNavDatatoBar());
+                  // var root= this.$root;
+             //   this.$refs['msMenull'].updateMSmenuData(this.msMenuData);
 
             },
+            sendNavDatatoBar(){
+                //return "ok"
+
+            //    this.getDataForSideBar() ;
+                return this.msMenuData;
+
+            },
+            getNavData(){
+
+                return this.sendNavDatatoBar();
+            }
+
+            ,
             setMenuData(data){
 
-                this.msMenuData=data.items;
+                this.msMenuData=data;
+
+                var Han=this.$refs['msMenuSide'];
+                Han.setData(this.sendNavDatatoBar().items);
+                //  console.log(this.msMenuData);
+                console.log(   this.sendNavDatatoBar());
+                //console.log( this.msMenuData);
             }
 
 
         },
+        beforeCreate(){
+
+        },
         mounted() {
+           this.getDataForSideBar();
+
+            // var data = [
+            //     {
+            //         name:'accessToken',
+            //         value:this.msData.accessToken
+            //     },
+            //
+            //     {
+            //         name:'type',
+            //         value:'json'
+            //     },
+            //     {
+            //         name:'find',
+            //         value:'sidebar'
+            //     }
+            //
+            // ];
+            // var link = this.makeGetUrl(this.msData.path.sidebar,data);
+            //
+            //
+            // var data2={
+            //
+            //     path:link,
+            //  //   accessToken:this.msData.accessToken
+            //
+            // };
+            // this.setMenuData(this,data2);
+
+
+
+
 
             if(this.msNavOn && ( window.innerWidth < 800  ))this.msNavOn=false;
         },
         beforeMount(){
-            this.getDataForSideBar();
+           // this.getDataForSideBar();
         }
 
         ,
@@ -178,39 +239,6 @@
 </script>
 
 <style scoped>
-.hidden{
-    transition: all 500ms ease-in-out;
-}
-.ms-livebox{
-    min-height: 1000px;
-    padding-left:252px;
-}
-    .ms-livebox-full{
-        padding-left: 82px;
-    }
-    .ms-company-logo {
-        cursor: pointer;
-        max-height:70px;
-    }
-    .hidden{
-        @appply hidden;
-        @apply overflow-hidden;
-    }
-    .ms-hidden-fix{
-        padding-left: 0px;
-    }
-
-.ms-hidden-fix-2{
-    padding-top: 10px;
-    padding-left: 0px;
-}
-
-    .ms-nav-btn > .fa {
-        margin: 5px;
-    }
-    .ms-nav-btn > .a {
-    padding-top: 8px;
-}
 
 
 </style>

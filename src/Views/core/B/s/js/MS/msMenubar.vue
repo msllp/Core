@@ -112,21 +112,23 @@
 <script>
    // import menuData from '../components/support/menu-data';
     import kebabCase from 'lodash/kebabCase';
-    import MS from './C/MS';
+   import  MS  from './C/MS';
 
 
     export default {
         name: "msmenubar",
-        name: 'msMenu',
+     //   name: 'msMenu',
         mixins:[MS],
         props:{
             'msNav':{
                 type: Boolean,
                 required: true,
                 default:true
-            },'msData2':{
-                type:Object,
-                required: true
+            },
+            'msPath':{
+                type:String,
+                required: true,
+                default:''
             }
         },
         data(){
@@ -137,7 +139,9 @@
                 activeSubMenu: '',
                 msNavigationOn:true,
                 msNavClass:'ms-nav',
-                msContextClass:''
+                msContextClass:'',
+                msMenuData:{},
+                msDPath:null
             }
         },
         methods: {
@@ -148,7 +152,7 @@
             updateMenu(event,context) {
                 this.contextSection = context;
                 this.menuItens = this.menuData[context];
-                console.log(event.offsetY);
+              //  console.log(event.offsetY);
 
             },
             highlightSection(section) {
@@ -213,6 +217,29 @@
 
 
             }
+            ,
+            updateMSmenuData(data){
+                console.log(data);
+            },
+
+            getDataForSideBar(){
+                let vm = this;
+                vm.msDPath=vm.msPath;
+
+                //  var link = this.makeGetUrl(this.msData.path,data);
+              //  console.log( this.msData);
+             //   this.getGetRaw(this.msPath,this,'setMenuData');
+                //console.log(   this.msMenuData );
+                // var root= this.$root;
+                //   this.$refs['msMenull'].updateMSmenuData(this.msMenuData);
+
+            },
+            setMenuData(classFor,data){
+                //console.log(data);
+                classFor.msMenuData=data;
+            }
+
+
         },
         computed: {
             showContextMenu() {
@@ -220,10 +247,39 @@
             },
         },
         mounted() {
-             console.log(this.msData2);
-             var test =this.msData2;
+            let demo=this;
+            var link='http://gst.ms/MAS/test/getSidebar?accessToken=4ckMtOqVXNlck1pdHVsGsJT4&type=json&find=sidebar';
+
+
+            setTimeout(function() {
+
+
+
+                fetch(link)   .then(function(response) { return response.json()
+                    .then( function(data) {  console.log(data)
+
+                        demo.menuData=data.items;
+                    } );
+                })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+
+
+
+            }, 500);
+
+
+
+
+            console.log(this.msData);
+            //this.getDataForSideBar();
+          //  console.log(this.msPath);
+            //this.getGetRaw(this.msPath,this,'setMenuData');
+             //this.menuData=this;
+             //var test =this.msData;
             // console.log(test);
-            this.msData2= test;
+            //this.msData2= test;
         //    this.menuItens=this.msData;
             this.msNavigationOn=Boolean(Number(this.msNav));
             if(this.msNavigationOn && ( window.innerWidth < 800  ))this.msNavigationOn=0;

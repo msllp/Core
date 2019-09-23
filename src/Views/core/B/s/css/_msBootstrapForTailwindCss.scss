@@ -8,6 +8,21 @@
 @tailwind utilities;
 
 
+@import "MS/sidemenu";
+@import "MS/dashboard";
+
+///
+
+
+.ms-dashboard-container{
+    @apply block;
+
+}
+
+
+///
+
+
 .ms-btn{
     //@apply bg-gray-300;
 

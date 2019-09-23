@@ -166,7 +166,8 @@
         transition: all 400ms ease-in-out;
     }
     .ms-live-tab{
-        padding-top:80px
+        @apply px-1;
+        @apply py-2;
     }
 
 </style>

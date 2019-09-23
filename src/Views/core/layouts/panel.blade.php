@@ -6,7 +6,8 @@
     $data=[
 
         'path'=>
-            [ 'sidebar'=> route('Test.SideBarData')],
+            [
+                'sidebar'=> route('Test.SideBarData')],
         'accessToken'=> \MS\Core\Helper\Comman::encode('UserMitul')
 
     ];
