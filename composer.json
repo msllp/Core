@@ -18,7 +18,7 @@
         "barryvdh/laravel-dompdf": "^0.8.4",
         "guzzlehttp/guzzle": "^6.3",
         "razorpay/razorpay": "2.*",
-        "symfony/yaml": "^4.3"
+
     },
     "autoload": {
         "psr-4": {
