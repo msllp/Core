@@ -120,12 +120,12 @@
             },rightClick(event){
 
                 // screenX/Y gives the coordinates relative to the screen in device pixels.
-                console.log(event.screenX);
-                console.log(event.screenY);
+              //  console.log(event.screenX);
+                //console.log(event.screenY);
 
             },
             deleteTab(index){
-                console.log("deltetTab")
+             //   console.log("deltetTab")
                 delete this.allTab.splice(index, 1);
             },
             addNewTab(data){
@@ -140,7 +140,7 @@
             },
             addActionToTab(data){
                 //delete this.allTab[this.currentTab];
-                console.log(this.allTab.length);
+              //  console.log(this.allTab.length);
 
                 if(this.allTab.length < 1){
                     data.tabCode=this.ms_rand(5,1);

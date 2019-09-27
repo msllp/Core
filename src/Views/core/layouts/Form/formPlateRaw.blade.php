@@ -1,9 +1,1 @@
-
-<?php
-//dd($form);
-$json=collect($form)->toJson();
-
-?>
-
-
-<msform :ms-data="{{$json}}" key="msFrom" ref="msFrom"></msform>
+<msform :ms-data="{{collect($form)->toJson()}}" key="msFrom" ref="msFrom"></msform>

@@ -85,7 +85,7 @@ getGetLink(url,classFor){
         )
         .catch(function (error) {
             // handle error
-            self.setMsError(error.response.data);
+            self.setMsError(error.response);
             //  console.log(error.response.data);
         })
         .finally( response => {

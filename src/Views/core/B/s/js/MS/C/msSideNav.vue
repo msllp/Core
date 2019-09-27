@@ -24,7 +24,7 @@
                 back to Main Navigation
             </div>
 
-            <div v-for="mainNav,index in msData" class="ms-main-title" v-if="currentSubTab == index">
+            <div v-for="mainNav,index in msData" class="border " v-if="currentSubTab == index">
                 <div class="">
 
                     <i v-if="mainNav.hasOwnProperty('icon')" :class="mainNav.icon"></i>
@@ -32,8 +32,9 @@
                     <span>{{mainNav.text}}</span>
 
                     <div v-if="mainNav.hasOwnProperty('sub')">
-                        <div v-for="subMainNav in mainNav.sub" class="ms-main-title">
-                        {{subMainNav.text}}
+                        <div   v-for="subMainNav in mainNav.sub"   @click.prevent="openTab(subMainNav,(subMainNav.type=='link'))">
+                      <div :class="{'ms-main-title':(subMainNav.type=='link')}">
+                          {{subMainNav.text}}</div>
                         </div>
 
 
@@ -91,7 +92,27 @@
             backToMain(){
                 this.currentMainTab=true;
                 this.currentSubTab=0;
-            }
+            },
+            openTab(item) {
+          //      this.activeSubMenu = item.txt;
+                // this.$router.push(this.getUrl(item));
+                this.getUrlFromSideNav(item);
+                //  window.bus.$emit('menu/closeMobileMenu');
+            },
+            getUrlFromSideNav(item) {
+
+                var data={
+                    modUrl:item.link,
+                    modDView:item.text
+                };
+              //  data.modUrl=item.link;
+               //data.modCode="MAS";
+            //    data.modDView=item.text;
+                this.$parent.driveRequestFromNavToLiveTab(data);
+
+                // let sectionSlug = kebabCase(item.txt);
+                // return `${item.link}/${sectionSlug}`;
+            },
 
         },
         mounted() {

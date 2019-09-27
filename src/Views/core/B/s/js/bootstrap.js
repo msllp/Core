@@ -69,6 +69,7 @@ Vue.component('msmenubar', require('./MS/msMenubar.vue').default);
 Vue.component('msdatatable', require('./MS/msDatatable.vue').default);
 Vue.component('msdockerdashboard', require('E:/MS-Master/Projects/FrameworkPHP/gst_invoice/Master/MS/B/M/DCM/V/Vue/dockerMasterDashboard.vue').default);
 Vue.component('mssidenav', require('./MS/C/msSideNav.vue').default);
+Vue.component('newtab', require('./MS/C/msNewTab.vue').default);
 
 
 //Components
