@@ -201,7 +201,7 @@ dd($array);
    // public function
 
     public function view(){
-        return view("MS::core.layouts.Table.tablePlateRaw")->with("table",$this->returnHTML);
+      //  return view("MS::core.layouts.Table.tablePlateRaw")->with("table",$this->returnHTML);
         return view("MS::core.layouts.Table.tablePlate")->with("table",$this->returnHTML);
     }
 
