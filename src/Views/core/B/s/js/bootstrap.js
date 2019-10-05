@@ -78,11 +78,37 @@ Vue.component('newtab', require('./MS/C/msNewTab.vue').default);
 import MS from './MS/C/MS';
 
 
+var store = {
+    debug: true,
+    state: {
+        message: 'Hello!'
+    },
+    setMessageAction (newValue) {
+        if (this.debug) console.log('setMessageAction triggered with', newValue)
+        this.state.message = newValue
+    },
+    clearMessageAction () {
+        if (this.debug) console.log('clearMessageAction triggered')
+        this.state.message = ''
+    }
+}
+window.vm = {};
+
+
 
 const app = new Vue({
     el: '#msapp',
     mixins: [MS],
     methods:{
+
+        updateTab(data){
+            var dashBoard=this.$children[0];
+            var viewPanel=dashBoard.$refs['ms-live-tab'];
+            viewPanel.addActionToTab(data);
+            //console.log();
+            //console.log(data);
+
+        },
         getModBtn:function(url){
 
            // console.log(this);
@@ -175,7 +201,9 @@ const app = new Vue({
    // console.log(this.msform);
 
 
-    }
+    },
+    sharedState: store.state
 
 });
 
+window.vueApp=app;

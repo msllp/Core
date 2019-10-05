@@ -30,13 +30,29 @@ class Comman
     }
 
 
+    public static function coreBack(){
+        $bMod=['Users'];
+        $path=implode(DIRECTORY_SEPARATOR,['vendor','msllp','modules','src','Modules','B','Routes.php']);
+        require(base_path($path));
+    }
+
     /**
      * To Load Custom Location Route file
      * @param array $array['locationOfFile'=>'Location of Folder in MS']
      */
-    public static function loadCustom($array=[],$end='0'){
+    public static function loadCustom($array=[],$end='0',$master=false){
+if($array['locationOfFile']=='Users.R'){
 
-    //dd($end);
+}
+if($master && array_key_exists('locationOfFile', $array)){
+
+    $array['locationOfFile']=implode(DIRECTORY_SEPARATOR,explode('.',$array['locationOfFile']));
+    $array['locationOfFile']= implode(DIRECTORY_SEPARATOR,['vendor','msllp','modules','src','Modules','B',$array['locationOfFile'].".php",]);
+   //dd($array);
+    require (base_path($array['locationOfFile']));
+    $end='donothing';
+    // dd($array);
+}
         if(count($array) > 0){
           switch ($end){
               case '0':
@@ -48,6 +64,10 @@ class Comman
               case 'f':
                 array_key_exists('locationOfFile', $array)?require(base_path(implode(DIRECTORY_SEPARATOR,['MS','F','M']).DIRECTORY_SEPARATOR .implode(DIRECTORY_SEPARATOR,explode('.', $array['locationOfFile'])).'.php')):null;
 
+
+                  break;
+
+              case 'donothing':
 
                   break;
           }
@@ -207,9 +227,10 @@ class Comman
         return \DB::connection($this->model->getConnectionName());
     }
 
-    public static function load_Route($mCode){
-
-        $class=$mCode."\\B";
+    public static function load_Route($mCode,$master=false){
+        $class='';
+        if($master)$class=implode('\\',['MS','Mod']).'\\';
+        $class.=implode('\\',[$mCode,"B"]);
 
         $r=$class::$route;
         $dv="@";
@@ -301,6 +322,66 @@ class Comman
             }
 
         }
+    }
+
+    public static function proccessReqNGetSideNavDataForDashboard($r,$data=[],$getVeriData=[]){
+        $input=$r->all();
+        $error=[];
+        $returnArray=[
+            'msg'=>'Opps I am Computer not Human.'
+
+        ];
+        if(array_key_exists('accessToken',$input))$input['accessToken']=\MS\Core\Helper\Comman::decode($input['accessToken']);
+        if( (count($getVeriData)>0) && array_key_exists('accessToken',$getVeriData) &&  ($input['accessToken']!=$getVeriData['accessToken'])){
+         //dd($input);
+            $error['accessTokenNotVerified']='Sorry , I am not Human you can not bribe me.';
+        }
+        if(array_key_exists('accessToken',$input) && array_key_exists('type',$input) && array_key_exists('find',$input)){
+
+            $returnArray['msg']='We finding Data';
+
+
+            switch ($input['type']){
+                case 'json':
+
+                    switch ($input['find']){
+
+                        case 'sidebar':
+                            if(count($error)>0){
+                                $returnArray['msg']=implode(' , ',$error);
+                                $returnArray['items']=[];
+                            }else{
+
+                                $returnArray['msg']='We Have Data';
+                                $returnArray['items']=$data;
+
+
+                            }
+
+
+
+                            return response()->json($returnArray,200);
+                            break;
+
+
+                    }
+
+                    break;
+            }
+
+        }
+        if(count($error)>0){
+
+            $returnArray['msg']=implode(' , ',$error);
+            $returnArray['items']=[];
+
+        }else{
+
+            return response()->json($returnArray,418);
+        }
+
+     //   return response()->json($returnArray,418);
+
     }
 }
 

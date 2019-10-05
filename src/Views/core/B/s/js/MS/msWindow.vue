@@ -1,12 +1,13 @@
 <template>
-    <div>
+    <div class="">
 
 
-        <div :id="'mswindow_maaster'+index" >
+        <div :id="'mswindow_maaster'+index"  class="">
 
         <div :id="'mswindow'+index" >
 
-</div>
+        </div>
+
 
 
 
@@ -17,6 +18,7 @@
 
 <script>
     import  MS  from './C/MS';
+    import  msform  from './C/msForm';
 
         import msdockerdashboard from 'E:/MS-Master/Projects/FrameworkPHP/gst_invoice/Master/MS/B/M/DCM/V/Vue/dockerMasterDashboard';
     export default {
@@ -38,7 +40,8 @@
             return {
                 data:[],
                 liveComponent:null,
-                currentData:null
+                currentData:null,
+                liveData:null
 
 
             };
@@ -63,35 +66,25 @@
                 this.data.push(data);
                 //this.currentData=data;
 
+               // this.liveComponent="<div id='mswindow"+this.index+"' >"+ data +"</div>";
 
 
-                if( this.liveComponent != null){
-                    // this.liveComponent.getElement('.mswindow_maaster'+this.index).then((el) => {
-                    //     //console.log(el);
-                    //     el.template=data;
-                    //     return el;
-                    // });
-
-                    const HelloCtor = Vue.extend(this.liveComponen);
-                    const vm = new HelloCtor({
-                        template:data
-                    }).$mount('#mswindow'+this.index);
-
-                    this.liveComponent.template=data;
-
-
-                }else{
                     this.liveComponent = new Vue({
+                        name:'mslivetab',
                         data: {
                             message: '{}'
                         },
                         el: '#mswindow'+this.index,
-                        template:data,
-                        attr:{
-                            id:'mswindow'+this.index
+                        template:"<div id='mswindow"+this.index+"' >"+ data +"</div>",
+                   //     sharedState: store.state,
+                        mounted() {
+                      //      console.log(this.$root.$data);
                         }
                     });
-                }
+
+
+
+                
 
 
 
@@ -106,7 +99,7 @@
             }
         },
         components : {
-            msdockerdashboard
+            msdockerdashboard,msform
         }
 
     }

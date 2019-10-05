@@ -340,8 +340,6 @@ public $dataToProcess=[];
 
 
             }
-          //  dd($uniqArray);
-           // dd($columnArray);
 
             $valdationError=0;
 
@@ -365,21 +363,17 @@ public $dataToProcess=[];
 
 
                 }
-               // dd($valdationErrorArray);
+                if($valdationError==true)if(count($valdationErrorArray) < 1 )$valdationError=0;
 
-                if($valdationError==true)
-            if(count($valdationErrorArray) < 1 )$valdationError=0;
-      //   dd($valdationErrorArray);
             }
-           // dd($valdationErrorArray);
-           // dd($valdationError==false);
+
              if($valdationError==true)goto ms_error_found;
             if($valdationError==false)
              // dd($columnArray);
 
                // dd($model->insert($columnArray));
-
-            $model->insert($columnArray);
+              //   dd($this->model->insert($columnArray));
+            return $this->model->insert($columnArray);
 
         }catch (\Exception $e){
             ms_error_found:
@@ -798,7 +792,7 @@ public $dataToProcess=[];
         //dd(count($e));
        // dd($e);
         $this->dataToProcess=$data;
-        $this->e=$e;
+      //  $this->e=$e;
         if(count($e)< 1){
             return true;
         }

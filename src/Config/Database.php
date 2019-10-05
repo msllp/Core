@@ -11,6 +11,13 @@ return
 
     [
 
+        'MS_Master'=>[
+            'driver' => 'sqlite',
+            'database' => base_path('MS/DB/Master/MS_Master'),
+            'prefix' => '',
+            'foreign_key_constraints' => true,
+        ],
+
 
         'DCM_User_Data' => [
             'driver' => 'sqlite',

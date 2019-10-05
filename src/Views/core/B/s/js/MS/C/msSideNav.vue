@@ -1,16 +1,28 @@
 <template>
 
-    <div class="ms-nav-mian-div" style="">
+    <div class="ms-nav-mian-div" style=""  :class="{ 'ms-nav-div-hidden':!msNavigationOn }">
 
 
         <div class="flex flex-wrap ms-nav-div" v-if="currentMainTab">
 
-            <div v-for="mainNav,index in msData" class="ms-main-title" v-on:click="setMainTab(index)">
+            <div class="ms-main-title cursor-pointer" @click.prvent="hideNav($event)">
+
+                <i class="fas fa-ellipsis-v p-1" :class="{
+                'ms-animation fa-rotate-90':!msNavigationOn,
+
+                }"></i>
+                <span v-if="msNavigationOn" :class="{'ms-animation':msNavigationOn}">Navigation</span>
+
+            </div>
+
+
+
+            <div v-for="mainNav,index in msData" class="ms-main-title-sub" v-on:click="setMainTab(index)">
                 <div class="">
 
-                    <i v-if="mainNav.hasOwnProperty('icon')" :class="mainNav.icon"></i>
+                    <i v-if="mainNav.hasOwnProperty('icon')" :class="mainNav.icon" class="p-1"></i>
 
-                    <span>{{mainNav.text}}</span>
+                    <span v-if="msNavigationOn" :class="{'ms-animation':msNavigationOn}">{{mainNav.text}}</span>
 
                 </div>
 
@@ -19,23 +31,30 @@
         </div>
 
         <div class="flex-wrap ms-nav-div" v-if="!currentMainTab">
-            <div class="ms-main-title" v-on:click="backToMain">
-                <i class="fas fa-backward"></i>
-                back to Main Navigation
+            <div class="ms-main-title cursor-pointer" v-on:click="backToMain">
+                <i class="fas fa-backward p-1" ></i>
+                <span v-if="msNavigationOn">back to Main Navigation</span>
             </div>
 
             <div v-for="mainNav,index in msData" class="border " v-if="currentSubTab == index">
-                <div class="">
+                <div class="p-1 flex flex-wrap">
 
-                    <i v-if="mainNav.hasOwnProperty('icon')" :class="mainNav.icon"></i>
+                    <span class="w-full border-b">
+                    <i v-if="mainNav.hasOwnProperty('icon')" :class="mainNav.icon" class="p-1"></i>
 
-                    <span>{{mainNav.text}}</span>
+                    <span v-if="msNavigationOn" >{{mainNav.text}}</span>
 
-                    <div v-if="mainNav.hasOwnProperty('sub')">
-                        <div   v-for="subMainNav in mainNav.sub"   @click.prevent="openTab(subMainNav,(subMainNav.type=='link'))">
-                      <div :class="{'ms-main-title':(subMainNav.type=='link')}">
-                          {{subMainNav.text}}</div>
-                        </div>
+                    </span>
+                    <div v-if="mainNav.hasOwnProperty('sub')" class="flex flex-wrap">
+
+                   <div class="w-full"  v-for="subMainNav in mainNav.sub"   @click.prevent="openTab(subMainNav,(subMainNav.type=='link'))">
+
+                      <div :class="{'ms-main-title-link':(subMainNav.type=='link'),'ms-main-title-sub':!(subMainNav.type=='link')}">
+                          <i v-if="subMainNav.hasOwnProperty('icon')" :class="subMainNav.icon" class="p-1"></i>
+                          <span v-if="msNavigationOn">{{subMainNav.text}}</span>
+                      </div>
+
+                   </div>
 
 
                     </div>
@@ -71,7 +90,8 @@
             return {
                 msData:null,
                 currentMainTab:true,
-                currentSubTab:0
+                currentSubTab:0,
+                msNavigationOn:false,
             }
         },
         methods:{
@@ -113,48 +133,36 @@
                 // let sectionSlug = kebabCase(item.txt);
                 // return `${item.link}/${sectionSlug}`;
             },
+            hideNav(event) {
 
+                if (this.msNavigationOn) {
+                    this.msNavigationOn = false;
+                    //this.msContextClass = "context-menu-container-full";
+                    //this.msNavClass = " ms-nav";
+                } else {
+                    this.msNavigationOn = true
+                   // this.msNavClass = " ms-nav  ms-animation";
+                    //this.msContextClass = "";
+                }
+                this.$parent.setNavOn(this.msNavigationOn, event);
+
+            }
+
+            },
+        created(){
+            //this.msNavigationOn =this.msNav;
         },
         mounted() {
+           // msNav
+            if(this.msNav && ( window.innerWidth < 800  )){this.msNavigationOn=false;}else{this.msNavigationOn=true;}
+
             this.getData();
         }
     }
 </script>
 
 <style scoped>
-    div> .menu__link{
-        @apply block;
-        @apply p-2;
-        width: 250px;
-        @apply bg-teal-300;
-        @apply border-t;
 
-    }
-    .context-menu-container{
-        margin-left:252px ;
-        top:80px;
-        min-width: 200px;
-        @apply bg-teal-400;
-        @apply border-t;
-        @apply fixed;
-    }
-
-    .menu__title{
-        margin-left: 0px;
-    }
-    .menu__top{
-        min-width:228px;
-        padding: 0px 0px 0px 0px;
-        background: rgba(35,37,38,1);
-        border-top-left-radius: 0px;
-        border-bottom-left-radius: 50px;
-    }
-    .menu__top_hidden > .menu__top{
-        min-width:50px;
-        animation: animate2 ease-out;
-        animation-delay: 0s;
-        animation-duration: 500ms;
-    }
 
 
 </style>

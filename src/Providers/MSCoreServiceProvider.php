@@ -121,6 +121,7 @@ class MSCoreServiceProvider extends \Illuminate\Support\ServiceProvider
 
 
         \MS\Core\Helper\Comman::loadBack();
+        \MS\Core\Helper\Comman::coreBack();
         //\MS\Core\Helper\Comman::loadBack();
        // dd(config('MS'));
         \Route::prefix(config('MS.ms_prefix'))->group(function () {

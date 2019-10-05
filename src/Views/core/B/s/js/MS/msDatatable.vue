@@ -1,7 +1,7 @@
 <template>
     <div>
 
-        <div>
+        <div class="border shadow p-1 bg-white">
             <div  class="flex flex-wrap border  border-blue-400 p-1" >
 
 

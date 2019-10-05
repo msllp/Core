@@ -25,15 +25,29 @@ class Master implements BaseMaster
         $modulePath=[base_path(),'MS',$end,'M',$module,'T'];
         $moduleDBPath=implode(self::$ds,$modulePath);
         $return['basePath']=implode(self::$ds,$modulePath);
+
+
+        if(count($return['dbList'])<1 && (count(explode('\\',static::$controller)) > 3) ){
+            //dd(explode('\\',static::$controller));
+
+            $end=explode('\\',static::$controller)[2];
+            $module=explode('\\',static::$controller)[3];
+            $modulePath=[base_path(),'vendor','msllp','modules','src','Modules',$end,$module,'T'];
+            $moduleDBPath=implode(self::$ds,$modulePath);
+            $return['basePath']=implode(self::$ds,$modulePath);
+           // dd($return);
+            //dd(is_dir($moduleDBPath));
+        }
         if(!is_dir($moduleDBPath))return $return;
 
         $return['dbList']=array_diff( scandir($moduleDBPath),['.','..']);
+
         return $return;
     }
 
     public static function getModuleTables(){
 
-        $base=self::getBasics();
+            $base=self::getBasics();
 
         $returnArray=[];
         $allExistDB=$base['dbList'];
@@ -101,6 +115,7 @@ class Master implements BaseMaster
     public static function getConnection($tableID=false):string
     {
         $table= self:: getModuleTables() ;
+
         if(!$tableID)$tableID=array_key_first($table);
         if(array_key_exists($tableID,$table)){
             return $table[$tableID]['connection'];

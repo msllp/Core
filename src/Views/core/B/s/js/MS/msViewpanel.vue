@@ -16,7 +16,12 @@
                 ' inline-block border-l border-t border-r rounded-t py-2 px-4 text-blue-700 font-semibold':checkActive(index),
                 'inline-block py-2 px-4 border-t border-r border-l border-t  text-blue-500 hover:text-blue-800 font-semibold':!checkActive(index)
                 }"
->{{tab.modDView}} <span class="fa fa-window-close " v-on:click="deleteTab(index)"></span></a >
+>
+
+                    <span v-if="!checkActive(index)"> {{tab.modDView}}</span>
+
+                    <span v-if="checkActive(index)" > <i class="fas fa-chevron-down"></i> </span>
+                    <span class="fa fa-window-close p-1 border" v-on:click="deleteTab(index)"></span></a >
 
             </li>
             <li
@@ -34,8 +39,8 @@
 
         </ul>
 
-        <div class="flex flex-wrap">
-            <div v-for="(tab,index) in allTab" class="flex">
+        <div >
+            <div v-for="(tab,index) in allTab" >
 
 
                 <div
@@ -45,17 +50,11 @@
 
                 }"
                    >
-                    <mswindow :ms-data="tab"  :index="index"  :ref= "index" > </mswindow>
+                    <mswindow :ms-data="tab"  :index="index"  :ref= "'tab_'+index" > </mswindow>
 
 
             </div>
 
-        </div>
-        <div :class="{
-' inset-x-0 bottom-0 pl-3 border-t':true}
-">
-
-            {{ getModCoode()}}
         </div>
 
     </div>
@@ -140,7 +139,7 @@
             },
             addActionToTab(data){
                 //delete this.allTab[this.currentTab];
-              //  console.log(this.allTab.length);
+               // console.log(data);
 
                 if(this.allTab.length < 1){
                     data.tabCode=this.ms_rand(5,1);
@@ -150,9 +149,23 @@
                 }else{
                     this.allTab[this.currentTab].modDView=data.modDView;
                 }
-                //
 
-                this.$refs[this.currentTab][0].updateTab(data);
+                //Handler[callBack](data);
+
+                this.$nextTick(() => {
+                    var Handler=this.$refs['tab_'+this.currentTab][0];
+                    Handler.updateTab(data);
+                //    console.log(data);
+                    //normalizeArray(this.$refs.form).classList.remove("was-validated");
+                },data);
+
+                //this.$children[this.currentTab].updateTab(data);
+                //
+            //    var msHandle=this.$refs[this.currentTab];
+              //  var msHandle2=msHandle[0];
+               // console.log(msHandle2);
+
+             //   this.$refs[this.currentTab][0].updateTab(data);
             }
 
         },

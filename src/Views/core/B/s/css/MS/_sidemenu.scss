@@ -6,12 +6,15 @@
     top:72px;
     @apply px-3;
     @apply py-2;
-    @apply bg-blue-300;
+    background: linear-gradient(-47deg, rgba(200,200,200,1), rgba(240,240,240,1));
+   // color: rgba(255,255,255,0.9);
+    //@apply bg-blue-300;
     @applay border;
     min-width:250px;
     max-width:250px;
     @apply select-none;
-
+   // font-family: 'Roboto', sans-serif;
+  //  font-family: "Karla", "Helvetica Neue", Arial, sans-serif;
 
 
 }
@@ -24,7 +27,7 @@
 .ms-main-title{
     @apply w-full;
     @apply border-b;
-    @apply border-r;
+    //@apply border-r;
     @apply mb-2;
     font-size:12px;
     @apply cursor-pointer;
@@ -34,6 +37,40 @@
 .ms-main-title:hover{
     @apply border;
     @apply shadow;
-    font-size:18px;
+   // font-size:18px;
     transition : all 500ms;
+}
+
+.ms-main-title-sub{
+
+    @apply w-full;
+    @apply border-r;
+    //@apply border-l;
+    @apply border-b;
+    @apply mt-1;
+    @apply mb-2;
+    font-size:12px;
+    @apply cursor-not-allowed;
+    transition : all 500ms;
+}
+.ms-main-title-link{
+    @apply w-full;
+    @apply border;
+    @apply my-1;
+    //@apply border-r;
+    //@apply border-r;
+
+    font-size:11px;
+    @apply cursor-pointer;
+    transition : all 500ms;
+}
+.ms-main-title-link:hover{
+    @apply shadow;
+    background-color: #6158ce;
+    padding-left: 3px;
+    //@apply bg-blue-400;
+}
+.ms-nav-div-hidden{
+    min-width:65px;
+    max-width:65px;
 }

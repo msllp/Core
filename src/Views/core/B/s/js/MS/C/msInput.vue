@@ -523,7 +523,7 @@
                this.inpututProcess(val,oldVal);
             },
             msFile:function (val,oldVal) {
-                console.log(val)
+             //   console.log(val)
 
             }
         }

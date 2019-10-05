@@ -1,19 +1,21 @@
 .ms-nav-container{
     z-index: 2501;
     position: fixed;
+    background: linear-gradient(-47deg, rgba(200,200,200,1), rgba(250,250,250,1));
+    //color:white;
 }
 
 .ms-livebox{
     position: sticky;
     min-height: 1000px;
     margin-left:252px;
-    padding-top: 62px;
+    padding-top: 64px;
     background: #0c5460 cover;
     z-index: 2500;
 
 }
 .ms-livebox-full{
-   // padding-left: 82px;
+    margin-left: 50px;
 }
 
 

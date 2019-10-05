@@ -57,7 +57,7 @@
 
         <div class="w-full rounded overflow-hidden shadow-lg">
         <div class=" px-6 py-4 border-t">
-            <div class="inline-flex w-full cursor-pointer text-center" :class="{'opacity-50 cursor-not-allowed':allErrors.length>0}" >
+            <div class="inline-flex w-full cursor-pointer text-center" :class="{}" >
              <span
                  @click.prevent="formActionFromBtn(index)"
                  class="w-1/3 bg-gray-200  hover:bg-gray-400 border-t border-b  border-r px-3 py-1 text-sm font-semibold text-gray-700"
@@ -203,6 +203,7 @@
                 msCurrentTab:null,
                 onMobile:false,
                 allErrors:[],
+                CurrentDataFromServer:null
             }
         },
         methods:{
@@ -332,12 +333,21 @@
 
 
 
-                var data =  this.postLink(link,formData,this);
+                var data =  this.postLink(link,formData,this,'getData');
 
 
-              //  console.log(data);
+          //      console.log(data);
+
+
+
+
                 // console.log($('form'));
 
+
+            },
+            getData(data){
+                //console.log(data.nextData);
+                window.vueApp.updateTab(data.nextData);
 
             }
             ,setInputData(name,value,name2="test"){
@@ -474,9 +484,13 @@
                     var route=this.msData.actionButton[id].route;
                     return this.getAllData(route);
 
-                    console.log(this.msData.actionButton[id].route);
+                 //   console.log(this.msData.actionButton[id].route);
+                }else{
+                    var route=this.msData.actionButton[id].route;
+                    return this.getAllData(route);
                 }
-                console.log(this.msData.actionButton[id].route);
+
+                //console.log(this.msData.actionButton[id].route);
             }
 
         }

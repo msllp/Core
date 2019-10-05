@@ -1,9 +1,9 @@
 <template>
 
     <div class="ms-dashboard-container">
-        <div class="fixed w-full ms-nav-container" >
-            <nav class="flex items-center justify-between flex-wrap bg-teal-100  lg:p-1  object-cover " style="min-height: 70px;">
-                <div v-on:click="hideNavBar($event)" class="flex items-center flex-shrink-0 text-black mr-6">
+        <div class="fixed w-full ms-nav-container shadow " >
+            <nav class="flex items-center justify-between flex-wrap lg:p-1  object-cover " style="min-height: 70px;">
+                <div v-on:click="hideNavBar($event)" class="flex items-center flex-shrink-0 mr-6">
 
                     <img src="/images/logo.png" class="fill-current h-12 mr-2 ms-company-logo hover:shadow-outline hover:bg-gray-200" >
                     <div :class="{'hidden':!msNavBar}" class="font-semibold"> Cloud Services</div>
@@ -109,7 +109,7 @@
                     this.msMenuOn=false;
                 }else {
                     this.msMenuOn=true;
-                    this.$refs['msMenull'].fromOtherCom('hideNav',this.msMenuOn)
+                   // this.$refs['msMenull'].fromOtherCom('hideNav',this.msMenuOn)
                    // console.log();
                 }
 
@@ -149,9 +149,9 @@
               //  console.log(link);
                this.getGetRaw(link,this,'setMenuData');
                    var Han=this.$refs['msMenuSide'];
-
+              //  this.sendNavDatatoBar();
               //  console.log(this.msMenuData);
-                    console.log(   this.sendNavDatatoBar());
+                  //  console.log(   this.sendNavDatatoBar());
                   // var root= this.$root;
              //   this.$refs['msMenull'].updateMSmenuData(this.msMenuData);
 
@@ -176,7 +176,7 @@
                 var Han=this.$refs['msMenuSide'];
                 Han.setData(this.sendNavDatatoBar().items);
                 //  console.log(this.msMenuData);
-                console.log(   this.sendNavDatatoBar());
+          //      console.log(   this.sendNavDatatoBar());
                 //console.log( this.msMenuData);
             }
 

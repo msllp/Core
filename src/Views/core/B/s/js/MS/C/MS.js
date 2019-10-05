@@ -1,4 +1,11 @@
 export default {
+    data:function(){
+        return{
+            'CurrentData':null
+        };
+
+    }
+    ,
     methods: {
         validatePassword (pass,length=8,strenth=3) {
 
@@ -63,12 +70,7 @@ validateLen(str,size=1){
                 .catch(function(error) {
                     console.log(error);
                 });
-
-
-
             return  classFor.returnX;
-
-
         },
 getGetLink(url,classFor){
  //   url=url+"?dataLink=true"
@@ -96,32 +98,54 @@ getGetLink(url,classFor){
 
 
 },
-postLink(link,data,classFor){
-    var Freturn={};
+        setCurrentData(data){
+            this.CurrentData=data;
+        },
+postLink(link,data,classFor,callback=null){
+    var outData ;
+    if(callback == null)callback ='setHtml';
+        var callbackF=callback;
 
 
-    axios.post(link, data,{headers: {
+   axios.post(link, data,{headers: {
             'content-type': 'multipart/form-data',
             // 'charset':'utf-8',
             'boundary':Math.random().toString().substr(2),
             'Accept': "application/json",
             'maxContentLength':Math.random().toString().substr(2)
         }})
-        .then(function (response) {
-            //console.log(response);
-            Freturn.data=response.data;
-        })
+        .then(function(response){
+
+
+                //console.log(response.data.ms);
+                outData=response.data.ms;
+              //  this.setCurrentData(outData);
+                var Handler=classFor;
+                Handler[callbackF](outData);
+            //    classFor.CurrentDataFromServer=response.data.ms;
+                //this.setState({ outData });
+               //console.dir(this);
+                //    outData=response.data.ms;
+           // return this.Freturn;
+                //console.log(this.Freturn);
+
+        }
+        )
         .catch(function (error) {
-         //   console.log(error.response.status);
+
            // console.log(error.response.data);
-            Freturn.error=error.response.data.errors;
+            outData=error.response.data.errors;
             // console.log(error.response.data);
-            classFor.setAllMsError(Freturn.error);
+            classFor.setAllMsError(outData);
             //  delete Freturn.error.message;
 
 
-        });
-    return Freturn;
+        }).finally(function(){
+        //  return this.Freturn;
+    });
+  //console.dir(outData);
+//return await returnD;
+    return outData;
     //  console.log(Freturn);
 },
 

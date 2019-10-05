@@ -13,6 +13,10 @@
 
 ///
 
+@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans:500&display=swap');
+body{
+    font-family: 'IBM Plex Sans', sans-serif;
+}
 
 .ms-dashboard-container{
     @apply block;
