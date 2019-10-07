@@ -2,14 +2,14 @@
 
 
 .ms-nav-mian-div{
-    position: absolute;
+    position: fixed;
     top:72px;
-    @apply px-3;
-    @apply py-2;
+  //  @apply mx-3;
+  //  @apply py-2;
     background: linear-gradient(-47deg, rgba(200,200,200,1), rgba(240,240,240,1));
    // color: rgba(255,255,255,0.9);
     //@apply bg-blue-300;
-    @applay border;
+  //  @apply border;
     min-width:250px;
     max-width:250px;
     @apply select-none;
@@ -26,40 +26,68 @@
 
 .ms-main-title{
     @apply w-full;
-    @apply border-b;
+   // @apply border-b;
     //@apply border-r;
+    @apply py-1;
     @apply mb-2;
     font-size:12px;
     @apply cursor-pointer;
     transition : all 500ms;
 }
 
-.ms-main-title:hover{
-    @apply border;
-    @apply shadow;
-   // font-size:18px;
+.ms-master-title{
+    @apply w-full;
+    font-size:12px;
+    @apply cursor-pointer;
+    @apply pl-2;
+    @apply pt-1;
+    @apply pb-1;
     transition : all 500ms;
+  //  @apply shadow;
+    //@apply mb-1;
+}
+
+.ms-master-title:hover{
+
+   @apply pl-4;
+    @apply mr-3;
+    @apply shadow;
+    color:rgba(255,255,255,0.8);
+    background-color: #6158ce;
+    transition : all 500ms;
+}
+
+.ms-main-title:hover{
+    @apply pl-4;
+    @apply mr-3;
+    @apply shadow;
+    color:rgba(255,255,255,0.8);
+    background-color: #6158ce;
+    transition : all 500ms;
+
 }
 
 .ms-main-title-sub{
 
     @apply w-full;
-    @apply border-r;
+   // @apply border-r;
     //@apply border-l;
-    @apply border-b;
-    @apply mt-1;
+   // @apply border-b;
+    @apply mt-2;
     @apply mb-2;
     font-size:12px;
     @apply cursor-not-allowed;
+    color:  rgba(97,88,206,0.9);
     transition : all 500ms;
 }
 .ms-main-title-link{
     @apply w-full;
-    @apply border;
-    @apply my-1;
+   // @apply border;
+    //@apply my-1;
+    //@apply mx-1;
     //@apply border-r;
     //@apply border-r;
-
+    @apply py-1;
     font-size:11px;
     @apply cursor-pointer;
     transition : all 500ms;
@@ -67,10 +95,21 @@
 .ms-main-title-link:hover{
     @apply shadow;
     background-color: #6158ce;
-    padding-left: 3px;
+    @apply pl-4;
+    @apply mr-3;
+    color:rgba(255,255,255,0.8);
     //@apply bg-blue-400;
 }
 .ms-nav-div-hidden{
-    min-width:65px;
-    max-width:65px;
+    min-width: 35px;
+    max-width: 50px;
+    @apply ms-animation;
 }
+
+.ms-master-title-in-sub{
+    @apply border-b;
+    background-color:  rgb(97,88,206,0.5);
+    border-color: rgb(97,88,206,0.8);
+}
+
+

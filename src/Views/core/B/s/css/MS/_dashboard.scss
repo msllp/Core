@@ -12,17 +12,18 @@
     padding-top: 64px;
     background: #0c5460 cover;
     z-index: 2500;
+    @apply ms-animation;
 
 }
 .ms-livebox-full{
     margin-left: 50px;
+    @apply ms-animation;
 }
 
-
-
-.hidden{
+.ms-animation{
     transition: all 500ms ease-in-out;
 }
+
 
 .ms-company-logo {
     cursor: pointer;
@@ -39,8 +40,55 @@
 }
 
 .ms-nav-btn > .fa {
-    margin: 5px;
+  //  margin: 5px;
 }
 .ms-nav-btn > .a {
-    padding-top: 8px;
+    //padding-top: 8px;
+}
+
+.ms-live-tab{
+    @apply bg-white;
+    margin-top: 8px;
+}
+
+.theme-bg{
+    background: linear-gradient(47deg, rgba(200,200,200,1), rgba(240,240,240,1));
+    //background-image: linear-gradient(to left,$base-theme-color ,lighten(#e52e71,15%))
+  //  background-color:$base-theme-color ;
+//    color:lighten($base-theme-color-9,2%);
+}
+
+.hidden{
+    @apply ms-animation;
+}
+
+.ms-livebox-without-nav{
+    margin-left: 0px;
+    @apply ms-animation;
+}
+.ms-nav-btn-active{
+    @apply shadow;
+    background-color: #6158ce;
+    @apply ml-4;
+    // @apply mr-3;
+    color:rgba(255,255,255,0.8);
+    @apply ms-animation;
+}
+
+.ms-nav-btn{
+    @apply ms-main-title ;
+    @apply cursor-pointer;
+    @apply p-3;
+    @apply ms-animation;
+}
+//.ms-nav-btn:hover{
+//    @apply shadow;
+//    background-color: #6158ce;
+//    @apply ml-4;
+//    // @apply mr-3;
+//    color:rgba(255,255,255,0.8);
+//}
+.unhidden{
+    width: 100%;
+    @apply ms-animation;
 }

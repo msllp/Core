@@ -1,0 +1,67 @@
+.ms-view-tab-block{
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 62px!important;
+    @apply flex;
+    @apply  border-b;
+    @apply  cursor-pointer;
+    @apply  theme-bg;
+font-size: 12px;
+    }
+
+.ms-live-data-block{
+ //   padding-top: 50px;
+}
+
+
+
+.ms-tab-btn{
+    @apply flex-wrap;
+    @apply mr-2;
+    @apply mt-1;
+
+}
+.ms-tab-btn-inner-active{
+    // border-top-left-radius:5px;
+    //  border-top-right-radius:5px;
+    @apply inline-block;
+    @apply  py-2;
+    @apply  px-4;
+    @apply  text-blue-500;
+    @apply  font-semibold;
+    //@apply -mt-px;
+    @apply bg-white;
+    color:rgba(97,88,206,0.7);
+    @apply shadow;
+    @apply ms-animation;
+    @apply mt-1;
+    //@apply theme-bg;
+
+}
+
+.ms-tab-btn-inner{
+    background-color: rgba(255,255,255,0.3);
+    border-radius:5px;
+
+    @apply inline-block;
+    @apply  py-2;
+    @apply px-4;
+    @apply ms-animation;
+
+}
+
+.ms-tab-btn-inner:hover{
+    border-radius:10px;
+
+    color:rgba(97,88,206,0.9);
+    background-color: rgba(255,255,255,1);
+    @apply ms-animation;
+    @apply shadow;
+
+}
+.ms-tab-btn-inner-active:hover{
+    border-top-left-radius:10px;
+    border-top-right-radius:10px;
+    color:rgba(97,88,206,1);
+    @apply ms-animation;
+}

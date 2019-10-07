@@ -3,12 +3,29 @@
     <div class="ms-dashboard-container">
         <div class="fixed w-full ms-nav-container shadow " >
             <nav class="flex items-center justify-between flex-wrap lg:p-1  object-cover " style="min-height: 70px;">
+
+                <div class="flex items-center flex-shrink-0 lg:hidden" @click.prvent="hideNavOnlyForMobile($event)">
+
+                    <div class="ms-nav-btn" :class="{'ms-nav-btn-active':!msNavBar,'border':msNavBar}"  >
+
+                        <i class="fas fa-ellipsis-v p-1" :class="{
+                'ms-animation fa-rotate-90':!msNavBar,
+
+                }"></i>
+
+
+                    </div>
+
+
+                </div>
+
+
                 <div v-on:click="hideNavBar($event)" class="flex items-center flex-shrink-0 mr-6">
 
                     <img src="/images/logo.png" class="fill-current h-12 mr-2 ms-company-logo hover:shadow-outline hover:bg-gray-200" >
                     <div :class="{'hidden':!msNavBar}" class="font-semibold"> Cloud Services</div>
                 </div>
-                <div class="block lg:hidden">
+                <div v-if="false" class="block lg:hidden">
                     <button v-on:click="clickToggaleButton" class="flex items-center px-3 py-2 border rounded text-black-200 text-black-200 hover:text-white hover:border-white">
                         <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
                     </button>
@@ -49,12 +66,13 @@
             </nav>
         </div>
 
-        <mssidenav ref="msMenuSide" :ms-nav ="msNavOn"  ></mssidenav>
+        <mssidenav :class="{'hidden':!msNavBar,'unhidden':msNavBar}"  ref="msMenuSide" :ms-nav ="msNavOn"  ></mssidenav>
 
         <div style=""
         :class="{
         'ms-livebox bg-white-200 ':true,
-        'ms-livebox-full':!msNavOn
+        'ms-livebox-full':!msNavOn,
+        'ms-livebox-without-nav':!msNavBar
         }"
         >
             <msviewpanel ref="ms-live-tab"></msviewpanel>
@@ -178,6 +196,9 @@
                 //  console.log(this.msMenuData);
           //      console.log(   this.sendNavDatatoBar());
                 //console.log( this.msMenuData);
+            },
+            hideNavOnlyForMobile(event){
+                this.hideNavBar(event);
             }
 
 

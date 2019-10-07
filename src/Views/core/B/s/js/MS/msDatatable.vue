@@ -1,8 +1,8 @@
 <template>
-    <div>
+    <div class="flex flex-wrap">
 
         <div class="border shadow p-1 bg-white">
-            <div  class="flex flex-wrap border  border-blue-400 p-1" >
+            <div  class="flex flex-wrap   border-blue-400 p-1" >
 
 
                 <div class="flex-1 p-2 border-blue-300  border-l border-t border-b ">
@@ -39,9 +39,9 @@
 
             </div>
 
-            <table class="table-auto">
+            <table class="table-auto mt-2">
 
-                <tr class="border border-blue-500 border-t-2">
+                <tr class="border border-blue-500 border-t-2 border-b-2">
                     <th v-for="column in msAllData.fromV.tableColumns" class="border bg-blue-200"> {{  column.vName }}</th>
                 </tr>
 
@@ -170,7 +170,7 @@
 
         methods:{
             setHtml(data){
-               // console.log(data);
+                console.log(data);
 
                 this.msAllData.fromV.tableData=data.fromV.tableData;
                 //this.msAllData.fromV.tableColumns=this.msData.fromV.tableColumns;

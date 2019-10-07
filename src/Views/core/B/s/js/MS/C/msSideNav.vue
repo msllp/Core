@@ -17,7 +17,7 @@
 
 
 
-            <div v-for="mainNav,index in msData" class="ms-main-title-sub" v-on:click="setMainTab(index)">
+            <div v-for="mainNav,index in msData" class="ms-master-title" v-on:click="setMainTab(index)">
                 <div class="">
 
                     <i v-if="mainNav.hasOwnProperty('icon')" :class="mainNav.icon" class="p-1"></i>
@@ -36,10 +36,10 @@
                 <span v-if="msNavigationOn">back to Main Navigation</span>
             </div>
 
-            <div v-for="mainNav,index in msData" class="border " v-if="currentSubTab == index">
-                <div class="p-1 flex flex-wrap">
+            <div v-for="mainNav,index in msData" class="" v-if="currentSubTab == index">
+                <div class="flex flex-wrap">
 
-                    <span class="w-full border-b">
+                    <span class="w-full ms-master-title-in-sub">
                     <i v-if="mainNav.hasOwnProperty('icon')" :class="mainNav.icon" class="p-1"></i>
 
                     <span v-if="msNavigationOn" >{{mainNav.text}}</span>
@@ -113,13 +113,15 @@
                 this.currentMainTab=true;
                 this.currentSubTab=0;
             },
-            openTab(item) {
+            openTab(item,proccess) {
           //      this.activeSubMenu = item.txt;
                 // this.$router.push(this.getUrl(item));
-                this.getUrlFromSideNav(item);
+                if(proccess)this.getUrlFromSideNav(item);
                 //  window.bus.$emit('menu/closeMobileMenu');
             },
             getUrlFromSideNav(item) {
+
+
 
                 var data={
                     modUrl:item.link,

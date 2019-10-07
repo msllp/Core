@@ -1,27 +1,29 @@
 <template>
     <div  class=" ms-live-tab  "   contextmenu.prevent="rightClick($event)">
-        <ul class="flex border-b cursor-pointer">
+        <ul class="ms-view-tab-block">
 
             <li
 
                 :class="{
-                '-mb-px shadow-inner bg-teal-200 ':checkActive(index),
-                ' ':true
+                '':checkActive(index),
+               'ms-tab-btn':true,
                 }"
 
                  v-for="(tab,index) in allTab" v-on:click="tabClicked(index)">
+
                 <a
 
                 :class="{
-                ' inline-block border-l border-t border-r rounded-t py-2 px-4 text-blue-700 font-semibold':checkActive(index),
-                'inline-block py-2 px-4 border-t border-r border-l border-t  text-blue-500 hover:text-blue-800 font-semibold':!checkActive(index)
+                'flex-1':true,
+                'ms-tab-btn-inner-active':checkActive(index),
+                'ms-tab-btn-inner':!checkActive(index)
                 }"
 >
 
-                    <span v-if="!checkActive(index)"> {{tab.modDView}}</span>
+                    <span > {{tab.modDView}}</span>
 
-                    <span v-if="checkActive(index)" > <i class="fas fa-chevron-down"></i> </span>
-                    <span class="fa fa-window-close p-1 border" v-on:click="deleteTab(index)"></span></a >
+
+                    <span class="fa fa-window-close p-1 block" v-on:click="deleteTab(index)"></span></a >
 
             </li>
             <li
@@ -35,7 +37,7 @@
             modDView:'New Tab',
             modUrl:'/newtab',
             data:''})"
-            > <span class="fa fa-plus p-3 border-l border-r border-t "></span></li>
+            > <span class="fa fa-plus p-3 bg-white border-l border-r border-t mt-2"></span></li>
 
         </ul>
 
@@ -47,7 +49,7 @@
                     :class="{
                 'hidden':!checkActive(index),
                 'visible ':checkActive(index),
-
+                'ms-live-data-block':true
                 }"
                    >
                     <mswindow :ms-data="tab"  :index="index"  :ref= "'tab_'+index" > </mswindow>
@@ -175,12 +177,5 @@
 </script>
 
 <style scoped>
-    .shadow-lg{
-        transition: all 400ms ease-in-out;
-    }
-    .ms-live-tab{
-        @apply px-1;
-        @apply py-2;
-    }
 
 </style>

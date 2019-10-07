@@ -80,12 +80,14 @@ getGetLink(url,classFor){
     let re= axios.get(url)
         .then(
             function(response){
+console.log(response.data);
                 returnX=response.data;
                 self.setHtml(returnX);
 
             }
         )
         .catch(function (error) {
+            console.log(error);
             // handle error
             self.setMsError(error.response);
             //  console.log(error.response.data);
