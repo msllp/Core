@@ -19,6 +19,14 @@ return
         ],
 
 
+        'MS_UI'=>[
+            'driver' => 'sqlite',
+            'database' => base_path('MS/DB/Master/MS_UI'),
+            'prefix' => '',
+            'foreign_key_constraints' => true,
+        ],
+
+
         'DCM_User_Data' => [
             'driver' => 'sqlite',
             'database' => base_path('MS/DB/Master/DCM_User_Data'),

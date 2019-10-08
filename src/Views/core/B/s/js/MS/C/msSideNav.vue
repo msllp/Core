@@ -130,6 +130,7 @@
               //  data.modUrl=item.link;
                //data.modCode="MAS";
             //    data.modDView=item.text;
+                this.$parent.hideNavOnlyForMobile(true);
                 this.$parent.driveRequestFromNavToLiveTab(data);
 
                 // let sectionSlug = kebabCase(item.txt);

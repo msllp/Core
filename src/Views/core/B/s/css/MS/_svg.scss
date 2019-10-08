@@ -61,3 +61,14 @@ background-image: url('svg/apps.svg');
     //background-attachment: fixed;
     background-size: 15px 15px;
 }
+
+.msicon-manage-module{
+    @apply msicon;
+    background-image: url('svg/planning.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    //background-attachment: fixed;
+    background-size: 15px 15px;
+}
+
+

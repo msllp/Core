@@ -118,11 +118,14 @@
 
             <div v-if="inputType == 'option'" class="flex flex-wrap" :class="msValid">
 
-                <span class=" select-none" :class="{'w-4/12 mr-2':!onMobile,'w-full':onMobile}">{{inputVname}}</span>
+                <span class=" select-none" :class="{'w-4/12 mr-2':!onMobile,'w-full':onMobile}">{{inputVname}}  <i class="" v-if="(msValue!=null ) && (msValue.search('msicon-') != '-1')" :class='msValue'></i></span>
 
                 <select :name="inputName" class="border focus:outline-none focus:shadow-outline lg:flex-1" :class="{'w-full':onMobile}" size="1" v-model="msValue" >
-                    <option v-for="(radio,key) in msData.verifyBy.msdata" v-bind:value="radio[msData.verifyBy.value]" > {{ forNice(radio[msData.verifyBy.text]) }}</option>
+                    <option v-for="(radio,key) in msData.verifyBy.msdata" v-bind:value="radio[msData.verifyBy.value]" >
+
+                        {{ forNice(radio[msData.verifyBy.text]) }}</option>
                 </select>
+
 
             </div>
 
