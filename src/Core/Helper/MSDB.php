@@ -344,16 +344,20 @@ public $dataToProcess=[];
             $valdationError=0;
 
             if(count($uniqArray)>0){
+
                 $valdationError=1;
                 $model=\DB::connection($connection)->table($tableName);
                 $valdationErrorArray=[];
 
                 foreach ($uniqArray as $name =>$data){
+                    $name=$data;
+                    //var_dump($data);
+                 //   dd(array_key_exists($name,$columnArray));
                     if(array_key_exists($name,$columnArray)){
                         $model=\DB::connection($connection)->table($tableName);
                         $model=$model->where($name,$columnArray[$name]);
 
-
+                      //  dd($model);
                         if($model->get()->count() > 0){
 
                             $valdationErrorArray[$name]="Duplicate Found for Column name: ".$name ." \n Error casued by class::method = ".__METHOD__;
