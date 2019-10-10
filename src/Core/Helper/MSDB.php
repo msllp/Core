@@ -641,7 +641,18 @@ public $dataToProcess=[];
         $return=[];
         if(count($identifier) > 1){
 
-            goto ms_default;
+            $row=\DB::connection($connection)->table($table);
+
+            foreach ($identifier as $n=>$v){
+                if($row->count()>0)
+                $row=$row->where($n,$v);
+            }
+
+            if($row->count()>0)$return=$row->get()->map(function ($item){
+                return json_decode(json_encode($item),true);
+            })->toArray();
+
+
 
         }
         elseif(count($identifier) < 1) {
@@ -656,9 +667,12 @@ public $dataToProcess=[];
         }elseif(count($identifier) == 1) {
             ms_default:
             $objFields=collect($fields)->where('name',array_key_first($identifier))->count();
+          //  dd($objFields);
             if ($objFields > 0){
                 $row=\DB::connection($connection)->table($table)->where(array_key_first($identifier),reset($identifier))->get();
-                if ($row->count() > 0)$return=$row->toArray();
+                if ($row->count() > 0)$return=$row->map(function ($item){
+                    return json_decode(json_encode($item),true);
+                })->toArray();
                 goto fn_final;
             }
         }

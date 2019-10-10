@@ -295,7 +295,7 @@ if($master && array_key_exists('locationOfFile', $array)){
             switch ($link['type']){
 
                 case 'get':
-                    \Route::get($link['route'],$method)->name($link['name']);
+                    \Route::get($link['route'],$method)->name($link['name'])->middleware(\MS\Middlelwares\checkValidRoute::class);
                     break;
 
                 case 'post':

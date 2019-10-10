@@ -13,6 +13,9 @@ define("MSCORE_UI_STATUS_1","B\MAS:CORE_UI_Status_1:StatusBoolean->StatusName");
 define("MSCORE_UI_BOOL_1","MS\Mod\B\MSSetup:Master_Bool_1:BoolValue->BoolName");
 define("MSCORE_UI_ICON_1","MS\Mod\B\MSSetup:Master_Icon_1:IconValue->IconName");
 
+
+define("MSCORE_MOD_MASTER","MS\Mod\B\Mod:Master_Mod:UniqId->ModuleName");
+
 define('DS',DIRECTORY_SEPARATOR);
 
 class MSCoreServiceProvider extends \Illuminate\Support\ServiceProvider
