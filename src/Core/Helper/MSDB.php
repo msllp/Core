@@ -787,8 +787,17 @@ public $dataToProcess=[];
 
         if($r==null)$r=$this->r;
 
+        $data= $this->filterData($r->all());
+        $this->dataToProcess=$data;
+
+        if(count($this->dataToProcess) > 0){
+            $r=$this->dataToProcess;
+        }else{
+            $r=$r->all();
+        }
+
         $b=implode('\\',[$this->masterNamespace,'B']);
-        $data= $this->filterData($r->all()) ;
+
        $rules= $b::getAllRules($this->ms_id);
 
        //dd($b::getAllMessage($this->ms_id,$rules));

@@ -12,6 +12,15 @@ namespace MS\Core\Module;
 class Master implements BaseMaster
 {
 
+    public static $routeTableHook=[
+
+        'name'=>'RouteName',
+        'route'=>'RouteUrl',
+        'method'=>'RouteMethod',
+        'type'=>'RouteType',
+
+    ];
+
     public static $ds=DIRECTORY_SEPARATOR;
 
     public static function getBasics(){
@@ -318,6 +327,50 @@ class Master implements BaseMaster
             }
       //  dd($outArray);
         return $outArray;
+    }
+
+    public static function migrateRoutesToDb(){
+        $rM=\MS\Mod\B\Mod\F::getRouteModel ();
+        $r=self::getRoutes();
+
+
+
+        $rF=array_map(function($array){
+            $fA=[];
+            $dT=self::$routeTableHook;
+            $modCode=explode('.',$array['name']) ;
+            $modCode=reset($modCode);
+            foreach ($dT as $k=>$Nk){
+                if($k=='route'){
+
+                        $path=explode('.',route($array['name']));
+
+                      if (count($path)==2) unset($path[0]);
+                    if (count($path)==3) {unset($path[0]);unset($path[1]);}
+
+
+                   $fA[$Nk]=reset($path);
+                    //dd(route($array['name']));
+                }elseif ($k=='method'){
+                    $fA[$Nk]=implode('@',[static::$controller,$array[$k]] );
+                }else{
+                    $fA[$Nk]=$array[$k];
+                }
+
+            }
+
+
+            if(!array_key_exists('UniqId',$fA))$fA['UniqId']= \MS\Core\Helper\Comman::random(6,4);
+            if(!array_key_exists('Status',$fA))$fA['Status']=true;
+            if(!array_key_exists('ModuleCode',$fA))$fA['ModuleCode']=$modCode;
+
+            return $fA;
+        },$r);
+
+        return $rF;
+
+        dd($rF);
+
     }
 
 }

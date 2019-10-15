@@ -374,8 +374,9 @@ class MSForm
                 if(($fieldName == 'created_at') && ($fieldName =='updated_at')) dd($fieldName);
                 if(($fieldName != 'created_at') && ($fieldName !='updated_at')){
 
-
+                    //dd();
                     $aray=$this->getFieldFromFields($fieldName);
+                    if($aray == null)dd($fieldName);
 //                if(array_key_exists('fieldGroupMultiple',$this->dbMaster) && $this->dbMaster['fieldGroupMultiple'])
 //                    $aray['groupInput']=$this->make4Vue($title);
 
