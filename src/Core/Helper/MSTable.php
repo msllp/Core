@@ -65,7 +65,7 @@ class MSTable
 
     public function fromModel(MSDB $dbClass,$data=[]){
         $this->msdb=$dbClass;
-        $this->action=$this->fields=$this->msdb->model->ms_action;;
+        $this->action=  $this->msdb->model->ms_action;
         $this->fields=$this->msdb->model->base_Field;
        // if(count($data)>0)$this->newForm=false;
         $this->makeTable();
@@ -80,7 +80,8 @@ class MSTable
                 'n'=>'tableTitle',
                 'fc'=>'tableColumns',
                 'data'=>'tableData',
-                'ddata'=>'tableFromOther'
+                'ddata'=>'tableFromOther',
+                'ac'=>'tableAction',
 
             ];
 
@@ -92,8 +93,11 @@ class MSTable
                // dd($this->msdb->rowAll());
                 //dd($this->dbMaster['MSViews'][$this->viewID]['paginationLink']);
                 $fArray[$vueData['data']]=$this->msdb->MSmodel->paginate($this->perPage)->withPath(route($this->dbMaster['MSViews'][$this->viewID]['paginationLink']));
-
+               // dd($this->dynamicData);
                 $fArray[$vueData['ddata']]=$this->dynamicData;
+
+
+                $fArray[$vueData['ac']]=$this->makeArrayForAction();
            // dd($this->msdb->MSmodel->paginate(1));
             }
         $fArray[$vueData['data']]->links();
@@ -124,9 +128,15 @@ class MSTable
 
 
                         switch ($colD['input']){
+
+                            case 'option':
+                                goto ms_dyn_data;
+                                break;
+
+
                             case 'radio':
                               //  dd($colD);
-
+                                ms_dyn_data:
                                 if(array_key_exists('validation',$colD)){
                                     if(array_key_exists('existIn',$colD['validation'])){
                                         $this->dynamicData[$colD['name']]=\MS\Core\Helper\MSForm::getDataFromTable($colD['validation']['existIn']);
@@ -182,6 +192,46 @@ dd($array);
 
     }
 
+    private  function makeArrayForAction(){
+        $fArray=[];
+        if(array_key_exists('actions',$this->dbMaster['MSViews'][$this->data['viewID']]) && count($this->dbMaster['MSViews'][$this->data['viewID']]['actions'])){
+
+            foreach ($this->dbMaster['MSViews'][$this->data['viewID']]['actions'] as $ac){
+
+
+                $fArray[]=$this->getActionArray($ac);
+           //     dd($this->getActionArray($ac));
+
+            }
+
+        return $fArray;
+        }
+
+        return [];
+
+
+    }
+
+    private function getActionArray($actioId){
+        $fArray=[];
+        if(array_key_exists($actioId,$this->dbMaster['action'])){
+
+
+
+            $fArray=[
+
+                'icon'=>$this->dbMaster['action'][$actioId]['btnIcon'],
+                'text'=>$this->dbMaster['action'][$actioId]['btnText'],
+                'color'=>$this->dbMaster['action'][$actioId]['btnColor'],
+                'url'=>route($this->dbMaster['action'][$actioId]['route']),
+            ];
+           // dd($this->dbMaster['action'][$actioId]);
+
+
+        }
+
+        return $fArray;
+    }
 
     public function makeTable(){
 

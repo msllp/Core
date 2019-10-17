@@ -80,7 +80,7 @@ getGetLink(url,classFor){
     let re= axios.get(url)
         .then(
             function(response){
-console.log(response.data);
+//console.log(response.data);
                 returnX=response.data;
                 self.setHtml(returnX);
 

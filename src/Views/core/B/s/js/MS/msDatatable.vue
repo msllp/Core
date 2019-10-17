@@ -39,44 +39,74 @@
 
             </div>
 
-            <table class="table-auto mt-2">
+            <table class="table-auto mt-2 w-full ">
 
-                <tr class="border border-blue-500 border-t-2 border-b-2">
+                <thead class="border border-blue-500  border-b-2 ">
+
+                <tr class="">
+
+                    <th class="border bg-blue-200" v-if="msAction != null"> action</th>
                     <th v-for="column in msAllData.fromV.tableColumns" class="border bg-blue-200"> {{  column.vName }}</th>
                 </tr>
+                </thead>
 
-                <tr v-for="row in msAllData.fromV.tableData.data" class="border">
+                <tbody class=" shadow">
 
-                    <td    v-for="column,index in msAllData.fromV.tableColumns"  class="border p-1 text-center cursor-wait" :title="column.vName" >
+<tr v-for="row in msAllData.fromV.tableData.data" class="border bg-white">
+    <td class="border p-1 text-center cursor-pointer" v-if="msAction != null">
 
 
-                        <span v-if="(column.type =='text') || (column.type =='number') || (column.type =='email') || (column.type =='textarea') || (column.type =='password') || (column.type =='auto')  ">
+        <span v-on:click="msActionClick(ac)" v-for="ac,index in msAction" :class="ac.color"  class="hover:border hover:border-blue-500" :title="ac.text"> <i :class="ac.icon"> </i></span>
 
-                            {{ column.type }}
-                        {{ row[index] }}
+
+
+    </td>
+
+    <td    v-for="column,index in msAllData.fromV.tableColumns"  class="border p-1 text-center cursor-wait" :title="column.vName" >
+
+
+        <span v-if="(column.type =='text') || (column.type =='number') || (column.type =='email') || (column.type =='textarea') || (column.type =='password') || (column.type =='auto')  ">
+
+
+                        {{ forNice(row[index]) }}
 
                         </span>
 
-                        <span v-if="column.type =='date' && (true)"  >
+        <span v-if="column.type =='date' && (true)"  >
                             {{ getOutDate(row[index]) }}
 
                         </span>
 
-                        <span v-if="column.type =='time' && (true)"  >
+        <span v-if="column.type =='time' && (true)"  >
                             {{ getOutTime(row[index]) }}
 
                         </span>
 
 
-                        <span v-if="column.type =='file' && (true)"  ></span>
+        <span v-if="column.type =='file' && (true)"  ></span>
 
-                        <span v-if="column.type =='option' && (true)" ></span>
-                        <span v-if="column.type =='checkbox' && (true)"  ></span>
-                        <span v-if="column.type =='radio' && (true)"  >
+
+
+
+
+
+        <span v-if="column.type =='option' && (true)" >
+            <span v-if="msData.fromV.tableFromOther.hasOwnProperty(index)" class=" select-none" >
+
+
+                            {{ getVnameFromDataForOption(row[index],msData.fromV.tableFromOther[index])}}
+
+                        </span>
+        </span>
+
+
+
+        <span v-if="column.type =='checkbox' && (true)"  ></span>
+        <span v-if="column.type =='radio' && (true)"  >
                              <span v-if="msData.fromV.tableFromOther.hasOwnProperty(index)" class=" select-none" >
 
                             <i class="fas "
-                            :class="{
+                               :class="{
                             'fa-chevron-right':!(row[index]==1||(row[index]== 0)),
                             'text-blue-500':!(row[index]==1||(row[index]== 0)),
                             'text-green-500':(row[index]==1) ||(row[index]=='1'),
@@ -93,10 +123,12 @@
                         </span>
 
 
-                    </td>
+    </td>
 
 
-                </tr>
+</tr>
+</tbody>
+
 
             </table>
             <div  class="flex flex-wrap " >
@@ -156,7 +188,8 @@
                 msSearchBy:'ms0',
                 msSearch:"",
                 msPerPage:10,
-                msPerPageData:['5','10','20','30','50','100']
+                msPerPageData:['5','10','20','30','50','100'],
+                msAction:null,
 
             }
         },
@@ -164,13 +197,16 @@
             this.msAllData=this.msData;
             this.msPath=this.msData.fromV.tableData.path;
             this.msPerPage= this.msData.fromV.tableData.per_page;
+            this.msAction=this.msData.fromV.tableAction;
+
+            console.log(this.msAction);
           //  msSearch=this.msAllData.fromV.tableData.columns
 
         },
 
         methods:{
             setHtml(data){
-                console.log(data);
+             //   console.log(data);
 
                 this.msAllData.fromV.tableData=data.fromV.tableData;
                 //this.msAllData.fromV.tableColumns=this.msData.fromV.tableColumns;
@@ -178,6 +214,20 @@
             },
             getDataFromSerevr(link){
                 var data = this.getGetLink(link,this);
+
+            },
+            msActionClick(ac){
+
+                var data={
+                            tabCode:'01',
+                            modCode:"MAS",
+                            modDView: ac.text,
+                            modUrl:ac.url,
+                            data:""
+
+                };
+                window.vueApp.updateTab(data);
+
 
             },
             getPage(page){
@@ -234,6 +284,24 @@
 
                 return this.msPath+"?"+q.join('&');
             },
+            getVnameFromDataForOption(value,data){
+               //  console.log(data);
+           //      console.log(value);
+
+                var outname="";
+
+                data.msdata.filter(function(element){
+                    if(element[data.value] == value){
+                        //return element[data.text];
+                        outname=element[data.text];
+                    }
+                    return element;
+
+                });
+
+                return outname;
+            }
+            ,
             getVnameFromDataForRadio(value,data){
                // console.log(data);
                // console.log(value);

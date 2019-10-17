@@ -166,7 +166,7 @@
                 var link = this.makeGetUrl(this.msData.path.sidebar,data);
               //  console.log(link);
                this.getGetRaw(link,this,'setMenuData');
-                   var Han=this.$refs['msMenuSide'];
+                  // var Han=this.$refs['msMenuSide'];
               //  this.sendNavDatatoBar();
               //  console.log(this.msMenuData);
                   //  console.log(   this.sendNavDatatoBar());
