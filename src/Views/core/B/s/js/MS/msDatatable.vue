@@ -2,14 +2,14 @@
     <div class="flex flex-wrap">
 
         <div class="w-full border shadow p-1 bg-white">
-            <div  class="flex flex-wrap   border-blue-400 p-1" >
+            <div  class="flex flex-wrap   border-blue-400 p-1  ms-datatable-header-box" >
 
 
-                <div class="flex-1 p-2 border-blue-300  border-l border-t border-b ">
-                    <div class="flex flex-wrap">
-                    <div class ="flex-1 pr-5">Search </div>
-                    <input type="text" class="flex-1  border focus:outline-none focus:shadow-outline shadow" v-model="msSearch">
-                    <select   v-model="msSearchBy" class="flex-1  border focus:outline-none focus:shadow-outline shadow">
+                <div class="w-1/3 p-2 border-blue-300  border-l border-t border-b border-r ">
+                    <div class="flex flex-wrap ">
+                        <div class =" pr-5 w-full">Search <i class="fi flaticon-add"></i> </div>
+                    <input type="text" class="w-full border focus:outline-none focus:shadow-outline shadow" v-model="msSearch">
+                    <select   v-model="msSearchBy" class="w-full mt-3  border focus:outline-none focus:shadow-outline shadow">
                         <option value="ms0" disabled selected>Please Select Column to search</option>
                         <option :value="index"  v-for="column,index,key in msAllData.fromV.tableColumns"  >{{  column.vName }}</option>
                     </select>
@@ -18,18 +18,22 @@
                 </div>
 
 
+    <div class="w-1/3 border-t border-b border-blue-300 p-2">
 
-                <div class="flex-1 border-blue-300 border p-2">
+        <span>take mass action on selected   <strong>{{ msSelectedRow.length }}</strong>  </span>
+
+    </div>
+                <div class="w-1/3 border-blue-300 border p-2 ">
 
 
-                        <div class="flex flex-wrap  ">
-                            <div class ="flex-1 text-right pr-5">Per page rows </div>
+                        <div class="flex flex-wrap  float-right">
+                            <div class ="flex text-right pr-5">Per page rows </div>
                             <select   v-model="msPerPage" class="flex-1   border focus:outline-none focus:shadow-outline shadow">
 
                                 <option :value="column"  v-for="column,index,key in msPerPageData"  >{{  column }}</option>
                             </select>
 
-                            <div class ="flex-1 ">to display </div>
+                            <div class ="flex ">to display </div>
                         </div>
 
 
@@ -39,21 +43,34 @@
 
             </div>
 
-            <table class="table-auto mt-2 w-full ">
+            <table class="table-auto mt-2 w-full ms-datatable-table-box">
 
                 <thead class="border border-blue-500  border-b-2 ">
 
-                <tr class="">
-
+                <tr class="ms-datatable-header-thead">
+                    <th class="ms-datatable-check-box-th" >
+                        <i class="far fa-square text-blue-500 "></i>
+                    </th>
                     <th class="border bg-blue-200" v-if="msAction != null"> action</th>
                     <th v-for="column in msAllData.fromV.tableColumns" class="border bg-blue-200"> {{  column.vName }}</th>
                 </tr>
+
                 </thead>
 
                 <tbody class=" shadow">
 
-<tr v-for="row in msAllData.fromV.tableData.data" class="border bg-white">
-    <td class="border p-1 text-center cursor-pointer" v-if="msAction != null">
+<tr v-for="row,index in msAllData.fromV.tableData.data" class="border bg-white">
+    <td class="ms-datatable-check-box-td" v-on:click="msSelecetRow(index)">
+     <span class="far "
+           :class="{
+           'fa-square text-blue-500':!msSelectedRow.includes(row[msRowID]),
+           'fa-check-square text-green-500':msSelectedRow.includes(row[msRowID]),
+        }"
+
+     ></span>
+    </td>
+    <td class="border p-1 text-center cursor-pointer select-none" v-if="msAction != null">
+
 
 
         <span v-on:click="msActionClick(ac)" v-for="ac,index in msAction" :class="ac.color"  class="hover:border hover:border-blue-500" :title="ac.text"> <i :class="ac.icon"> </i></span>
@@ -131,9 +148,11 @@
 
 
             </table>
+
+
             <div  class="flex flex-wrap " >
                 <div class="w-8/12">Showing {{ msAllData.fromV.tableData.from }} to {{ msAllData.fromV.tableData.to }} of {{msAllData.fromV.tableData.total}} total entries</div>
-                <div class="w-4/12text-right">Page: {{msAllData.fromV.tableData.current_page }} / {{ msAllData.fromV.tableData.last_page }}</div>
+                <div class="w-4/12 text-right">Page: {{msAllData.fromV.tableData.current_page }} / {{ msAllData.fromV.tableData.last_page }}</div>
 
             </div>
             <div  class="flex flex-wrap text-center cursor-pointer" >
@@ -149,7 +168,7 @@
                 'cursor-not-allowed':(msAllData.fromV.tableData.current_page == n)
                 }" v-for="n in msAllData.fromV.tableData.last_page"
                      v-on:click="getPage(n)"
-                > {{ n }} {{(msAllData.fromV.tableData.current_page == n)  }}</div>
+                > {{ n }} </div>
 
                 <div class="ms-btn  flex-1"  :class="{
                 'cursor-not-allowed':(msAllData.fromV.tableData.next_page_url == null)}" v-on:click="getDataFromSerevr(msAllData.fromV.tableData.next_page_url)" >
@@ -190,6 +209,9 @@
                 msPerPage:10,
                 msPerPageData:['5','10','20','30','50','100'],
                 msAction:null,
+                msMassAction:null,
+                msSelectedRow:[],
+                msRowID:null,
 
             }
         },
@@ -198,8 +220,10 @@
             this.msPath=this.msData.fromV.tableData.path;
             this.msPerPage= this.msData.fromV.tableData.per_page;
             this.msAction=this.msData.fromV.tableAction;
+            this.msMassAction=this.msData.fromV.tableMassAction;
+            this.msRowID=this.msData.fromV.rowId;
 
-            console.log(this.msAction);
+      //      console.log(this.msMassAction);
           //  msSearch=this.msAllData.fromV.tableData.columns
 
         },
@@ -216,6 +240,25 @@
                 var data = this.getGetLink(link,this);
 
             },
+            msSelecetRow(index){
+              //  console.log(this.msSelectedRow.includes(this.msAllData.fromV.tableData.data[index][this.msRowID]));
+                if(!this.msSelectedRow.includes(this.msAllData.fromV.tableData.data[index][this.msRowID])){
+                    this.msSelectedRow.push(this.msAllData.fromV.tableData.data[index][this.msRowID]);
+                }else{
+                    var mthis=this;
+                    this.msSelectedRow.splice( this.msSelectedRow.findIndex(function (val) {
+                        return val==mthis.msAllData.fromV.tableData.data[index][mthis.msRowID]
+                    }) , 1);
+                }
+
+
+//console.log(this.msSelectedRow);
+                }
+
+
+
+        ,
+
             msActionClick(ac){
 
                 var data={

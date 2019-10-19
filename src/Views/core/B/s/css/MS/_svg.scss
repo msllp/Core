@@ -1,3 +1,4 @@
+
 .msicon{
 
     min-width: 23px!important;
@@ -8,7 +9,7 @@
 
 .msicon-app{
     @apply msicon;
-background-image: url('svg/apps.svg');
+    background-image: url('svg/apps.svg');
     background-repeat: no-repeat;
     background-position: center;
     //background-attachment: fixed;
@@ -50,8 +51,9 @@ background-image: url('svg/apps.svg');
     background-image: url('svg/add.svg');
     background-repeat: no-repeat;
     background-position: center;
-    //background-attachment: fixed;
+    background-attachment: fixed;
     background-size: 15px 15px;
+
 }
 .msicon-list{
     @apply msicon;

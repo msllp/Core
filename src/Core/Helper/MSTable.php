@@ -82,23 +82,27 @@ class MSTable
                 'data'=>'tableData',
                 'ddata'=>'tableFromOther',
                 'ac'=>'tableAction',
+                'mac'=>'tableMassAction',
+                'rid'=>'rowId'
 
             ];
 
             if(array_key_exists($this->viewID,$this->dbMaster['MSViews'])){
          //       dd($this->dbMaster['MSViews'][$this->viewID]);
-
-                $fArray[$vueData['n']]=$this->dbMaster['MSViews'][$this->viewID]['title'];
-                $fArray[$vueData['fc']]=$this->makeArrayForColumns($this->dbMaster['MSViews'][$this->viewID]['groups'] );
+                $vd=$this->dbMaster['MSViews'][$this->viewID];
+                $fArray[$vueData['n']]=$vd['title'];
+                $fArray[$vueData['fc']]=$this->makeArrayForColumns($vd['groups'] );
                // dd($this->msdb->rowAll());
                 //dd($this->dbMaster['MSViews'][$this->viewID]['paginationLink']);
-                $fArray[$vueData['data']]=$this->msdb->MSmodel->paginate($this->perPage)->withPath(route($this->dbMaster['MSViews'][$this->viewID]['paginationLink']));
+                $fArray[$vueData['data']]=$this->msdb->MSmodel->paginate($this->perPage)->withPath(route($vd['paginationLink']));
                // dd($this->dynamicData);
                 $fArray[$vueData['ddata']]=$this->dynamicData;
-
-
                 $fArray[$vueData['ac']]=$this->makeArrayForAction();
-           // dd($this->msdb->MSmodel->paginate(1));
+                $fArray[$vueData['mac']]=$this->makeArrayForMassAction();
+                $fArray[$vueData['rid']]=$this->makeRowId();
+
+
+
             }
         $fArray[$vueData['data']]->links();
 
@@ -112,6 +116,10 @@ class MSTable
 
     }
 
+    private function makeRowId(){
+        if(array_key_exists('rowId',$this->dbMaster['MSViews'][$this->viewID]))return $this->dbMaster['MSViews'][$this->viewID]['rowId'];
+        return 'id';
+    }
 
     private function makeArrayForColumns(array  $array){
 //dd($array);
@@ -211,6 +219,26 @@ dd($array);
 
 
     }
+    private  function makeArrayForMassAction(){
+        $fArray=[];
+        if(array_key_exists('massAction',$this->dbMaster['MSViews'][$this->data['viewID']]) && count($this->dbMaster['MSViews'][$this->data['viewID']]['massAction'])){
+
+            foreach ($this->dbMaster['MSViews'][$this->data['viewID']]['massAction'] as $ac){
+
+
+                $fArray[]=$this->getActionArray($ac);
+                //     dd($this->getActionArray($ac));
+
+            }
+
+            return $fArray;
+        }
+
+        return [];
+
+
+    }
+
 
     private function getActionArray($actioId){
         $fArray=[];

@@ -1,0 +1,55 @@
+.ms-datatable-header-box{
+
+
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 111px!important;
+    @apply bg-white;
+    overflow-x: auto;
+    z-index:1126;
+
+}
+.ms-datatable-header-thead{
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 151px!important;
+}
+
+
+.ms-datatable-table-box{
+    display: block;
+    overflow-x: auto;
+
+    padding-left: 35px;
+
+}
+
+
+.ms-datatable-check-box-th{
+    left: 0;
+    position: absolute;
+    top: auto;
+    z-index:1125;
+    @apply border;
+    @apply bg-blue-200;
+
+    @apply px-3;
+    @apply border-blue-500;
+
+}
+
+
+
+.ms-datatable-check-box-td{
+    left: 0;
+    position: absolute;
+    top: auto;
+    z-index:1;
+    @apply bg-white;
+    @apply border;
+    @apply  text-center;
+    @apply  cursor-pointer;
+    @apply  select-none;
+    @apply p-1;
+    @apply px-3;
+     }

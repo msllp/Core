@@ -14,6 +14,7 @@
 	<meta content="Million Solutions LLP" name="author"/>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 	<link rel="stylesheet" href="{{ asset("b/css/app.css") }}?{{\MS\Core\Helper\Comman::random(10)}}" />
+
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <meta name="theme-color" content="#db5945">
 
