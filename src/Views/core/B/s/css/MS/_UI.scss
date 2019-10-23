@@ -36,8 +36,7 @@ Creation date: 18/10/2019 23:34
     -webkit-font-smoothing: antialiased;
     font-smoothing: antialiased;
 }
-
-.flaticon-add:before{ content: "\f100"; }
+.flaticon-add:before { content: "\f100"; }
 .flaticon-user:before { content: "\f101"; }
 .flaticon-growth:before { content: "\f102"; }
 .flaticon-bin:before { content: "\f103"; }
@@ -54,6 +53,21 @@ Creation date: 18/10/2019 23:34
 .flaticon-cms:before { content: "\f10e"; }
 .flaticon-plan:before { content: "\f10f"; }
 .flaticon-sketch:before { content: "\f110"; }
+.flaticon-network:before { content: "\f111"; }
+.flaticon-clock:before { content: "\f112"; }
+.flaticon-placeholder:before { content: "\f113"; }
+.flaticon-distributed:before { content: "\f114"; }
+.flaticon-team:before { content: "\f115"; }
+.flaticon-contract:before { content: "\f116"; }
+.flaticon-users-group:before { content: "\f117"; }
+.flaticon-group-of-users-silhouette:before { content: "\f118"; }
+.flaticon-user-with-computer-monitor-and-bar-graphs:before { content: "\f119"; }
+.flaticon-problem:before { content: "\f11a"; }
+.flaticon-analytics:before { content: "\f11b"; }
+.flaticon-startup:before { content: "\f11c"; }
+.flaticon-plea:before { content: "\f11d"; }
+.flaticon-partner:before { content: "\f11e"; }
+.flaticon-success:before { content: "\f11f"; }
 
 $font-Flaticon-add: "\f100";
 $font-Flaticon-user: "\f101";
@@ -72,3 +86,18 @@ $font-Flaticon-execution: "\f10d";
 $font-Flaticon-cms: "\f10e";
 $font-Flaticon-plan: "\f10f";
 $font-Flaticon-sketch: "\f110";
+$font-Flaticon-network: "\f111";
+$font-Flaticon-clock: "\f112";
+$font-Flaticon-placeholder: "\f113";
+$font-Flaticon-distributed: "\f114";
+$font-Flaticon-team: "\f115";
+$font-Flaticon-contract: "\f116";
+$font-Flaticon-users-group: "\f117";
+$font-Flaticon-group-of-users-silhouette: "\f118";
+$font-Flaticon-user-with-computer-monitor-and-bar-graphs: "\f119";
+$font-Flaticon-problem: "\f11a";
+$font-Flaticon-analytics: "\f11b";
+$font-Flaticon-startup: "\f11c";
+$font-Flaticon-plea: "\f11d";
+$font-Flaticon-partner: "\f11e";
+$font-Flaticon-success: "\f11f";

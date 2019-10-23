@@ -16,6 +16,9 @@ define("MSCORE_UI_ICON_1","MS\Mod\B\MSSetup:Master_Icon_1:IconValue->IconName");
 
 define("MSCORE_MOD_MASTER","MS\Mod\B\Mod:Master_Mod:UniqId->ModuleName");
 
+
+define('MSCORE_ROUTE_TYPE_MASTER',"MS\Mod\B\MSSetup:MS_Route_Type:RouteTypeCode->RouteTypeName");
+define('MSCORE_ROUTES_MASTER',"MS\Mod\B\Mod:Master_Route:UniqId->RouteName");
 define('DS',DIRECTORY_SEPARATOR);
 
 class MSCoreServiceProvider extends \Illuminate\Support\ServiceProvider

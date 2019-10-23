@@ -20,9 +20,20 @@
 
     <div class="w-1/3 border-t border-b border-blue-300 p-2">
 
-        <span>take mass action on selected   <strong>{{ msSelectedRow.length }}</strong>  </span>
+        <div class="flex flex-wrap " v-if="msSelectedRow.length > 0">
 
+        <span class="w-full ms-btn border-l hover:shadow">Perform</span>
+        <select   v-model="msMassActionSelected" class="w-full mt-3  border focus:outline-none focus:shadow-outline shadow">
+            <option value="ms0" disabled selected>Please Select Action to perform</option>
+            <option :value="index"  v-for="column,index in msMassAction"  :class="column.color" > <i :class="column.icon"></i> {{  column.text }}</option>
+        </select>
+        <span class="w-full">on selected   <strong>{{ msSelectedRow.length }}</strong>  </span>
+        </div>
+        <div  v-if="msSelectedRow.length < 1">No Selection made yet</div>
     </div>
+
+
+
                 <div class="w-1/3 border-blue-300 border p-2 ">
 
 
@@ -89,6 +100,11 @@
 
                         </span>
 
+
+
+
+
+
         <span v-if="column.type =='date' && (true)"  >
                             {{ getOutDate(row[index]) }}
 
@@ -108,10 +124,14 @@
 
 
         <span v-if="column.type =='option' && (true)" >
-            <span v-if="msData.fromV.tableFromOther.hasOwnProperty(index)" class=" select-none" >
 
+
+                        <span v-if="msData.fromV.tableFromOther.hasOwnProperty(index)" class=" select-none" >
+
+                            <span v-if="msData.fromV.tableFromOther[index].hasOwnProperty(column.name)">SS</span>
 
                             {{ getVnameFromDataForOption(row[index],msData.fromV.tableFromOther[index])}}
+
 
                         </span>
         </span>
@@ -212,6 +232,7 @@
                 msMassAction:null,
                 msSelectedRow:[],
                 msRowID:null,
+                msMassActionSelected:null,
 
             }
         },
@@ -223,7 +244,7 @@
             this.msMassAction=this.msData.fromV.tableMassAction;
             this.msRowID=this.msData.fromV.rowId;
 
-      //      console.log(this.msMassAction);
+        //   console.log(this.msData.fromV);
           //  msSearch=this.msAllData.fromV.tableData.columns
 
         },
@@ -328,20 +349,20 @@
                 return this.msPath+"?"+q.join('&');
             },
             getVnameFromDataForOption(value,data){
-               //  console.log(data);
-           //      console.log(value);
+                 //console.log(data);
+                 //console.log(value);
 
                 var outname="";
 
                 data.msdata.filter(function(element){
+                  //  console.log(data.value);
                     if(element[data.value] == value){
                         //return element[data.text];
                         outname=element[data.text];
                     }
                     return element;
-
                 });
-
+//console.log(outname);
                 return outname;
             }
             ,

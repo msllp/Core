@@ -7,6 +7,8 @@
                 {{ msData.formTitle }}
             </div>
 
+
+
         </div>
 
     <div class="block ">
@@ -16,7 +18,9 @@
         <div class="w-full rounded  border-t shadow-lg mb-4 bg-gray-100"  v-for="(section,id,key) in  msFormData">
 
             <div class=" w-full px-3 py-2 cursor-pointer mb-2 border-b"  :class="{ 'show': id === 0 , }" :id="section.id+'_target'" :aria-labelledby="section.id" >
-                <div class="font-bold text-md border-b pb-2  ">  <div  class="expand-btn"
+                <div class="font-bold text-md border-b pb-2  flex flex-wrap">
+
+                    <div  class="expand-btn flex"
                                                                       :style="{
 
                           'opacity':checkImHiddenOrNot(section)
@@ -27,9 +31,20 @@
                     'fas fa-search-plus ':checkImHiddenOrNot(section)
 
                     }"  ></i> </div>
-                    <div class="btn btn-outline-danger" v-if="checkMutlipleSub(section)" v-on:click.prevent="removeInputGroup(id,section.rootId)"><i class="fa fa-times-circle "></i> </div>
+
 
                     {{section.gruoupHeading}}
+
+                    <div class="flex px-3 border ml-3 hover:bg-white hover:shadow" v-if="section.groupDynamic">
+
+                        <div class="text-green-500" v-if="checkMutlipleFirst(section)" v-on:click.prevent="addInputGroup(id)"><i class="fa fa-times-circle " style="transform: rotate(45deg)"></i> </div>
+
+                        <div class="text-red-500" v-if="checkMutlipleSub(section)" v-on:click.prevent="removeInputGroup(id,section.rootId)"><i class="fa fa-times-circle "></i> </div>
+
+
+                    </div>
+
+
                 </div>
 
                 <div >
@@ -156,7 +171,7 @@
 
         },
         mounted() {
-             // console.log(MS);
+          //  console.log(this.msData);
             var d = new Date();
             var n = d.getTime();
 
@@ -220,7 +235,7 @@
                 //console.log(this.section.class);
             },
             checkMutlipleFirst:function (section) {
-                //  console.log(section.hasOwnProperty("rootId"));
+                // console.log(section);
                 if(section.groupDynamic)
                 {
 

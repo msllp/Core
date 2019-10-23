@@ -97,13 +97,16 @@ public $dataToProcess=[];
 
             if($tableConnection!="MSDB"){
                 Schema::connection($tableConnection)->dropIfExists($tableName);
+
+
                 Schema::connection($tableConnection)->create($tableName, function (Blueprint $table)use ($columnArray)  {
                     $table->increments('id');
                     foreach ($columnArray as $value) {
 
                         if(array_key_exists('name',$value) && array_key_exists('name',$value) )
                           if(!array_key_exists('type',$value))$value['type']='string';
-                            self::makeTableColumnWhenTableMaking($table,$value['name'],$value['type']);
+
+                        if(!(array_key_exists('dbOff',$value) && $value['dbOff'] ) )self::makeTableColumnWhenTableMaking($table,$value['name'],$value['type']);
                     }
 
                     $table->timestamps();
@@ -114,7 +117,7 @@ public $dataToProcess=[];
                 Schema::create($tableName, function (Blueprint $table) use ($columnArray) {
                     $table->increments('id');
                     foreach ($columnArray as $value) {
-                        //  dd($table);
+
                         self::makeTableColumnWhenTableMaking($table,$value['name'],$value['type']);
                     }
                     $table->timestamps();
@@ -137,7 +140,7 @@ public $dataToProcess=[];
      */
     public static function makeTableColumnWhenTableMaking($tableClass, string $columnName, string $columnType = "string", $defaultValue = ""): bool
     {
-        // dd($tableClass);
+       //  dd($tableClass);
         switch ($columnType) {
             case 'boolean':
                 $tableClass->boolean($columnName)->default(false);

@@ -16,7 +16,7 @@
 
             <div v-if="inputType == 'text'"  class="flex flex-wrap" :class="msValid">
             <span class=" select-none lg:mr-2" >{{inputVname}}</span>
-            <input :index="msInputIndex"  :placeholder="'Enter '+inputVname+' here'" :type="inputType"  autocomplete="off" class=" border focus:outline-none focus:shadow-outline lg:flex-1" :class="{'w-full':onMobile}" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
+            <input @focus="msFocus = true"  :index="msInputIndex"  :placeholder="'Enter '+inputVname+' here'" :type="inputType"  autocomplete="off" class=" border focus:outline-none focus:shadow-outline lg:flex-1" :class="{'w-full':onMobile}" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
             </div >
 
             <div v-else-if="inputType == 'password'" class="select-none flex flex-wrap" :class="msValid">
@@ -149,12 +149,15 @@
 
         </div>
 
-    <div v-if="hasAutofield()" class="flex">
+    <div v-if="hasAutofield() " class="flex">
 
         <div  class="w-full block">
 
-            <div v-for ="autofiled in inputAuto" :value="autofiled.dValue" class="bg-gray-200 p-1 bprder m-1" v-on:click="setFinalInputFromAuto(autofiled.dValue)">
-                {{autofiled.dText}}
+            <div :class="{
+    'bg-blue-300': autofiled[msData.verifyBy.value]==msValue,
+    }"
+                 v-for ="autofiled in inputAuto"  class="bg-gray-200 p-1 bprder m-1" v-on:click="setFinalInputFromAuto(autofiled[msData.verifyBy.value])">
+                {{autofiled[msData.verifyBy.text]}}
             </div>
         </div>
 
@@ -206,7 +209,7 @@
 
         },
 
-        mounted() {
+        beforeMount() {
 
             // console.log(this.msData);
 
@@ -270,6 +273,7 @@
                     break;
 
 
+
             }
 
             //   var finalArray= this.makeArrayForInput(this);
@@ -296,7 +300,7 @@
             this.$parent.setInputData(this.inputName,this.msValue);
 
             if ( window.innerWidth < 800  )this.onMobile=true;
-
+          //  console.log(this.inputAuto);
 
             // this.inputAuto.push({
             //         dText: 'hello',
@@ -346,7 +350,7 @@
                 this.$parent.setInputData(this.inputName,{});
 
                 for (var i = 0; i < event.target.files.length; i++) {
-                    console.log(event.target.files[i]);
+                //    console.log(event.target.files[i]);
                     this.$parent.setInputData(this.inputName,event.target.files[i]);
                 }
 
@@ -354,13 +358,15 @@
 
             },
             hasAutofield(event){
-                if(this.inputType == "text")
-                if(this.inputAuto.length>0)return true;
+                if(this.inputType == "text" )
+               //    console.log(this.msData);
+                if(this.inputAuto.length>0 && this.msFocus)return true;
                 //this.hasAutofieldBool=true;
 
                 return false;
             },
             setFinalInputFromAuto(value){
+                this.msFocus=false;
                this.msValue=value;
             },
             inpututProcess(val, oldVal){
@@ -511,8 +517,10 @@
                 inputPasswordVisible:false,
                 onMobile:false,
                 inputChecked:[]
-                ,msFile:null
-               // hasAutofieldBool:false,
+                ,msFile:null,
+                msFocus:false
+               // hasAutofieldBool:false,,
+
             }
         }
         ,

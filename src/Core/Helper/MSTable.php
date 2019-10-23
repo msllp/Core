@@ -107,7 +107,7 @@ class MSTable
         $fArray[$vueData['data']]->links();
 
 
-
+//dd($fArray);
             //$formName=$this;
 
             return $fArray;
