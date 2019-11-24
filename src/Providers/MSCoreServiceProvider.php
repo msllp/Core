@@ -13,12 +13,13 @@ define("MSCORE_UI_STATUS_1","B\MAS:CORE_UI_Status_1:StatusBoolean->StatusName");
 define("MSCORE_UI_BOOL_1","MS\Mod\B\MSSetup:Master_Bool_1:BoolValue->BoolName");
 define("MSCORE_UI_ICON_1","MS\Mod\B\MSSetup:Master_Icon_1:IconValue->IconName");
 
-
 define("MSCORE_MOD_MASTER","MS\Mod\B\Mod:Master_Mod:UniqId->ModuleName");
 
-
 define('MSCORE_ROUTE_TYPE_MASTER',"MS\Mod\B\MSSetup:MS_Route_Type:RouteTypeCode->RouteTypeName");
-define('MSCORE_ROUTES_MASTER',"MS\Mod\B\Mod:Master_Route:UniqId->RouteName");
+define('MSCORE_ROUTES_MASTER',"MS\Mod\B\Mod:Master_Route:RouteName->RouteUrl");
+
+define("MSCORE_MOD_EVENT_MASTER","MS\Mod\B\Mod:Master_Events:UniqId->EventName");
+define('MSCORE_USER_TYPE_MASTER',"MS\Mod\B\Users:User_User_Type:UniqId->UserTypeName");
 define('DS',DIRECTORY_SEPARATOR);
 
 class MSCoreServiceProvider extends \Illuminate\Support\ServiceProvider

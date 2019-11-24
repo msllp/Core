@@ -23,7 +23,7 @@
                 <div v-on:click="hideNavBar($event)" class="flex items-center flex-shrink-0 mr-6">
 
                     <img src="/images/logo.png" class="fill-current h-12 mr-2 ms-company-logo hover:shadow-outline hover:bg-gray-200" >
-                    <div :class="{'hidden':!msNavBar}" class="font-semibold"> Cloud Services</div>
+                    <div :class="{'hidden':false}" class="font-semibold"> Cloud Services</div>
                 </div>
                 <div v-if="false" class="block lg:hidden">
                     <button v-on:click="clickToggaleButton" class="flex items-center px-3 py-2 border rounded text-black-200 text-black-200 hover:text-white hover:border-white">
@@ -34,39 +34,13 @@
         'hidden':!msMenuOn,
 
         }">
-                    <div v-if="false" class="text-sm lg:flex-grow text-right" :class="{'ms-hidden-fix':!msNavBar,'ms-hidden-fix-2':msNavBar}">
 
-                        <div class="block  lg:inline-flex ms-nav-btn">
-
-                            <a href="#responsive-header" :class="{'hidden':!msNavBar}" class="inline-block mt-2 inline-block text-black-200 hover:text-teal-500 mr-4">
-
-                                Docs
-                            </a>
-                            <span class="fa fa-plus inline-block  text-sm px-4 py-2 leading-none border rounded text-black border-teal-300 hover:border-teal-900  hover:text-teal-900 hover:bg-blue " ></span>
-                        </div>
-
-                        <div class="block  lg:inline-flex  ms-nav-btn">
-
-                        <a href="#responsive-header" :class="{'hidden':!msNavBar}" class="inline-block mt-2 inline-blocktext-black-200 hover:text-teal-500 mr-4">
-                            Examples
-                        </a>
-                            <span class="fa fa-plus inline-block  text-sm px-4 py-2 leading-none border rounded text-black border-teal-300 hover:border-teal-900  hover:text-teal-900 hover:bg-blue " ></span>
-                        </div>
-
-                        <div class="block   lg:inline-flex ms-nav-btn">
-
-                        <a href="#responsive-header":class="{'hidden':!msNavBar}" class="inline-block mt-2 inline-block text-black-200 hover:text-teal-500 mr-4">
-                            Blog
-                        </a>
-                            <span class="fa fa-plus inline-block  text-sm px-4 py-2 leading-none border rounded text-black border-teal-300 hover:border-teal-900  hover:text-teal-900 hover:bg-blue  " ></span>
-                        </div>
-                    </div>
 
                 </div>
             </nav>
         </div>
 
-        <mssidenav :class="{'hidden':!msNavBar,'unhidden':msNavBar}"  ref="msMenuSide" :ms-nav ="msNavOn"  ></mssidenav>
+        <mssidenav :class="{'ms-nav-mian-div-hidden':!msNavBar,'ms-nav-mian-div':msNavBar}"  ref="msMenuSide" :ms-nav ="msNavOn"  ></mssidenav>
 
         <div style=""
         :class="{
@@ -110,7 +84,7 @@
             setNavOn(show=false,event){
 
                 //this.$children['msMenu'].hideNav();
-                
+
                 if(!show){
                     this.msNavOn=false;
 

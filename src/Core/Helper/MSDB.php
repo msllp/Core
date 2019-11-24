@@ -298,46 +298,55 @@ public $dataToProcess=[];
     {
         if(!array_key_exists('created_at',$columnArray))$columnArray['created_at']=now()->toDateTimeString();
         $columnArray= $this->makeRowSafe($columnArray);
-    //    dd($this->makeRowSafe($columnArray));
+//    if(array_key_exists('RouteCode',$columnArray))
+//       dd($this->makeRowSafe($columnArray));
 
         try{
 
             $connection=$this->model->getConnectionName();
             $table=$this->model->getTable();
+           // if(array_key_exists('RouteCode',$columnArray))    dd($table);
             $tableName=$table;
             // $connection=$this->database['namespace']::getConnection($this->database['id']).$this->database['perfix'];
 
             $fieldCollection=collect($this->model->base_Field);
 
             foreach ($this->model->base_Field as $input){
+                if(!array_key_exists('dbOff',$input))$input['dbOff']=false;
+                if(array_key_exists('dbOff',$input)  && !$input['dbOff'] ) {
 
-                if(array_key_exists('validation',$input) && is_array($input['validation']) ){
-                    if( array_key_exists('unique',$input['validation']) && $input['validation']['unique']){
-                        $uniqArray[$input['name']]=$input;
+                    if(array_key_exists('validation',$input) && is_array($input['validation']) ){
+                        if( array_key_exists('unique',$input['validation']) && $input['validation']['unique']){
+                            $uniqArray[$input['name']]=$input;
+                        }
+
+                        //  var_dump(array_key_exists('unique',$input['validation']));
+                    }
+                    switch ($input['input']){
+                        case 'generated':
+                            goto fn_auto;
+                            break;
+
+                        case 'locked':
+                            fn_auto:
+                            if(!array_key_exists($input['name'],$columnArray) && array_key_exists('callback',$input)){
+                                $sClass=$this->model->namespace."\\F";
+                                $sMethod="::".$input['callback'];
+                                //  dd($input['callback']."()");
+                                //dd(call_user_func($sClass . $sMethod));
+                                $columnArray[$input['name']]=call_user_func($sClass . $sMethod);
+
+                            }
+                            break;
+
+
+
                     }
 
-                  //  var_dump(array_key_exists('unique',$input['validation']));
-                }
-                switch ($input['input']){
-                    case 'generated':
-                        goto fn_auto;
-                        break;
-
-                    case 'locked':
-                        fn_auto:
-                        if(!array_key_exists($input['name'],$columnArray) && array_key_exists('callback',$input)){
-                            $sClass=$this->model->namespace."\\F";
-                            $sMethod="::".$input['callback'];
-                          //  dd($input['callback']."()");
-                            //dd(call_user_func($sClass . $sMethod));
-                            $columnArray[$input['name']]=call_user_func($sClass . $sMethod);
-
-                        }
-                        break;
-
 
 
                 }
+
 
 
 
@@ -354,10 +363,12 @@ public $dataToProcess=[];
 
                 foreach ($uniqArray as $name =>$data){
                     $name=$data;
+                   // if(array_key_exists('RouteCode',$columnArray))dd($tableName);
                     //var_dump($data);
                  //   dd(array_key_exists($name,$columnArray));
                     if(array_key_exists($name,$columnArray)){
                         $model=\DB::connection($connection)->table($tableName);
+                     //   dd($model);
                         $model=$model->where($name,$columnArray[$name]);
 
                       //  dd($model);
@@ -375,17 +386,11 @@ public $dataToProcess=[];
             }
 
              if($valdationError==true)goto ms_error_found;
-            if($valdationError==false)
-             // dd($columnArray);
-
-               // dd($model->insert($columnArray));
-              //   dd($this->model->insert($columnArray));
-            return $this->model->insert($columnArray);
+            if($valdationError==false)return $this->model->insert($columnArray);
 
         }catch (\Exception $e){
             ms_error_found:
-           // dd($valdationErrorArray);
-          if(0){
+           if(0){
               if(isset($valdationErrorArray)){
                   if(count($valdationErrorArray)>0) $er['validationArray']=$valdationErrorArray;
               }
@@ -393,13 +398,14 @@ public $dataToProcess=[];
 
           }
 
-            //dd($er);
+          //  if(array_key_exists('RouteCode',$columnArray))   dd($valdationError );
             goto ms_final_return;
             return false;
 
 
         }
         ms_final_return:
+        if(!isset($valdationError))$valdationError=true;
         if($valdationError==true)return false;
         return true;
 
@@ -460,7 +466,7 @@ public $dataToProcess=[];
                                 //dd($v);
                                 if($v1->isValid()){
                                     $fileData[]=$this->storeFileFromRequest($v1,$k);
-                                    
+
                                 }
                             }
 
@@ -482,7 +488,7 @@ public $dataToProcess=[];
 
         if(!array_key_exists('updated_at',$array))$rArray['updated_at']=now()->toDateTimeString();
        return $rArray;
-        dd($rArray);
+
     }
 
     ///File Store Functions START
@@ -562,7 +568,7 @@ public $dataToProcess=[];
                 $x++;
             }
         return $fileData;
-        dd($fileData);
+
 
 }
     ///File Store Functions END
@@ -697,8 +703,6 @@ public $dataToProcess=[];
     public function displayForm($formId=null){
 
         if($formId != null){
-
-            
             $f=new \MS\Core\Helper\MSForm($this->masterNamespace,$this->database['id'],null,['formID'=>$formId]);
         }else{
             $f=new \MS\Core\Helper\MSForm($this->masterNamespace,$this->database['id']);
@@ -929,9 +933,9 @@ public $dataToProcess=[];
                 'tableData'=>$this->MSmodel->paginate( $this->perPage, ['*'], 'page', $page )
             ];
         }
-        
 
-    
+
+
 
 
         return response()->json(  $data ,200);
@@ -947,4 +951,43 @@ public $dataToProcess=[];
         }
 
     }
+
+
+    public function processForSave($r,$d=[],$tasks=[],$nextData=[]){
+
+        $m=$this;
+        $m->attachR($r);
+        // $m->migrate();
+        $d1=$r->all();
+        $valid=true;
+        //$valid=$m->checkRulesForData();
+
+        foreach ($d as $k=>$v){
+            $d1[$k]=$v;
+            }
+        $d=$d1;
+
+        if($valid){
+
+            //F::makeUser($r,$m);
+
+            return response()->json(['ms'=>[
+
+                'status'=>200,
+                // 'Rdata'=> $r->input(),
+                'ProcessStatus'=>$tasks,
+                'nextData'=>$nextData
+
+            ]],200);
+        }
+        else{
+            return response()->json([
+                'errors' => $m->CurrentError
+            ],418);
+        }
+
+
+    }
+
+
 }

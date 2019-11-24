@@ -1,6 +1,6 @@
 <template>
 
-    <div class="ms-nav-mian-div" style=""  :class="{ 'ms-nav-div-hidden':!msNavigationOn }">
+    <div class="" style=""  :class="{ 'ms-nav-div-hidden':!msNavigationOn }">
 
 
         <div class="flex flex-wrap ms-nav-div" v-if="currentMainTab">

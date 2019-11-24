@@ -71,6 +71,8 @@ Vue.component('msdockerdashboard', require('E:/MS-Master/Projects/FrameworkPHP/g
 Vue.component('mssidenav', require('./MS/C/msSideNav.vue').default);
 Vue.component('newtab', require('./MS/C/msNewTab.vue').default);
 
+Vue.component('mslogin', require('./MS/msLoginPage.vue').default);
+
 
 //Components
 
@@ -105,16 +107,16 @@ const app = new Vue({
             var dashBoard=this.$children[0];
             var viewPanel=dashBoard.$refs['ms-live-tab'];
             viewPanel.addActionToTab(data);
-            //console.log();
-            //console.log(data);
 
         },
         getModBtn:function(url){
 
            // console.log(this);
         this.setMsErrorZero();
-
         this.getGetLink(url,this);
+        
+
+
         },
         setMsError:function (Data) {
 
@@ -122,7 +124,7 @@ const app = new Vue({
           //  console.log(Data);
 
               //  console.log(Data);
-            
+
             for (var inputName in Data){
                 var key=inputName.toString().toLowerCase();
             //
@@ -142,7 +144,7 @@ const app = new Vue({
 
 
             }
-            
+
          //    this.mserror.forEach(function(value, index) {
          //        var key=value.name.toString();
          //        this.$refs[key].setError();

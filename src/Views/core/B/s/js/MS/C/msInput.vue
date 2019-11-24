@@ -151,13 +151,13 @@
 
     <div v-if="hasAutofield() " class="flex">
 
-        <div  class="w-full block">
+        <div  class="w-full block ms-text-auto">
 
             <div :class="{
     'bg-blue-300': autofiled[msData.verifyBy.value]==msValue,
     }"
-                 v-for ="autofiled in inputAuto"  class="bg-gray-200 p-1 bprder m-1" v-on:click="setFinalInputFromAuto(autofiled[msData.verifyBy.value])">
-                {{autofiled[msData.verifyBy.text]}}
+                 v-for ="autofiled in inputAuto"  class="bg-gray-200 p-1 bprder m-1" v-on:click="setFinalInputFromAuto(autofiled[dValue])">
+                {{autofiled[dText]}}
             </div>
         </div>
 
@@ -532,6 +532,34 @@
             msValue: function(val, oldVal) {
 
                this.inpututProcess(val,oldVal);
+
+
+               switch (this.inputType) {
+                   case 'text':
+                    if(this.inputAuto.length > 0){
+
+                        var msData1= this.inputAuto;
+                        var msThis=this;
+                        console.log(
+
+                            msData1.filter(function (ele) {
+
+
+
+
+                            })
+
+
+
+
+                        );
+
+                    }
+                       break;
+               }
+
+
+
             },
             msFile:function (val,oldVal) {
              //   console.log(val)

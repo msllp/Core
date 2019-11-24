@@ -57,7 +57,7 @@ class Master extends Command
 
             [
                 'Desc'=>"Vesion",
-                'Data'=>"MS Frame 5.8 Community Licence"
+                'Data'=>"MS Frame 6 Community Licence"
             ],
             [
                 'Desc'=>"Platform",

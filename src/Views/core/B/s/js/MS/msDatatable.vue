@@ -1,8 +1,8 @@
 <template>
     <div class="flex flex-wrap">
 
-        <div class="w-full border shadow p-1 bg-white">
-            <div  class="flex flex-wrap   border-blue-400 p-1  ms-datatable-header-box" >
+        <div class="w-full border shadow py-1 bg-white">
+            <div  class="flex flex-wrap   border-blue-400 my-1  ms-datatable-header-box" >
 
 
                 <div class="w-1/3 p-2 border-blue-300  border-l border-t border-b border-r ">
@@ -62,16 +62,28 @@
                     <th class="ms-datatable-check-box-th" >
                         <i class="far fa-square text-blue-500 "></i>
                     </th>
-                    <th class="border bg-blue-200" v-if="msAction != null"> action</th>
-                    <th v-for="column in msAllData.fromV.tableColumns" class="border bg-blue-200"> {{  column.vName }}</th>
+
+                    <th v-for="column in msAllData.fromV.tableColumns" class="ms-datatable-th"> {{  column.vName }}</th>
+<!--                    <th class="border bg-blue-200 ms-action-btn-th" v-if="msActionView"> Click here to hide action button</th>-->
                 </tr>
 
                 </thead>
 
                 <tbody class=" shadow">
 
-<tr v-for="row,index in msAllData.fromV.tableData.data" class="border bg-white">
-    <td class="ms-datatable-check-box-td" v-on:click="msSelecetRow(index)">
+<tr v-for="row,index in msAllData.fromV.tableData.data" class="border bg-white" :class="{
+
+          'bg-white':!msSelectedRow.includes(row[msRowID]),
+             'bg-blue-200':msSelectedRow.includes(row[msRowID]),
+
+}" v-on:mouseenter="msShowAction(index)" v-on:mouseleave="msHideAction(index)">
+
+    <td class="" v-on:click="msSelecetRow(index)"  :class="{
+
+          'ms-datatable-check-box-td':!msSelectedRow.includes(row[msRowID]),
+             'ms-datatable-check-box-td-checked':msSelectedRow.includes(row[msRowID]),
+
+}">
      <span class="far "
            :class="{
            'fa-square text-blue-500':!msSelectedRow.includes(row[msRowID]),
@@ -79,19 +91,14 @@
         }"
 
      ></span>
-    </td>
-    <td class="border p-1 text-center cursor-pointer select-none" v-if="msAction != null">
-
-
-
-        <span v-on:click="msActionClick(ac)" v-for="ac,index in msAction" :class="ac.color"  class="hover:border hover:border-blue-500" :title="ac.text"> <i :class="ac.icon"> </i></span>
-
 
 
     </td>
 
-    <td    v-for="column,index in msAllData.fromV.tableColumns"  class="border p-1 text-center cursor-wait" :title="column.vName" >
 
+    <td    v-for="column,index,key in msAllData.fromV.tableColumns"  class="border p-1 text-center cursor-wait" :title="column.vName" >
+
+<div>
 
         <span v-if="(column.type =='text') || (column.type =='number') || (column.type =='email') || (column.type =='textarea') || (column.type =='password') || (column.type =='auto')  ">
 
@@ -159,9 +166,21 @@
 
                         </span>
 
+</div>
+
 
     </td>
+    <td class="border p-1 text-center bg-grey-100 cursor-pointer select-none ms-action-btn-td  hover:bg-blue-200":class="{
 
+    }" v-if="msActionViewRow.includes(index)">
+
+
+
+        <span v-on:click="msActionClick(ac)" v-for="ac,index in msAction" :class="ac.color"  class="hover:border" :title="ac.text"> <i :class="ac.icon"> </i></span>
+
+
+
+    </td>
 
 </tr>
 </tbody>
@@ -175,26 +194,30 @@
                 <div class="w-4/12 text-right">Page: {{msAllData.fromV.tableData.current_page }} / {{ msAllData.fromV.tableData.last_page }}</div>
 
             </div>
-            <div  class="flex flex-wrap text-center cursor-pointer" >
-                <div class="ms-btn flex-1" :class="{
+            <div  class="flex flex-wrap text-center cursor-pointer shadow" >
+
+                <div class="ms-btn  flex-1"  v-if="(msAllData.fromV.tableData.prev_page_url != null)"  :class="{
+                'cursor-not-allowed':(msAllData.fromV.tableData.prev_page_url == null)}" v-on:click="getDataFromSerevr(msAllData.fromV.tableData.first_page_url)" >
+                    <i class="fas fa-angle-double-left"></i> </div>
+
+                <div class="ms-btn border-l flex-1" v-if="(msAllData.fromV.tableData.prev_page_url != null)" :class="{
                 'cursor-not-allowed':(msAllData.fromV.tableData.prev_page_url == null)}" v-on:click="getDataFromSerevr(msAllData.fromV.tableData.prev_page_url)" >
                     <i class="fas fa-angle-left"></i>
                 </div>
 
                 <div class="ms-btn flex-1" :class="{
-                'bg-blue-200':(msAllData.fromV.tableData.current_page == n),
-                'bg-blue-400':(msAllData.fromV.tableData.current_page != n),
-                'text-white':(msAllData.fromV.tableData.current_page != n),
-                'cursor-not-allowed':(msAllData.fromV.tableData.current_page == n)
+
+                'ms-apginate-btn-current':(msAllData.fromV.tableData.current_page == n),
+                'ms-apginate-btn':(msAllData.fromV.tableData.current_page != n),
                 }" v-for="n in msAllData.fromV.tableData.last_page"
                      v-on:click="getPage(n)"
                 > {{ n }} </div>
 
-                <div class="ms-btn  flex-1"  :class="{
+                <div class="ms-btn  flex-1"  v-if="(msAllData.fromV.tableData.next_page_url != null)" :class="{
                 'cursor-not-allowed':(msAllData.fromV.tableData.next_page_url == null)}" v-on:click="getDataFromSerevr(msAllData.fromV.tableData.next_page_url)" >
                     <i class="fas fa-angle-right"></i> </div>
-                <div class="ms-btn  flex-1"  :class="{
-                'cursor-not-allowed':(msAllData.fromV.tableData.next_page_url == null)}" v-on:click="getDataFromSerevr(msAllData.fromV.tableData.next_page_url)" >
+                <div class="ms-btn  flex-1"   v-if="(msAllData.fromV.tableData.next_page_url != null)" :class="{
+                'cursor-not-allowed':(msAllData.fromV.tableData.next_page_url == null)}" v-on:click="getDataFromSerevr(msAllData.fromV.tableData.last_page_url)" >
                     <i class="fas fa-angle-double-right"></i> </div>
             </div>
 
@@ -229,6 +252,8 @@
                 msPerPage:10,
                 msPerPageData:['5','10','20','30','50','100'],
                 msAction:null,
+                msActionView:false,
+                msActionViewRow:[],
                 msMassAction:null,
                 msSelectedRow:[],
                 msRowID:null,
@@ -261,12 +286,14 @@
                 var data = this.getGetLink(link,this);
 
             },
+
             msSelecetRow(index){
               //  console.log(this.msSelectedRow.includes(this.msAllData.fromV.tableData.data[index][this.msRowID]));
                 if(!this.msSelectedRow.includes(this.msAllData.fromV.tableData.data[index][this.msRowID])){
                     this.msSelectedRow.push(this.msAllData.fromV.tableData.data[index][this.msRowID]);
                 }else{
                     var mthis=this;
+
                     this.msSelectedRow.splice( this.msSelectedRow.findIndex(function (val) {
                         return val==mthis.msAllData.fromV.tableData.data[index][mthis.msRowID]
                     }) , 1);
@@ -412,7 +439,27 @@
 
                 var link=this.makeLink(data);
                 this.getDataFromSerevr(link);
+            },
+
+            msShowAction(index){
+
+                if ((this.msActionView !=true) ){this.msActionView=true;this.msActionViewRow.push(index); //console.log("hover in trigred");
+                     }
+
             }
+,
+            msHideAction(index){
+                var msIndex=index;
+                if (this.msActionView !=false){
+                    this.msActionView=false;
+                    this.msActionViewRow.splice( this.msActionViewRow.findIndex(function (val) {
+                        return val==msIndex;
+                    }) , 1);
+                 //   console.log("hover out trigred");
+                }
+
+            }
+
 
 
         },
@@ -423,7 +470,7 @@
                     this.getSearch(newVal);
 
                 }
-                if((newVal.length == 0 ))this.getPage(1);
+                if(newVal.length < 2 )this.getPage(1);
             },msPerPage(newVal,oldVal){
 
                 this.changePerPage(newVal);

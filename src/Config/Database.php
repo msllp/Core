@@ -25,7 +25,12 @@ return
             'prefix' => '',
             'foreign_key_constraints' => true,
         ],
-
+        'MS_USER'=>[
+            'driver' => 'sqlite',
+            'database' => base_path('MS/DB/Master/MS_USER'),
+            'prefix' => '',
+            'foreign_key_constraints' => true,
+        ],
 
         'DCM_User_Data' => [
             'driver' => 'sqlite',
