@@ -243,7 +243,9 @@
 
             }
 
-            if(this.msData.hasOwnProperty('value'))this.dValue=this.msData.value;
+            if(this.msData.hasOwnProperty('value')){
+                this.dValue=this.msData.value;
+            }
             if(this.msData.hasOwnProperty('inputMultiple'))this.inputMultiple=this.msData.inputMultiple;
 
             if(this.msData.hasOwnProperty('validation'))
@@ -270,6 +272,9 @@
                 case "radio":
                     this.msValid="is-valid";
 
+                    break;
+                default:
+                    if(this.hasOwnProperty('dValue'))this.msValue=this.dValue;
                     break;
 
 

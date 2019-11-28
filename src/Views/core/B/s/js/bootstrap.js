@@ -109,12 +109,18 @@ const app = new Vue({
             viewPanel.addActionToTab(data);
 
         },
+
+        addNewTab(data){
+            var dashBoard=this.$children[0];
+            var viewPanel=dashBoard.$refs['ms-live-tab'];
+            viewPanel.addNewTabnUpdate(data);
+        },
         getModBtn:function(url){
 
            // console.log(this);
         this.setMsErrorZero();
         this.getGetLink(url,this);
-        
+
 
 
         },

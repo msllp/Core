@@ -37,14 +37,13 @@ class MSForm
     public $namespace,$id,$perFix,$data,$msdb,$fields,$dbMaster,$action;
     public $newForm=true;
 
-    public $accessAction=['add','back'];
+    public $accessAction=['add','back','edit'];
 
     public $attachedAction=[];
 
     public $formID=null;
 
-
-
+    public $formData=[];
 
     /**
      * MSForm constructor.
@@ -74,7 +73,11 @@ class MSForm
                   $this->formID=$k;
                     break;
 
+                case 'formData':
+                    $this->formData=$k;
                 default:
+
+
                     break;
 
             }
@@ -131,6 +134,7 @@ class MSForm
 
     private function  make4VueButtonArray($data){
         $returnData=[];
+      //  dd($data);
         foreach ($data as $type =>$btnData){
             $btn['Class']=[];
             //$btn['Class']=['btn'];
@@ -159,14 +163,18 @@ class MSForm
             }
 
             if(is_array($btnData) && array_key_exists('btnIcon',$btnData) && $btnData['btnIcon']== "")unset($btnData['btnIcon']);
-            if(is_array($btnData) && array_key_exists('route',$btnData))$btnData['route']=route($btnData['route']);
-            //dd($type. $btnData);
+            if(is_array($btnData) && array_key_exists('route',$btnData)) $btnData['route']=route($btnData['route']);
+
+            //if(array_key_exists('msLinkKey',$btnData)) dd($btnData);
             if(is_array($btnData))$btnData['btnClass']=implode(' ',$btn['Class']);
-            if(in_array($type,$this->accessAction))
+            //dd(in_array($type,$this->dbMaster['MSforms'][$this->formID]['actions']));
+            //dd();
+            if(in_array($type,$this->accessAction) && in_array($type,$this->dbMaster['MSforms'][$this->formID]['actions']))
                 $returnData[$type]=$btnData;
         }
 
-//dd($returnData);
+
+     //   dd($returnData);
 
         return $returnData;
         //dd($returnData);
@@ -312,7 +320,7 @@ class MSForm
         $this->fields=$this->msdb->model->base_Field;
         if(count($data)>0)$this->newForm=false;
         $this->makeForm();
-        
+
         return $this;
 
     }
@@ -583,9 +591,8 @@ class MSForm
             //'inputClass'=>[],
             //'formClass'=>[],
 
-
-
         ];
+
 
    //if($data == null ) dd($data);
 
@@ -594,6 +601,8 @@ class MSForm
 
         if (array_key_exists('vName',$data))$array['vName']=$data['vName'];
         if (!array_key_exists('vName',$array))$array['vName']=$data['name'];
+        if ((count($this->formData) > 0) && array_key_exists($data['name'],$this->formData))$array['value']=$this->formData[$data['name']];
+
 
         if(array_key_exists('style',$data)){
 
@@ -632,6 +641,10 @@ class MSForm
 
                 break;
 
+            case 'password':
+                if(array_key_exists('value',$array))unset($array['value']);
+                break;
+
             case 'locked':
                 msautogenratevalue:
                 if(array_key_exists('callback',$data))$array['value']=call_user_func(implode("::",[$f,$data['callback']]));
@@ -643,13 +656,42 @@ class MSForm
         return $array;
         $arrayJson=collect($array)->toJson();
     }
+
+    private function makeDataValueForView($name){
+        if(array_key_exists($name,$this->formData[$name]))
+        return $this->formData[$name];
+        return null;
+        $d=[];
+        foreach ($this->fields as $input){
+            if( (count($this->formData) > 0) && array_key_exists($input['name'],$this->formData)){
+
+                switch ($input['input']){
+
+                    case 'password' :
+                        break;
+
+                    default:
+                        $d[$input['name']]=$this->formData[$input['name']];
+                        break;
+                }
+
+            }
+        }
+        return $d;
+        dd($d);
+
+    }
+
     public function view(){
         //dd($this->returnHTML);
 
         $this->returnHTML['actionButton']=$this->viewActionBtn();
-     //   $this->returnHTML[]='</div>';
+//        if(count($this->formData) > 0 ){
+//            $this->returnHTML['formValue']=$this->makeDataValueForView();
+//        }
+        //   $this->returnHTML[]='</div>';
       //  dd($this->returnHTML);
-       return view("MS::core.layouts.Form.formPlateRaw")->with("form",$this->returnHTML);
+     //  return view("MS::core.layouts.Form.formPlateRaw")->with("form",$this->returnHTML);
         return view("MS::core.layouts.Form.formPlate")->with("form",$this->returnHTML);
         return view("MS::core.layouts.Form.formPlate")->with("form",implode("",$this->returnHTML));
         return implode("",$this->returnHTML);

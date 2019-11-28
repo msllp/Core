@@ -135,9 +135,23 @@
                     this.allTab.push(data);
                 }else{
                     alert("Opps... Max tab limit reached. Contact Million Solution to Increase it.");
-                    console.log("Limite: "+this.maxTabLimit+" current lenth: "+this.allTab.length);
-
+                    console.log("Limit: "+this.maxTabLimit+" current lenth: "+this.allTab.length);
                 }
+
+            },addNewTabnUpdate(data){
+
+                this.addNewTab(data);
+                var newtab=this.allTab.length-1;
+                this.currentTab=newtab-1;
+
+                this.$nextTick(() => {
+                var nextTab=this.allTab.length-1;
+                var Handler=this.$refs['tab_'+ nextTab ] [0];
+                Handler.updateTab(data);
+                //    console.log(data);
+                //normalizeArray(this.$refs.form).classList.remove("was-validated");
+            },data);
+            this.currentTab=newtab;
             },
             addActionToTab(data){
                 //delete this.allTab[this.currentTab];

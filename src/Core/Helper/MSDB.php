@@ -700,7 +700,22 @@ public $dataToProcess=[];
     }
 
     ///View Functions START
-    public function displayForm($formId=null){
+    private function getPerFix(){
+        $perFix="";
+        if(array_key_exists('perFix',$this->database) && (count($this->database['perFix']) > 0) ){
+            $perFix=implode('_',$this->database['perFix']);
+        }
+        return $perFix;
+    }
+
+    public function editForm($formId=null,array $data=[]){
+        $perFix=$this->getPerFix();
+        $this->database['formData']=$data;
+        $f=new \MS\Core\Helper\MSForm($this->masterNamespace,$this->database['id'],$perFix,['formID'=>$formId,'formData'=>$data]);
+        return $f->fromModel($this)->view();
+    }
+
+      public function displayForm($formId=null,$data=[]){
 
         if($formId != null){
             $f=new \MS\Core\Helper\MSForm($this->masterNamespace,$this->database['id'],null,['formID'=>$formId]);
@@ -952,6 +967,15 @@ public $dataToProcess=[];
 
     }
 
+
+    public function jsonOutError($e=[]){
+
+        return response()->json([
+                'errors' => $e
+            ],418);
+
+
+    }
 
     public function processForSave($r,$d=[],$tasks=[],$nextData=[]){
 

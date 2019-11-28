@@ -170,13 +170,15 @@
 
 
     </td>
+
+
     <td class="border p-1 text-center bg-grey-100 cursor-pointer select-none ms-action-btn-td  hover:bg-blue-200":class="{
 
     }" v-if="msActionViewRow.includes(index)">
 
 
 
-        <span v-on:click="msActionClick(ac)" v-for="ac,index in msAction" :class="ac.color"  class="hover:border" :title="ac.text"> <i :class="ac.icon"> </i></span>
+        <span v-on:click="msActionClick(ac,row)" v-for="ac,index in msAction" :class="ac.color"  class="hover:border" :title="ac.text"> <i :class="ac.icon"> </i></span>
 
 
 
@@ -261,6 +263,10 @@
 
             }
         },
+    mounted() {
+      //  console.log(this.msAction);
+    }
+        ,
         beforeMount() {
             this.msAllData=this.msData;
             this.msPath=this.msData.fromV.tableData.path;
@@ -307,20 +313,41 @@
 
         ,
 
-            msActionClick(ac){
+            msActionClick(ac,row){
 
+            if(ac.hasOwnProperty('msLinkKey')){
+                var newUrl=ac.url+"/"+row[ac.msLinkKey];
                 var data={
-                            tabCode:'01',
-                            modCode:"MAS",
-                            modDView: ac.text,
-                            modUrl:ac.url,
-                            data:""
+                    tabCode:'02',
+                    modCode:"MAS",
+                    modDView: this.forNice(ac.text+ " "+row[ac.msLinkText]),
+                    modUrl:newUrl,
+                    data:""
+
+                };
+                window.vueApp.addNewTab(data);
+            }else{
+                var data={
+                    tabCode:'01',
+                    modCode:"MAS",
+                    modDView: this.forNice(ac.text),
+                    modUrl:ac.url,
+                    data:""
 
                 };
                 window.vueApp.updateTab(data);
+            }
+
+
+       console.log(data);
+
+
+           //     window.vueApp.updateTab(data);
 
 
             },
+
+
             getPage(page){
                 var data=[
                 {

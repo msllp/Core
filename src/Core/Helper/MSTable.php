@@ -252,8 +252,12 @@ dd($array);
                 'text'=>$this->dbMaster['action'][$actioId]['btnText'],
                 'color'=>$this->dbMaster['action'][$actioId]['btnColor'],
                 'url'=>route($this->dbMaster['action'][$actioId]['route']),
-            ];
-           // dd($this->dbMaster['action'][$actioId]);
+
+                ];
+            if(array_key_exists('msLinkKey',$this->dbMaster['action'][$actioId]))$fArray['msLinkKey']=$this->dbMaster['action'][$actioId]['msLinkKey'];
+            if(array_key_exists('msLinkText',$this->dbMaster['action'][$actioId]))$fArray['msLinkText']=$this->dbMaster['action'][$actioId]['msLinkText'];
+
+            // dd($this->dbMaster['action'][$actioId]);
 
 
         }
