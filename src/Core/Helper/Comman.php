@@ -20,6 +20,31 @@ class Comman
 {
 
 
+    public static function makeNextData($mod,$text,$url):array {
+
+        return [
+
+            "modCode"=>$mod,
+            "modDView"=>$text,
+            "modUrl"=>$url,
+        ];
+    }
+
+    public static function checkNGetOnlyDiffrent($old,$new):array {
+        $fArray=[];
+        $old=reset($old);
+        //dd($new);
+
+        foreach ($new as $k=>$v){
+            //dd($v == $old[$k]);
+            //if($k=='MSPassword')dd($v!='null');
+           // var_dump($k.": ".array_key_exists($k,$old).",".(gettype($v)=='string').",".($v!=null).",".($v!= $v));
+if(array_key_exists($k,$old) && (gettype($v)=='string') &&  ($v!=null) && ($v!='null') && ($v!='') && ($v!=' ')  && ($v!= $old[$k]) )$fArray[$k]=$v;
+        }
+        return $fArray;
+
+    }
+
     public static function loadBack(){
         require(base_path('MS'.DIRECTORY_SEPARATOR .'B'.DIRECTORY_SEPARATOR .'M'.DIRECTORY_SEPARATOR ."Routes.php"));
     }

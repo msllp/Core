@@ -122,17 +122,18 @@ class MSForm
             foreach ( $attachedAction as $v){
             if(array_key_exists($v,$allAction))$mData[$v]=$allAction[$v];
             }
-            //dd($mData);
+
             return  $this->make4VueButtonArray($mData);
         }else{
             return  $this->make4VueButtonArray($this->getAction());
         }
 
         return view("MS::core.layouts.Form.button.buttonGroup")->with('data',$this->action)->render();
-        dd($this);
+
     }
 
     private function  make4VueButtonArray($data){
+        $bdata=$data;
         $returnData=[];
       //  dd($data);
         foreach ($data as $type =>$btnData){
@@ -161,12 +162,16 @@ class MSForm
                     //$btn['Class'][]='btn-danger';
                     break;
             }
-
-            if(is_array($btnData) && array_key_exists('btnIcon',$btnData) && $btnData['btnIcon']== "")unset($btnData['btnIcon']);
-            if(is_array($btnData) && array_key_exists('route',$btnData)) $btnData['route']=route($btnData['route']);
+            //dd($this);
+            if(is_array($btnData)){
+                if(array_key_exists('btnIcon',$btnData) && $btnData['btnIcon']== "")unset($btnData['btnIcon']);
+                if(array_key_exists('route',$btnData)) $btnData['route']=route($btnData['route']);
+                if(array_key_exists('btnClass',$btnData))$btnData['btnClass']=implode(' ',$btn['Class']);
+                if(array_key_exists('routePara',$btnData))$btnData['route']=$this->makeDataRouteWithPara($bdata[$type],$btnData['routePara'],$this->data['formData']);
+            }
 
             //if(array_key_exists('msLinkKey',$btnData)) dd($btnData);
-            if(is_array($btnData))$btnData['btnClass']=implode(' ',$btn['Class']);
+
             //dd(in_array($type,$this->dbMaster['MSforms'][$this->formID]['actions']));
             //dd();
             if(in_array($type,$this->accessAction) && in_array($type,$this->dbMaster['MSforms'][$this->formID]['actions']))
@@ -180,6 +185,17 @@ class MSForm
         //dd($returnData);
     }
 
+    private function makeDataRouteWithPara($r,$p,$d){
+        $rArray=[];
+        //dd($d);
+        //$rr=route($r);
+        foreach ($p as $para=>$v){
+            $rArray[$para]=$d[$v];
+        }
+        return route($r['route'],$rArray);
+        //foreach ($p)
+
+    }
     public static function getDataFromTable($str){
         $ex=explode(':',$str);
         //dd($ex);

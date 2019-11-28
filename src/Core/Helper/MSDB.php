@@ -967,11 +967,37 @@ public $dataToProcess=[];
 
     }
 
+    public function jsonOut($t,$nextData=[]){
+        $e=[];
+        $valid=0;
+        if(count($nextData) < 3)$nextData=\MS\Core\Helper\Comman::makeNextData('Home','Default Page',route('MOD.User.Master.View.All'));
+        foreach ($t as $t=>$s){
+            if(!$s)$e[$t]=$s;
+        }
+        if(count($e)==0)$valid=1;
+        if($valid){
+            return response()->json(['ms'=>[
+
+                'status'=>200,
+                // 'Rdata'=> $r->input(),
+                'ProcessStatus'=>$t,
+                'nextData'=>$nextData
+
+            ]],200);
+        }
+        else{
+            return response()->json([
+                'errors' => $e
+            ],418);
+        }
+
+    }
+
 
     public function jsonOutError($e=[]){
 
         return response()->json([
-                'errors' => $e
+                'errorsRaw' => implode(' , ',$e),
             ],418);
 
 

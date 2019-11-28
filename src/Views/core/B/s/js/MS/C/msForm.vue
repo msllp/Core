@@ -419,30 +419,36 @@
                 if(Data != undefined){
                     this.mserror=Data;
                     //console.log(Data);
-                    alert('Opps,,System need some more inputs please find highlihted inputs.');
+                    if(Data.hasOwnProperty('errorsRaw')){
+                        alert(Data.errorsRaw);
+                    }
+
                     //  console.log(Data);
 
-                    for (var inputName in Data){
-                        var key=inputName.toString().toLowerCase();
-                        //
-                        //console.log(inputName);
-                        if(this.$refs.hasOwnProperty(key) && this.$refs[key].hasOwnProperty(0)){
+                    if(Data.hasOwnProperty('errors')){
+                        for (var inputName in Data){
+                            var key=inputName.toString().toLowerCase();
+                            //
+                            //console.log(inputName);
+                            if(this.$refs.hasOwnProperty(key) && this.$refs[key].hasOwnProperty(0)){
 
-                            this.$refs[key][0].setError();
-                            this.$refs[key][0].inputError=Data[inputName];
-                            this.allErrors.push(
-                                {
-                                    inputName:inputName,
-                                    errors:Data[inputName]
-                                }
+                                this.$refs[key][0].setError();
+                                this.$refs[key][0].inputError=Data[inputName];
+                                this.allErrors.push(
+                                    {
+                                        inputName:inputName,
+                                        errors:Data[inputName]
+                                    }
 
 
-                            );
+                                );
+                            }
                         }
                     }
 
+
                 }else{
-                        alert('Opps,,System had some wrong enviroment to work please reload your page. Sorry & Thank you.');
+                        alert('Opps...System had some wrong enviroment to work please reload your page. Sorry & Thank you.');
                     }
 
 
@@ -492,11 +498,14 @@
                 return false;
 
             }
-            ,formActionFromBtn(id){
-
+            ,formActionFromBtn(id,row){
                 if(this.allErrors.length<1){
-
+                    var row=this.msData.actionButton[id];
+                    var mKey=row.msLinkKey;
+                    //console.log(mKey);
                     var route=this.msData.actionButton[id].route;
+
+
                     return this.getAllData(route);
 
                  //   console.log(this.msData.actionButton[id].route);

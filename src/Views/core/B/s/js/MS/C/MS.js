@@ -34,7 +34,7 @@ validateLen(str,size=1){
     var re = new RegExp("^(?=.{"+size+",})");
     return  re.test(str);
 },
-        
+
         getGetRaw(url,classFor,callBack){
             //   url=url+"?dataLink=true"
             let returnX='ok';
@@ -87,9 +87,14 @@ getGetLink(url,classFor){
             }
         )
         .catch(function (error) {
-            console.log(error);
+            //console.log(error);
+            if(error.hasOwnProperty('errorsRaw')){
+                self.setMsError(error);
+            }else{
+                self.setMsError(error.response);
+            }
             // handle error
-            self.setMsError(error.response);
+
             //  console.log(error.response.data);
         })
         .finally( response => {
@@ -137,8 +142,14 @@ postLink(link,data,classFor,callback=null){
 
            // console.log(error.response.data);
             outData=error.response.data.errors;
-            // console.log(error.response.data);
-            classFor.setAllMsError(outData);
+            console.log(error.response.data);
+
+            if(error.response.data.hasOwnProperty('errorsRaw')){
+                classFor.setAllMsError(error.response.data);
+            }else{
+                classFor.setAllMsError(outData);
+            }
+          ;
             //  delete Freturn.error.message;
 
 
