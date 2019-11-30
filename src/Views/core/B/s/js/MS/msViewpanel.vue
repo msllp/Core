@@ -155,20 +155,19 @@
             },
             addActionToTab(data){
                 //delete this.allTab[this.currentTab];
-               // console.log(data);
+
 
                 if(this.allTab.length < 1){
                     data.tabCode=this.ms_rand(5,1);
                     data.modCode="MAS";
-
                     this.addNewTab(data);
                 }else{
                     this.allTab[this.currentTab].modDView=data.modDView;
                 }
 
-                //Handler[callBack](data);
 
                 this.$nextTick(() => {
+
                     var Handler=this.$refs['tab_'+this.currentTab][0];
                     Handler.updateTab(data);
                 //    console.log(data);

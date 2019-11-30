@@ -9,6 +9,8 @@
 namespace MS\Core\Helper;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
+use phpDocumentor\Reflection\Types\Boolean;
+
 define('ENCRYPTION_KEY', 'd0a7e7997b6d5fcd55f4b5c32611b87cd923e88837b63bf2941ef819dc8ca282');
 
 
@@ -20,6 +22,16 @@ class Comman
 {
 
 
+    public static function checkAllTrueArray(array $a):bool{
+        $er=[];
+        foreach ($a as $k=>$v){
+          //  dd($v);
+            if($v)$er[]=$k;
+        }
+    //    dd(count($er)>0);
+        if(count($er)>0)return true;
+        return false;
+    }
     public static function makeNextData($mod,$text,$url):array {
 
         return [
@@ -33,13 +45,13 @@ class Comman
     public static function checkNGetOnlyDiffrent($old,$new):array {
         $fArray=[];
         $old=reset($old);
-        //dd($new);
+      //  dd($old);
 
         foreach ($new as $k=>$v){
             //dd($v == $old[$k]);
             //if($k=='MSPassword')dd($v!='null');
            // var_dump($k.": ".array_key_exists($k,$old).",".(gettype($v)=='string').",".($v!=null).",".($v!= $v));
-if(array_key_exists($k,$old) && (gettype($v)=='string') &&  ($v!=null) && ($v!='null') && ($v!='') && ($v!=' ')  && ($v!= $old[$k]) )$fArray[$k]=$v;
+        if(array_key_exists($k,$old) && (gettype($v)=='string') &&  ($v!=null) && ($v!='null') && ($v!='') && ($v!=' ')  && ($v!= $old[$k]) )$fArray[$k]=$v;
         }
         return $fArray;
 

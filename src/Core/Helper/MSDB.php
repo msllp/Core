@@ -587,17 +587,32 @@ public $dataToProcess=[];
         $table=$this->model->getTable();
         $fields=$this->model->base_Field;
         if(!array_key_exists('updated_at',$columnArray))$columnArray['updated_at']=now()->toDateTimeString();
-        if(count($identifier) < 2){
+        if(count($identifier) > 1){
            // dd(reset($identifier));
-            $objFields=collect($fields)->where(array_key_first($identifier),reset($identifier) );
-            \DB::connection($connection)->table($table)->update( $columnArray);
-            return true;
+            //$objFields=collect($fields)->where(array_key_first($identifier),reset($identifier) );
+           // dd($objFields);
+            $m2=  \DB::connection($connection)->table($table);
+            $mf=null;
+            foreach ($identifier as $k=>$v){
+                $m3=$mf->where($k,$v)->get();
+                if($m3->count() > 0 ){
+                    $mf=$mf->where($k,$v);
+                }else{
+                    return false;
+                }
+            }
+
+            if($mf!=null){
+                $mf->update( $columnArray);
+                return true;
+            }
+                return false;
         }else{
 
             $objFields=collect($fields)->where('name',array_key_first($identifier))->count();
             if ($objFields > 0){
 
-                \DB::connection($connection)->table($table)->update( $columnArray);
+                \DB::connection($connection)->table($table)->where(array_key_first($identifier),reset($identifier))->update( $columnArray);
                 return true;
             }
 
@@ -966,14 +981,35 @@ public $dataToProcess=[];
         }
 
     }
-
-    public function jsonOut($t,$nextData=[]){
-        $e=[];
+    public function jsonOutNext($t,$nextData=[],$e=[]){
         $valid=0;
         if(count($nextData) < 3)$nextData=\MS\Core\Helper\Comman::makeNextData('Home','Default Page',route('MOD.User.Master.View.All'));
         foreach ($t as $t=>$s){
             if(!$s)$e[$t]=$s;
         }
+
+        if(count($e)==0)$valid=1;
+        if($valid){
+            return response()->json(['ms'=>[
+
+                'status'=>200,
+                'ProcessStatus'=>$t,
+                'nextData'=>$nextData
+
+            ]],200);
+        }
+        else{
+            return self::jsonOutError($e);
+        }
+
+    }
+    public function jsonOut($t,$nextData=[],$e=[]){
+        $valid=0;
+        if(count($nextData) < 3)$nextData=\MS\Core\Helper\Comman::makeNextData('Home','Default Page',route('MOD.User.Master.View.All'));
+        foreach ($t as $t=>$s){
+            if(!$s)$e[$t]=$s;
+        }
+      //  dd($e);
         if(count($e)==0)$valid=1;
         if($valid){
             return response()->json(['ms'=>[
@@ -986,21 +1022,16 @@ public $dataToProcess=[];
             ]],200);
         }
         else{
-            return response()->json([
-                'errors' => $e
-            ],418);
+            return self::jsonOutError($e);
         }
 
     }
 
 
     public function jsonOutError($e=[]){
-
         return response()->json([
                 'errorsRaw' => implode(' , ',$e),
             ],418);
-
-
     }
 
     public function processForSave($r,$d=[],$tasks=[],$nextData=[]){
@@ -1010,7 +1041,7 @@ public $dataToProcess=[];
         // $m->migrate();
         $d1=$r->all();
         $valid=true;
-        //$valid=$m->checkRulesForData();
+        $valid=$m->checkRulesForData();
 
         foreach ($d as $k=>$v){
             $d1[$k]=$v;

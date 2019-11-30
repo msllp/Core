@@ -58,17 +58,21 @@
         methods:{
             updateTab(data){
                // this.getGetRaw(data.modUrl,this,'setHtml');
-                this.currentData=data;
+
                 this.getGetLink(data.modUrl,this)
             }
             ,
+            setTabData(data){
+
+                this.getGetLink(data.ms.nextData.modUrl,this)
+            },
             setHtml(data) {
-                this.data.push(data);
-                //this.currentData=data;
 
-               // this.liveComponent="<div id='mswindow"+this.index+"' >"+ data +"</div>";
-
-
+             if(typeof data == 'object'){
+             this.getGetLink(data.ms.nextData.modUrl,this,'setTabData');
+                }else{
+                 this.currentData=data;
+                    this.data.push(data);
                     this.liveComponent = new Vue({
                         name:'mslivetab',
                         data: {
@@ -76,15 +80,17 @@
                         },
                         el: '#mswindow'+this.index,
                         template:"<div id='mswindow"+this.index+"' >"+ data +"</div>",
-                   //     sharedState: store.state,
+                        //     sharedState: store.state,
                         mounted() {
-                      //      console.log(this.$root.$data);
+                            //      console.log(this.$root.$data);
                         }
                     });
+                }
 
 
 
-                
+
+
 
 
 

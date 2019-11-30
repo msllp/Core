@@ -167,7 +167,8 @@ class MSForm
                 if(array_key_exists('btnIcon',$btnData) && $btnData['btnIcon']== "")unset($btnData['btnIcon']);
                 if(array_key_exists('route',$btnData)) $btnData['route']=route($btnData['route']);
                 if(array_key_exists('btnClass',$btnData))$btnData['btnClass']=implode(' ',$btn['Class']);
-                if(array_key_exists('routePara',$btnData))$btnData['route']=$this->makeDataRouteWithPara($bdata[$type],$btnData['routePara'],$this->data['formData']);
+                //if(array_key_exists('routePara',$btnData)) dd($btnData);
+                if(array_key_exists('routePara',$btnData) && array_key_exists('formData',$this->data))$btnData['route']=$this->makeDataRouteWithPara($bdata[$type],$btnData['routePara'],$this->data['formData']);
             }
 
             //if(array_key_exists('msLinkKey',$btnData)) dd($btnData);

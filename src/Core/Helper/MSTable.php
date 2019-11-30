@@ -17,6 +17,9 @@ class MSTable
 
     public $returnHTML =[];
 
+    public $vueAllowed=[
+        'msLinkKey','msLinkText','doubleConfirmText','doubleConfirm','ownTab'
+    ];
     public $namespace,$id,$perFix,$data,$msdb,$fields,$dbMaster,$action;
     public $dynamicData=[];
     public $viewID=null;
@@ -254,8 +257,12 @@ dd($array);
                 'url'=>route($this->dbMaster['action'][$actioId]['route']),
 
                 ];
-            if(array_key_exists('msLinkKey',$this->dbMaster['action'][$actioId]))$fArray['msLinkKey']=$this->dbMaster['action'][$actioId]['msLinkKey'];
-            if(array_key_exists('msLinkText',$this->dbMaster['action'][$actioId]))$fArray['msLinkText']=$this->dbMaster['action'][$actioId]['msLinkText'];
+
+            foreach ($this->vueAllowed as $vc){
+                if(array_key_exists($vc,$this->dbMaster['action'][$actioId]))$fArray[$vc]=$this->dbMaster['action'][$actioId][$vc];
+            }
+            //if(array_key_exists('msLinkKey',$this->dbMaster['action'][$actioId]))$fArray['msLinkKey']=$this->dbMaster['action'][$actioId]['msLinkKey'];
+            //if(array_key_exists('msLinkText',$this->dbMaster['action'][$actioId]))$fArray['msLinkText']=$this->dbMaster['action'][$actioId]['msLinkText'];
 
             // dd($this->dbMaster['action'][$actioId]);
 

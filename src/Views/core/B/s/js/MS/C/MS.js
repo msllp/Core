@@ -35,41 +35,25 @@ validateLen(str,size=1){
     return  re.test(str);
 },
 
-        getGetRaw(url,classFor,callBack){
-            //   url=url+"?dataLink=true"
+getGetRaw(url,classFor,callBack){
+
             let returnX='ok';
 
 
-            // let re= axios.get(url)
-            //     .then(
-            //         function(response){
-            //             var Handler=classFor;
-            //            // classFor.[callBack](response.data);
-            //             Handler[callBack](response.data);
-            //             returnX=response.data;
-            //         }
-            //     )
-            //     .catch(function (error) {
-            //         // handle error
-            //         returnX=error.response.data;
-            //         //  console.log(error.response.data);
-            //     })
-            //     .finally( response => {
-            //     });
-//console.log(url);
+            fetch(url)   .then(function(response) {
 
-            fetch(url)   .then(function(response) { return response.json()
-                .then( function(data) {
-                 //  console.log(data)
-                    var Handler=classFor;
-                    Handler[callBack](data);
-                   // classFor.returnX=data;
-                    return data;
-                } );
-            })
-                .catch(function(error) {
-                    console.log(error);
-                });
+                console.log(response);
+                return response.json()
+
+
+            }).then( function(data) {
+                var Handler=classFor;
+                Handler[callBack](data);
+
+
+            } ).catch(function(error){
+               console.log(error);
+            });
             return  classFor.returnX;
         },
 getGetLink(url,classFor){
@@ -141,12 +125,13 @@ postLink(link,data,classFor,callback=null){
         .catch(function (error) {
 
            // console.log(error.response.data);
-            outData=error.response.data.errors;
+           var outData=error.response.data.errors;
             console.log(error.response.data);
 
             if(error.response.data.hasOwnProperty('errorsRaw')){
                 classFor.setAllMsError(error.response.data);
             }else{
+                console.log(outData);
                 classFor.setAllMsError(outData);
             }
           ;

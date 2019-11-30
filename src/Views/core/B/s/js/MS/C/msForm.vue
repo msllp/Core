@@ -421,11 +421,7 @@
                     //console.log(Data);
                     if(Data.hasOwnProperty('errorsRaw')){
                         alert(Data.errorsRaw);
-                    }
-
-                    //  console.log(Data);
-
-                    if(Data.hasOwnProperty('errors')){
+                    }else{
                         for (var inputName in Data){
                             var key=inputName.toString().toLowerCase();
                             //

@@ -178,7 +178,7 @@
 
 
 
-        <span v-on:click="msActionClick(ac,row)" v-for="ac,index in msAction" :class="ac.color"  class="hover:border" :title="ac.text"> <i :class="ac.icon"> </i></span>
+        <span v-on:click="msActionClick(ac,row)" v-for="ac,index in msAction" :class="ac.color"  class="hover:border px-2 py-1" :title="ac.text"> <i :class="ac.icon"> </i></span>
 
 
 
@@ -314,32 +314,49 @@
         ,
 
             msActionClick(ac,row){
+                var mValid=1;
+             //   console.log(ac);
+                if(ac.hasOwnProperty('doubleConfirm') && ac.hasOwnProperty('doubleConfirmText') && ac.doubleConfirm=='true' && ac.hasOwnProperty('msLinkText') && row.hasOwnProperty(ac.msLinkText)){
+                    mValid=0;
+                    if (confirm(ac.doubleConfirmText+" "+row[ac.msLinkText]) ) {
+                        mValid=1;
+                    }
+                }
 
-            if(ac.hasOwnProperty('msLinkKey')){
-                var newUrl=ac.url+"/"+row[ac.msLinkKey];
-                var data={
-                    tabCode:'02',
-                    modCode:"MAS",
-                    modDView: this.forNice(ac.text+ " "+row[ac.msLinkText]),
-                    modUrl:newUrl,
-                    data:""
+                if(mValid){
+                    if(ac.hasOwnProperty('msLinkKey')){
+                        var newUrl=ac.url+"/"+row[ac.msLinkKey];
+                        var data={
+                            tabCode:'02',
+                            modCode:"MAS",
+                            modDView: this.forNice(ac.text+ " "+row[ac.msLinkText]),
+                            modUrl:newUrl,
+                            data:""
 
-                };
-                window.vueApp.addNewTab(data);
-            }else{
-                var data={
-                    tabCode:'01',
-                    modCode:"MAS",
-                    modDView: this.forNice(ac.text),
-                    modUrl:ac.url,
-                    data:""
+                        };
 
-                };
-                window.vueApp.updateTab(data);
-            }
+                        if(ac.hasOwnProperty('ownTab') &&  ac.ownTab == 'true'){
+                            window.vueApp.updateTab(data);
+                        }else{
+                            window.vueApp.addNewTab(data);
+                        }
+
+                    }else{
+                        var data={
+                            tabCode:'01',
+                            modCode:"MAS",
+                            modDView: this.forNice(ac.text),
+                            modUrl:ac.url,
+                            data:""
+
+                        };
+                        window.vueApp.updateTab(data);
+                    }
+
+                }
 
 
-       console.log(data);
+      // console.log(data);
 
 
            //     window.vueApp.updateTab(data);
