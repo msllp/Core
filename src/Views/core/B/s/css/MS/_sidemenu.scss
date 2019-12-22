@@ -40,11 +40,27 @@
 
 }
 
-.ms-nav-mian-div > .ms-nav-div{
+.ms-nav-mian-div > .ms-nav-div,.ms-nav-mian-div > .ms-side-sun-div{
 
-
-
+//    max-height: 250px;
+    max-height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
     @apply ms-animation;
+}
+.ms-nav-mian-div{
+    .ms-nav-div::-webkit-scrollbar {
+        width: 5px;
+    }
+    .ms-nav-div::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .ms-nav-div::-webkit-scrollbar-thumb {
+        background-color: darkgrey;
+        outline: 1px solid slategrey;
+    }
+
 }
 
 .ms-main-title{
@@ -115,10 +131,10 @@
     color:  rgba(97,88,206,0.9);
     transition : all 500ms;
 }
-.ms-main-title-sub > div > .fi{
+.ms-main-title-sub > div > .fi ,.ms-main-title-link > div > .fi2{
     font-size:16px;
 }
-.ms-main-title-link > div > .fi{
+.ms-main-title-link > div > .fi ,.ms-main-title-link > div > .fi2{
     font-size:14px;
 }
 .ms-main-title-link{
@@ -131,16 +147,27 @@
     @apply py-1;
     font-size:12px;
     @apply cursor-pointer;
-    transition : all 500ms;
+    @apply ms-animation;
 }
 .ms-main-title-link:hover{
-    @apply shadow;
-    background-color: #6158ce;
-    @apply pl-4;
-    @apply mr-3;
-    color:rgba(255,255,255,0.8);
-    //@apply bg-blue-400;
-}
+     @apply shadow;
+     background-color: #6158ce;
+     @apply pl-4;
+     @apply mr-3;
+    // color:rgba(255,255,255,0.8);
+     //@apply bg-blue-400;
+    @apply ms-animation;
+    i{
+        @apply ms-animation;
+        color:rgba(255,255,255,0.8)!important;
+    }
+ }
+//
+//.ms-main-title-link > i:hover{
+//
+//
+//    //@apply bg-blue-400;
+//}
 .ms-nav-div-hidden{
     min-width: 35px;
     max-width: 50px;

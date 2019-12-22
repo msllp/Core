@@ -181,6 +181,10 @@
                // console.log(msHandle2);
 
              //   this.$refs[this.currentTab][0].updateTab(data);
+            },updateTabFromOthe(data){
+
+                //console.log(data);
+                this.allTab[this.currentTab].modDView=data.modDView;
             }
 
         },

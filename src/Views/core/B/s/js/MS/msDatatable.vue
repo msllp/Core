@@ -178,7 +178,7 @@
 
 
 
-        <span v-on:click="msActionClick(ac,row)" v-for="ac,index in msAction" :class="ac.color"  class="hover:border px-2 py-1" :title="ac.text"> <i :class="ac.icon"> </i></span>
+        <span v-on:click="msActionClick(ac,row)" v-for="ac,index in msAction" :class="ac.color"  class="hover:border hover:shadow-inner px-2 py-1 mx-1" :title="ac.text"> <i :class="ac.icon"> </i></span>
 
 
 
@@ -318,7 +318,7 @@
              //   console.log(ac);
                 if(ac.hasOwnProperty('doubleConfirm') && ac.hasOwnProperty('doubleConfirmText') && ac.doubleConfirm=='true' && ac.hasOwnProperty('msLinkText') && row.hasOwnProperty(ac.msLinkText)){
                     mValid=0;
-                    if (confirm(ac.doubleConfirmText+" "+row[ac.msLinkText]) ) {
+                    if (confirm(ac.doubleConfirmText+" "+row[ac.msLinkText] + " ?") ) {
                         mValid=1;
                     }
                 }

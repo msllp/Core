@@ -37,7 +37,7 @@
             </div>
 
             <div v-for="mainNav,index in msData" class="" v-if="currentSubTab == index">
-                <div class="flex flex-wrap">
+                <div class="flex flex-wrap ms-side-sun-div">
 
                     <span class="w-full ms-master-title-in-sub">
                     <i v-if="mainNav.hasOwnProperty('icon')" :class="mainNav.icon" class="p-1"></i>

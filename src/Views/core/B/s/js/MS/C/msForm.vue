@@ -15,10 +15,13 @@
 
 
 
-        <div class="w-full rounded  border-t shadow-lg mb-4 bg-gray-100"  v-for="(section,id,key) in  msFormData">
+        <div class="w-full rounded  border-t shadow-lg mb-4 bg-gray-100"  v-for="(section,id,key) in  msFormData" v-if="!(section.hasOwnProperty('withData') && section.withData)">
 
             <div class=" w-full px-3 py-2 cursor-pointer mb-2 border-b"  :class="{ 'show': id === 0 , }" :id="section.id+'_target'" :aria-labelledby="section.id" >
-                <div class="font-bold text-md border-b pb-2  flex flex-wrap">
+                <div class="font-bold text-md border-b p-2  flex flex-wrap" :class="{
+                'bg-blue-200 ':!checkImHiddenOrNot(section),
+
+                }" >
 
                     <div  class="expand-btn flex"
                                                                       :style="{
@@ -31,15 +34,17 @@
                     'fas fa-search-plus ':checkImHiddenOrNot(section)
 
                     }"  ></i> </div>
+                    <span class="">{{section.gruoupHeading}}</span>
 
 
-                    {{section.gruoupHeading}}
 
-                    <div class="flex px-3 border ml-3 hover:bg-white hover:shadow" v-if="section.groupDynamic">
 
-                        <div class="text-green-500" v-if="checkMutlipleFirst(section)" v-on:click.prevent="addInputGroup(id)"><i class="fa fa-times-circle " style="transform: rotate(45deg)"></i> </div>
 
-                        <div class="text-red-500" v-if="checkMutlipleSub(section)" v-on:click.prevent="removeInputGroup(id,section.rootId)"><i class="fa fa-times-circle "></i> </div>
+                    <div class="flex px-3  ml-3 " v-if="section.groupDynamic">
+
+                        <div class="text-green-500 bg-gray-200 border hover:border-green-500 hover:shadow px-2 mx-1 hover:bg-gray-300 " v-if="checkMutlipleFirst(section)" v-on:click.prevent="addInputGroup(id)"><i class="fa fa-times-circle " style="transform: rotate(45deg)"></i> </div>
+
+                        <div class="text-red-500 bg-gray-200 border hover:border-red-500  hover:shadow px-2 mx-1 hover:bg-gray-300 " v-if="checkMutlipleSub(section)" v-on:click.prevent="removeInputGroup(id,section.rootId,section.id)"><i class="fa fa-times-circle "></i> </div>
 
 
                     </div>
@@ -57,7 +62,12 @@
                 // 'flex':!onMobile
                 }">
 
-                        <msinput class="w-1/2"  :class="section.inputs[id2].inputSize" v-for="(inputRaw,id2) in section.inputs" :key="inputRaw.name.toLowerCase()" :ref="inputRaw.name.toLowerCase()" v-bind:ms-data="inputRaw"   v-bind:ms-group-index="id" :ms-input-index="id2" >
+                        <msinput v-if="!(section.hasOwnProperty('withData') && section.withData)" class="w-1/2"  :class="section.inputs[id2].inputSize" v-for="(inputRaw,id2) in section.inputs" :key="inputRaw.name.toLowerCase()" :ref="inputRaw.name.toLowerCase()" v-bind:ms-data="inputRaw"   v-bind:ms-group-index="id" :ms-input-index="id2" >
+                        </msinput>
+                        <msinput v-else class="w-1/2"  :class="section.inputs[id2].inputSize" v-for="(inputRaw,id2,key) in section.inputs" :key="inputRaw.name.toLowerCase()" :ref="inputRaw.name.toLowerCase()" v-bind:ms-data="inputRaw"   v-bind:ms-group-index="id" :ms-input-index="
+                       Object.keys(section.inputs[id2].inputs).find(key =>section.inputs[id2].name == id2 )
+                         " >
+
                         </msinput>
                     </div>
 
@@ -69,6 +79,140 @@
             </div>
 
         </div>
+
+
+
+
+
+
+
+        <div class="w-full rounded  border-t shadow-lg mb-4 bg-gray-100"  v-else-if="section.hasOwnProperty('withData') && section.withData">
+
+
+
+
+            <div class=" w-full px-3 py-2 cursor-pointer mb-2 border-b"  :class="{ 'show': id === 0 , }" :id="section.id+'_target'" :aria-labelledby="section.id" >
+                <div class="font-bold text-md border-b p-2  flex flex-wrap" :class="{
+                'bg-blue-200 ':!checkImHiddenOrNot(section)
+
+                }" >
+
+
+                    <div  class="expand-btn flex"
+                          :style="{
+
+                          'opacity':checkImHiddenOrNot(section)
+                          }"
+                          :class="{'bg-gray-200':!checkImHiddenOrNot(section),
+                    'bg-gray-500':checkImHiddenOrNot(section)}"  v-on:click.prevent="showCollapse(section.id)"><i :class="{
+                    'fas fa-search-minus ':!checkImHiddenOrNot(section),
+                    'fas fa-search-plus ':checkImHiddenOrNot(section)
+
+                    }"  ></i> </div>
+
+
+                    {{section.gruoupHeading}}
+
+                    <div class="flex px-3  ml-3 " v-if="section.groupDynamic">
+
+                        <div class="text-green-500 bg-gray-200 border hover:border-green-500 hover:shadow px-2 mx-1 hover:bg-gray-300 " v-if="checkMutlipleFirst(section)" v-on:click.prevent="addInputGroup(id)"><i class="fa fa-times-circle " style="transform: rotate(45deg)"></i> </div>
+
+                        <div class="text-red-500 bg-gray-200 border hover:border-red-500  hover:shadow px-2 mx-1 hover:bg-gray-300 " v-if="checkMutlipleSub(section)" v-on:click.prevent="removeInputGroup(id,section.rootId)"><i class="fa fa-times-circle "></i> </div>
+
+
+                    </div>
+
+
+                </div>
+
+                <div >
+
+
+
+                    <div class="text-gray-700 text-base flex flex-wrap"  v-bind:class="{
+                'hidden':checkImHiddenOrNot(section),
+                // 'flex':onMobile,
+                // 'flex':!onMobile
+                }">
+
+                        <div v-for="(inputRaw,id2) in section.msDyData" >
+
+<table class="table-auto mt-2 w-full border border-blue-300">
+
+    <thead class="border border-blue-500  border-b-2 ">
+
+    <tr class="ms-datatable-header-thead bg-blue-200">
+        <th class="border border-blue-300 px-2 pt-2">
+
+
+            {{ section.inputs.find(key=>key.name==id2).vName }}</th>
+        <th class="border border-blue-300 px-2 pt-2"> Action </th>
+
+    </tr>
+    </thead>
+
+    <tbody v-if="false" >
+
+    <tr v-for="(subRow,id3) in msFormDataFinal[id2]">
+        <td >
+            {{
+            section.inputs.find(key=>key.name==id2).verifyBy.msdata.find(function(data) {
+            return data[section.inputs.find(key=>key.name==id2).verifyBy.value]==subRow
+            })[section.inputs.find(key=>key.name==id2).verifyBy.text]
+
+            }}
+        </td>
+        <td v-on:click.prevent="removeDataFromDynamic(id2,section.inputs.findIndex(key=>key.name==id2))">
+
+            <span class="text-red-500 bg-gray-200 border hover:border-red-500  hover:shadow px-2 mx-1 hover:bg-gray-300 "  ><i class="fa fa-times-circle "></i> </span>
+        </td>
+
+    </tr>
+
+
+    </tbody>
+
+<tbody v-if="true" v-for="(subRow,id3) in inputRaw.msdata">
+
+
+
+                                <tr v-if="setInputDataFromDynamic(id2,section.inputs.findIndex(key=>key.name==id2), foundRow[section.inputs.find(key=>key.name==id2).verifyBy.value])" v-for="foundRow in section.inputs.find(key=>key.name==id2).verifyBy.msdata.filter(function(data) {return (data[section.inputs.find(key=>key.name==id2).verifyBy.value] ==  subRow[inputRaw.text] );})">
+
+                                    <td >
+                             {{ foundRow[section.inputs.find(key=>key.name==id2).verifyBy.text] }}
+                                    </td>
+                                    <td v-on:click.prevent="removeDataFromDynamic(id2,section.inputs.findIndex(key=>key.name==id2),id)">
+
+                                        <span class="text-red-500 bg-gray-200 border hover:border-red-500  hover:shadow px-2 mx-1 hover:bg-gray-300 "  ><i class="fa fa-times-circle "></i> </span>
+                                    </td>
+
+                                </tr>
+
+</tbody>
+
+</table>
+
+
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+
+
+
 
         <div class="w-full rounded overflow-hidden shadow-lg">
         <div class=" px-6 py-4 border-t">
@@ -91,62 +235,6 @@
 
     </div>
 
-    <div v-if="false">
-        <h1></h1>
-        <form class="ms-form" enctype="multipart/form-data" type="post">
-
-            <div class="card" v-for="(section,id,key) in  msFormData"  style="border-radius: 0px">
-                <div class="card-header sticky-top bg-light"   data-toggle="collapse" :id="section.id" :data-target="section.id+'_target'" aria-expanded="false" :aria-controls="section.id+'_target'">
-                    <h4 class="float-left">  {{section.gruoupHeading}}  </h4>
-
-                    <div class="float-right">
-                        <div class="btn-group btn-group-sm" role="group" aria-label="..." style="border-radius:0px;cursor: pointer;">
-                            <div class="btn btn-outline-success " v-if="checkMutlipleFirst(section)" v-on:click.prevent="addInputGroup(id)"><i class="fa fa-times-circle " style="transform: rotate(45deg)"></i> </div>
-
-                            <div class="btn btn-outline-info"  v-on:click.prevent="showCollapse(section.id+'_target')"><i class="fa fa-compress-arrows-alt "  ></i> </div>
-                            <div class="btn btn-outline-danger" v-if="checkMutlipleSub(section)" v-on:click.prevent="removeInputGroup(id,section.rootId)"><i class="fa fa-times-circle "></i> </div>
-                        </div>
-                    </div>
-                </div>
-
-
-
-                <div  class="collapse card card-body" :class="{ 'show': id === 0 }" :id="section.id+'_target'" :aria-labelledby="section.id"  style="border-radius: 0px">
-                    <!--<table class="table table-bordered">-->
-                    <div class="row">
-                        <msinput class="col col-6" v-for="(inputRaw,id2) in section.inputs" :key="inputRaw.name.toLowerCase()" :ref="inputRaw.name.toLowerCase()" v-bind:ms-data="inputRaw"   v-bind:ms-group-index="id" ></msinput>
-                    </div>
-                    <!--</table>-->
-                </div>
-
-
-
-            </div>
-
-            <div class="card-footer text-muted bg-light" >
-
-
-                <div class="btn-group btn-group-sm btn-block " role="group" aria-label="First group">
-
-
-                    <button  v-for="(msBtn,index) in msActionBtn" type="button" v-bind:class="[msBtn.btnClass]" @click="getAllData(msBtn.route)">
-                        {{msBtn.btnColor}}
-                        <i v-if="msBtn.hasOwnProperty('btnIcon')" :class="msBtn.btnIcon"></i> {{displauActionBtnText(msBtn)}}
-
-                    </button>
-
-
-
-                </div>
-
-
-            </div>
-
-        </form>
-
-
-        <p  v-if="false" class="text-center text-muted" translate="no" style="opacity: 0.6;pointer-events: none;" ><br><img @click.prevent="msNoClick()" @contextmenu="msNoClick()" :src="msQ.image"  style="max-height:120px"><br>{{msQ['0']}}<br><small class="text-right" translate="no">said by {{msQ['1']}}</small><br></p>
-        </div>
 
 
         </div>
@@ -189,7 +277,9 @@
                     //console.log(index);
                     var data=this.msData.formData[key];
                     data.id=key;
+
                     this.msFormData.push(data);
+
                     //   console.log(index);
 
                     if(this.msCount.hasOwnProperty(index)){
@@ -199,6 +289,10 @@
                     }
 
                 },this);
+
+
+
+
             }
             // this.msFormData= this.msData.formData;
             if ( window.innerWidth < 800  )this.onMobile=true;
@@ -227,7 +321,7 @@
             },
             showCollapse:function(id,event){
                 // this.msclass +=' show';
-                if(this.checkLastActive())
+                if(true)
                     this.msCurrentTab=id;
                // console.log(section.id);
                     //$("#"+id).collapse('toggle');
@@ -273,12 +367,19 @@
 
                 //console.log(this.msData.formData[id]);
             },
-            removeInputGroup:function (id,rootId) {
+            removeInputGroup:function (id,rootId,rid) {
                 //console.log(this.msCount.hasOwnProperty(id))
-                if(this.checkLastActive()){
+               // console.log("ID: "+id+" Rootid: "+rootId);
+                if(confirm('Are you sure you want to remove Input group ?')){
                     if(this.msCount.hasOwnProperty(rootId) && this.msCount[rootId] >1){
-                        //    console.log(id);
+
+
+                        for ( var row in  this.msFormData[id].inputs){
+                            this.removeDataFromDynamicWithGroup(rid,this.msFormData[id].inputs[row].name);
+                        }
+
                         delete this.msFormData.splice(id, 1);
+
                         this.msCount[rootId]--;
 
                     }
@@ -289,13 +390,20 @@
 
                 //console.log(this.msData.formData[id]);
             },
+
+
             checkLastActive:function(){
                 var d = new Date();
                 var n = d.getTime();
-                //  console.log(this.get_time_diff(this.mslastActive));
-                if(this.get_time_diff(this.mslastActive) > 250){
+
+
+                console.log(this.get_time_diff(this.mslastActive));
+
+                if(this.get_time_diff(this.mslastActive) > 150){
                     this.mslastActive=n
                     return true;
+                }else {
+                    alert('You clicking so fast please wait for our server to respond.')
                 }
 
                 this.mslastActive=n
@@ -327,13 +435,14 @@
                     if(this.msFormDataFinal[propertyName] instanceof Object){
                         var d=this.$refs[propertyName]
 
-                     //   console.log(d.msValue);
+                        //console.log(d.msValue);
 
-                        for(var file in this.msFormDataFinal[propertyName]){
+                       for(var file in this.msFormDataFinal[propertyName]){
 
                             formData.append(propertyName+"["+file+"]",this.msFormDataFinal[propertyName][file]);
+                           //console.log(file)
                         }
-
+                       // formData.append(propertyName,this.msFormDataFinal[propertyName]);
                     }else{
 
                         formData.append(propertyName,this.msFormDataFinal[propertyName]);
@@ -364,11 +473,38 @@
                 //console.log(data.nextData);
                 window.vueApp.updateTab(data.nextData);
 
+            },setInputDataFromDynamic(name,index,value){
+                if(!this.msFormDataFinal.hasOwnProperty(name))this.msFormDataFinal[name]=[]
+               if(!this.in_array(value,this.msFormDataFinal[name]))  this.msFormDataFinal[name].push(value);
+                return true;
+            },
+
+            removeDataFromDynamicWithGroup(id,name){
+             //   if(this.msFormDataFinal.hasOwnProperty(name) && this.msFormDataFinal[name].hasOwnProperty(id))console.log(id);     console.log(this.msFormDataFinal[name][id]);
+                if(this.msFormDataFinal.hasOwnProperty(name) && this.msFormDataFinal[name].hasOwnProperty(id)){
+                    delete this.msFormDataFinal[name][id];
+                }else {
+                    console.log( id);
+                    console.log( this.msFormDataFinal);
+                    console.log(name);
+
+                }
+
+            },
+
+            removeDataFromDynamic(name,index,section,value){
+              //  console.log(this.msFormDataFinal[name].findIndex(key=>key==value));
+
+                delete this.msFormData[section].msDyData[name].msdata.splice(    this.msFormData[section].inputs[index].verifyBy.msdata.findIndex(data=>{return true;}), 1);
+               // console.log(this.msFormDataFinal[name].findIndex(key=>key==value))
+               delete this.msFormDataFinal[name].splice(index, 1);
+               //  delete this.msFormDataFinal[name][index];
+
             }
-            ,setInputData(name,value,name2="test"){
+                ,setInputData(name,value,multi=false,index=0){
                 //console.log(name2 != "");
-                // console.log(name2);
-                if(name2 != "test"){
+               /// console.log(multi);
+                if(false){
                     if(!(this.msFormDataFinal[name] instanceof Object))
                     {
                         this.msFormDataFinal[name]={};
@@ -386,8 +522,22 @@
 
                 }else {
 
+                    if(multi){
+                       //TODO: Make array for thing
 
-                    this.msFormDataFinal[name]= value;
+                        if( !this.msFormDataFinal.hasOwnProperty(name))this.msFormDataFinal[name]={};
+                     //   delete this.msFormDataFinal[name].splice(index, 1);
+                        //this.setInputDataFromDynamic(name,index,value);
+
+
+                                this.msFormDataFinal[name][index]=value;
+
+                    }else{
+
+                        this.msFormDataFinal[name]= value;
+                    }
+
+
 
 
                 }

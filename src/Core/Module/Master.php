@@ -159,6 +159,7 @@ class Master implements BaseMaster
       //  dd($tableID);
         if(array_key_exists($tableID,$table)){
           //  dd($table[$tableID]['action']);
+            if(!array_key_exists('action',$table[$tableID]))return [];
             return $table[$tableID]['action'];
         }
         if(count($table) < 1){

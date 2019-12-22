@@ -4,11 +4,23 @@
         <div class="fixed w-full ms-nav-container shadow " >
             <nav class="flex items-center justify-between flex-wrap lg:p-1  object-cover " style="min-height: 70px;">
 
-                <div class="flex items-center flex-shrink-0 lg:hidden" @click.prvent="hideNavOnlyForMobile($event)">
+                <div class="flex items-center flex-shrink-0 lg:hidden" >
 
-                    <div class="ms-nav-btn" :class="{'ms-nav-btn-active':!msNavBar,'border':msNavBar}"  >
+                <div @click.prvent="hideNavOnlyForMobile($event)" class="ms-nav-btn" :class="{'ms-nav-btn-active':!msNavBar,'border':msNavBar}"  >
 
-                        <i class="fas fa-ellipsis-v p-1" :class="{
+                    <i class="fas fa-ellipsis-v p-1" :class="{
+                'ms-animation fa-rotate-90':!msNavBar,
+
+                }"></i>
+
+
+                </div>
+
+                    <div class="ms-nav-btn" :class="{
+                        'ms-nav-btn-active':!msNavBar,'border':msNavBar
+                    }"  @click.prevent="onCalac($event,67)" >
+
+                        <i class="fi flaticon-technological p-1" :class="{
                 'ms-animation fa-rotate-90':!msNavBar,
 
                 }"></i>
@@ -16,8 +28,9 @@
 
                     </div>
 
+            </div>
 
-                </div>
+
 
 
                 <div v-on:click="hideNavBar($event)" class="flex items-center flex-shrink-0 mr-6">
@@ -81,6 +94,10 @@
         }
         ,
         methods:{
+            onCalac(event,kCode){
+                window.vueApp.msShortCut(event,kCode);
+            }
+            ,
             setNavOn(show=false,event){
 
                 //this.$children['msMenu'].hideNav();

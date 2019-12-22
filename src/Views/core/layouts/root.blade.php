@@ -20,11 +20,14 @@
 
 
 </head>
-<body class="min-vh-100" >
+<body class="min-vh-100"  >
 
 
-<div id="msapp">
+<div id="msapp"  >
 @yield('body')
+    <transition name="slide"  mode="out-in">
+    <mscalc v-if="msCalc"></mscalc>
+    </transition>
 </div>
     <script src="{{ asset("b/js/app.js") }}?{{\MS\Core\Helper\Comman::random(10)}}" type="text/javascript" defer></script>
 

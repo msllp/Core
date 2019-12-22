@@ -29,10 +29,7 @@ public $dataToProcess=[];
 
     private $filePaths=[];
 
-    public function attachR($r){
-        $this->r=$r;
-        return $this;
-    }
+
     public function __construct(string $nameSpace, string $id=null, array $perFix=[])
     {
 
@@ -81,6 +78,11 @@ public $dataToProcess=[];
     private static $dbSource=['MS','DB','Master','blank','blank' ];
 
     public $perPage=5;
+
+    public function attachR($r){
+        $this->r=$r;
+        return $this;
+    }
 
     /**
      * Static Raw drop Table Function
@@ -730,7 +732,7 @@ public $dataToProcess=[];
         return $f->fromModel($this)->view();
     }
 
-      public function displayForm($formId=null,$data=[]){
+    public function displayForm($formId=null,$data=[]){
 
         if($formId != null){
             $f=new \MS\Core\Helper\MSForm($this->masterNamespace,$this->database['id'],null,['formID'=>$formId]);
@@ -740,6 +742,15 @@ public $dataToProcess=[];
 
 
        return $f->fromModel($this)->view();
+    }
+
+    public function getDisplayFormArray($formId=null,$data=[]){
+        if($formId != null){
+            $f=new \MS\Core\Helper\MSForm($this->masterNamespace,$this->database['id'],null,['formID'=>$formId]);
+        }else{
+            $f=new \MS\Core\Helper\MSForm($this->masterNamespace,$this->database['id']);
+        }
+        return $f->fromModel($this)->viewRaw();
     }
 
     public function viewData($viewId=null){
@@ -1028,10 +1039,10 @@ public $dataToProcess=[];
     }
 
 
-    public function jsonOutError($e=[]){
+    public function jsonOutError($e=[],$errcode=418){
         return response()->json([
                 'errorsRaw' => implode(' , ',$e),
-            ],418);
+            ],$errcode);
     }
 
     public function processForSave($r,$d=[],$tasks=[],$nextData=[]){
@@ -1070,5 +1081,21 @@ public $dataToProcess=[];
 
     }
 
+    public function loginPage($Id=null){
+        //TODO: Complete this for login page
+        $tableArray=$this->mod_Tables[$this->ms_id];
+        if($Id == null  && array_key_exists('MSLogin',$tableArray) )
+        {   $LoginId= array_key_first ($tableArray['MSLogin']);}else{$LoginId=$Id;}
+
+
+        if( array_key_exists('MSLogin',$tableArray)  && array_key_exists($LoginId,$tableArray['MSLogin'])){
+            $lData=$tableArray['MSLogin'][$LoginId];
+        }else{
+           return $this->jsonOutError(['No Login Page Found'],404);
+        }
+
+        $loginPage=new MSLogin($this,$lData);
+        return $loginPage->displayLoginPageFromMSDB();
+    }
 
 }

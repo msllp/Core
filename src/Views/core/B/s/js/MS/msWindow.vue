@@ -58,8 +58,9 @@
         methods:{
             updateTab(data){
                // this.getGetRaw(data.modUrl,this,'setHtml');
+               // console.log(data);
 
-                this.getGetLink(data.modUrl,this)
+                this.getGetLink(data.modUrl,this);
             }
             ,
             setTabData(data){
@@ -68,9 +69,11 @@
             },
             setHtml(data) {
 
-             if(typeof data == 'object'){
-             this.getGetLink(data.ms.nextData.modUrl,this,'setTabData');
+             if(typeof data == 'object' && data.hasOwnProperty('ms')  && typeof data.ms == 'object' && data.ms.hasOwnProperty('nextData')&& typeof data.ms.nextData == 'object' &&  data.ms.nextData.hasOwnProperty('modUrl')){
+                 this.$parent.updateTabFromOthe(data.ms.nextData);
+             this.getGetLink(data.ms.nextData.modUrl,this);
                 }else{
+                // console.log(data);
                  this.currentData=data;
                     this.data.push(data);
                     this.liveComponent = new Vue({

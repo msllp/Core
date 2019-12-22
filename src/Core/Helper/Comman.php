@@ -10,6 +10,7 @@ namespace MS\Core\Helper;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use phpDocumentor\Reflection\Types\Boolean;
+use phpDocumentor\Reflection\Types\Self_;
 
 define('ENCRYPTION_KEY', 'd0a7e7997b6d5fcd55f4b5c32611b87cd923e88837b63bf2941ef819dc8ca282');
 
@@ -20,8 +21,46 @@ define('ENCRYPTION_KEY', 'd0a7e7997b6d5fcd55f4b5c32611b87cd923e88837b63bf2941ef8
  */
 class Comman
 {
+    public function msJsonError($e=[]){
+        return response()->json([
+            'errorsRaw' => implode(' , ',$e),
+        ],418);
+    }
 
 
+    public static function msJson($t,$nextData=[],$e=[]){
+        $valid=0;
+        if(count($nextData) < 3)$nextData=self::makeNextData('Home','Default Page',route('MOD.User.Master.View.All'));
+        foreach ($t as $t=>$s){
+            if(!$s)$e[$t]=$s;
+        }
+        //  dd($e);
+        if(count($e)==0)$valid=1;
+        if($valid){
+            return response()->json(['ms'=>[
+
+                'status'=>200,
+                // 'Rdata'=> $r->input(),
+                'ProcessStatus'=>$t,
+                'nextData'=>$nextData
+
+            ]],200);
+        }
+        else{
+            return self::msJsonError($e);
+        }
+
+    }
+
+    public static function checkMsAppReq($r,$id='MS-USER-CODE'){
+        $return=false;
+        if(!(array_key_exists('ms-app-requested-with-right',$r->header()) &&  reset($r->header()['ms-app-requested-with-right']) ==$id)){
+            $return=true;
+
+        }
+        return $return;
+
+    }
     public static function checkAllTrueArray(array $a):bool{
         $er=[];
         foreach ($a as $k=>$v){
@@ -332,7 +371,9 @@ if($master && array_key_exists('locationOfFile', $array)){
             switch ($link['type']){
 
                 case 'get':
-                    \Route::get($link['route'],$method)->name($link['name'])->middleware(\MS\Middlelwares\checkValidRoute::class);
+                   // \Route::get($link['route'],$method)->name($link['name'])->middleware(\MS\Middlelwares\checkValidRoute::class);
+                    \Route::get($link['route'],$method)->name($link['name'])->middleware('web');
+
                     break;
 
                 case 'post':

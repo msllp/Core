@@ -20,6 +20,9 @@ define('MSCORE_ROUTES_MASTER',"MS\Mod\B\Mod:Master_Route:RouteName->RouteUrl");
 
 define("MSCORE_MOD_EVENT_MASTER","MS\Mod\B\Mod:Master_Events:UniqId->EventName");
 define('MSCORE_USER_TYPE_MASTER',"MS\Mod\B\Users:User_User_Type:UniqId->UserTypeName");
+
+define('MSCORE_ROLE_PERMISSION',"MS\Mod\B\Users:User_User_Type_sub:UniqId->EventCode");
+
 define('DS',DIRECTORY_SEPARATOR);
 
 class MSCoreServiceProvider extends \Illuminate\Support\ServiceProvider
@@ -33,9 +36,13 @@ class MSCoreServiceProvider extends \Illuminate\Support\ServiceProvider
     public function boot()
     {
         //\MS\Core\Helper\Comman::loadBack();
+
+
         $this->loadTranslationsFrom(  dirname(__DIR__) .DS.'Lang', 'MS');
 
         $this->loadViewsFrom(  dirname(__DIR__) .DS.'Views', 'MS');
+
+        $this->loadViewsFrom(  base_path(implode(DS,['vendor','msllp','modules','src','Modules'])), 'MOD');
 
         $this->publishes([
             dirname(__DIR__) .DS.'Config'.DS.'MS.php' => base_path('config/MS.php'),
@@ -110,10 +117,10 @@ class MSCoreServiceProvider extends \Illuminate\Support\ServiceProvider
     public function register()
     {
 
-
-        $this->mergeConfigFrom(
-            dirname(__DIR__).DS.'Config/Auth.php', base_path('config/auth.php')
-        );
+//
+//        $this->mergeConfigFrom(
+//            dirname(__DIR__).DS.'Config/Auth.php', base_path('config/auth.php')
+//        );
 
         $this->mergeConfigFrom(
             dirname(__DIR__).DS.'Config/MS.php', 'MS'

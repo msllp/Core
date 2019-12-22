@@ -118,7 +118,7 @@
 
             <div v-if="inputType == 'option'" class="flex flex-wrap" :class="msValid">
 
-                <span class=" select-none" :class="{'w-4/12 mr-2':!onMobile,'w-full':onMobile}">{{inputVname}}  <i class="" v-if="(msValue!=null ) && (msValue.search('msicon-') != '-1')" :class='msValue'></i></span>
+                <span class=" select-none" :class="{'w-4/12 mr-2':!onMobile,'w-full':onMobile}">{{inputVname}}  <i class="" v-if="(msValue!=null ) && ((msValue.search('msicon-') != '-1') || (msValue.search('flaticon-') != '-1') )" :class='msValue'></i></span>
 
                 <select :name="inputName" class="border focus:outline-none focus:shadow-outline lg:flex-1" :class="{'w-full':onMobile}" size="1" v-model="msValue" >
                     <option v-for="(radio,key) in msData.verifyBy.msdata" v-bind:value="radio[msData.verifyBy.value]" >
@@ -217,13 +217,14 @@
             if(this.msData.hasOwnProperty('name'))
             {
                 if(this.msData.hasOwnProperty('inputMultiple')){
-                    this.inputName=this.msData.name+"["+this.msGroupIndex+"]";
+                    this.inputName=this.msData.name;
+                    //this.inputName=this.msData.name+"["+this.msGroupIndex+"]";
                 }else{
                     this.inputName=this.msData.name;
                 }
 
             }
-
+            if(this.msData.hasOwnProperty('inputMultiple'))this.inputMultiple=this.msData.inputMultiple;
             if(this.msData.hasOwnProperty('inputInfo'))this.inputInfo=this.msData.inputInfo;
             if(this.msData.hasOwnProperty('vName'))this.inputVname=this.msData.vName;
             // if(!this.msData.hasOwnProperty('vName'))this.inputVname=this.msData.name;
@@ -236,17 +237,19 @@
             {
 
                 if(this.msData.verifyBy.hasOwnProperty('msdata'))this.inputAuto=this.msData.verifyBy.msdata;
-                if(this.msData.verifyBy.hasOwnProperty('value'))this.dValue=this.msData.verifyBy.value;
+
+            //    if(this.msData.verifyBy.hasOwnProperty('value'))this.dValue=this.msData.verifyBy.value;
                 if(this.msData.verifyBy.hasOwnProperty('text'))this.dText=this.msData.verifyBy.text;
 
 
+                if(this.msData.verifyBy.hasOwnProperty('value'))this.dValue=this.msData.verifyBy.value;
 
             }
 
             if(this.msData.hasOwnProperty('value')){
                 this.dValue=this.msData.value;
             }
-            if(this.msData.hasOwnProperty('inputMultiple'))this.inputMultiple=this.msData.inputMultiple;
+
 
             if(this.msData.hasOwnProperty('validation'))
             {
@@ -273,8 +276,9 @@
                     this.msValid="is-valid";
 
                     break;
+
                 default:
-                    if(this.hasOwnProperty('dValue'))this.msValue=this.dValue;
+                    if(this.hasOwnProperty('dValue') && !this.inputMultiple)this.msValue=this.dValue;
                     break;
 
 
@@ -302,7 +306,8 @@
 
                this.msValue=localISOTime;
             }
-            this.$parent.setInputData(this.inputName,this.msValue);
+        //    if(this.msData.hasOwnProperty('inputMultiple')) return this.$parent.setInputData(this.inputName,val,this.msData.inputMultiple);
+            if(!this.inputMultiple)  this.$parent.setInputData(this.inputName,this.msValue,this.inputMultiple,this.msGroupIndex);
 
             if ( window.innerWidth < 800  )this.onMobile=true;
           //  console.log(this.inputAuto);
@@ -324,7 +329,7 @@
             },
             setErrorZero:function(){
                 this.msValid="is-valid";
-                this.$parent.in
+                //this.$parent.in
                 this.inputError=new Object();
             },
             getValue:function () {
@@ -372,7 +377,9 @@
             },
             setFinalInputFromAuto(value){
                 this.msFocus=false;
-               this.msValue=value;
+                this.msValue=value;
+
+                this.$parent.setInputData(this.inputName,value,this.inputMultiple,this.msGroupIndex);
             },
             inpututProcess(val, oldVal){
                 if(this.inputRequired){
@@ -452,7 +459,9 @@
                     this.msValid=" ";
                 }
                 //  console.log(val);
-                this.$parent.setInputData(this.inputName,val);
+              //  if(this.msData.hasOwnProperty('inputMultiple')) return this.$parent.setInputData(this.inputName,val,this.msData.inputMultiple,this.msData.msGroupIndex);
+                this.$parent.setInputData(this.inputName,val,this.inputMultiple,this.msGroupIndex);
+
 
             }
             ,visiblePassowrd(){
@@ -545,19 +554,19 @@
 
                         var msData1= this.inputAuto;
                         var msThis=this;
-                        console.log(
+                        // console.log(
+                        //
+                        //     msData1.filter(function (ele) {
+                        //
+                        //
+                        //
+                        //
+                        //     })
+                        //
+                        //
+                        //
 
-                            msData1.filter(function (ele) {
-
-
-
-
-                            })
-
-
-
-
-                        );
+//                        );
 
                     }
                        break;

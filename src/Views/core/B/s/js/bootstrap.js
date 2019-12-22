@@ -71,6 +71,9 @@ Vue.component('msdockerdashboard', require('E:/MS-Master/Projects/FrameworkPHP/g
 Vue.component('mssidenav', require('./MS/C/msSideNav.vue').default);
 Vue.component('newtab', require('./MS/C/msNewTab.vue').default);
 
+
+Vue.component('mscalc', require('./MS/C/msCalc.vue').default);
+
 Vue.component('mslogin', require('./MS/msLoginPage.vue').default);
 
 
@@ -96,12 +99,43 @@ var store = {
 }
 window.vm = {};
 
+$( "body" ).on( "keydown", function( event ) {
+
+    if(event.altKey){
+        app.msShortCut(event,event.which);
+    }
+    }
 
 
-const app = new Vue({
+);
+
+
+    const app = new Vue({
     el: '#msapp',
     mixins: [MS],
     methods:{
+        msShortCut(event,keyCode=false){
+            var fKeyCode=0;
+            if(keyCode!=false){fKeyCode=keyCode}else{
+                fKeyCode=event.which;
+            }
+            switch(fKeyCode){
+
+                case 67:
+                   if(this.msCalc){
+                       this.msCalc=false;
+                   }else {
+                       this.msCalc=true;
+                   }
+
+
+
+                    break;
+            }
+
+
+        }
+        ,
 
         updateTab(data){
             var dashBoard=this.$children[0];
@@ -200,7 +234,9 @@ const app = new Vue({
             mstab: [],
             mserrorCount: false,
             msform: [],
-            msNavigation:false
+            msNavigation:false,
+            msCalc:false
+
 
 
         }

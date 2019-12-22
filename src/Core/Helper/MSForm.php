@@ -168,7 +168,7 @@ class MSForm
                 if(array_key_exists('route',$btnData)) $btnData['route']=route($btnData['route']);
                 if(array_key_exists('btnClass',$btnData))$btnData['btnClass']=implode(' ',$btn['Class']);
                 //if(array_key_exists('routePara',$btnData)) dd($btnData);
-                if(array_key_exists('routePara',$btnData) && array_key_exists('formData',$this->data))$btnData['route']=$this->makeDataRouteWithPara($bdata[$type],$btnData['routePara'],$this->data['formData']);
+                if(array_key_exists('routePara',$btnData) && array_key_exists('formData',$this->data) && count($this->data['formData']) > 0)$btnData['route']=$this->makeDataRouteWithPara($bdata[$type],$btnData['routePara'],$this->data['formData']);
             }
 
             //if(array_key_exists('msLinkKey',$btnData)) dd($btnData);
@@ -190,14 +190,16 @@ class MSForm
         $rArray=[];
         //dd($d);
         //$rr=route($r);
+      //  dd($d);
         foreach ($p as $para=>$v){
+          //  if(!array_key_exists($v,$d)) dd($r);
             $rArray[$para]=$d[$v];
         }
         return route($r['route'],$rArray);
         //foreach ($p)
 
     }
-    public static function getDataFromTable($str){
+    public static function getDataFromTable($str,$per=[]){
         $ex=explode(':',$str);
         //dd($ex);
         $data=[];
@@ -208,7 +210,7 @@ class MSForm
             $ex2=explode('->',$ex[2]);
             $data ['darray'][$ex2[0]]=$ex2[1];
            // dd($data);
-            $m=new MSDB($data['namespace'],$data['tableId']);
+            $m=new MSDB($data['namespace'],$data['tableId'],$per);
            // $m->migrate();
             $d=$m->rowGet();
 
@@ -371,6 +373,7 @@ class MSForm
 
     }
     private function make4Vue($str){
+        //var_dump($str);
             $str= strtolower(str_replace(' ','_',$str)) ;
             return $str;
     }
@@ -410,9 +413,27 @@ class MSForm
                     if(array_key_exists('fieldGroupMultiple',$this->dbMaster) && in_array($title,$this->dbMaster['fieldGroupMultiple']))
                     {
                         // if($aray == null)dd($fieldsArray);
-                        //   if($aray == null)dd($aray);
-                        $returnArray[$this->make4Vue($title)]['inputs'][]= $this->makeDataForVue($aray,true);
+                        //   if($aray == null)dd($aray)
+                        if(count($this->formData) > 0){
+                            $returnArray[$this->make4Vue($title)]['inputs'][]= $this->makeDataForVue($aray,true);
+                      //      $returnArray[$this->make4Vue($title)]['inputs'][$aray['name']]= $this->makeDataForVue($aray,true);
+                        }else{
+                            $returnArray[$this->make4Vue($title)]['inputs'][]= $this->makeDataForVue($aray,true);
+                        }
+
                         $returnArray[$this->make4Vue($title)]['groupDynamic']=true;
+
+
+                       // dd(property_exists($this,'data'));
+                       if(property_exists($this,'data') && array_key_exists("formData",$this->data)){
+
+                           if(count($this->formData) > 0) $returnArray[$this->make4Vue($title)]['withData']=true;
+
+
+                          // dd($aray);
+                           if(count($this->formData) > 0)  $returnArray[$this->make4Vue($title)]['msDyData'][$aray['name']]=$this->makeDataForVueDynamic($aray);
+
+                       }
 
                     }else{
                         //dd($title);
@@ -440,92 +461,13 @@ class MSForm
 
     }
 
-    private function makeForm_old(){
+    private function makeDataForVueDynamic($a){
 
-        if( array_key_exists('add',$this->action) ){
-            $action=$this->action;
-        }
-        $fields=$this->fields;
-        $getFields=false;
-        if(array_key_exists('fieldGroup',$this->dbMaster)){
-            $getFields=true;
-            $fields=$this->makeFieldsFromGroup($this->dbMaster['fieldGroup'])  ;
-              dd($fields);
-        }
+       // dd($this);
+        if(count($this->formData) > 0)
+        $d=\MS\Core\Helper\MSForm::getDataFromTable($a['msTableLink'],[$this->formData[$a['msTableKey']]]);
+        return $d;
 
-        foreach ($fields as $rowArray){
-
-
-
-            switch ($rowArray['input']){
-
-
-                case 'locked':
-                    if($this->checkFromHidden($rowArray))$this->locked($rowArray);
-                    break;
-                case 'generated':
-                    if($this->checkFromHidden($rowArray))$this->generated($rowArray);
-                    break;
-                case 'text':
-                    if($this->checkFromHidden($rowArray))$this->addOneline($rowArray);
-                    break;
-                case 'number':
-                    if($this->checkFromHidden($rowArray))$this->addOneline($rowArray);
-                    break;
-                case 'textarea':
-                    if($this->checkFromHidden($rowArray))$this->textarea($rowArray);
-                    break;
-                case 'email':
-                    if($this->checkFromHidden($rowArray))$this->addOneline($rowArray);
-                    break;
-                case 'password':
-                    if($this->checkFromHidden($rowArray))$this->addOneline($rowArray);
-                    break;
-                case 'date':
-                    if($this->checkFromHidden($rowArray))$this->addOneline($rowArray);
-                    break;
-                case 'datetime':
-                    if($this->checkFromHidden($rowArray))$this->datetime($rowArray);
-                    break;
-                case 'checkbox':
-                    if($this->checkFromHidden($rowArray))$this->checkbox($rowArray);
-                    break;
-                case 'radio':
-                    if($this->checkFromHidden($rowArray))$this->radio($rowArray);
-                    break;
-                case 'option':
-                    if($this->checkFromHidden($rowArray))$this->option($rowArray);
-                    break;
-
-
-                case 'gourpHeading':
-                    $data=[
-                        'title'=>$rowArray['vName'],
-                        'data'=>$rowArray
-                    ];
-                   // $this->returnHTML[]='<div class="accordion" id="accorinf_master">';
-                    $this->returnHTML[]=view("MS::core.layouts.HTML.splitButtonStart")->with('data',$data)->render();
-                    break;
-
-                case 'gourpEnd':
-                    $this->returnHTML[]=view("MS::core.layouts.HTML.splitButtonEnd")->render();
-
-                    break;
-
-                default:
-
-                    if($this->checkFromHidden($rowArray))$this->addOneline($rowArray);
-
-                    break;
-
-
-            }
-
-
-        }
-
-
-//        dd($this);
     }
     private function makeForm(){
 
@@ -559,7 +501,7 @@ class MSForm
 
 
                 $fields=$this->makeFieldsFromGroup($fData)  ;
-             //   dd($fields);
+
                 $this->returnHTML['formData']=$fields;
            //     if()mod_Tables
 
@@ -641,6 +583,7 @@ class MSForm
             if(array_key_exists('existIn',$data['validation']))$array['verifyBy']=\MS\Core\Helper\MSForm::getDataFromTable($data['validation']['existIn']);
 
 
+
             //$array['']=;
 
 
@@ -698,7 +641,10 @@ class MSForm
         dd($d);
 
     }
-
+    public function viewRaw(){
+        $this->returnHTML['actionButton']=$this->viewActionBtn();
+        return $this->returnHTML;
+    }
     public function view(){
         //dd($this->returnHTML);
 
@@ -707,8 +653,10 @@ class MSForm
 //            $this->returnHTML['formValue']=$this->makeDataValueForView();
 //        }
         //   $this->returnHTML[]='</div>';
-      //  dd($this->returnHTML);
-       return view("MS::core.layouts.Form.formPlateRaw")->with("form",$this->returnHTML);
+
+     //   dd(  );
+      // dd($this );
+     //  return view("MS::core.layouts.Form.formPlateRaw")->with("form",$this->returnHTML);
         return view("MS::core.layouts.Form.formPlate")->with("form",$this->returnHTML);
         return view("MS::core.layouts.Form.formPlate")->with("form",implode("",$this->returnHTML));
         return implode("",$this->returnHTML);

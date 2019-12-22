@@ -29,11 +29,11 @@ export default {
     return re.test(pass);
 },
 
-validateLen(str,size=1){
+        validateLen(str,size=1){
 
-    var re = new RegExp("^(?=.{"+size+",})");
-    return  re.test(str);
-},
+        var re = new RegExp("^(?=.{"+size+",})");
+        return  re.test(str);
+        },
 
 getGetRaw(url,classFor,callBack){
 
@@ -42,7 +42,7 @@ getGetRaw(url,classFor,callBack){
 
             fetch(url)   .then(function(response) {
 
-                console.log(response);
+             //   console.log(response);
                 return response.json()
 
 
@@ -89,7 +89,7 @@ getGetLink(url,classFor){
 
 
 },
-        setCurrentData(data){
+setCurrentData(data){
             this.CurrentData=data;
         },
 postLink(link,data,classFor,callback=null){
