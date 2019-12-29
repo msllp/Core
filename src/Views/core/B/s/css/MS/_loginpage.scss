@@ -1,5 +1,103 @@
 .ms-login-h{
+        //@apply bg-white;
+       // @apply max-w-sm;
+        @apply rounded;
+        @apply overflow-hidden;
+        @apply shadow-lg;
+        position: absolute;
+        top: 50%;
+        left:50%;
+        transform: translateY(-60%) translateX(-50%);
+        min-width:92%;
+        background-color:rgba(255,255,255,0.95);
+}
+
+/* Small (sm) */
+@screen sm { .ms-login-h{min-width:92%;}.ms-login-copyright-per{display:none;} }
+@screen md { .ms-login-h{min-width:92%;}.ms-login-copyright-per{display:none;} }
+@screen lg { .ms-login-h{min-width:92%;}.ms-login-copyright-per{display:none;} }
+@screen xl { .ms-login-h{min-width:30%;} }
+
+.ms-login-div{
+        @apply ms-bg-1;
+        display:block;
+        position:absolute;
+        top:0;
+        left:0;
+        /* Full height & Width */
+        height: 100%;
+        width:100%;
+        /* Center and scale the image nicely */
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+}
+
+.ms-bg-1{
+    background-color:rgba(105,29,182,0.9);
+    background-image: url("bg/1.png");
+}
+.ms-login-msater-icon{
+width: 32px;
+height: 32px;
+position: relative;
+    top: 10px;
+}
+.ms-login-copyright-box{
+@apply px-2;
+@apply py-1;
+@apply text-xs;
+@apply bg-gray-200;
+    .ms-login-copyright-pre{
+    display:inline-block;
+    }
+    .ms-login-copyright-icon-class{
+    margin-top:-14px;
+        display:inline-block;
+        }
+    .ms-login-copyright-per{
+        display:inline-block;
+        }
+    @apply text-center;
+}
+
+.ms-login-others-box{
 
 
+}
+.ms-login-others-btn-box{
 
+@apply py-4;
+}
+.ms-login-others-btn-box > div{
+display:inline-block;
+@apply border;
+}
+
+.ms-login-google-btn-icon{
+       display:inline-block;
+         background-image: url("svg/google.svg");
+        /* Full height & Width */
+        height: 45px;
+        width: 45px;
+        /* Center and scale the image nicely */
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: inherit;
+        @apply m-1;
+       // margin-top: -12px;
+}
+.ms-login-bottom-line{
+display:block;
+position:absolute;
+bottom:20px;
+left:50%;
+transform: translateX(-50%);
+min-width:100%;
+@apply px-6;
+@apply py-4;
+@apply text-center;
+@apply text-xs;
+color:rgba(255,255,255,0.8);
+background-color:rgba(0,0,0,0.1);
 }

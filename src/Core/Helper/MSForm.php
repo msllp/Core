@@ -176,7 +176,12 @@ class MSForm
             //dd(in_array($type,$this->dbMaster['MSforms'][$this->formID]['actions']));
             //dd();
             if(in_array($type,$this->accessAction) && in_array($type,$this->dbMaster['MSforms'][$this->formID]['actions']))
+            {
                 $returnData[$type]=$btnData;
+            }else{
+              //  dd( $returnData);
+            }
+
         }
 
 
@@ -307,7 +312,7 @@ class MSForm
             }
 
             //var_dump($key);
-
+            //TODO Finish validation to pass proper data to Vue Components
             if(array_key_exists('validation',$data) && array_key_exists($key,$data['validation']))
             {
                 dd(array_key_exists($key,$data['validation']));
@@ -404,7 +409,7 @@ class MSForm
 
                     //dd();
                     $aray=$this->getFieldFromFields($fieldName);
-                    if($aray == null)dd($fieldName);
+                    if($aray == null)dd($fieldName); //TODO Find proper out put for no array found
 //                if(array_key_exists('fieldGroupMultiple',$this->dbMaster) && $this->dbMaster['fieldGroupMultiple'])
 //                    $aray['groupInput']=$this->make4Vue($title);
 
