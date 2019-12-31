@@ -232,9 +232,11 @@ class MSLogin
        $asd=collect($d3)->map(function ($item, $key) {
            return collect($item)->only(['UniqId','VerifyName','VerifyCallback','VerifyUrl','VerifyIcon'])->toArray();
        })->toArray();
+   //=    dd((array_key_exists('CompanyIcon',$d)) ? $d['CompanyIcon'] : asset('images/logo.png'));
         $f=[
             //'bgImg'=>asset('images/bg1.png'),
-            'ClientIcon'=>'',
+
+            'ClientIcon'=>(array_key_exists('CompanyIcon',$d)) ? $d['CompanyIcon'] : asset('images/logo.png'),
             'MasterIcon'=>asset('images/logo.png'),
             'formData'=>$this->makeArrayForVueForFormData($formId),
             'loginPostUrl'=>$this->getVerifyLogin(),

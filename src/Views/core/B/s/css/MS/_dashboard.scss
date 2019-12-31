@@ -1,3 +1,10 @@
+//TODO Theme
+
+$ms-theme-color-light: lighten(rgba(121,71,199,0.4),15%);
+$ms-theme-color-main: rgba(121,71,199,0.9);
+$ms-theme-color-dark: darken(rgba(121,71,199,1),15%);
+$ms-theme-color-text-for-dark: rgba(255,255,255,0.9);
+$ms-theme-color-text-for-light: rgba(0,0,0,0.9);
 .ms-nav-container{
     z-index: 2501;
     position: fixed;

@@ -82,6 +82,89 @@ class MSTableSchema {
     }
 
 
+    public function addGroup($groupid){
+        $fg=$this->getFieldGroup();
+        if(is_array($fg) && !array_key_exists($groupid,$fg)){
+            $fg[$groupid]=[];
+        }elseif($fg==null){
+            $fg=[$groupid=>[]] ;
+        }
+        $this->setFieldGroup($fg);
+        return $this;
+    }
+
+    public function addField($groupId,$fields){
+        $fg=$this->getFieldGroup();
+        $f=collect($this->getFields());
+        foreach ($fields as $field)
+        if( is_array($fg)  &&
+            ( array_key_exists($groupId,$fg) && $f->where('name','=',$field)->count()>0 )
+            && !in_array($field,$fg[$groupId])
+        )$fg[$groupId][]=$field;
+        $this->setFieldGroup($fg);
+        //dd($this);
+        return $this;
+    }
+
+    public function addAction($acId,$acData){
+            $ac=$this->getAction();
+            if($ac==null)$ac=[];
+        //    dd(!array_key_exists($acId,$ac));
+            if(is_array($ac) && !array_key_exists($acId,$ac))
+            {
+                $ac[$acId]=$acData;
+            }
+
+            $this->setAction($ac);
+            return $this;
+    }
+
+    public function addForm($formId){
+        $mf=$this->getMSforms();
+        if(is_array($mf) && !array_key_exists($formId,$mf)){
+            $mf[$formId]=[];
+        }elseif($mf==null){
+            $mf=[$formId=>[]] ;
+        }
+        $this->setMSforms($mf);
+        return $this;
+    }
+    public function addTitle4Form($formId,$title){
+        $mf=$this->getMSforms();
+
+        if(is_array($mf) && array_key_exists($formId,$mf) )$mf[$formId]['name']=$title;
+
+        $this->setMSforms($mf);
+        return $this;
+
+    }
+
+    public function addGroup4Form($formId,$groupId){
+        $mf=$this->getMSforms();
+        $fg=$this->getFieldGroup();
+//dd($fg);
+        foreach ($groupId as $group)//dd(is_array($mf) && array_key_exists($formId,$mf) && array_key_exists($group,$fg));
+        if(is_array($mf) && array_key_exists($formId,$mf) && array_key_exists($group,$fg) )$mf[$formId]['groups'][]=$group;
+        $this->setMSforms($mf);
+        return $this;
+
+
+    }
+
+    public function addAction4Form($formId,$actionId){
+        $mf=$this->getMSforms();
+        $fg=$this->getAction();
+        if($fg==null)$fg=[];
+        foreach ($actionId as $action)//dd($fg);
+            //dd(is_array($mf) && is_array($fg) && array_key_exists($formId,$mf) && array_key_exists($action,$fg));
+            if(is_array($mf) && is_array($fg) && array_key_exists($formId,$mf) && !array_key_exists($action,$fg) )$mf[$formId]['actions'][]=$action;
+        $this->setMSforms($mf);
+        return $this;
+    }
+
+    public function addIcon4Form(){
+
+    }
 
 
 
@@ -90,7 +173,7 @@ class MSTableSchema {
     /**
      * @return mixed
      */
-    public function getTableId()
+    private function getTableId()
     {
         return $this->tableId;
     }
@@ -98,7 +181,7 @@ class MSTableSchema {
     /**
      * @param mixed $tableId
      */
-    public function setTableId($tableId)
+    private function setTableId($tableId)
     {
         $this->tableId = $tableId;
     }
@@ -106,7 +189,7 @@ class MSTableSchema {
     /**
      * @return mixed
      */
-    public function getTableName()
+    private function getTableName()
     {
         return $this->tableName;
     }
@@ -114,7 +197,7 @@ class MSTableSchema {
     /**
      * @param mixed $tableName
      */
-    public function setTableName($tableName)
+    private function setTableName($tableName)
     {
         $this->tableName = $tableName;
     }
@@ -122,7 +205,7 @@ class MSTableSchema {
     /**
      * @return mixed
      */
-    public function getConnection()
+    private function getConnection()
     {
         return $this->connection;
     }
@@ -130,7 +213,7 @@ class MSTableSchema {
     /**
      * @param mixed $connection
      */
-    public function setConnection($connection)
+    private function setConnection($connection)
     {
         $this->connection = $connection;
     }
@@ -138,7 +221,7 @@ class MSTableSchema {
     /**
      * @return mixed
      */
-    public function getFields()
+    private function getFields()
     {
         return $this->fields;
     }
@@ -169,7 +252,7 @@ class MSTableSchema {
     /**
      * @return mixed
      */
-    public function getFieldGroup()
+    private function getFieldGroup()
     {
         return $this->fieldGroup;
     }
@@ -177,7 +260,7 @@ class MSTableSchema {
     /**
      * @param mixed $fieldGroup
      */
-    public function setFieldGroup($fieldGroup)
+    private function setFieldGroup($fieldGroup)
     {
         $this->fieldGroup = $fieldGroup;
     }
@@ -185,7 +268,7 @@ class MSTableSchema {
     /**
      * @return mixed
      */
-    public function getValidationMessage()
+    private function getValidationMessage()
     {
         return $this->validationMessage;
     }
@@ -193,7 +276,7 @@ class MSTableSchema {
     /**
      * @param mixed $validationMessage
      */
-    public function setValidationMessage($validationMessage)
+    private function setValidationMessage($validationMessage)
     {
         $this->validationMessage = $validationMessage;
     }
@@ -201,7 +284,7 @@ class MSTableSchema {
     /**
      * @return mixed
      */
-    public function getFieldGroupMultiple()
+    private function getFieldGroupMultiple()
     {
         return $this->fieldGroupMultiple;
     }
@@ -209,7 +292,7 @@ class MSTableSchema {
     /**
      * @param mixed $fieldGroupMultiple
      */
-    public function setFieldGroupMultiple($fieldGroupMultiple)
+    private function setFieldGroupMultiple($fieldGroupMultiple)
     {
         $this->fieldGroupMultiple = $fieldGroupMultiple;
     }
@@ -217,7 +300,7 @@ class MSTableSchema {
     /**
      * @return mixed
      */
-    public function getAction()
+    private function getAction()
     {
         return $this->action;
     }
@@ -225,7 +308,7 @@ class MSTableSchema {
     /**
      * @param mixed $action
      */
-    public function setAction($action)
+    private function setAction($action)
     {
         $this->action = $action;
     }
@@ -233,7 +316,7 @@ class MSTableSchema {
     /**
      * @return mixed
      */
-    public function getMSforms()
+    private function getMSforms()
     {
         return $this->MSforms;
     }
@@ -241,7 +324,7 @@ class MSTableSchema {
     /**
      * @param mixed $MSforms
      */
-    public function setMSforms($MSforms)
+    private function setMSforms($MSforms)
     {
         $this->MSforms = $MSforms;
     }
@@ -249,7 +332,7 @@ class MSTableSchema {
     /**
      * @return mixed
      */
-    public function getMSViews()
+    private function getMSViews()
     {
         return $this->MSViews;
     }
@@ -257,7 +340,7 @@ class MSTableSchema {
     /**
      * @param mixed $MSViews
      */
-    public function setMSViews($MSViews)
+    private function setMSViews($MSViews)
     {
         $this->MSViews = $MSViews;
     }
@@ -265,7 +348,7 @@ class MSTableSchema {
     /**
      * @return mixed
      */
-    public function getMSLogin()
+    private function getMSLogin()
     {
         return $this->MSLogin;
     }
@@ -273,7 +356,7 @@ class MSTableSchema {
     /**
      * @param mixed $MSLogin
      */
-    public function setMSLogin($MSLogin)
+    private function setMSLogin($MSLogin)
     {
         $this->MSLogin = $MSLogin;
     }
@@ -281,7 +364,7 @@ class MSTableSchema {
     /**
      * @return mixed
      */
-    public function getModId()
+    private function getModId()
     {
         return $this->modId;
     }
@@ -289,7 +372,7 @@ class MSTableSchema {
     /**
      * @param mixed $modId
      */
-    public function setModId($modId)
+    private function setModId($modId)
     {
         $this->modId = $modId;
     }
@@ -297,7 +380,7 @@ class MSTableSchema {
     /**
      * @return mixed
      */
-    public function getModNameSpcae()
+    private function getModNameSpcae()
     {
         return $this->modNameSpcae;
     }
@@ -305,7 +388,7 @@ class MSTableSchema {
     /**
      * @param mixed $modNameSpcae
      */
-    public function setModNameSpcae($modNameSpcae)
+    private function setModNameSpcae($modNameSpcae)
     {
         $this->modNameSpcae = $modNameSpcae;
     }

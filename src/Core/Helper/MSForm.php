@@ -37,7 +37,7 @@ class MSForm
     public $namespace,$id,$perFix,$data,$msdb,$fields,$dbMaster,$action;
     public $newForm=true;
 
-    public $accessAction=['add','back','edit'];
+    public $accessAction=['add','back','edit','signin'];
 
     public $attachedAction=[];
 

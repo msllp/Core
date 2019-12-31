@@ -7,7 +7,7 @@
         position: absolute;
         top: 50%;
         left:50%;
-        transform: translateY(-60%) translateX(-50%);
+        transform: translateY(-50%) translateX(-50%);
         min-width:92%;
         background-color:rgba(255,255,255,0.95);
 }
@@ -62,7 +62,7 @@ position: relative;
 }
 
 .ms-login-others-box{
-
+@apply text-xs;
 
 }
 .ms-login-others-btn-box{
@@ -78,8 +78,8 @@ display:inline-block;
        display:inline-block;
          background-image: url("svg/google.svg");
         /* Full height & Width */
-        height: 45px;
-        width: 45px;
+        height: 25px;
+        width:25px;
         /* Center and scale the image nicely */
         background-position: center;
         background-repeat: no-repeat;
@@ -100,4 +100,99 @@ min-width:100%;
 @apply text-xs;
 color:rgba(255,255,255,0.8);
 background-color:rgba(0,0,0,0.1);
+}
+.ms-clientlogo{
+max-height:50px;
+@apply my-4;
+@apply mx-2;
+//@apply text-center;
+position:relative;
+@apply cursor-pointer;
+
+}
+.ms-clientlogo:hover{
+transition:all 200ms ease-in;
+filter: grayscale(100%);
+background-color:rgba(255,255,255,0.5);
+
+
+
+}
+
+.ms-login-table{
+//@apply table-auto;
+@apply w-full;
+
+
+tr{
+@apply w-full;
+@apply border-blue-200;
+    display: table-row;
+
+th{
+@apply text-left;
+@apply w-1/3;
+i{
+float:right;
+@apply pr-2;
+color:$ms-theme-color-main;
+}
+}
+
+td{
+@apply w-2/3;
+input{
+@apply w-full;
+
+@apply border-r;
+@apply border-b;
+
+border-color: $ms-theme-color-main;
+
+
+}
+input:active,input:focus{
+//@apply text-blue-400;
+@apply shadow;
+@apply shadow-lg;
+color:$ms-theme-color-text-for-light;
+background-color:$ms-theme-color-light;
+}
+}
+
+
+
+}
+}
+
+
+.ms-login-btn{
+//@apply flex-wrap ;
+@apply w-full;
+@apply  text-center;
+background-color:$ms-theme-color-light;
+color:$ms-theme-color-text-for-light;
+@apply  px-3;
+@apply  py-1;
+//@apply  mr-2 ;
+@apply cursor-pointer;
+
+transition:all 200ms ease-in;
+}
+.ms-login-btn:hover{
+transition:all 200ms ease-in;
+background-color:$ms-theme-color-dark;
+color:$ms-theme-color-text-for-dark;
+@apply shadow-lg    ;
+
+
+
+}
+
+
+.ms-login-error-box{
+@apply bg-red-200;
+@apply py-2;
+@apply px-1;
+@apply mb-2;
 }
