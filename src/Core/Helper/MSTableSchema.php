@@ -12,6 +12,8 @@ class MSTableSchema {
 
     private $modId,$modNameSpcae;
 
+    public static $allowedKeyTypes=['MSforms','MSViews','MSLogin','MasterTable','Field'];
+
     private static $allowedKeys=[
         'tableId'=>'tableId',
         'tableName'=>'tableName',
@@ -51,6 +53,12 @@ class MSTableSchema {
         'name','type'
     ];
 
+    private static $dbType=[
+        'Config'=>'Config',
+        'Master'=>'Master',
+        'Data'=>'Data',
+    ];
+
     public function __construct($data=[]){
         foreach (self::$allowedKeys as $setName){
             if (array_key_exists($setName,$data))$this->$setName=$data[$setName];
@@ -62,6 +70,8 @@ class MSTableSchema {
     //dd($this);
 
     }
+
+
 
     public function finalReturnForTableFile(){
         $d=[];
@@ -77,8 +87,165 @@ class MSTableSchema {
 
         }
 
-        dd($d);
+       // dd($d);
         return $d;
+    }
+
+    public static function getTableDataFor($type,$namespace,$modCode){
+
+        if(in_array($type,self::$allowedKeyTypes)){
+
+            switch ($type){
+
+                case 'MasterTable':
+                    return self::getTableDataForTable($modCode);
+                    break;
+                case 'Field':
+                    return self::getTableDataForField($modCode);
+                    break;
+                case 'MSViews':
+                    return self::getTableDataForMSViews($modCode);
+                    break;
+                case 'MSLogin':
+                    return self::getTableDataForMSLogin($modCode);
+                    break;
+                case 'MSforms':
+                    return self::getTableDataForMSForms($modCode);
+                    break;
+
+
+            }
+
+        }
+    }
+
+    public static function getTableDataForTable($modCode){
+        $dbType=self::$dbType['Config'];
+        $data=[
+            'tableId'=>implode('_',[$modCode,'MasterCoreTable']),
+            'tableName'=>implode('_',[$modCode,'Master_Core_Table']),
+            'connection'=>implode('_',['MS',$modCode,$dbType]),
+        ];
+        $m=new self($data);
+        $m->setFields(['name'=>'UniqId','vName'=>\Lang::get('Core.UniqId'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'tableId','vName'=>\Lang::get('Core.tableId'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'tableName','vName'=>\Lang::get('Core.tableName'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'FieldGroupMultiple','vName'=>\Lang::get('Core.tableName'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'Status','vName'=>\Lang::get('Core.Status'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m1=$m->finalReturnForTableFile();
+        return $m1;
+    }
+    public static function getTableDataForField($modCode){
+        $dbType=self::$dbType['Config'];
+        $data=[
+            'tableId'=>implode('_',[$modCode,'MasterCoreTable_field']),
+            'tableName'=>implode('_',[$modCode,'Master_Core_Table_field']),
+            'connection'=>implode('_',['MS',$modCode,$dbType]),
+        ];
+        $m=new self($data);
+        $m->setFields(['name'=>'UniqId','vName'=>\Lang::get('Core.UniqId'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'name','vName'=>\Lang::get('Core.fieldName'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'vName','vName'=>\Lang::get('Core.fieldDisplayName'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'type','vName'=>\Lang::get('Core.fieldType'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'input','vName'=>\Lang::get('Core.fieldInput'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'validation','vName'=>\Lang::get('Core.fieldValidation'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'dbOff','vName'=>\Lang::get('Core.fieldStoreToDB'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'Status','vName'=>\Lang::get('Core.Status'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m2=$m->finalReturnForTableFile();
+        return $m2;
+    }
+    public static function getTableDataForAction($modCode){
+        $dbType=self::$dbType['Config'];
+        $data=[
+            'tableId'=>implode('_',[$modCode,'MasterCoreTable_action']),
+            'tableName'=>implode('_',[$modCode,'Master_Core_Table_action']),
+            'connection'=>implode('_',['MS',$modCode,$dbType]),
+        ];
+        $m=new self($data);
+        $m->setFields(['name'=>'UniqId','vName'=>\Lang::get('Core.UniqId'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'route','vName'=>\Lang::get('Core.actionRoute'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'btnText','vName'=>\Lang::get('Core.actionBtnText'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'btnIcon','vName'=>\Lang::get('Core.actionBtnIcon'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'btnColor','vName'=>\Lang::get('Core.actionBtnColor'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'routePara','vName'=>\Lang::get('Core.actionRoutePara'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'msLinkKey','vName'=>\Lang::get('Core.actionMsLinkKey'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'msLinkText','vName'=>\Lang::get('Core.actionMsLinkText'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'doubleConfirm','vName'=>\Lang::get('Core.actionDoubleConFirm'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'doubleConfirmText','vName'=>\Lang::get('Core.actionDoubleConFirmText'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'ownTab','vName'=>\Lang::get('Core.actionOwnTab'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'Status','vName'=>\Lang::get('Core.Status'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m2=$m->finalReturnForTableFile();
+        return $m2;
+    }
+    public static function getTableDataForMSForms($modCode){
+        $dbType=self::$dbType['Config'];
+        $data=[
+            'tableId'=>implode('_',[$modCode,'MasterCoreTable_msForms']),
+            'tableName'=>implode('_',[$modCode,'Master_Core_Table_msForms']),
+            'connection'=>implode('_',['MS',$modCode,$dbType]),
+        ];
+        $m=new self($data);
+
+        $m->setFields(['name'=>'UniqId','vName'=>\Lang::get('Core.UniqId'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'title','vName'=>\Lang::get('Core.msFormTitle'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'groups','vName'=>\Lang::get('Core.msFormGroups'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'actions','vName'=>\Lang::get('Core.msFormAction'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+
+        $m->setFields(['name'=>'Status','vName'=>\Lang::get('Core.Status'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+
+        $m2=$m->finalReturnForTableFile();
+        return $m2;
+    }
+    public static function getTableDataForMSViews($modCode){
+
+        $dbType=self::$dbType['Config'];
+        $data=[
+            'tableId'=>implode('_',[$modCode,'MasterCoreTable_msViews']),
+            'tableName'=>implode('_',[$modCode,'Master_Core_Table_msViews']),
+            'connection'=>implode('_',['MS',$modCode,$dbType]),
+        ];
+        $m=new self($data);
+
+
+        $m->setFields(['name'=>'UniqId','vName'=>\Lang::get('Core.UniqId'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'viewId','vName'=>\Lang::get('Core.msViewsTitle'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'title','vName'=>\Lang::get('Core.msViewsTitle'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'groups','vName'=>\Lang::get('Core.msViewsGroups'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'actions','vName'=>\Lang::get('Core.msViewsAction'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'icon','vName'=>\Lang::get('Core.msViewsIcon'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'massAction','vName'=>\Lang::get('Core.msViewsMassAction'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+
+        $m->setFields(['name'=>'Status','vName'=>\Lang::get('Core.Status'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+
+
+        $m2=$m->finalReturnForTableFile();
+        return $m2;
+
+
+    }
+    public static function getTableDataForMSLogin($modCode){
+        $dbType=self::$dbType['Config'];
+        $data=[
+            'tableId'=>implode('_',[$modCode,'MasterCoreTable_login']),
+            'tableName'=>implode('_',[$modCode,'Master_Core_Table_login']),
+            'connection'=>implode('_',['MS',$modCode,$dbType]),
+        ];
+        $m=new self($data);
+
+        $m->setFields(['name'=>'UniqId','vName'=>\Lang::get('Core.UniqId'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'loginId','vName'=>\Lang::get('Core.fieldDisplayName'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'PageTitle','vName'=>\Lang::get('Core.fieldType'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'verifyBy','vName'=>\Lang::get('Core.fieldInput'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'loginPost','vName'=>\Lang::get('Core.fieldValidation'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'identifier','vName'=>\Lang::get('Core.fieldStoreToDB'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'checkID','vName'=>\Lang::get('Core.fieldStoreToDB'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'CompanyIcon','vName'=>\Lang::get('Core.fieldStoreToDB'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+        $m->setFields(['name'=>'Status','vName'=>\Lang::get('Core.Status'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
+
+
+        $m2=$m->finalReturnForTableFile();
+        return $m2;
+
     }
 
 
@@ -132,7 +299,7 @@ class MSTableSchema {
     public function addTitle4Form($formId,$title){
         $mf=$this->getMSforms();
 
-        if(is_array($mf) && array_key_exists($formId,$mf) )$mf[$formId]['name']=$title;
+        if(is_array($mf) && array_key_exists($formId,$mf) )$mf[$formId]['title']=$title;
 
         $this->setMSforms($mf);
         return $this;
@@ -155,21 +322,157 @@ class MSTableSchema {
         $mf=$this->getMSforms();
         $fg=$this->getAction();
         if($fg==null)$fg=[];
-        foreach ($actionId as $action)//dd($fg);
-            //dd(is_array($mf) && is_array($fg) && array_key_exists($formId,$mf) && array_key_exists($action,$fg));
-            if(is_array($mf) && is_array($fg) && array_key_exists($formId,$mf) && !array_key_exists($action,$fg) )$mf[$formId]['actions'][]=$action;
+        foreach ($actionId as $action)//dd($formId);
+            //dd(is_array($mf) && is_array($fg) && array_key_exists($formId,$mf) && array_key_exists($action,$fg)  && ( array_key_exists('action',$mf[$formId]) or true ) );
+            if(is_array($mf) && is_array($fg) && array_key_exists($formId,$mf) && array_key_exists($action,$fg) )$mf[$formId]['actions'][]=$action;
         $this->setMSforms($mf);
         return $this;
     }
 
-    public function addIcon4Form(){
+    public function addIcon4Form($formId,$icon){
+        $mf=$this->getMSforms();
 
+        //dd($fg);
+
+            if(is_array($mf) && array_key_exists($formId,$mf) )$mf[$formId]['icon']=$icon;
+        $this->setMSforms($mf);
+        return $this;
+    }
+
+    public function addView($viewId){
+        $mf=$this->getMSViews();
+        if(is_array($mf) && !array_key_exists($viewId,$mf)){
+            $mf[$viewId]=[];
+        }elseif($mf==null){
+            $mf=[$viewId=>[]] ;
+        }
+        $this->setMSViews($mf);
+        return $this;
+    }
+
+    public function addTitle4View ($viewId,$title){
+        $mf=$this->getMSViews();
+
+        if(is_array($mf) && array_key_exists($viewId,$mf) )$mf[$viewId]['title']=$title;
+
+        $this->setMSViews($mf);
+        return $this;
+    }
+
+    public function addGroup4View($viewId,$groupId){
+
+          $mf=$this->getMSViews();
+        $fg=$this->getFieldGroup();
+//dd($fg);
+        foreach ($groupId as $group)//dd(is_array($mf) && array_key_exists($formId,$mf) && array_key_exists($group,$fg));
+        if(is_array($mf) && array_key_exists($viewId,$mf) && array_key_exists($group,$fg) )$mf[$viewId]['groups'][]=$group;
+        $this->setMSViews($mf);
+        return $this;
+}
+
+    public function pagination4View($viewId,$name){
+        $mf=$this->getMSViews();
+        $fg=$this->getFieldGroup();
+
+        //dd($fg);
+
+        if(is_array($mf) && array_key_exists($viewId,$mf) && !array_key_exists($viewId,$fg) ){$mf[$viewId]['paginationLink']=$name;$mf[$viewId]['pagination']=true;}else{$mf[$viewId]['pagination']=false;}
+        $this->setMSViews($mf);
+        return $this;
     }
 
 
+    public function addIcon4View($viewId,$icon){
+        $mf=$this->getMSViews();
+        $fg=$this->getFieldGroup();
+        //dd($fg);
+
+        if(is_array($mf) && array_key_exists($viewId,$mf))$mf[$viewId]['icon']=$icon;
+        $this->setMSViews($mf);
+        return $this;
+    }
+
+    public function addAction4View($viewId,$actionId){
+        $mf=$this->getMSViews();
+        $fg=$this->getAction();
+        if($fg==null)$fg=[];
+        foreach ($actionId as $action)//dd($formId);
+            //dd(is_array($mf) && is_array($fg) && array_key_exists($formId,$mf) && array_key_exists($action,$fg)  && ( array_key_exists('action',$mf[$formId]) or true ) );
+            if(is_array($mf) && is_array($fg) && array_key_exists($viewId,$mf) && array_key_exists($action,$fg) )$mf[$viewId]['actions'][]=$action;
+        $this->setMSViews($mf);
+        return $this;
+    }
+
+    public function addMassAction4View($viewId,$actionId){
+        $mf=$this->getMSViews();
+        $fg=$this->getAction();
+        if($fg==null)$fg=[];
+        foreach ($actionId as $action)//dd($formId);
+            //dd(is_array($mf) && is_array($fg) && array_key_exists($formId,$mf) && array_key_exists($action,$fg)  && ( array_key_exists('action',$mf[$formId]) or true ) );
+            if(is_array($mf) && is_array($fg) && array_key_exists($viewId,$mf) && array_key_exists($action,$fg) )$mf[$viewId]['massAction'][]=$action;
+        $this->setMSViews($mf);
+        return $this;
+    }
+
+    public function addLogin($loginId){
+        $mf=$this->getMSLogin();
+        if(is_array($mf) && !array_key_exists($loginId,$mf)){
+            $mf[$loginId]=[];
+        }elseif($mf==null){
+            $mf=[$loginId=>[]] ;
+        }
+        $this->setMSLogin($mf);
+        return $this;
+    }
+
+    public function addTitle4Login($loginId,$title){
+        $mf=$this->getMSLogin();
+        if(is_array($mf) && array_key_exists($loginId,$mf) )$mf[$loginId]['title']=$title;
+        $this->setMSLogin($mf);
+        return $this;
+    }
+    public function setPost4Login($loginId,$routeName){
+        $mf=$this->getMSLogin();
+        if(is_array($mf) && array_key_exists($loginId,$mf) )$mf[$loginId]['loginPost']=$routeName;
+        $this->setMSLogin($mf);
+        return $this;
+    }
+    public function setClientLogo($loginId,$path){
+        $mf=$this->getMSLogin();
+        if(is_array($mf) && array_key_exists($loginId,$mf) )$mf[$loginId]['CompanyIcon']=asset($path);
+        $this->setMSLogin($mf);
+        return $this;
+    }
+
+
+    public function addGroup4Login($loginId,$groupId){
+        $mf=$this->getMSLogin();
+        $fg=$this->getFieldGroup();
+        foreach ($groupId as $group)if(is_array($mf) && array_key_exists($loginId,$mf) && array_key_exists($group,$fg) )$mf[$loginId]['groups'][]=$group;
+        $this->setMSLogin($mf);
+        return $this;
+    }
+
+    //TODO Make a function to get Data From Connected Tables
+    public function connectWithTable($data,$identifier){
+        if(is_object($data)){
+        //TODO Make provision For Direct DB Class
+        $this->proccessMSDBClassForData($data,$identifier);
 
 
 
+        }elseif(is_array($data) && count($data)> 1 && array_key_exists('namespace',$data) && array_key_exists('tableId',$data) ){
+            //TODO Make provision For Row Table Data
+        }
+    }
+
+    private function proccessMSDBClassForData($data,$identifier){
+        $m=$data;
+        $mM=$m->getModel();
+        $mM2=$mM;
+        foreach ($identifier as $column=>$value)if(is_object($mM2))$mM2=$mM2->where($column,'=',$value);
+
+    }
     /**
      * @return mixed
      */

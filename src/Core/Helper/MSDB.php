@@ -20,7 +20,15 @@ class MSDB implements MasterNoSql
 {
 
 
-    public $model,$database,$masterNamespace,$e,$fTableName,$connection,$CurrentError;
+    public $model,$database,$masterNamespace,$e,$fTableName,$connection,$CurrentError,$MSmodel;
+
+    /**
+     * @return mixed
+     */
+    public function getModel()
+    {
+        return $this->MSmodel;
+    }
 public $dataToProcess=[];
     public $currentFiles=[];
     public $ms_id="0";
