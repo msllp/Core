@@ -17,15 +17,17 @@ class Master  extends Model  implements BaseMaster{
     use Notifiable;
     public $namespace,$tableID,$perFix,$ms_base,$base_Field,$g,$ms_action;
 
-    public function __construct(string $nameSpace,$tableID=false, $perFix=false, $tableConnection=false,$glue="_")
+    public function __construct(string $nameSpace,$tableID=false, $perFix=false, $tableData=[],$tableConnection=false,$glue="_")
     {
 
         $this->namespace=$nameSpace;
         $this->g=$glue;
         $this->ms_base="\\".$nameSpace."\\B";
-        $this->ms_action=$this->ms_base::getAction($tableID);
+        $this->ms_action=(count($tableData)>0 && array_key_exists('action',$tableData))? $tableData['action'] : $this->ms_base::getAction($tableID);
+        //$this->ms_action=$this->ms_base::getAction($tableID);
         $this->tableID=$tableID;
         if($tableID){
+
             //$this->tableID=$tableID;
             if($perFix){
                 if(count($perFix)>0)$perFix=implode($glue,$perFix);
@@ -33,13 +35,22 @@ class Master  extends Model  implements BaseMaster{
                 $this->table=$this->ms_base::getTable($tableID).$perFix;
                 $this->perFix=$perFix;
             }else{
-                $this->table=$this->ms_base::getTable($tableID);
+
+                $this->table=(count($tableData)>0 && array_key_exists('tableName',$tableData))? $tableData['tableName'] : $this->ms_base::getTable($tableID);
+         //   if (count($tableData)>0)dd($this->table);
+               // $this->table=$this->ms_base::getTable($tableID);
             }
             if($tableConnection){$this->connection=$tableConnection;}else{$this->connection=$this->ms_base::getConnection($tableID);}
+
+            $this->base_Field=(count($tableData)>0 && array_key_exists('fields',$tableData))? $tableData['fields']:$this->ms_base::getField($tableID);
+
             $this->base_Field=$this->ms_base::getField($tableID);
+
+        //    if (count($tableData)>0)dd( $this);
         }
         else
         {
+
 
                 if($perFix){
                     $this->perFix=$perFix;

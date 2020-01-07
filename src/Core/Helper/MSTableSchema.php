@@ -87,7 +87,6 @@ class MSTableSchema {
 
         }
 
-       // dd($d);
         return $d;
     }
 
@@ -135,12 +134,12 @@ class MSTableSchema {
         $m1=$m->finalReturnForTableFile();
         return $m1;
     }
-    public static function getTableDataForField($modCode){
+    public static function getTableDataForField($modCode,$tableid=null,$tablename=null,$connection=null){
         $dbType=self::$dbType['Config'];
         $data=[
-            'tableId'=>implode('_',[$modCode,'MasterCoreTable_field']),
-            'tableName'=>implode('_',[$modCode,'Master_Core_Table_field']),
-            'connection'=>implode('_',['MS',$modCode,$dbType]),
+            'tableId'=> ($tableid!=null)? $tableid: implode('_',[$modCode,'MasterCoreTable_field']),
+            'tableName'=>($tablename!=null)? $tablename:implode('_',[$modCode,'Master_Core_Table_field']),
+            'connection'=>($connection!=null)? $connection:implode('_',['MS',$modCode,$dbType]),
         ];
         $m=new self($data);
         $m->setFields(['name'=>'UniqId','vName'=>\Lang::get('Core.UniqId'),'type'=>'string','input'=>'text',"validation"=>['required'=>true,]]);
@@ -249,6 +248,18 @@ class MSTableSchema {
     }
 
 
+    public static function setUpForMod($modCode){
+        $m1=\MS\Core\Helper\MSTableSchema::getTableDataForTable($modCode);
+        $m2=\MS\Core\Helper\MSTableSchema::getTableDataForField($modCode);
+        $m3=\MS\Core\Helper\MSTableSchema::getTableDataForAction($modCode);
+        $m4=\MS\Core\Helper\MSTableSchema::getTableDataForMSForms($modCode);
+        $m5=\MS\Core\Helper\MSTableSchema::getTableDataForMSViews($modCode);
+        $m6=\MS\Core\Helper\MSTableSchema::getTableDataForMSLogin($modCode);
+        $mf=array_merge($m1,$m2,$m3,$m4,$m5,$m6);
+        return $mf;
+    }
+
+
     public function addGroup($groupid){
         $fg=$this->getFieldGroup();
         if(is_array($fg) && !array_key_exists($groupid,$fg)){
@@ -309,7 +320,7 @@ class MSTableSchema {
     public function addGroup4Form($formId,$groupId){
         $mf=$this->getMSforms();
         $fg=$this->getFieldGroup();
-//dd($fg);
+        //dd($formId);
         foreach ($groupId as $group)//dd(is_array($mf) && array_key_exists($formId,$mf) && array_key_exists($group,$fg));
         if(is_array($mf) && array_key_exists($formId,$mf) && array_key_exists($group,$fg) )$mf[$formId]['groups'][]=$group;
         $this->setMSforms($mf);

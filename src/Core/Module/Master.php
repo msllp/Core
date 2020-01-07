@@ -57,7 +57,7 @@ class Master implements BaseMaster
     public static function getModuleTables(){
 
             $base=self::getBasics();
-
+        $return=[];
         $returnArray=[];
         $allExistDB=$base['dbList'];
         $moduleDBPath=$base['basePath'];
@@ -71,6 +71,7 @@ class Master implements BaseMaster
             }
 
         }
+       // dd($return);
         $return=array_merge(  static::$tables,$returnArray);
 
       return $return;
@@ -102,10 +103,13 @@ class Master implements BaseMaster
         return"No Module Table Found";
 
     }
-    public static function getTableArray($tableID=false):array
+    public static function getTableArray($tableID=false,$tableData=[]):array
     {
 
         $table= self:: getModuleTables() ;
+        if(count($tableData) > 0)$table=array_merge($table,$tableData);
+     //   dd($tableID);
+
         if(!$tableID)$tableID=array_key_first($table);
 
         if(array_key_exists($tableID,$table)){
@@ -114,6 +118,7 @@ class Master implements BaseMaster
             return $table[$tableID];
         }
         if(count($table) > 0){
+            return [];
             return reset($table);
         }
         return"No Module Table Found";
@@ -152,7 +157,7 @@ class Master implements BaseMaster
         return static ::$route;
     }
 
-    public static function getAction($tableID=false){
+    public static function getAction($tableID=false) :array {
         $table= self:: getModuleTables() ;
 
         if(!$tableID)$tableID=array_key_first($table);
@@ -165,7 +170,7 @@ class Master implements BaseMaster
         if(count($table) < 1){
             return reset($table)['action'];
         }
-        return"No Connection Found";
+        return [];
     }
 
     public static function testAllModRoutes($class ){

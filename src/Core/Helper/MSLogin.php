@@ -237,7 +237,7 @@ class MSLogin
             //'bgImg'=>asset('images/bg1.png'),
 
             'ClientIcon'=>(array_key_exists('CompanyIcon',$d)) ? $d['CompanyIcon'] : asset('images/logo.png'),
-            'MasterIcon'=>asset('images/logo.png'),
+            'MasterIcon'=>asset('images/logo_master.png'),
             'formData'=>$this->makeArrayForVueForFormData($formId),
             'loginPostUrl'=>$this->getVerifyLogin(),
             'inspire'=>Inspiring::quote(),

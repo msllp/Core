@@ -20,7 +20,7 @@ class MSDB implements MasterNoSql
 {
 
 
-    public $model,$database,$masterNamespace,$e,$fTableName,$connection,$CurrentError,$MSmodel;
+    public $model,$database,$masterNamespace,$e,$fTableName,$connection,$CurrentError,$MSmodel,$mod_Tables;
 
     /**
      * @return mixed
@@ -37,31 +37,43 @@ public $dataToProcess=[];
 
     private $filePaths=[];
 
+    public function attachTableData($tableData){
+    //    dd($tableData);
 
-    public function __construct(string $nameSpace, string $id=null, array $perFix=[])
+        if(is_array($this->mod_Tables) && array_key_exists($this->ms_id,$this->mod_Tables) && array_key_exists($this->ms_id,$tableData)){
+
+            $this->mod_Tables[$this->ms_id]=$tableData[$this->ms_id];
+            $this->model = new $this->database['namespace'] ( $this->masterNamespace, $this->ms_id,[],$tableData[$this->ms_id]);
+
+
+            $connection=$this->model->getConnectionName();
+            $tableName=$this->model->getTable();
+            $this->fTableName=$tableName;
+            $this->connection=$connection;
+            $this->MSmodel =\DB::connection($connection)->table($tableName);
+
+        }
+
+    // dd($this);
+        return $this;
+    }
+
+
+    public function __construct(string $nameSpace, string $id=null, array $perFix=[],array $tableData=[])
     {
 
         $nameSpace=$nameSpace;
             $base=$nameSpace."\B";
         $this->masterNamespace= $nameSpace;
-        if($id==null)$id=$this->ms_id;
-
 
         $this->ms_id=$id;
         $this->database=[
             'namespace'=>"\\".$nameSpace."\\M",
             'id'=>$id,
-
-            //'perfix'=>implode('_',$perFix),
-        ];
+             ];
 
 
         if(count($perFix)>0 )$this->database['perfix']=$perFix;
-        //if()
-
-
-
-
 
         if(array_key_exists('perfix',$this->database)) {
             $this->model = new $this->database['namespace'] ($nameSpace, $id, $this->database['perfix']);
@@ -71,8 +83,9 @@ public $dataToProcess=[];
 
 
         //parent::__construct($nameSpace, $id, $perFix);
-        $this->mod_Tables[$this->ms_id]=$this->model->ms_base::getTableArray($this->ms_id);
 
+       $this->mod_Tables[$this->ms_id]=$this->model->ms_base::getTableArray($this->ms_id,$tableData);
+     //   if(!is_array($this->mod_Tables))dd($this->mod_Tables);
 
         $connection=$this->model->getConnectionName();
         $tableName=$this->model->getTable();
@@ -80,6 +93,7 @@ public $dataToProcess=[];
         $this->connection=$connection;
         $this->MSmodel =\DB::connection($connection)->table($tableName);
     }
+
 
     private static $dbStore=['MS','DB','Master' ];
 
@@ -1092,13 +1106,14 @@ public $dataToProcess=[];
     public function loginPage($Id=null){
         //TODO: Complete this for login page
         $tableArray=$this->mod_Tables[$this->ms_id];
-        if($Id == null  && array_key_exists('MSLogin',$tableArray) )
-        {   $LoginId= array_key_first ($tableArray['MSLogin']);}else{$LoginId=$Id;}
+        ($Id == null  && array_key_exists('MSLogin',$tableArray) )?$LoginId= array_key_first ($tableArray['MSLogin']):$LoginId=$Id;
+
 
 
         if( array_key_exists('MSLogin',$tableArray)  && array_key_exists($LoginId,$tableArray['MSLogin'])){
             $lData=$tableArray['MSLogin'][$LoginId];
         }else{
+       // dd($this);
            return $this->jsonOutError(['No Login Page Found'],404);
         }
 
