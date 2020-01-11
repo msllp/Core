@@ -985,7 +985,7 @@ public $dataToProcess=[];
             $data['fromV']= [
                 // 'tableTitle'=>"",
                 // 'tableColumns'=>[],
-                'tableData'=>$this->MSmodel->where($input['by'],'like',"%".$input['q']."%")->paginate( $this->perPage, ['*'], 'page', $page )
+                'tableData'=>$this->MSmodel->where($input['by'],'like',"%".$input['q']."%")->latest()->paginate( $this->perPage, ['*'], 'page', $page )
             ];
            // dd($data);
 
@@ -993,7 +993,7 @@ public $dataToProcess=[];
             $data['fromV']= [
                 // 'tableTitle'=>"",
                 // 'tableColumns'=>[],
-                'tableData'=>$this->MSmodel->paginate( $this->perPage, ['*'], 'page', $page )
+                'tableData'=>$this->MSmodel->latest()->paginate( $this->perPage, ['*'], 'page', $page )
             ];
         }
 

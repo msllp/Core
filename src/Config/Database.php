@@ -96,4 +96,25 @@ return
 
 
 
+        'MS_GE_Master'=>[
+            'driver' => 'sqlite',
+            'database' => base_path('MS/DB/Master/MS_GE_Master'),
+            'prefix' => '',
+            'foreign_key_constraints' => true,
+        ],
+      'MS_GE_Config'=>[
+            'driver' => 'sqlite',
+            'database' => base_path('MS/DB/Master/MS_GE_Config'),
+            'prefix' => '',
+            'foreign_key_constraints' => true,
+        ],
+      'MS_GE_Data'=>[
+            'driver' => 'sqlite',
+            'database' => base_path('MS/DB/Master/MS_GE_Data'),
+            'prefix' => '',
+            'foreign_key_constraints' => true,
+        ],
+
+
+
     ];

@@ -65,7 +65,8 @@ class Master  extends Model  implements BaseMaster{
             }
 
         $this->fillable=['id'];
-       // dd($this);
+       // dd($this->base_Field);
+
         foreach ($this->base_Field as $key => $value) {
             $this->fillable[]=$value['name'];
         }

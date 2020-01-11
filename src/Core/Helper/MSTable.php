@@ -63,7 +63,7 @@ class MSTable
 
 
 
-
+//dd($this);
     }
 
     public function fromModel(MSDB $dbClass,$data=[]){
@@ -97,7 +97,7 @@ class MSTable
                 $fArray[$vueData['fc']]=$this->makeArrayForColumns($vd['groups'] );
                // dd($this->msdb->rowAll());
                 //dd($this->dbMaster['MSViews'][$this->viewID]['paginationLink']);
-                $fArray[$vueData['data']]=$this->msdb->MSmodel->paginate($this->perPage)->withPath(route($vd['paginationLink']));
+                $fArray[$vueData['data']]=$this->msdb->MSmodel->latest()->paginate($this->perPage)->withPath(route($vd['paginationLink']));
                // dd($this->dynamicData);
                 $fArray[$vueData['ddata']]=$this->dynamicData;
                 $fArray[$vueData['ac']]=$this->makeArrayForAction();
@@ -196,10 +196,7 @@ class MSTable
         }
       //  dd($this);
         return $allFileds;
-        //dd($allFileds);
-        //dd(collect($$this->fields)->where('name',));
 
-dd($array);
 
     }
 
@@ -275,7 +272,7 @@ dd($array);
     public function makeTable(){
 
         //dd($this->dbMaster['MSViews']);
-        if(array_key_exists($this->viewID,$this->dbMaster['MSViews'])){
+        if(array_key_exists('MSViews',$this->dbMaster)&&  array_key_exists($this->viewID,$this->dbMaster['MSViews'])){
             $this->returnHTML['fromV']= $this->makeArrayForVue($this->dbMaster['MSViews'][$this->viewID]);
         }else{
 
@@ -290,7 +287,8 @@ dd($array);
    // public function
 
     public function view(){
-       return view("MS::core.layouts.Table.tablePlateRaw")->with("table",$this->returnHTML);
+       // dd($this);
+     //  return view("MS::core.layouts.Table.tablePlateRaw")->with("table",$this->returnHTML);
         return view("MS::core.layouts.Table.tablePlate")->with("table",$this->returnHTML);
     }
 

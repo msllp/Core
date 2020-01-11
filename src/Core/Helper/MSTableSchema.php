@@ -464,6 +464,14 @@ class MSTableSchema {
         return $this;
     }
 
+    public function makeGroupMultiple($id){
+        $gMD=$this->getFieldGroupMultiple();
+        $gd=$this->getFieldGroup();
+        if($gMD==null)$gMD=[];
+        if(array_key_exists($id,$gd) && !in_array($id,$gMD) )$this->setFieldGroupMultiple($id);
+        return $this;
+    }
+
     //TODO Make a function to get Data From Connected Tables
     public function connectWithTable($data,$identifier){
         if(is_object($data)){
@@ -608,7 +616,7 @@ class MSTableSchema {
      */
     private function setFieldGroupMultiple($fieldGroupMultiple)
     {
-        $this->fieldGroupMultiple = $fieldGroupMultiple;
+        $this->fieldGroupMultiple[] = $fieldGroupMultiple;
     }
 
     /**

@@ -221,7 +221,7 @@
                  @click.prevent="formActionFromBtn(index)"
                  class="w-1/3 bg-gray-200  hover:bg-gray-400 border-t border-b  border-r px-3 py-1 text-sm font-semibold text-gray-700"
 
-                      v-for="(msBtn,index) in msActionBtn" type="button" v-bind:class="[msBtn.btnClass]"
+                      v-for="(msBtn,index) in msActionBtn" type="button" :class="{[msBtn.btnColor]:msBtn.hasOwnProperty('btnColor')}"
 
                 >
                        <i v-if="msBtn.hasOwnProperty('btnIcon')" :class="msBtn.btnIcon"></i> {{displauActionBtnText(msBtn)}}

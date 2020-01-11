@@ -141,24 +141,24 @@ class MSForm
             //$btn['Class']=['btn'];
             switch ($type){
                 case 'back';
-                    if(is_array($btnData) && array_key_exists('btnColor',$btnData)) unset($btnData['btnColor']) ;
+                    if(is_array($btnData) && !array_key_exists('btnColor',$btnData)) $btnData['btnColor']='bg-blue-400' ;
                     //$btn['Class'][]='btn-primary';
                     break;
 
                 case 'add';
                     //  dd($btnData);
-                    if(is_array($btnData) && array_key_exists('btnColor',$btnData)) unset($btnData['btnColor']) ;
+                    if(is_array($btnData) && !array_key_exists('btnColor',$btnData)) $btnData['btnColor']='bg-green-300 hover:text-gray-800' ;
                     //$btn['Class'][]='btn-success';
                     break;
 
                 case 'edit';
-                    if(is_array($btnData) && array_key_exists('btnColor',$btnData)) unset($btnData['btnColor']) ;
+                    if(is_array($btnData) && !array_key_exists('btnColor',$btnData)) $btnData['btnColor']='bg-yellow-400' ;
                     //$btn['Class'][]='btn-warning';
                     break;
 
 
                 case 'delete';
-                    if(is_array($btnData) && array_key_exists('btnColor',$btnData)) unset($btnData['btnColor']) ;
+                    if(is_array($btnData) && !array_key_exists('btnColor',$btnData)) $btnData['btnColor']='bg-red-400' ;
                     //$btn['Class'][]='btn-danger';
                     break;
             }
