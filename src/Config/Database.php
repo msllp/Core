@@ -117,4 +117,12 @@ return
 
 
 
+        'MS_Sales_Config'=>[
+            'driver' => 'sqlite',
+            'database' => base_path('MS/DB/Master/MS_Sales_Config'),
+            'prefix' => '',
+            'foreign_key_constraints' => true,
+        ],
+
+
     ];

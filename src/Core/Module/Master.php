@@ -57,6 +57,7 @@ class Master implements BaseMaster
     public static function getModuleTables(){
 
             $base=self::getBasics();
+
         $return=[];
         $returnArray=[];
         $allExistDB=$base['dbList'];
@@ -66,7 +67,8 @@ class Master implements BaseMaster
 
             $dbData= include (implode(self::$ds,[$moduleDBPath,$fileName]));
 
-            foreach ($dbData as $tableID=>$tableDetails){
+
+           if(is_array($dbData)) foreach ($dbData as $tableID=>$tableDetails){
                 if(!array_key_exists($tableID,$returnArray))$returnArray[$tableID]=$tableDetails;
             }
 
@@ -143,6 +145,7 @@ class Master implements BaseMaster
     public static function getField($tableID=false):array
     {
         $table= self:: getModuleTables() ;
+
         if(!$tableID)$tableID=array_key_first($table);
         if(array_key_exists($tableID,$table)){
             return $table[$tableID]['fields'];

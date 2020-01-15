@@ -1,4 +1,16 @@
 
+svg{
+    pointer-events: none;
+}
+
+
+.msicon-svg-lg{
+    max-height: 39px;
+    max-width: 39px;
+    display: inline-block;
+}
+
+
 .msicon{
 
     min-width: 23px!important;

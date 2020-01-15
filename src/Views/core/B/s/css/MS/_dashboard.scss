@@ -186,8 +186,7 @@ $ms-theme-color-text-for-light: rgba(0,0,0,0.9);
                 @apply flex-shrink;
                 @apply pr-4;
                 .ms-card-icon-div{
-                    @apply rounded;
-                    @apply p-3;
+                    @apply rounded p-3;
                     //@apply bg-green-dark;
                     .ms-card-icon{
                         @apply text-3xl;
@@ -197,5 +196,37 @@ $ms-theme-color-text-for-light: rgba(0,0,0,0.9);
         }
     }
 
+}
+
+
+
+#zingchart-vue-0-menu-sep-reload,#zingchart-vue-0-menu-item-viewaspng, #zingchart-vue-0-license-text,#zingchart-vue-0-menu-item-xmiabt,#zingchart-vue-0-menu-item-downloadsvg,#zingchart-vue-0-menu-item-downloadcsv,#zingchart-vue-0-menu-item-downloadxls,#zingchart-vue-0-menu-sep-print,#zingchart-vue-0-menu-item-xmiabt,#zingchart-vue-0-menu-item-viewsource,#zingchart-vue-0-menu-item-viewdatatable{
+    display: none !important;
+}
+#zingchart-vue-1-menu-sep-reload,#zingchart-vue-1-menu-item-viewaspng, #zingchart-vue-1-license-text,#zingchart-vue-1-menu-item-xmiabt,#zingchart-vue-1-menu-item-downloadsvg,#zingchart-vue-1-menu-item-downloadcsv,#zingchart-vue-1-menu-item-downloadxls,#zingchart-vue-1-menu-sep-print,#zingchart-vue-1-menu-item-xmiabt,#zingchart-vue-1-menu-item-viewsource,#zingchart-vue-1-menu-item-viewdatatable{
+    display: none !important;
+}
+#zingchart-vue-2-menu-sep-reload,#zingchart-vue-2-menu-item-viewaspng, #zingchart-vue-2-license-text,#zingchart-vue-2-menu-item-xmiabt,#zingchart-vue-2-menu-item-downloadsvg,#zingchart-vue-2-menu-item-downloadcsv,#zingchart-vue-2-menu-item-downloadxls,#zingchart-vue-2-menu-sep-print,#zingchart-vue-2-menu-item-xmiabt,#zingchart-vue-2-menu-item-viewsource,#zingchart-vue-2-menu-item-viewdatatable{
+    display: none !important;
+}
+
+#zingchart-vue-3-menu-sep-reload,#zingchart-vue-3-menu-item-viewaspng, #zingchart-vue-3-license-text,#zingchart-vue-3-menu-item-xmiabt,#zingchart-vue-3-menu-item-downloadsvg,#zingchart-vue-3-menu-item-downloadcsv,#zingchart-vue-3-menu-item-downloadxls,#zingchart-vue-3-menu-sep-print,#zingchart-vue-3-menu-item-xmiabt,#zingchart-vue-3-menu-item-viewsource,#zingchart-vue-3-menu-item-viewdatatable{
+    display: none !important;
+}
+
+
+.ms-dashboard-action-box{
+
+    @apply flex;
+    @apply items-center;
+    @apply  p-2;
+    @apply  border;
+    @apply  rounded-lg;
+    @apply  mr-4;
+    @apply cursor-pointer;
+}
+.ms-dashboard-action-box:hover{
+    background-color:$ms-theme-color-light;
+    @apply ms-animation;
 }
 

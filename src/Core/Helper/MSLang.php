@@ -84,7 +84,7 @@ class MSLang
         $finalData=[
             'Navtitle1'=>['en'=>'Manage Leads & Quotations'],
 
-
+            'NavSub0'=>['en'=>'Sales Dashboard'],
             'NavSub11'=>['en'=>'Get Lead'],
             'NavSub12'=>['en'=>'Generate Quotation'],
             'NavSub14'=>['en'=>'View all Quotation'],
@@ -251,6 +251,11 @@ class MSLang
 
         return self::processDataForOut($finalData,$lang) ;
     }
+
+
+
+    ////Methods
+    ///
     public static function processDataForOut($inData,$lang='en'){
 
         $outData=[];

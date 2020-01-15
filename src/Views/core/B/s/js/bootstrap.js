@@ -48,11 +48,12 @@ if (token) {
 // });
 
 window.Vue = require('vue');
-
+// import zingchartVue from 'zingchart-vue';
+// Vue.component('zingchart', zingchartVue)
 var path = require('path');
 var appDir = path.dirname(require.main.filename);
 
-
+import Chart from 'chart.js';
 
 //Vue.component('inputtext', require('./components/inputText.vue').default);
 //Vue.component('panelbackend', require('./components/panelBackend.vue').default);
@@ -70,7 +71,7 @@ Vue.component('msdatatable', require('./MS/msDatatable.vue').default);
 Vue.component('msdockerdashboard', require('E:/MS-Master/Projects/FrameworkPHP/gst_invoice/Master/MS/B/M/DCM/V/Vue/dockerMasterDashboard.vue').default);
 Vue.component('mssidenav', require('./MS/C/msSideNav.vue').default);
 Vue.component('newtab', require('./MS/C/msNewTab.vue').default);
-
+Vue.component('salesdashboard', require('./MS/D/Sales.vue').default);
 
 Vue.component('mscalc', require('./MS/C/msCalc.vue').default);
 

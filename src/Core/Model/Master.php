@@ -20,6 +20,7 @@ class Master  extends Model  implements BaseMaster{
     public function __construct(string $nameSpace,$tableID=false, $perFix=false, $tableData=[],$tableConnection=false,$glue="_")
     {
 
+
         $this->namespace=$nameSpace;
         $this->g=$glue;
         $this->ms_base="\\".$nameSpace."\\B";
