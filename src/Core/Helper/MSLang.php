@@ -110,6 +110,11 @@ class MSLang
             'NavSub51'=>['en'=>'Add Product or Service'],
             'NavSub52'=>['en'=>'View Product & Services'],
 
+            'DashboardManageLeads'=>['en'=>'Manage Leads'],
+            'DashboardManageQuotations'=>['en'=>'Manage Quotations'],
+            'DashboardManageInvoices'=>['en'=>'Manage Invoices'],
+            'DashboardManageCustomers'=>['en'=>'Manage Customers'],
+            'DashboardManageProductsNServices'=>['en'=>'Manage Products & Services'],
 
 
         ];
@@ -118,6 +123,7 @@ class MSLang
     }
     public static function getPurchase($lang='en'){
         $finalData=[
+            'NavSub0'=>['en'=>'Purchase Dashboard'],
             'Navtitle1'=>['en'=>'Manage  Purchase'],
 
 
@@ -128,19 +134,18 @@ class MSLang
 
             'Navtitle2'=>['en'=>'Manage Dues'],
             'NavSub21'=>['en'=>'Clear Cash Purchase'],
-            'NavSub22'=>['en'=>'Clear Invoices Purchase'],
+            'NavSub22'=>['en'=>'Payment for Invoices'],
             'NavSub24'=>['en'=>'View all Payment'],
             'NavSub23'=>['en'=>'View all Invoices'],
 
-            'Navtitle3'=>['en'=>'Manage Vendor & Companies'],
+            'Navtitle3'=>['en'=>'Manage Vendor'],
             'NavSub31'=>['en'=>'Add New Vendor'],
-            'NavSub32'=>['en'=>'Add New Company'],
-            'NavSub33'=>['en'=>'View all Vendor'],
-            'NavSub34'=>['en'=>'View all Company'],
+            'NavSub32'=>['en'=>'View all Vendors'],
 
-            'Navtitle4'=>['en'=>'Manage Items'],
-            'NavSub41'=>['en'=>'Add Item'],
-            'NavSub42'=>['en'=>'View Items'],
+
+            'Navtitle4'=>['en'=>'Manage Product & Services'],
+            'NavSub41'=>['en'=>'Add Product or Service'],
+            'NavSub42'=>['en'=>'View Product & Services'],
 
 
 

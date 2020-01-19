@@ -170,19 +170,20 @@ makeArrayForInput(base){
     // console.log(re);
     // return [re];
 },
-makeArrayForInputGroup(base,id,index){
+makeArrayForInputGroup(base,id,index,multiIndex=0){
     var self=base;
     var idfor=id+"_"+index;
     var Inputindex=1
     //  console.log(self.msFormData[id])
 
-    Inputindex =base.msCount[id] -1 ;
+    Inputindex =base.msCount[id]  ;
     var fordata={
         rootId:id,
         id:index,
         groupDynamic:true,
         gruoupHeading:self.msFormData[id].gruoupHeading+" No of: " + Inputindex ,
-        inputs:self.msFormData[id].inputs
+        inputs:self.msFormData[id].inputs,
+        msMultiIndex:multiIndex
 
     }
     return fordata;

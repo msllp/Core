@@ -1,10 +1,4 @@
-//TODO Theme
 
-$ms-theme-color-light: lighten(rgba(121,71,199,0.4),15%);
-$ms-theme-color-main: rgba(121,71,199,0.9);
-$ms-theme-color-dark: darken(rgba(121,71,199,1),15%);
-$ms-theme-color-text-for-dark: rgba(255,255,255,0.9);
-$ms-theme-color-text-for-light: rgba(0,0,0,0.9);
 .ms-nav-container{
     z-index: 2501;
     position: fixed;
@@ -81,19 +75,19 @@ $ms-theme-color-text-for-light: rgba(0,0,0,0.9);
     z-index: 2600;
 }
 .ms-nav-btn-active{
-    @apply shadow;
-    background-color: #6158ce;
+    @apply shadow-lg;
+
     @apply ml-4;
-    // @apply mr-3;
-    color:rgba(255,255,255,0.8);
+    // @apply mr-3;color:rgba(255,255,255,0.8);
     @apply ms-animation;
 }
 
 .ms-nav-btn{
-    @apply ms-main-title ;
+   // @apply ms-main-title ;
     @apply cursor-pointer;
     @apply p-3;
     @apply ms-animation;
+    background-color: $ms-theme-color-light;
 }
 //.ms-nav-btn:hover{
 //    @apply shadow;
@@ -230,3 +224,211 @@ $ms-theme-color-text-for-light: rgba(0,0,0,0.9);
     @apply ms-animation;
 }
 
+
+.ms-dashboard-right-nav-box{
+
+    @apply flex;
+    @apply  items-center;
+    @apply  flex-shrink-0;
+    @apply select-none;
+    .ms-dashboard-right-nav-btn{
+        @apply ml-2;
+        @apply cursor-pointer;
+
+        .ms-dashboard-right-nav-btn-profile{
+            min-height: 48px;
+            min-width: 48px;
+            border-radius: 50%;
+            font-size: 18px;
+            @apply text-center;
+            @apply uppercase;
+            @apply p-3;
+            background-color: $ms-theme-color-main;
+            @apply shadow;
+            border-color: $ms-theme-color-dark;
+            @apply border;
+            @apply ms-animation;
+        }
+        .ms-dashboard-right-nav-btn-profile:hover{
+            background-color: $ms-theme-color-dark;
+            border-color: rgba(0,0,0,0.8);
+            color: rgba(255,255,255,0.8);
+            @apply ms-animation;
+        }
+
+        .ms-dashboard-right-nav-btn-notification{
+
+            @apply p-3;
+            max-height:48px;
+            max-width: 48px;
+            background-color: $ms-theme-color-light;
+            border-radius: 50%;
+            @apply shadow;
+            border-color: $ms-theme-color-dark;
+            @apply border;
+            svg{
+
+                max-height:24px;
+                max-width: 24px;
+
+
+            }
+        }
+
+
+        .ms-dashboard-right-nav-btn-notification:hover{
+            background-color: $ms-theme-color-dark;
+            border-color: rgba(0,0,0,0.8);
+            color: rgba(255,255,255,0.8);
+            @apply ms-animation;
+        }
+
+    }
+    .ms-dashboard-right-nav-btn:last-of-type{
+        @apply mr-2;
+    }
+
+
+
+}
+
+.ms-dashboard-profile-box{
+
+    @apply border;
+    border-color: $ms-theme-color-light;
+    background-color: rgba(255,255,255,1);
+    position :fixed;
+    top:70px;
+    right: 0px;
+    @apply ms-animation;
+    .ms-dashboard-profile-body{
+        @apply ms-animation;
+        min-width: 250px;
+        max-height: 250px;
+        background: linear-gradient(-47deg, rgba(200,200,200,1), rgba(240,240,240,1));
+        @apply p-3;
+        .ms-dashboard-profile-user-box {
+            @apply flex;
+            @apply justify-center;
+
+            .ms-dashboard-profile-user-icon {
+                @apply border;
+                border-color:$ms-theme-color-light ;
+                @apply rounded-full;
+                @apply p-1;
+                @apply flex;
+                @apply shadow;
+                max-width: 50px;
+                max-height: 50px;
+
+
+            }
+        }
+
+    }
+
+}
+.ms-dashboard-profile-hr{
+    border-color:$ms-theme-color-light ;
+    @apply -ml-3;
+    @apply -mr-3;
+}
+
+.ms-dashboard-profile-box-hidden{
+    @apply ms-animation;
+    position: absolute;
+    min-width: 0px;
+    min-height: 0px;
+   // top:-500px;
+    right: -500px;
+    background-color: rgba(255,255,255,1);
+
+    .ms-dashboard-profile-body{
+        @apply items-center;
+        @apply ms-animation;
+        min-width: 250px;
+
+        background: linear-gradient(-47deg, rgba(200,200,200,1), rgba(240,240,240,1));
+        .ms-dashboard-profile-user-box {
+            @apply flex;
+            @apply justify-center;
+
+        .ms-dashboard-profile-user-icon{
+            @apply border;
+            @apply rounded-full;
+            @apply p-1;
+            @apply flex;
+            max-width: 50px;
+            max-height: 50px;
+            border-color: $ms-theme-color-light;
+            @apply shadow;
+        }}
+
+    }
+
+}
+
+.ms-dashboard-profile-footer{
+    @apply inline-flex;
+    @apply justify-between;
+    @apply items-center;
+    @apply p-1;
+    @apply select-none;
+    div{
+        @apply mx-2;
+        @apply flex;
+        @apply items-center;
+    }
+}
+
+.ms-dashboard-profile-signout-btn{
+    @apply border;
+    @apply cursor-pointer;
+    border-color:$ms-theme-color-light;
+    @apply w-auto;
+    @apply rounded;
+
+    span{
+        @apply mx-2;
+    }
+    .ms-dashboard-profile-signout-icon{
+        @apply px-2;
+        @apply px-1;
+        max-height: 32px;
+        max-width: 32px;
+    }
+}
+
+.ms-dashboard-profile-signout-btn:hover{
+    @apply ms-animation;
+
+    background: linear-gradient(-145deg,lighten($ms-theme-color-danger-light,10%),lighten($ms-theme-color-danger,10%));
+    border-color:$ms-theme-color-danger;
+}
+
+
+
+.ms-dashboard-profile-edit-btn{
+    @apply border;
+    @apply cursor-pointer;
+    border-color:$ms-theme-color-light;
+    @apply w-auto;
+    @apply rounded;
+    span{
+        @apply mx-2;
+    }
+    .ms-dashboard-profile-edit-icon{
+        max-height: 32px;
+        max-width: 32px;
+        @apply px-2;
+        @apply px-1;
+    }
+
+
+}
+.ms-dashboard-profile-edit-btn:hover{
+    @apply ms-animation;
+    @apply shadow;
+    background: linear-gradient(35deg,lighten($ms-theme-color-info-light,10%),lighten($ms-theme-color-info,10%));
+    border-color:$ms-theme-color-info;
+}

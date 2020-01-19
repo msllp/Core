@@ -10,18 +10,18 @@
 
 
             <div v-if="inputType == 'locked'" class="flex flex-wrap" :class="msValid">
-                <span class=" select-none lg:mr-2" >{{inputVname}}</span>
+                <span v-if="!inputOnly" class=" select-none lg:mr-2" >{{inputVname}}</span>
                 <i class="fas p2 ml-2 mt-1 fa-qrcode mr-2"></i><input :type="inputType" disabled autocomplete="off" class="text-center border focus:outline-none focus:shadow-outline lg:flex-1" :class="{'w-full':onMobile}" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
             </div>
 
-            <div v-if="inputType == 'text'"  class="flex flex-wrap" :class="msValid">
-            <span class=" select-none lg:mr-2" >{{inputVname}}</span>
+            <div  v-if="inputType == 'text'"  class="flex flex-wrap" :class="msValid">
+            <span v-if="!inputOnly" class=" select-none lg:mr-2" >{{inputVname}}</span>
             <input @focus="msFocus = true"  :index="msInputIndex"  :placeholder="'Enter '+inputVname+' here'" :type="inputType"  autocomplete="off" class=" border focus:outline-none focus:shadow-outline lg:flex-1" :class="{'w-full':onMobile}" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
             </div >
 
             <div v-else-if="inputType == 'password'" class="select-none flex flex-wrap" :class="msValid">
 
-                <span class=" select-none lg:flex-1" :class="{'w-full':!onMobile}">{{inputVname}}</span>
+                <span v-if="!inputOnly" class=" select-none lg:flex-1" :class="{'w-full':!onMobile}">{{inputVname}}</span>
                 <input :index="msInputIndex"  :placeholder="'Enter '+inputVname+' here'" :type="inputType" autocomplete="off"  class="msPasswordInput focus:outline-none focus:shadow-outline lg:flex-1 "  :class="{'w-9/12':onMobile}" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
 
                 <div class="msPasswordVisible" :class="{'w-3/12':onMobile}" v-on:click="visiblePassowrd"
@@ -48,23 +48,23 @@
               </div>
 
             <div v-else-if="inputType == 'email'" class="flex flex-wrap" :class="msValid">
-                <span class=" select-none lg:mr-2" >{{inputVname}}</span>
+                <span v-if="!inputOnly" class=" select-none lg:mr-2" >{{inputVname}}</span>
                 <input :index="msInputIndex" :placeholder="'Enter '+inputVname+' here'" :type="inputType" style="min-width: 60%;" autocomplete="off" class="border focus:outline-none focus:shadow-outline lg:flex-1"  :class="{'w-full':onMobile}"  :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
             </div>
 
             <div v-else-if="inputType == 'number'" class="flex flex-wrap" :class="msValid">
-                <span class=" select-none lg:mr-2" >{{inputVname}}</span>
+                <span v-if="!inputOnly" class=" select-none lg:mr-2" >{{inputVname}}</span>
                 <input :index="msInputIndex" :type="inputType" style="min-width: 50%;" autocomplete="off" class="border focus:outline-none focus:shadow-outline lg:flex-1"  :class="{'w-full':onMobile}"  :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
             </div>
 
 
-            <div v-if="inputType == 'file'" class="flex flex-wrap" :class="msValid"  >
-                <span class=" select-none  lg:mr-2">{{inputVname}}</span>
+            <div  v-if="inputType == 'file'" class="flex flex-wrap" :class="msValid"  >
+                <span v-if="!inputOnly" class=" select-none  lg:mr-2">{{inputVname}}</span>
                 <input :index="msInputIndex" :type="inputType"  class="text-center border focus:outline-none focus:shadow-outline lg:flex-1 " :class="{'w-full':onMobile}" :name="inputName"  v-on:change="loadFilestoLocal($event)"  :id="msData.msGroupIndex">
             </div>
 
             <div v-if="inputType == 'radio'" class="flex flex-wrap" :class="msValid">
-                <span class=" select-none" :class="{'w-4/12 mr-2':!onMobile,'w-full':onMobile}">{{inputVname}}</span>
+                <span v-if="!inputOnly" class=" select-none" :class="{'w-4/12 mr-2':!onMobile,'w-full':onMobile}">{{inputVname}}</span>
 
                 <div :class="{
                 'select-none flex-1 border-l p-1 mr-1 border-b':true,
@@ -82,7 +82,7 @@
             </div>
 
             <div v-if="inputType == 'checkbox'" class="flex flex-wrap" :class="msValid">
-                <span class=" select-none" :class="{'w-4/12 mr-2':!onMobile,'w-full':onMobile}">{{inputVname}}</span>
+                <span v-if="!inputOnly" class=" select-none" :class="{'w-4/12 mr-2':!onMobile,'w-full':onMobile}">{{inputVname}}</span>
 
                 <div :class="{
                 'select-none flex-1 border-l p-1 mr-1 border-b':true,
@@ -102,23 +102,23 @@
 
 
             <div v-if="inputType == 'date'" class="flex flex-wrap" :class="msValid"  >
-                <span class=" select-none lg:mr-2" >{{inputVname}}</span>
+                <span v-if="!inputOnly" class=" select-none lg:mr-2" >{{inputVname}}</span>
                 <input :index="msInputIndex" :type="inputType"  class="text-center border focus:outline-none focus:shadow-outline lg:flex-1" :class="{'w-full':onMobile}" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
             </div>
 
             <div v-if="inputType == 'time'" class="flex flex-wrap" :class="msValid"  >
-                <span class=" select-none lg:mr-2" >{{inputVname}}</span>
+                <span v-if="!inputOnly" class=" select-none lg:mr-2" >{{inputVname}}</span>
                 <input :index="msInputIndex" :type="inputType"  class="text-center border focus:outline-none focus:shadow-outline lg:flex-1" :class="{'w-full':onMobile}" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
             </div>
 
             <div v-if="inputType == 'textarea'" class="flex flex-wrap" :class="msValid"  >
-                <span class=" select-none lg:mr-2" >{{inputVname}}</span>
+                <span v-if="!inputOnly" class=" select-none lg:mr-2" >{{inputVname}}</span>
                 <textarea :index="msInputIndex" :type="inputType"  class="border focus:outline-none focus:shadow-outline lg:flex-1" :class="{'w-full':onMobile}"  :name="inputName"  v-model="msValue" :id="msData.msGroupIndex"> </textarea>
             </div>
 
             <div v-if="inputType == 'option'" class="flex flex-wrap" :class="msValid">
 
-                <span class=" select-none" :class="{'w-4/12 mr-2':!onMobile,'w-full':onMobile}">{{inputVname}}  <i class="" v-if="(msValue!=null ) && ((msValue.search('msicon-') != '-1') || (msValue.search('flaticon-') != '-1') )" :class='msValue'></i></span>
+                <span v-if="!inputOnly" class=" select-none" :class="{'w-4/12 mr-2':!onMobile,'w-full':onMobile}">{{inputVname}}  <i class="" v-if="(msValue!=null ) && ((msValue.search('msicon-') != '-1') || (msValue.search('flaticon-') != '-1') )" :class='msValue'></i></span>
 
                 <select :name="inputName" class="border focus:outline-none focus:shadow-outline lg:flex-1" :class="{'w-full':onMobile}" size="1" v-model="msValue" >
                     <option v-for="(radio,key) in msData.verifyBy.msdata" v-bind:value="radio[msData.verifyBy.value]" >
@@ -204,7 +204,14 @@
             'msInputIndex':{
                 type: Number,
                 required: true
+            },
+            'msMultiIndex':{
+                type: Number,
+                required: false,
+                default:1
             }
+
+
 
 
         },
@@ -212,7 +219,7 @@
         beforeMount() {
 
             // console.log(this.msData);
-
+            if(this.hasOwnProperty('msMultiIndex'))this.inputMultipleIndex=this.msMultiIndex;
             if(this.msData.hasOwnProperty('groupInput'))this.groupInput=this.msData.groupInput;
             if(this.msData.hasOwnProperty('name'))
             {
@@ -224,6 +231,9 @@
                 }
 
             }
+
+
+            if(this.msData.hasOwnProperty('msMultiIndex'))this.inputMultipleIndex=this.msData.msMultiIndex;
             if(this.msData.hasOwnProperty('inputMultiple'))this.inputMultiple=this.msData.inputMultiple;
             if(this.msData.hasOwnProperty('inputInfo'))this.inputInfo=this.msData.inputInfo;
             if(this.msData.hasOwnProperty('vName'))this.inputVname=this.msData.vName;
@@ -307,7 +317,9 @@
                this.msValue=localISOTime;
             }
         //    if(this.msData.hasOwnProperty('inputMultiple')) return this.$parent.setInputData(this.inputName,val,this.msData.inputMultiple);
-            if(!this.inputMultiple)  this.$parent.setInputData(this.inputName,this.msValue,this.inputMultiple,this.msGroupIndex);
+            if(!this.inputMultiple){
+                this.$parent.setInputData(this.inputName,this.msValue,this.inputMultiple,this.msGroupIndex);
+            }
 
             if ( window.innerWidth < 800  )this.onMobile=true;
           //  console.log(this.inputAuto);
@@ -460,7 +472,8 @@
                 }
                 //  console.log(val);
               //  if(this.msData.hasOwnProperty('inputMultiple')) return this.$parent.setInputData(this.inputName,val,this.msData.inputMultiple,this.msData.msGroupIndex);
-                this.$parent.setInputData(this.inputName,val,this.inputMultiple,this.msGroupIndex);
+
+                this.$parent.setInputData(this.inputName,val,this.inputMultiple,this.inputMultipleIndex);
 
 
             }
@@ -532,7 +545,8 @@
                 onMobile:false,
                 inputChecked:[]
                 ,msFile:null,
-                msFocus:false
+                msFocus:false,
+                inputMultipleIndex:this.msMultiIndex
                // hasAutofieldBool:false,,
 
             }

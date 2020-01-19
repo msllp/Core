@@ -100,15 +100,7 @@ var store = {
 }
 window.vm = {};
 
-$( "body" ).on( "keydown", function( event ) {
 
-    if(event.altKey){
-        app.msShortCut(event,event.which);
-    }
-    }
-
-
-);
 
 
     const app = new Vue({
@@ -236,7 +228,8 @@ $( "body" ).on( "keydown", function( event ) {
             mserrorCount: false,
             msform: [],
             msNavigation:false,
-            msCalc:false
+            msCalc:false,
+
 
 
 

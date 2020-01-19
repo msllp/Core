@@ -7,16 +7,16 @@
                 <div class="flex items-center flex-shrink-0 lg:hidden" >
 
                 <div @click.prvent="hideNavOnlyForMobile($event)" class="ms-nav-btn" :class="{'ms-nav-btn-active':!msNavBar,'border':msNavBar}"  >
-
-                    <i class="fas fa-ellipsis-v p-1" :class="{
+                                      <i class="fas fa-level-down-alt p-1" :class="{
                 'ms-animation fa-rotate-90':!msNavBar,
+                'ms-animation':msNavBar,
 
                 }"></i>
 
 
                 </div>
 
-                    <div class="ms-nav-btn" :class="{
+                    <div v-if="false" class="ms-nav-btn" :class="{
                         'ms-nav-btn-active':!msNavBar,'border':msNavBar
                     }"  @click.prevent="onCalac($event,67)" >
 
@@ -36,22 +36,82 @@
                 <div v-on:click="hideNavBar($event)" class="flex items-center flex-shrink-0 mr-6">
 
                     <img src="/images/logo.png" class="fill-current h-12 mr-2 ms-company-logo hover:shadow-outline hover:bg-gray-200" >
-                    <div :class="{'hidden':false}" class="font-semibold"> Cloud Services</div>
+
+
+
                 </div>
                 <div v-if="false" class="block lg:hidden">
                     <button v-on:click="clickToggaleButton" class="flex items-center px-3 py-2 border rounded text-black-200 text-black-200 hover:text-white hover:border-white">
                         <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
                     </button>
                 </div>
-                <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto " :class="{
-        'hidden':!msMenuOn,
+
+                <div class='ms-dashboard-right-nav-box'>
+                    <div class="ms-dashboard-right-nav-btn">
+                        <div class="ms-dashboard-right-nav-btn-notification">
+                        <svg class="">
+                        <use xlink:href="#msicon-svg-notification-read" />
+                        </svg>
+                        </div>
+                    </div>
+
+                    <div class="ms-dashboard-right-nav-btn " v-on:click="oprateProfileBox()" >
+                        <div class="ms-dashboard-right-nav-btn-profile" >
+
+                            <span >{{msUserData.Username.charAt(0)}}</span>
+
+                        </div>
+                    </div>
+                </div>
+
+            </nav>
+
+            <div :class="{
+        'ms-dashboard-profile-box':msProfileDiv,
+        'ms-dashboard-profile-box-hidden':!msProfileDiv,
+
 
         }">
+                <div class="ms-dashboard-profile-body">
 
+                    <div class="ms-dashboard-profile-user-box ">
+                        <svg  class="ms-dashboard-profile-user-icon">
+                            <use v-bind:xlink:href="'#msicon-svg-user-'+msUserData.sex+'-1'" />
+                        </svg>
+
+                    </div>
+
+                    <hr class="ms-dashboard-profile-hr">
+                    <div class="text-center">{{msUserData.Username}}
+                    <br>{{msUserData.email}}
+                    </div>
+                    <hr class="ms-dashboard-profile-hr">
+                    <div class="ms-dashboard-profile-footer">
+
+                        <div class="ms-dashboard-profile-edit-btn">
+
+                        <svg  class="ms-dashboard-profile-edit-icon">
+                            <use xlink:href="#msicon-svg-user-edit" />
+                        </svg>
+                            <span>Edit Profile</span>
+                        </div>
+                        <div class="ms-dashboard-profile-signout-btn">
+                    <span>Log out</span>
+                            <svg  class="ms-dashboard-profile-signout-icon">
+                                <use xlink:href="#msicon-svg-user-signout" />
+                            </svg>
+                        </div>
+
+                    </div>
 
                 </div>
-            </nav>
+
+
+            </div>
+
         </div>
+
+
 
         <mssidenav :class="{'ms-nav-mian-div-hidden':!msNavBar,'ms-nav-mian-div':msNavBar}"  ref="msMenuSide" :ms-nav ="msNavOn"  ></mssidenav>
 
@@ -81,7 +141,14 @@
                 msNavBar:true,
                 windowWidth:window.innerWidth,
                 msMenuData:null,
+                msProfileDiv:false,
 
+                msUserData:{
+                    Username:'maxirooney',
+                    sex:'male',
+                    email:'user@company.com',
+
+                }
 
 
             }
@@ -94,6 +161,17 @@
         }
         ,
         methods:{
+            oprateProfileBox(){
+                if(this.msProfileDiv){
+       ;
+                    this.msProfileDiv=false;
+                }else{
+
+                    this.msProfileDiv=true;
+                }
+            }
+
+            ,
             onCalac(event,kCode){
                 window.vueApp.msShortCut(event,kCode);
             }

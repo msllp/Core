@@ -12,6 +12,7 @@ use \Illuminate\Support\Facades\Schema;
 use \Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use phpDocumentor\Reflection\Types\Boolean;
 use phpDocumentor\Reflection\Types\Mixed_;
 
 //use Illuminate\Notifications\Notification;
@@ -319,26 +320,34 @@ public $dataToProcess=[];
         return $this->MSmodel->get()->toArray();
 
     }
-    public function rowAdd(array $columnArray, array $uniqArray=[]):bool
+    public function rowAdd(array $columnArray, array $uniqArray=[], bool $debug=false):bool
     {
+
         if(!array_key_exists('created_at',$columnArray))$columnArray['created_at']=now()->toDateTimeString();
+
+
+
         $columnArray= $this->makeRowSafe($columnArray);
-//    if(array_key_exists('RouteCode',$columnArray))
-//       dd($this->makeRowSafe($columnArray));
 
         try{
 
             $connection=$this->model->getConnectionName();
             $table=$this->model->getTable();
+
            // if(array_key_exists('RouteCode',$columnArray))    dd($table);
             $tableName=$table;
             // $connection=$this->database['namespace']::getConnection($this->database['id']).$this->database['perfix'];
 
             $fieldCollection=collect($this->model->base_Field);
 
+
+
             foreach ($this->model->base_Field as $input){
+
                 if(!array_key_exists('dbOff',$input))$input['dbOff']=false;
                 if(array_key_exists('dbOff',$input)  && !$input['dbOff'] ) {
+
+
 
                     if(array_key_exists('validation',$input) && is_array($input['validation']) ){
                         if( array_key_exists('unique',$input['validation']) && $input['validation']['unique']){
@@ -347,7 +356,8 @@ public $dataToProcess=[];
 
                         //  var_dump(array_key_exists('unique',$input['validation']));
                     }
-                    switch ($input['input']){
+
+                   if(array_key_exists('input',$input)) switch ($input['input']){
                         case 'generated':
                             goto fn_auto;
                             break;
@@ -378,8 +388,12 @@ public $dataToProcess=[];
 
             }
 
+           // dd("adfss");
+
+
             $valdationError=0;
 
+           //  if ($debug)dd($debug."dasdasd");
             if(count($uniqArray)>0){
 
                 $valdationError=1;
@@ -413,7 +427,8 @@ public $dataToProcess=[];
              if($valdationError==true)goto ms_error_found;
             if($valdationError==false)return $this->model->insert($columnArray);
 
-        }catch (\Exception $e){
+        }
+        catch (\Exception $e){
             ms_error_found:
            if(0){
               if(isset($valdationErrorArray)){
@@ -422,13 +437,14 @@ public $dataToProcess=[];
               dd($er);
 
           }
-
+       //     if($debug)dd($e);
           //  if(array_key_exists('RouteCode',$columnArray))   dd($valdationError );
             goto ms_final_return;
-            return false;
+
 
 
         }
+
         ms_final_return:
         if(!isset($valdationError))$valdationError=true;
         if($valdationError==true)return false;

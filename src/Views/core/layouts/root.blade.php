@@ -2,7 +2,7 @@
 <!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
 <!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
 <!--[if !IE]><!-->
-<html lang="en" class="no-js">
+<html lang="en" class="no-js text-gray-900 antialiased leading-tight">
 <!--<![endif]-->
 <link rel="dns-prefetch" href="{{env('APP_URL')}}"/>
 <head>
@@ -25,7 +25,7 @@
     <link rel="manifest" href="{{asset('images/ico//site.webmanifest')}}">
 
 </head>
-<body class="min-vh-100"  >
+<body class="min-vh-100 min-h-screen"  >
 
 
 <div id="msapp"  >
