@@ -963,28 +963,29 @@ public $dataToProcess=[];
 
     }
 
-    public static function getDBPath(){
+    public static function getDBPath($path=[]){
+        $dbPath=self::$dbStore;
+        if(count($path)>0)foreach ($path as $row)$dbPath[]=$row;
         return base_path( implode(DS,self::$dbStore) );
     }
     public static function getBlankDBPath(){
         return base_path( implode(DS,self::$dbSource) );
     }
-    public static function makeDB(string $name){
-        $path['storePath']=implode(DS,[self::getDBPath(),$name]) ;
+    public static function makeDB(string $name,array $path=[]){
+        $path['storePath']=implode(DS,[self::getDBPath($path),$name]) ;
         $path['sourcePath']=self::getBlankDBPath();
-      //  dd($path);
         return copy ( $path['sourcePath'],  $path['storePath'] );
     }
 
-    public static function deleteDB(string $name){
-        if(!self::checkDB($name))return false;
-        $path['sorcePath']=implode(DS,[self::getDBPath(),$name]) ;
-        return unlink($path['sorcePath']);
+    public static function deleteDB(string $name,array $path=[]){
+        if(!self::checkDB($name,$path))return false;
+        $path['sourcePath']=implode(DS,[self::getDBPath($path),$name]) ;
+        return unlink($path['sourcePath']);
     }
 
-    public static function checkDB(string $name){
-        $path['sorcePath']=implode(DS,[self::getDBPath(),$name]) ;
-        return file_exists($path['sorcePath']);
+    public static function checkDB(string $name,array $path=[]){
+        $path['sourcePath']=implode(DS,[self::getDBPath($path),$name]) ;
+        return file_exists($path['sourcePath']);
     }
 
     public static function backDB(string $name=null){

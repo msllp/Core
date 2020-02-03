@@ -77,6 +77,7 @@ Vue.component('mscalc', require('./MS/C/msCalc.vue').default);
 
 Vue.component('mslogin', require('./MS/msLoginPage.vue').default);
 
+Vue.component('profile', require('./MS/P/profilePage.vue').default);
 
 //Components
 
