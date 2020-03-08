@@ -1,6 +1,6 @@
 <template>
 
-    <div class="ms-dashboard-container">
+    <div class="ms-dashboard-container" :class="{'ms-dark-mode':this.msDarkMode}">
         <div class="fixed w-full ms-nav-container shadow " >
             <nav class="flex items-center justify-between flex-wrap lg:p-1  object-cover " style="min-height: 70px;">
 
@@ -35,7 +35,7 @@
 
                 <div v-on:click="hideNavBar($event)" class="flex items-center flex-shrink-0 mr-6">
 
-                    <img src="/images/logo.png" class="fill-current h-12 mr-2 ms-company-logo hover:shadow-outline hover:bg-gray-200" >
+                    <img src="/images/logo.png" class="fill-current h-12 mr-2 ms-company-logo " >
 
 
 
@@ -47,7 +47,7 @@
                 </div>
 
                 <div class='ms-dashboard-right-nav-box'>
-                    <div class="ms-dashboard-right-nav-btn">
+                    <div class="ms-dashboard-right-nav-btn" v-on:click="oprateNotificationBox">
                         <div class="ms-dashboard-right-nav-btn-notification">
                         <svg class="">
                         <use xlink:href="#msicon-svg-notification-read" />
@@ -55,7 +55,7 @@
                         </div>
                     </div>
 
-                    <div class="ms-dashboard-right-nav-btn " v-on:click="oprateProfileBox()" >
+                    <div class="ms-dashboard-right-nav-btn " v-on:click="oprateProfileBox" >
                         <div class="ms-dashboard-right-nav-btn-profile" >
 
                             <span >{{msUserData.Username.charAt(0)}}</span>
@@ -88,7 +88,66 @@
                     <hr class="ms-dashboard-profile-hr">
                     <div class="ms-dashboard-profile-footer">
 
-                        <div class="ms-dashboard-profile-edit-btn">
+                        <div class="ms-dashboard-profile-edit-btn" v-on:click="openProfile">
+
+                        <svg  class="ms-dashboard-profile-edit-icon">
+                            <use xlink:href="#msicon-svg-user-edit" />
+                        </svg>
+                            <span>Edit Profile</span>
+                        </div>
+                        <div class="ms-dashboard-profile-signout-btn">
+                    <span>Log out</span>
+                            <svg  class="ms-dashboard-profile-signout-icon">
+                                <use xlink:href="#msicon-svg-user-signout" />
+                            </svg>
+                        </div>
+
+
+                    </div>
+                    <hr class="ms-dashboard-profile-hr">
+                    <div class="ms-dashboard-profile-footer">
+                        <span class="flex">Switch mode : </span>
+                        <div class="ms-dashboard-profile-darkmode-btn " v-on:click="darkModeToggel">
+
+                            <span>
+<i class="ms-dashboard-profile-darkmode-icon fi2 flaticon-replace" :class="{
+                              'flaticon-replace':msDarkMode
+                          }"></i>
+                                {{(msDarkMode)?'Light':'Dark'}} </span>
+
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        <div :class="{
+        'ms-dashboard-profile-box':msNotificationDiv,
+        'ms-dashboard-profile-box-hidden':!msNotificationDiv,
+
+
+        }">
+                <div class="ms-dashboard-profile-body">
+
+                    <div class="ms-dashboard-profile-user-box ">
+                        <small>Notification</small>
+                        <svg  class="ms-dashboard-profile-user-icon">
+                            <use v-bind:xlink:href="'#msicon-svg-user-'+msUserData.sex+'-1'" />
+                        </svg>
+
+                    </div>
+
+                    <hr class="ms-dashboard-profile-hr">
+                    <div class="text-center">{{msUserData.Username}}
+                    <br>{{msUserData.email}}
+                    </div>
+                    <hr class="ms-dashboard-profile-hr">
+                    <div class="ms-dashboard-profile-footer">
+
+                        <div class="ms-dashboard-profile-edit-btn" v-on:click="openProfile">
 
                         <svg  class="ms-dashboard-profile-edit-icon">
                             <use xlink:href="#msicon-svg-user-edit" />
@@ -117,7 +176,7 @@
 
         <div style=""
         :class="{
-        'ms-livebox bg-white-200 ':true,
+        'ms-livebox ':true,
         'ms-livebox-full':!msNavOn,
         'ms-livebox-without-nav':!msNavBar
         }"
@@ -142,17 +201,19 @@
                 windowWidth:window.innerWidth,
                 msMenuData:null,
                 msProfileDiv:false,
+                msNotificationDiv:false,
 
                 msUserData:{
                     Username:'maxirooney',
                     sex:'male',
                     email:'user@company.com',
 
-                }
+                },
 
 
             }
-        },props:{
+        },
+        props:{
             'msData':{
                 type: Object,
                 required: true
@@ -161,21 +222,27 @@
         }
         ,
         methods:{
+            openProfile(){
+                if(this.msProfileDiv)this.msProfileDiv=false;
+                var data ={
+                    modCode:"USERS4O3",
+                    modDView:"View Profile",
+                    modUrl:"/o3/User/profile"};
+
+                this.$refs['ms-live-tab'].addActionToTab(data);
+            },
             oprateProfileBox(){
-                if(this.msProfileDiv){
-       ;
-                    this.msProfileDiv=false;
-                }else{
 
-                    this.msProfileDiv=true;
-                }
-            }
-
-            ,
+                this.msProfileDiv=(this.msProfileDiv)?false:true;
+                if(this.msNotificationDiv)this.msNotificationDiv=false;
+            },
+            oprateNotificationBox(){
+                if(this.msProfileDiv)this.msProfileDiv=false;
+                this.msNotificationDiv=(this.msNotificationDiv)?false:true;
+            },
             onCalac(event,kCode){
                 window.vueApp.msShortCut(event,kCode);
-            }
-            ,
+            },
             setNavOn(show=false,event){
 
                 //this.$children['msMenu'].hideNav();
@@ -268,9 +335,11 @@
             },
             hideNavOnlyForMobile(event){
                 this.hideNavBar(event);
+            },
+
+            darkModeToggel(){
+                this.$root.$data.msDarkMode=(this.$root.$data.msDarkMode)?false:true;
             }
-
-
         },
         beforeCreate(){
 
@@ -316,14 +385,12 @@
         }
 
         ,
+        computed : {
+            msDarkMode(){
+             //   console.log(this.$root.$data.msDarkMode);
+                return this.$root.$data.msDarkMode;
+            }
 
-
-
-
-
-
-        components : {
-          //  msMenubar
         }
     }
 </script>

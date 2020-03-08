@@ -3,6 +3,8 @@
 
 
     <?php
+
+
     $data=[
 
         'path'=>
@@ -11,6 +13,7 @@
         'accessToken'=> \MS\Core\Helper\Comman::encode('UserMitul')
 
     ];
+    if(isset($msData))$data=$msData;
     //dd($data);
     $json=collect($data)->toJson();
 

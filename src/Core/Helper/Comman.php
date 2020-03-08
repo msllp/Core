@@ -166,7 +166,7 @@ if($master && array_key_exists('locationOfFile', $array)){
      * @param integer $type = 1 (Default)
      * @return string
      */
-    public static function random($count=4,$type=1): string {
+    public static function random($count=4,$type=1,$lvl=1,$dv='_'): string {
         $randstring=[];
         switch ($type) {
             case'patern':
@@ -182,7 +182,7 @@ if($master && array_key_exists('locationOfFile', $array)){
                 break;
 
             case '3':
-                $charactmarge_databaseers = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
                 break;
 
             case '4':
@@ -194,15 +194,36 @@ if($master && array_key_exists('locationOfFile', $array)){
                 $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
                 break;
 
+            case '6':
+                $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                break;
+
             default:
                 $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
                 break;
         }
 
-
+if($lvl>1){
+    $fCode=[];
+    for ($i2 = 0; $i2 <=     $lvl; $i2++){
+        $randstring=[];
         for ($i = 0; $i < $count; $i++) {
             $randstring[]= $characters[rand(0, strlen($characters)-1)];
         }
+
+        $fCode[]=implode('',$randstring);
+
+
+    }
+    //dd($lvl);
+  //dd([implode($dv,$fCode)]);
+    $randstring=[implode($dv,$fCode)];
+}else{
+    for ($i = 0; $i < $count; $i++) {
+        $randstring[]=$characters[rand(0, strlen($characters)-1)];
+    }
+}
+
         return implode('', $randstring) ;
     }
 
@@ -213,14 +234,9 @@ if($master && array_key_exists('locationOfFile', $array)){
      */
     public static function encode($str): string {
         $code=base64_encode ($str);
-        //var_dump($code);
-
-
         $r1=self::random(1,'patern');
         $r2=self::random(1,'patern');
         $r3=self::random(1,'patern');
-
-
         $codeGarbage1=substr($code, $r1, 2);
         $codeGarbage2=self::random($r2,5);
         $codeGarbage3=self::random($r3,5);
@@ -238,11 +254,8 @@ if($master && array_key_exists('locationOfFile', $array)){
 
         $r1=substr($str,0,1)+3;
         $r2=substr($str,-1,1)+1;
-      //  var_dump($str);
-
-
         $code=substr($str, $r1);
-        //dd(substr($code,0 ,-$r2));
+
         $code=substr($code, 0   ,-$r2);
       //  var_dump($code);
        // $code=substr($code, 0, $r2);
@@ -409,8 +422,11 @@ if($master && array_key_exists('locationOfFile', $array)){
             'msg'=>'Opps I am Computer not Human.'
 
         ];
+
         if(array_key_exists('accessToken',$input))$input['accessToken']=\MS\Core\Helper\Comman::decode($input['accessToken']);
-        if( (count($getVeriData)>0) && array_key_exists('accessToken',$getVeriData) &&  ($input['accessToken']!=$getVeriData['accessToken'])){
+
+
+        if( (count($getVeriData)>0) && array_key_exists('accessToken',$getVeriData) &&  ( $input['accessToken']!=$getVeriData['accessToken'])){
          //dd($input);
             $error['accessTokenNotVerified']='Sorry , I am not Human you can not bribe me.';
         }

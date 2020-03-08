@@ -19,7 +19,7 @@ class MSForm
     public $returnHTML =[
         //   '<div  class="accordion">'
     ];
-
+    public $debug=false;
 
     public static $optionalStyleKeys=[
         'prefix'=>'prefix',
@@ -661,7 +661,7 @@ class MSForm
 
      //   dd(  );
       // dd($this );
-     //  return view("MS::core.layouts.Form.formPlateRaw")->with("form",$this->returnHTML);
+     if(!$this->debug)  return view("MS::core.layouts.Form.formPlateRaw")->with("form",$this->returnHTML);
         return view("MS::core.layouts.Form.formPlate")->with("form",$this->returnHTML);
         return view("MS::core.layouts.Form.formPlate")->with("form",implode("",$this->returnHTML));
         return implode("",$this->returnHTML);

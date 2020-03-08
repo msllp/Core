@@ -10,6 +10,11 @@
 return
 
     [
+        'MS-ROOT'=>[
+            'driver' => 'local',
+            'root' => base_path('/'),
+        ],
+
         'MS-CORE'=>[
             'driver' => 'local',
             'root' => base_path('MS'),

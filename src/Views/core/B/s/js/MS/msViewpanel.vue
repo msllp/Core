@@ -156,7 +156,7 @@
             addActionToTab(data){
                 //delete this.allTab[this.currentTab];
 
-
+                var Handler=this.$refs['tab_'+this.currentTab][0];
                 if(this.allTab.length < 1){
                     data.tabCode=this.ms_rand(5,1);
                     data.modCode="MAS";
@@ -168,7 +168,7 @@
 
                 this.$nextTick(() => {
 
-                    var Handler=this.$refs['tab_'+this.currentTab][0];
+
                     Handler.updateTab(data);
                 //    console.log(data);
                     //normalizeArray(this.$refs.form).classList.remove("was-validated");

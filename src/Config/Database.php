@@ -124,5 +124,24 @@ return
             'foreign_key_constraints' => true,
         ],
 
+        'O3_Users_Master'=>[
+            'driver' => 'sqlite',
+            'database' => base_path('MS/DB/Master/O3_Users_Master'),
+            'prefix' => '',
+            'foreign_key_constraints' => true,
+        ],
+       'O3_Users_Data'=>[
+            'driver' => 'sqlite',
+            'database' => base_path('MS/DB/Master/O3_Users_Data'),
+            'prefix' => '',
+            'foreign_key_constraints' => true,
+        ],
+       'O3_Users_Config'=>[
+            'driver' => 'sqlite',
+            'database' => base_path('MS/DB/Master/O3_Users_Config'),
+            'prefix' => '',
+            'foreign_key_constraints' => true,
+        ],
+
 
     ];

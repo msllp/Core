@@ -287,7 +287,7 @@ public $dataToProcess=[];
 
 
         }
-
+    //    dd($this->checkTableExist($id,$perFix));
         if(!$this->checkTableExist($id,$perFix)){
             return self::makeTable($table,$fields,$connection);
         }
@@ -331,8 +331,11 @@ public $dataToProcess=[];
 
         try{
 
+
+
             $connection=$this->model->getConnectionName();
             $table=$this->model->getTable();
+
 
            // if(array_key_exists('RouteCode',$columnArray))    dd($table);
             $tableName=$table;
@@ -425,10 +428,11 @@ public $dataToProcess=[];
             }
 
              if($valdationError==true)goto ms_error_found;
-            if($valdationError==false)return $this->model->insert($columnArray);
+            if($valdationError==false)return $this->getModel()->insert($columnArray);
 
         }
         catch (\Exception $e){
+           // dd($e);
             ms_error_found:
            if(0){
               if(isset($valdationErrorArray)){
@@ -445,7 +449,9 @@ public $dataToProcess=[];
 
         }
 
+
         ms_final_return:
+        //dd($this);
         if(!isset($valdationError))$valdationError=true;
         if($valdationError==true)return false;
         return true;

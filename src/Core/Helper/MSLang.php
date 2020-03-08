@@ -31,6 +31,55 @@ class MSLang
         return $finalData;
     }
 
+    public static function getUI($lang='en',$version='O3'){
+        $finalData[$version]=[
+            'company'=>['en'=>'Company'],
+            'sales'=>['en'=>'Sales'],
+            'accounts'=>['en'=>'Accounts'],
+            'inventory'=>['en'=>'Inventory'],
+            'hr'=>['en'=>'Human Resource'],
+
+            'companyDashboard'=>['en'=>'Company One View'],
+            'companyManage'=>['en'=>'Manage Company'],
+            'companyDetails'=>['en'=>'Company Details'],
+            'companyBank'=>['en'=>'Bank Accounts Details'],
+            'companyProductNServices'=>['en'=>'Product & Services'],
+            'companyMasterItem'=>['en'=>'Master Items & Services'],
+            'companyMasterUnit'=>['en'=>'Master Unit'],
+            'companyPaymentTerms'=>['en'=>'Payment Terms & Conditions'],
+            'companyTax'=>['en'=>'Tax'],
+            'companyMasterTaxSlab'=>['en'=>'Master Tax slab'],
+            'companyHSNSAC'=>['en'=>'Master HSN/SAC Code'],
+            'companyVendorPayment'=>['en'=>'Vendor Payment Terms'],
+            'hrDashboard'=>['en'=>'HR One View'],
+            'hrManageRoles'=>['en'=>'Manage Roles & User'],
+            'hraddRoles'=>['en'=>'Add User Role'],
+            'hrmanageRoles'=>['en'=>'Manage User Roles'],
+            'hraddUsers'=>['en'=>'Add User'],
+            'hrmanageUsers'=>['en'=>'Manage Users'],
+            'hrleaveNAtta'=>['en'=>'Leave & Attendance'],
+            'hrmanegeAtta'=>['en'=>'Manage Attendance'],
+            'hrmanageLeave'=>['en'=>'Manage Leave'],
+            'hrUserFunction'=>['en'=>'User Function'],
+            'hrUserAppointment'=>['en'=>'Appointment Latter'],
+            'hrUserExperience'=>['en'=>'Experience Latter'],
+            'hrUserSalary'=>['en'=>'Salary Receipt'],
+            'acDashboard'=>['en'=>'Account One View'],
+            'acManageLedger'=>['en'=>'Manage Ledgers'],
+            'acCashLedger'=>['en'=>'Cash Ledgers'],
+            'acVendorLedger'=>['en'=>'Vendor Ledgers'],
+            'acCustomerLedger'=>['en'=>'Customer Ledgers'],
+            'acProfitLedger'=>['en'=>'Profit Ledgers'],
+            'acReports'=>['en'=>'Reports'],
+            'acSaleReports'=>['en'=>'Sales Report'],
+            'acPurchaseReports'=>['en'=>'Purchase Reports'],
+            'acGSTReports'=>['en'=>'GST Monthlt Reports'],
+            'acBalanceSheet'=>['en'=>'Balance Sheet'],
+            'acProfitLoss'=>['en'=>'Profit-Loss Sheet'],
+
+            ];
+        return self::processDataForOut($finalData[$version],$lang) ;
+    }
     public static function getCoreEn(){
         $finalData=[
             'tableId' => 'Table ID',
@@ -68,7 +117,7 @@ class MSLang
             'vendorGroup4'=>'Contact Details',
             'vendorGroup5'=>'Module Connect',
 
-
+            ''
 
 
 
@@ -79,13 +128,50 @@ class MSLang
 
         return $finalData;
     }
-
     public static function getSales($lang='en'){
         $finalData=[
             'Navtitle1'=>['en'=>'Manage Leads & Quotations'],
 
             'NavSub0'=>['en'=>'Sales Dashboard'],
             'NavSub11'=>['en'=>'Get Lead'],
+            'NavSub12'=>['en'=>'Generate Quotation'],
+            'NavSub14'=>['en'=>'View all Quotation'],
+            'NavSub13'=>['en'=>'View all Leads'],
+
+            'Navtitle2'=>['en'=>'Manage Invoices & Payments'],
+            'NavSub21'=>['en'=>'Receive Payment'],
+            'NavSub22'=>['en'=>'Generate Invoices'],
+            'NavSub24'=>['en'=>'View all Payment'],
+            'NavSub23'=>['en'=>'View all Invoices'],
+
+            'Navtitle3'=>['en'=>'Manage Customers'],
+            'NavSub31'=>['en'=>'Add New Customer'],
+            'NavSub32'=>['en'=>'View all Customer'],
+
+            'Navtitle4'=>['en'=>'Manage Templates'],
+            'NavSub41'=>['en'=>'Add Quotation Templates'],
+            'NavSub42'=>['en'=>'Add Invoices Templates'],
+            'NavSub43'=>['en'=>'View all Quotation Templates'],
+            'NavSub44'=>['en'=>'View all Invoices Templates'],
+
+            'Navtitle5'=>['en'=>'Manage Product & Services'],
+            'NavSub51'=>['en'=>'Add Product or Service'],
+            'NavSub52'=>['en'=>'View Product & Services'],
+
+            'DashboardManageLeads'=>['en'=>'Manage Leads'],
+            'DashboardManageQuotations'=>['en'=>'Manage Quotations'],
+            'DashboardManageInvoices'=>['en'=>'Manage Invoices'],
+            'DashboardManageCustomers'=>['en'=>'Manage Customers'],
+            'DashboardManageProductsNServices'=>['en'=>'Manage Products & Services'],
+
+
+        ];
+
+        $finalData4O3=[
+            'Navtitle1'=>['en'=>'Manage Leads & Quotations'],
+
+            'NavSub0'=>['en'=>'Sales Dashboard'],
+            'NavSub11'=>['en'=>'Add Lead'],
             'NavSub12'=>['en'=>'Generate Quotation'],
             'NavSub14'=>['en'=>'View all Quotation'],
             'NavSub13'=>['en'=>'View all Leads'],
@@ -148,13 +234,37 @@ class MSLang
             'NavSub42'=>['en'=>'View Product & Services'],
 
 
+            'Nav_purchase'=>['en'=>'Purchase'],
+            'Nav_purchase_1'=>['en'=>'Manage Item Requirements'],
+            'Nav_purchase_1_1'=>['en'=>'Request Items'],
+            'Nav_purchase_1_2'=>['en'=>'Approve Items'],
+
+            'Nav_purchase_2'=>['en'=>'Manage PO'],
+            'Nav_purchase_2_1'=>['en'=>'Generate PO'],
+            'Nav_purchase_2_2'=>['en'=>'Process PO'],
+            'Nav_purchase_2_3'=>['en'=>'View all PO'],
+
+            'Nav_purchase_3'=>['en'=>'Manage Items'],
+            'Nav_purchase_3_1'=>['en'=>'Add new Item'],
+            'Nav_purchase_3_2'=>['en'=>'View All Item'],
+            'Nav_purchase_3_3'=>['en'=>'Item Stock'],
+
+            'Nav_purchase_4'=>['en'=>'Manage Vendors'],
+            'Nav_purchase_4_1'=>['en'=>'Add new Vendor'],
+            'Nav_purchase_4_2'=>['en'=>'View All Vendor'],
+            'Nav_purchase_4_3'=>['en'=>'Vendor Accounts'],
+
 
         ];
 
         return self::processDataForOut($finalData,$lang) ;
     }
     public static function getCompany($lang='en'){
+
+
         $finalData=[
+            'Nav_User_1'=>['en'=>'Users'],
+            'Nav_User_h1'=>['en'=>'Users Dashboard'],
             'Navtitle1'=>['en'=>'Manage  Company'],
             'NavSub11'=>['en'=>'Manage Basic Details'],
             'NavSub12'=>['en'=>'Manage Branches'],
@@ -179,6 +289,31 @@ class MSLang
             'NavSub44'=>['en'=>'Mail us'],
             'NavSub45'=>['en'=>'Call us'],
 
+            'id'=>['en'=>'CompanyID'],
+            'name' =>['en'=>'Company Name'],
+            'shortname'=>['en'=>'Company Short Code'],
+            'city'=>['en'=>'City/Town'],
+            'ad1'=>['en'=>'Address Line 1'],
+            'ad2'=>['en'=>'Address Line 2'],
+            'ad3'=>['en'=>'Address Line 3'],
+            'pincode'=>['en'=>'Pincode'],
+            'state'=>['en'=>'State'],
+            'pincode'=>['en'=>'Pincode'],
+            'gst'=>['en'=>'GST No.'],
+            'pan'=>['en'=>'PAN/TAN No.'],
+            'cin'=>['en'=>'CIN No.'],
+            'type'=>['en'=>'Type of Company'],
+            'con'=>['en'=>'Contact No.'],
+            'email'=>['en'=>'Email'],
+            'role'=>['en'=>'Role'],
+            'hasbranch'=>['en'=>'Has a Branches ?'],
+            'combasic'=>['en'=>'Company Basic Details'],
+            'comlegal'=>['en'=>'Legal Details'],
+            'comaddress'=>['en'=>'Address Details'],
+            'comdconde'=>['en'=>'Contact Details'],
+            'comadd'=>['en'=>'Add Company'],
+            'commanage'=> ['en'=>'Manage Company Master'],
+            'comviewall'=>['en'=>'View All Company']
 
 
         ];
@@ -266,6 +401,7 @@ class MSLang
         $outData=[];
         foreach ($inData as $id=>$data){
           //  dd(!array_key_exists($id,$outData) && array_key_exists($lang,self::$allowedLan));
+
             if(!array_key_exists($id,$outData) && in_array($lang,self::$allowedLan) && array_key_exists($lang,$data))$outData[$id]=$data[$lang];
         }
 

@@ -54,7 +54,12 @@ var path = require('path');
 var appDir = path.dirname(require.main.filename);
 
 import Chart from 'chart.js';
+var VueTouch = require('vue-touch');
 
+Vue.use(VueTouch, {name: 'v-touch'})
+//window.moment = require('moment');
+
+//Vue.directive('touch', VueTouch);
 //Vue.component('inputtext', require('./components/inputText.vue').default);
 //Vue.component('panelbackend', require('./components/panelBackend.vue').default);
 //Vue.component('msform', require('./components/msForm.vue').default);
@@ -68,16 +73,20 @@ Vue.component('msdashboard', require('./MS/msDashboard.vue').default);
 Vue.component('mswindow', require('./MS/msWindow.vue').default);
 Vue.component('msmenubar', require('./MS/msMenubar.vue').default);
 Vue.component('msdatatable', require('./MS/msDatatable.vue').default);
-Vue.component('msdockerdashboard', require('E:/MS-Master/Projects/FrameworkPHP/gst_invoice/Master/MS/B/M/DCM/V/Vue/dockerMasterDashboard.vue').default);
+Vue.component('msdockerdashboard', require('E:/Pojects/php/MSFrame/6/Master/MS/B/M/DCM/V/Vue/dockerMasterDashboard.vue').default);
 Vue.component('mssidenav', require('./MS/C/msSideNav.vue').default);
 Vue.component('newtab', require('./MS/C/msNewTab.vue').default);
 Vue.component('salesdashboard', require('./MS/D/Sales.vue').default);
+
 
 Vue.component('mscalc', require('./MS/C/msCalc.vue').default);
 
 Vue.component('mslogin', require('./MS/msLoginPage.vue').default);
 
 Vue.component('profile', require('./MS/P/profilePage.vue').default);
+
+
+Vue.component('mslistmaker', require('./MS/C/msListMaker.vue').default);
 
 //Components
 
@@ -230,6 +239,7 @@ window.vm = {};
             msform: [],
             msNavigation:false,
             msCalc:false,
+            msDarkMode:false,
 
 
 

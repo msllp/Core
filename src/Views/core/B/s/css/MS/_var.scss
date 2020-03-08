@@ -1,8 +1,8 @@
 //TODO Theme
 
-$ms-theme-color-light: lighten(rgba(121,71,199,1),25%);
+$ms-theme-color-light: lighten(rgba(121,71,199,1),20%);
 $ms-theme-color-main: rgba(121,71,199,1);
-$ms-theme-color-dark: darken(rgba(121,71,199,1),3%);
+$ms-theme-color-dark: darken(rgba(121,71,199,1),5%);
 $ms-theme-color-text-for-dark: rgba(255,255,255,0.9);
 $ms-theme-color-text-for-light: rgba(0,0,0,0.9);
 
@@ -26,3 +26,21 @@ $ms-theme-color-default:rgba(224,224,224,1);
 $ms-theme-color-default-light: lighten(rgba(224,224,224,1),5%);
 
 $ms-theme-bg-light:linear-gradient(-180deg, $ms-theme-color-default-light, $ms-theme-color-default);
+
+$ms-dark-theme-color-main:rgba(0,0,0,1);
+$ms-dark-theme-color-main-2:rgba(0,0,0,0.9);
+$ms-dark-theme-color-main-3:rgba(0,0,0,0.8);
+$ms-dark-theme-color-main-4:rgba(0,0,0,0.1);
+
+$ms-dark-theme-color-main-cross:rgba(255,255,255,1);
+$ms-dark-theme-color-main-cross-2:rgba(255,255,255,0.8);
+$ms-dark-theme-color-main-cross-3:rgba(255,255,255,0.4);
+$ms-dark-theme-color-main-cross-4:rgba(255,255,255,0.1);
+
+
+
+$ms-dark-theme-color-text:$ms-dark-theme-color-main-cross-2;
+
+$ms-dark-theme-color-text-cross:$ms-dark-theme-color-main-2;
+
+$ms-dark-theme-color-text-1:(255,255,255,0.9);

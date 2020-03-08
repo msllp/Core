@@ -25,10 +25,12 @@
     <link rel="manifest" href="{{asset('images/ico//site.webmanifest')}}">
 
 </head>
-<body class="min-vh-100 min-h-screen"  >
+<body >
 
 
-<div id="msapp"  >
+<div id="msapp" class="min-vh-100 min-h-screen" :class="{
+'ms-dark-mode-body':msDarkMode
+}"  >
 @yield('body')
     <transition name="slide"  mode="out-in">
     <mscalc v-if="msCalc"></mscalc>

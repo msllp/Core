@@ -35,10 +35,10 @@ export default {
         return  re.test(str);
         },
 
-getGetRaw(url,classFor,callBack){
+        getGetRaw(url,classFor,callBack){
 
             let returnX='ok';
-
+            var Handler=classFor;
 
             fetch(url)   .then(function(response) {
 
@@ -47,7 +47,7 @@ getGetRaw(url,classFor,callBack){
 
 
             }).then( function(data) {
-                var Handler=classFor;
+
                 Handler[callBack](data);
 
 
@@ -56,15 +56,16 @@ getGetRaw(url,classFor,callBack){
             });
             return  classFor.returnX;
         },
-getGetLink(url,classFor){
+        getGetLink(url,classFor){
  //   url=url+"?dataLink=true"
-    var returnX="";
+    var returnX=true;
     var self = classFor ;
-
-    let re= axios.get(url)
+    var config={headers: {'MS-APP-Token': 'app'}} ;
+    let re= axios.get(url,config)
         .then(
             function(response){
 //console.log(response.data);
+
                 returnX=response.data;
                 self.setHtml(returnX);
 
@@ -89,10 +90,10 @@ getGetLink(url,classFor){
 
 
 },
-setCurrentData(data){
+        setCurrentData(data){
             this.CurrentData=data;
         },
-postLink(link,data,classFor,callback=null){
+        postLink(link,data,classFor,callback=null){
     var outData ;
     if(callback == null)callback ='setHtml';
         var callbackF=callback;
@@ -147,9 +148,7 @@ postLink(link,data,classFor,callback=null){
     //  console.log(Freturn);
 },
 
-
-
-makeArrayForInput(base){
+        makeArrayForInput(base){
     var self = base ;
 
     var id= base.inputName;
@@ -170,7 +169,7 @@ makeArrayForInput(base){
     // console.log(re);
     // return [re];
 },
-makeArrayForInputGroup(base,id,index,multiIndex=0){
+        makeArrayForInputGroup(base,id,index,multiIndex=0){
     var self=base;
     var idfor=id+"_"+index;
     var Inputindex=1
@@ -187,12 +186,11 @@ makeArrayForInputGroup(base,id,index,multiIndex=0){
 
     }
     return fordata;
-}
-,
-in_array(value,array){
+},
+        in_array(value,array){
     return array.includes(value);
 },
-get_time_diff( datetime ){
+        get_time_diff( datetime ){
     var datetime = typeof datetime !== 'undefined' ? datetime : "2014-01-01 01:02:03.123456";
 
     var datetime = new Date( datetime ).getTime();
@@ -217,12 +215,12 @@ get_time_diff( datetime ){
 
     return date_diff.getMilliseconds();
 },
-roundToTwo(num) {
+        roundToTwo(num) {
     //    console.log(num);
     //  console.log(Math.round(num)     );
     return Math.round(num);
 },
-calc_get_prapotion(totalValue,secondValue ){
+        calc_get_prapotion(totalValue,secondValue ){
     var returnValue=0;
 
 
@@ -231,14 +229,14 @@ calc_get_prapotion(totalValue,secondValue ){
 
     return this.roundToTwo(returnValue) ;
 },
-check_uniq(setArray,baseArray){
+        check_uniq(setArray,baseArray){
     for ( var i = 0 ; i < baseArray.length; i++ ){
         if(this.in_array(baseArray[i],setArray))return false;
     }
     return true;
 },
 
-isMobile() {
+        isMobile() {
     //     return true
 
     var str=navigator.platformt;
@@ -250,10 +248,8 @@ isMobile() {
     } else {
         return false
     }
-}
-
-,
-forNice(str){
+},
+        forNice(str){
     var txt=str;
     return txt.toLowerCase()
         .split(' ')
@@ -261,7 +257,7 @@ forNice(str){
         .join(' ');
 },
 
-ms_rand(length,type=1) {
+        ms_rand(length,type=1) {
 
     switch (type) {
 

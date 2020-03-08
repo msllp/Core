@@ -4,21 +4,22 @@
     position: fixed;
     left:-251px;
     top:72px;
-    background: linear-gradient(-47deg, rgba(200,200,200,1), rgba(240,240,240,1));
+    background: $ms-dark-theme-color-main;
     width:250px;
-
-  //   min-width: 0px;
-     //  height: 0px;
+    color:$ms-dark-theme-color-text;
+    //   min-width: 0px;
+    //  height: 0px;
     // opacity: 0;
     //@apply hidden;
-   // height: 0;
-     @apply ms-animation;
- }
+    // height: 0;
+    @apply pb-2;
+    @apply ms-animation;
+}
 
 .ms-nav-mian-div-hidden > .ms-nav-div{
     //width: 0px;
-   // opacity: 0;
-   // @apply hidden;
+    // opacity: 0;
+    // @apply hidden;
     //@apply ms-animation;
     //height: 0;
 }
@@ -26,23 +27,24 @@
     position: fixed;
     top:72px;
     left:0px;
-  //  @apply mx-3;
-  //  @apply py-2;
-    background: linear-gradient(-47deg, rgba(200,200,200,1), $ms-theme-color-light);
-   // color: rgba(255,255,255,0.9);
+    //  @apply mx-3;
+    //  @apply py-2;
+    background: linear-gradient(-47deg, $ms-dark-theme-color-main-3, $ms-dark-theme-color-main-3);
+    // color: rgba(255,255,255,0.9);
     //@apply bg-blue-300;
-  //  @apply border;
+    //  @apply border;
     width:250px;
     @apply select-none;
-   // font-family: 'Roboto', sans-serif;
-  //  font-family: "Karla", "Helvetica Neue", Arial, sans-serif;
+    color:$ms-dark-theme-color-text;
+    // font-family: 'Roboto', sans-serif;
+    //  font-family: "Karla", "Helvetica Neue", Arial, sans-serif;
     @apply ms-animation;
 
 }
 
 .ms-nav-mian-div > .ms-nav-div,.ms-nav-mian-div > .ms-side-sun-div{
 
-//    max-height: 250px;
+    //    max-height: 250px;
     max-height: 84vh;
     overflow-y: auto;
     overflow-x: hidden;
@@ -67,26 +69,27 @@
 
 .ms-main-title{
     @apply w-full;
-    @apply border-b;
-    border-bottom-color: $ms-theme-color-main;
+   // @apply border-b;
     //@apply border-r;
-    @apply py-3;
+    @apply py-3 ;
     @apply mb-2;
     font-size:14px;
     @apply cursor-pointer;
     @apply ms-animation;
+
     position: sticky;
     top: 0;
-   // color: white;
+    // color: white;
+   // color:$ms-dark-theme-color-text;
 
-    background: linear-gradient(47deg, $ms-dark-theme-color-main-cross-4, $ms-theme-color-light);
+    background: $ms-dark-theme-color-main;
 }
 .ms-main-title:hover{
     @apply pl-4;
     @apply mr-3;
     @apply shadow;
     // color:rgba(255,255,255,0.8);
-    background: linear-gradient(47deg, $ms-dark-theme-color-main-cross, $ms-theme-color-light);
+    background:$ms-dark-theme-color-main;
     @apply ms-animation;
 
 }
@@ -97,27 +100,27 @@
 
 
 .ms-master-title{
-    @apply w-full;
+     @apply w-full;
     @apply border-b;
     border-bottom-color: $ms-theme-color-main;
-    font-size:14px;
-    @apply cursor-pointer;
-    @apply p-2;
-    @apply ms-animation;
-  //  @apply shadow;
-    //@apply mb-1;
-}
+     font-size:14px;
+     @apply cursor-pointer;
+     @apply p-2;
+     @apply ms-animation;
+     //  @apply shadow;
+     //@apply mb-1;
+ }
+
 .ms-master-title > div > .fi{
     font-size:16px;
 }
 
 .ms-master-title:hover{
 
-   @apply pl-4;
+    @apply pl-4;
     @apply mr-3;
     @apply shadow;
-    color: $ms-dark-theme-color-text-cross;
-  //  color:rgba(255,255,255,0.8);
+    //  color:rgba(255,255,255,0.8);
     background-color: $ms-theme-color-light;
     @apply ms-animation;
 }
@@ -127,14 +130,14 @@
 .ms-main-title-sub{
 
     @apply w-full;
-   // @apply border-r;
+    // @apply border-r;
     //@apply border-l;
-   // @apply border-b;
+    // @apply border-b;
     @apply mt-2;
     @apply mb-2;
     font-size:14px;
-  //  @apply border-b;
-   border-bottom:  1px solid #6158ce;
+    //  @apply border-b;
+    border-bottom:  1px solid #6158ce;
     border-top:  1px solid #6158ce;
     @apply cursor-not-allowed;
     color:  rgba(97,88,206,0.9);
@@ -148,7 +151,7 @@
 }
 .ms-main-title-link{
     @apply w-full;
-   // @apply border;
+    // @apply border;
     //@apply my-1;
     //@apply mx-1;
     //@apply border-r;
@@ -161,23 +164,21 @@
 .ms-main-title-link:hover{
     @apply ms-animation;
     @apply shadow;
-     background-color: $ms-theme-color-light;
-     @apply pl-4;
+    background-color: $ms-theme-color-light;
+    @apply pl-4;
     @apply border;
-    border-color: $ms-theme-color-dark;
-    @apply ms-animation;
+    border-color: $ms-dark-theme-color-main;
 
     i{
-        @apply ms-animation;
-        @apply  font-bold;
-        color: $ms-theme-color-dark;
-    }
-    span{
-        color: $ms-theme-color-dark;
-        @apply ms-animation;
+        color:  $ms-dark-theme-color-text-cross;
 
     }
- }
+    span{
+
+        color:  $ms-dark-theme-color-text-cross;
+
+    }
+}
 //
 //.ms-main-title-link > i:hover{
 //
@@ -192,7 +193,7 @@
 
 .ms-master-title-in-sub{
     @apply border-b;
-    background-color:  $ms-theme-color-dark;
+    background-color:  $ms-dark-theme-color-main-cross-4    ;
     color: rgba(255,255,255,0.9);
     border-color: rgb(97,88,206,0.8);
     position: sticky;
@@ -200,8 +201,4 @@
 
     @apply p-2;
     @apply mb-1;
-}
-
-.ms-dark-mode {
-    @import "sidemenuDark";
 }

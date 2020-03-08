@@ -20,7 +20,7 @@
     import  MS  from './C/MS';
     import  msform  from './C/msForm';
 
-        import msdockerdashboard from 'E:/MS-Master/Projects/FrameworkPHP/gst_invoice/Master/MS/B/M/DCM/V/Vue/dockerMasterDashboard';
+        import msdockerdashboard from 'E:/Pojects/php/MSFrame/6/Master/MS/B/M/DCM/V/Vue/dockerMasterDashboard';
     export default {
         name: "mswindow",
         mixins: [MS],

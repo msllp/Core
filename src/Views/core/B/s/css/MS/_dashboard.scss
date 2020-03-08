@@ -11,9 +11,11 @@
   //  min-height: 1000px;
     margin-left:252px;
     padding-top: 64px;
-    background: #0c5460 cover;
+    //background: linear-gradient(47deg, $ms-dark-theme-color-main, $ms-dark-theme-color-main-2);
     z-index: 2600;
     @apply ms-animation;
+    @apply border-l;
+    @apply shadow;
 
 }
 .ms-livebox-full{
@@ -295,7 +297,8 @@
 .ms-dashboard-profile-box{
 
     @apply border;
-    border-color: $ms-theme-color-light;
+   @apply border-gray-400;
+    // border-color: $ms-theme-color-light;
     background-color: rgba(255,255,255,1);
     position :fixed;
     top:70px;
@@ -330,6 +333,7 @@
 }
 .ms-dashboard-profile-hr{
     border-color:$ms-theme-color-light ;
+    @apply my-2;
     @apply -ml-3;
     @apply -mr-3;
 }
@@ -431,4 +435,29 @@
     @apply shadow;
     background: linear-gradient(35deg,lighten($ms-theme-color-info-light,10%),lighten($ms-theme-color-info,10%));
     border-color:$ms-theme-color-info;
+}
+
+.ms-dashboard-profile-darkmode-btn{
+    @apply border;
+    @apply cursor-pointer;
+    border-color:$ms-dark-theme-color-main;
+    @apply w-auto;
+    @apply rounded;
+    min-height: 32px;
+    @apply px-2;
+}
+.ms-dashboard-profile-darkmode-btn:hover{
+    @apply ms-animation;
+    @apply shadow;
+    background: linear-gradient(35deg,$ms-dark-theme-color-main,$ms-dark-theme-color-main-3);
+    border-color:$ms-dark-theme-color-main-4;
+    color: $ms-theme-color-text-for-dark;
+}
+.ms-dark-mode {
+    @import "dashboardDark";
+}
+
+.ms-dark-mode-body{
+    @apply ms-animation;
+    background: $ms-dark-theme-color-main;
 }

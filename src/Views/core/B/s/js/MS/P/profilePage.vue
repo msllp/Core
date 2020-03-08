@@ -84,12 +84,12 @@
 
                         </tr>
 
-                        <div colspan="planUpgradeBox-table-f">
-                            <span>Upgrade Now</span>
-                        </div>
+
 
                     </table>
-
+                    <div colspan="planUpgradeBox-table-f">
+                        <span>Upgrade Now</span>
+                    </div>
                 </div>
 
 
@@ -112,7 +112,13 @@
             'msData':{
                 type: Object,
                 required: true
+            } ,
+            'msExtra':{
+                type: Object,
+                required: true
             }
+
+
         },
         data:function () {
         return{
