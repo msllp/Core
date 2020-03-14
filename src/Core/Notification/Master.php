@@ -24,6 +24,7 @@ class Master extends Notification
 
     public function __construct($data=[])
     {
+       // dd($data);
         if(!array_key_exists('from',$data))$data['from']="MS Application : System Genarated Mail";
         if(!array_key_exists('type',$data))$data['type']='MS::core.layouts.Email.NewAccount';
         if(!array_key_exists('mail',$data))$data['mail']=env("MS_DEFAULT_MAIL");
@@ -36,7 +37,7 @@ class Master extends Notification
 
 
     }
-    
+
     public function via($notifiable)
     {
         return ['mail'];
@@ -50,7 +51,7 @@ class Master extends Notification
 
         $data=$this->msData;
 
-        //dd($data);
+
 
         return (new MailMessage)->from($data['mail'], $data['from'])->view(
             $data['type'], ['data' => $data]
@@ -76,7 +77,7 @@ class Master extends Notification
     }
 
 
-    
+
 
 
 }

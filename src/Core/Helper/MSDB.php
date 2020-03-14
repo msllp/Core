@@ -21,7 +21,7 @@ class MSDB implements MasterNoSql
 {
 
 
-    public $model,$database,$masterNamespace,$e,$fTableName,$connection,$CurrentError,$MSmodel,$mod_Tables;
+    public $model,$database,$masterNamespace,$e,$fTableName,$connection,$CurrentError,$MSmodel,$mod_Tables,$msData;
 
     /**
      * @return mixed
@@ -816,7 +816,8 @@ public $dataToProcess=[];
 
         $tableData=$this->getNotifyDetailsFromArray();
         $dataOut=[];
-        if(count($this->msData) >  0){
+
+        if ( isset($this->msData) && count($this->msData) >  0){
 
             foreach($this->msData as $row) {
 
@@ -827,7 +828,8 @@ public $dataToProcess=[];
                         if($dValue!=null && $dValue!=" ")
                             if($row->$dValue!=null && $row->$dValue!="" )
                             $dataOut[$dKey]=$row->$dValue;
-                    }else{
+                    }
+                    else{
                        $str=[];
 
                         foreach ($explode as $multistr){
@@ -847,7 +849,7 @@ public $dataToProcess=[];
             }
 
         }
-
+        dd($dataOut);
 
         //;
     }
@@ -856,11 +858,9 @@ public $dataToProcess=[];
     public function getNotifyDetailsFromArray(){
 
         $notificationArray=[];
-        if(array_key_exists('notification',$notificationArray=$this->mod_Tables[$this->ms_id]))$notificationArray=$this->mod_Tables[$this->ms_id]['notification'];
-        if(count($notificationArray)>0)return $notificationArray;
-
-
-        return false;
+        if(array_key_exists('notification',$this->mod_Tables[$this->ms_id]))$notificationArray=$this->mod_Tables[$this->ms_id]['notification'];
+       // dd($notificationArray);
+        return $notificationArray;
 
 
     }
