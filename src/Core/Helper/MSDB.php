@@ -26,6 +26,22 @@ class MSDB implements MasterNoSql
     /**
      * @return mixed
      */
+    public function getFTableName()
+    {
+        return $this->fTableName;
+    }
+
+    /**
+     * @param mixed $fTableName
+     */
+    public function setFTableName($fTableName)
+    {
+        $this->fTableName = $fTableName;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getModel()
     {
         return $this->MSmodel;
@@ -281,12 +297,13 @@ public $dataToProcess=[];
         }else{
 
 
-            $table=$this->model->getTable();
-            $connection=$this->model->getConnectionName();
+            $table=$this->getFTableName();
+            $connection=$this->getConnection();
             $fields=$this->model->base_Field;
 
 
         }
+
     //    dd($this->checkTableExist($id,$perFix));
         if(!$this->checkTableExist($id,$perFix)){
             return self::makeTable($table,$fields,$connection);
@@ -294,6 +311,23 @@ public $dataToProcess=[];
 
         return false;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getConnection()
+    {
+        return $this->connection;
+    }
+
+    /**
+     * @param mixed $connection
+     */
+    public function setConnection($connection)
+    {
+        $this->connection = $connection;
+    }
+
 
     /**
      * Delete Module Table
@@ -370,8 +404,6 @@ public $dataToProcess=[];
                             if(!array_key_exists($input['name'],$columnArray) && array_key_exists('callback',$input)){
                                 $sClass=$this->model->namespace."\\F";
                                 $sMethod="::".$input['callback'];
-                                //  dd($input['callback']."()");
-                                //dd(call_user_func($sClass . $sMethod));
                                 $columnArray[$input['name']]=call_user_func($sClass . $sMethod);
 
                             }

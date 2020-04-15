@@ -95,13 +95,14 @@
                         </svg>
                             <span>Edit Profile</span>
                         </div>
+                       <a href="/o3/User/logout">
                         <div class="ms-dashboard-profile-signout-btn">
                     <span>Log out</span>
                             <svg  class="ms-dashboard-profile-signout-icon">
                                 <use xlink:href="#msicon-svg-user-signout" />
                             </svg>
                         </div>
-
+                       </a>
 
                     </div>
                     <hr class="ms-dashboard-profile-hr">
@@ -217,7 +218,8 @@
             'msData':{
                 type: Object,
                 required: true
-            }
+            },
+
 
         }
         ,
@@ -345,36 +347,9 @@
 
         },
         mounted() {
+            if(this.msData.hasOwnProperty('msUser'))this.msUserData=this.msData.msUser;
+
            this.getDataForSideBar();
-
-            // var data = [
-            //     {
-            //         name:'accessToken',
-            //         value:this.msData.accessToken
-            //     },
-            //
-            //     {
-            //         name:'type',
-            //         value:'json'
-            //     },
-            //     {
-            //         name:'find',
-            //         value:'sidebar'
-            //     }
-            //
-            // ];
-            // var link = this.makeGetUrl(this.msData.path.sidebar,data);
-            //
-            //
-            // var data2={
-            //
-            //     path:link,
-            //  //   accessToken:this.msData.accessToken
-            //
-            // };
-            // this.setMenuData(this,data2);
-
-
 
 
 

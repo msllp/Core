@@ -20,7 +20,8 @@ try {
  */
 
 window.axios = require('axios');
-
+window.msValidate = require("validate.js");
+window.msFrontEnd = process.env.MIX_APP_FRONTEND_URL;
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /**

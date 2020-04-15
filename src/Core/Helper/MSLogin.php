@@ -12,13 +12,15 @@ class MSLogin
 
     public function __construct(MSDB $db,$pageData)
     {
+
+        if(!array_key_exists('verifyBy',$pageData))$pageData['verifyBy']= ['MS ID','Google'];
         $this->setMPageData($pageData);
         $this->setMsdb($db);
         $this->formData=[];
         $this->pageData=[];
 
         $this->OtherSource=false;
-
+      //  dd( $this);
         if(array_key_exists('verifyBy',$this->getMPageData()) && count($this->getMPageData()['verifyBy'])>0 ){
             $this->OtherSource=true;
             $outAPI=new \MS\Mod\B\Users\L\OutLoginApi();
@@ -38,10 +40,12 @@ class MSLogin
             $d=$outAPI->getSourceByName($name);
 
             $data=$d;
+
             if(array_key_exists('VerifyUrl',$data) && array_key_exists('VerifyCallback',$data)){
                 $data['VerifyUrl']=route($data['VerifyUrl']);
                 $data['VerifyCallback']=route($data['VerifyCallback']);
             }
+
             $this->setVerifyData($data);
             $tf=json_decode($data['VerifyData'],true,5);
           //  dd($tf[$data['VerifyDataDefault']]);
@@ -207,7 +211,7 @@ class MSLogin
 
     private function getVerifyLogin(){
         $d=$this->getVerifyData();
-    //    dd($d);
+
         if(array_key_exists('VerifyUrl',$d) && $d['VerifyUrl'])return route($d['VerifyUrl']);
         return url('/');
     }
@@ -225,7 +229,9 @@ class MSLogin
         $d=$this->getMPageData();
         $formId=$this->getFormIDs();
 
+
       $d3=$this->getVerifyData();
+
         //TODO return only required fields
 
 
@@ -236,15 +242,16 @@ class MSLogin
         $f=[
             //'bgImg'=>asset('images/bg1.png'),
 
-            'ClientIcon'=>(array_key_exists('CompanyIcon',$d)) ? $d['CompanyIcon'] : asset('images/logo.png'),
+            'ClientIcon'=>(array_key_exists('CompanyIcon',$d)) ? $d['CompanyIcon'] : asset('images/logo_v1_black.svg'),
             'MasterIcon'=>asset('images/logo_master.png'),
             'formData'=>$this->makeArrayForVueForFormData($formId),
             'loginPostUrl'=>$this->getVerifyLogin(),
             'inspire'=>Inspiring::quote(),
-            'copyrightPre'=>"© 2019-2020,All rights reserved by",
+            'copyrightPre'=> implode(' ',[ '©',implode('-',[date("Y"),date("Y")+1]),',','All rights reserved by' ]),
             'copyrightPer'=>"Million Solutions LLP",
             'OtherSource'=>$this->OtherSource,
-            'AllSoucesData'=>$asd
+            'AllSoucesData'=>$asd,
+            'helpLine'=>implode(' | ',['Mail us: help@o3erp.com','WhatsApp:+917990563470','Call us: 079 3006 1009'])
          //   'OtherSource'=>false
         //    'CheckUsernamePostUrl'=>'',
           //  ''

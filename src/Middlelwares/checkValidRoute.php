@@ -40,7 +40,7 @@ class checkValidRoute{
         $orgin=explode('//',$request->root())[1];
 
     $checkArray=\MS\Mod\B\Mod\F::checkRouteExist($request);
-
+//dd($request);
 if($checkArray['pathFound'] or !$debug)return $next($request);
 
 if($debug)return $next($request);

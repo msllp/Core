@@ -426,6 +426,8 @@ if($lvl>1){
         if(array_key_exists('accessToken',$input))$input['accessToken']=\MS\Core\Helper\Comman::decode($input['accessToken']);
 
 
+      //  dd($data);
+
         if( (count($getVeriData)>0) && array_key_exists('accessToken',$getVeriData) &&  ( $input['accessToken']!=$getVeriData['accessToken'])){
          //dd($input);
             $error['accessTokenNotVerified']='Sorry , I am not Human you can not bribe me.';

@@ -14,7 +14,8 @@
 
     ];
     if(isset($msData))$data=$msData;
-    //dd($data);
+
+   // dd($data);
     $json=collect($data)->toJson();
 
     ?>
