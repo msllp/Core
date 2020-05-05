@@ -8,12 +8,11 @@
 
 namespace MS\Core\Helper;
 
-use \Illuminate\Support\Facades\Schema;
-use \Illuminate\Database\Schema\Blueprint;
+use Carbon\Carbon;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use phpDocumentor\Reflection\Types\Boolean;
-use phpDocumentor\Reflection\Types\Mixed_;
 
 //use Illuminate\Notifications\Notification;
 
@@ -46,7 +45,7 @@ class MSDB implements MasterNoSql
     {
         return $this->MSmodel;
     }
-public $dataToProcess=[];
+    public $dataToProcess=[];
     public $currentFiles=[];
     public $ms_id="0";
 
@@ -54,17 +53,77 @@ public $dataToProcess=[];
 
     private $filePaths=[];
 
+    public function __construct(string $nameSpace, string $id=null, array $perFix=[],array $tableData=[])
+    {
+
+       // dd(func_get_args());
+        $nameSpace=$nameSpace;
+        $base=$nameSpace."\B";
+        $this->masterNamespace= $nameSpace;
+
+        $this->ms_id=$id;
+        $this->database=[
+            'namespace'=>"\\".$nameSpace."\\M",
+            'id'=>$id,
+        ];
+
+
+        if(count($perFix)>0 )$this->database['perfix']=$perFix;
+
+
+
+
+
+//        if(array_key_exists('perfix',$this->database)) {
+//            $this->model = new $this->database['namespace'] ($nameSpace, $id, $this->database['perfix']);
+//        }else{
+//            //  if('\MS\Mod\B\Users4O3\M'==$this->database['namespace'])     dd($this);
+//            $this->model = new $this->database['namespace'] ($nameSpace, $id);
+//        }
+       // dd($nameSpace);
+        //dd($this->model->ms_base);
+        //parent::__construct($nameSpace, $id, $perFix);
+        $baseNameSpace=implode('\\',['',$nameSpace,'b']);
+        //$this->mod_Tables[$this->ms_id]=$this->model->ms_base::getTableArray($this->ms_id,$tableData);
+        $this->mod_Tables[$this->ms_id]=$baseNameSpace::getTableArray($this->ms_id,$tableData);
+        //   if(!is_array($this->mod_Tables))dd($this->mod_Tables);
+
+        $connection=$this->getConnectionName();
+      //  $tableName=$this->model->getTable();
+        $tableName=$this->getTable();
+        $this->fTableName=$tableName;
+        $this->connection=$connection;
+        $this->MSmodel =\DB::connection($connection)->table($tableName);
+
+
+    }
+
+    private function getConnectionName(){
+        if($this->connection!=null)return $this->connection;
+        return  $this->mod_Tables[$this->ms_id]['connection'];
+    }
+
+    private function getTable(){
+        if($this->fTableName!=null)return $this->fTableName;
+     $tableArray=   $this->mod_Tables[$this->ms_id];
+    // dd($tableArray);
+    $dv='_';
+      $tableName=$tableArray['tableName'];
+        if(array_key_exists('perfix',$this->database))return (implode($dv,[$tableName,implode($dv,$this->database['perfix'])]));
+        return $tableName;
+    }
+
     public function attachTableData($tableData){
     //    dd($tableData);
 
         if(is_array($this->mod_Tables) && array_key_exists($this->ms_id,$this->mod_Tables) && array_key_exists($this->ms_id,$tableData)){
 
             $this->mod_Tables[$this->ms_id]=$tableData[$this->ms_id];
-            $this->model = new $this->database['namespace'] ( $this->masterNamespace, $this->ms_id,[],$tableData[$this->ms_id]);
+          //  $this->model = new $this->database['namespace'] ( $this->masterNamespace, $this->ms_id,[],$tableData[$this->ms_id]);
 
 
-            $connection=$this->model->getConnectionName();
-            $tableName=$this->model->getTable();
+            $connection=$this->getConnectionName();
+            $tableName=$this->getTable();
             $this->fTableName=$tableName;
             $this->connection=$connection;
             $this->MSmodel =\DB::connection($connection)->table($tableName);
@@ -76,45 +135,13 @@ public $dataToProcess=[];
     }
 
 
-    public function __construct(string $nameSpace, string $id=null, array $perFix=[],array $tableData=[])
-    {
-
-        $nameSpace=$nameSpace;
-            $base=$nameSpace."\B";
-        $this->masterNamespace= $nameSpace;
-
-        $this->ms_id=$id;
-        $this->database=[
-            'namespace'=>"\\".$nameSpace."\\M",
-            'id'=>$id,
-             ];
-
-
-        if(count($perFix)>0 )$this->database['perfix']=$perFix;
-
-        if(array_key_exists('perfix',$this->database)) {
-            $this->model = new $this->database['namespace'] ($nameSpace, $id, $this->database['perfix']);
-        }else{
-            $this->model = new $this->database['namespace'] ($nameSpace, $id);
-        }
-
-
-        //parent::__construct($nameSpace, $id, $perFix);
-
-       $this->mod_Tables[$this->ms_id]=$this->model->ms_base::getTableArray($this->ms_id,$tableData);
-     //   if(!is_array($this->mod_Tables))dd($this->mod_Tables);
-
-        $connection=$this->model->getConnectionName();
-        $tableName=$this->model->getTable();
-        $this->fTableName=$tableName;
-        $this->connection=$connection;
-        $this->MSmodel =\DB::connection($connection)->table($tableName);
-    }
 
 
     private static $dbStore=['MS','DB','Master' ];
 
     private static $dbSource=['MS','DB','Master','blank','blank' ];
+
+    private static $dbBackUpPath=['MS','DB','Master','backup', ];
 
     public $perPage=5;
 
@@ -246,8 +273,9 @@ public $dataToProcess=[];
      */
     public function checkTableExist($id=false, $perFix=false):bool{
 
-            $connection=$this->model->getConnectionName();
-            $table=$this->model->getTable();
+            //$connection=$this->model->getConnectionName();
+            $connection=$this->getConnectionName();
+            $table=$this->getTable();
 
         return Schema::connection($connection)->hasTable($table);
     }
@@ -297,9 +325,9 @@ public $dataToProcess=[];
         }else{
 
 
-            $table=$this->getFTableName();
+            $table=$this->getTable();
             $connection=$this->getConnection();
-            $fields=$this->model->base_Field;
+            $fields=$this->mod_Tables[$this->ms_id]['fields'];
 
 
         }
@@ -335,8 +363,8 @@ public $dataToProcess=[];
      */
     public function delete():bool {
 
-        $table=$this->model->getTable();
-        $connection=$this->model->getConnectionName();
+        $table=$this->getTable();
+        $connection=$this->getConnectionName();
         return self::deleteTable($table,$connection);
 
 
@@ -350,8 +378,17 @@ public $dataToProcess=[];
      */
 
     public function rowAll(){
+        $foundRow=$this->MSmodel->get()->toArray();
 
-        return $this->MSmodel->get()->toArray();
+        if($foundRow>0){
+
+            $mapFunction=function ($array){
+                return (gettype($array) == 'object')?(array)$array:$array;
+            };
+            return  array_map($mapFunction,$foundRow);
+        }
+
+        return [];
 
     }
     public function rowAdd(array $columnArray, array $uniqArray=[], bool $debug=false):bool
@@ -367,19 +404,19 @@ public $dataToProcess=[];
 
 
 
-            $connection=$this->model->getConnectionName();
-            $table=$this->model->getTable();
+            $connection=$this->getConnectionName();
+            $table=$this->getTable();
 
 
            // if(array_key_exists('RouteCode',$columnArray))    dd($table);
             $tableName=$table;
             // $connection=$this->database['namespace']::getConnection($this->database['id']).$this->database['perfix'];
 
-            $fieldCollection=collect($this->model->base_Field);
+            $fieldCollection=collect($this->mod_Tables[$this->ms_id]['fields']);
 
 
-
-            foreach ($this->model->base_Field as $input){
+            $fields=$this->mod_Tables[$this->ms_id]['fields'];
+            foreach ($fields as $input){
 
                 if(!array_key_exists('dbOff',$input))$input['dbOff']=false;
                 if(array_key_exists('dbOff',$input)  && !$input['dbOff'] ) {
@@ -402,7 +439,8 @@ public $dataToProcess=[];
                         case 'locked':
                             fn_auto:
                             if(!array_key_exists($input['name'],$columnArray) && array_key_exists('callback',$input)){
-                                $sClass=$this->model->namespace."\\F";
+                                $sClass=implode('\\',[ $this->masterNamespace,'F']);
+
                                 $sMethod="::".$input['callback'];
                                 $columnArray[$input['name']]=call_user_func($sClass . $sMethod);
 
@@ -431,7 +469,7 @@ public $dataToProcess=[];
            //  if ($debug)dd($debug."dasdasd");
             if(count($uniqArray)>0){
 
-                $valdationError=1;
+                $valdationError=true;
                 $model=\DB::connection($connection)->table($tableName);
                 $valdationErrorArray=[];
 
@@ -446,6 +484,7 @@ public $dataToProcess=[];
                         $model=$model->where($name,$columnArray[$name]);
 
                       //  dd($model);
+                        //dd($model->get()->count());
                         if($model->get()->count() > 0){
 
                             $valdationErrorArray[$name]="Duplicate Found for Column name: ".$name ." \n Error casued by class::method = ".__METHOD__;
@@ -455,22 +494,26 @@ public $dataToProcess=[];
 
 
                 }
-                if($valdationError==true)if(count($valdationErrorArray) < 1 )$valdationError=0;
 
+                if($valdationError==true)if(count($valdationErrorArray) < 1 )$valdationError=false;
+              //  if($valdationError==true)dd($valdationErrorArray);
             }
 
              if($valdationError==true)goto ms_error_found;
-            if($valdationError==false)return $this->getModel()->insert($columnArray);
+            if($valdationError==false) {
+
+                return $this->getModel()->insert($columnArray);
+            }
 
         }
         catch (\Exception $e){
            // dd($e);
             ms_error_found:
-           if(0){
+           if(1){
               if(isset($valdationErrorArray)){
                   if(count($valdationErrorArray)>0) $er['validationArray']=$valdationErrorArray;
               }
-              dd($er);
+          //    dd($er);
 
           }
        //     if($debug)dd($e);
@@ -482,8 +525,10 @@ public $dataToProcess=[];
         }
 
 
+
         ms_final_return:
-        //dd($this);
+        //dd($valdationError);
+        //if(count($er)>0)dd($valdationError==true);
         if(!isset($valdationError))$valdationError=true;
         if($valdationError==true)return false;
         return true;
@@ -606,7 +651,7 @@ public $dataToProcess=[];
         //dd($inputName);
 
             //dd(collect($this->model->base_Field)->where('name',$inputName."0")->first());
-        $inputData=collect($this->model->base_Field)->where('name',$inputName);
+        $inputData=collect($this->mod_Tables[$this->ms_id]['fields'])->where('name',$inputName);
       //  dd($inputData->count());
             if(($inputData->count()>0) && array_key_exists('storeTo',$inputData->first())){
                 $inputData=$inputData->first();
@@ -662,9 +707,9 @@ public $dataToProcess=[];
     public function rowEdit(array $identifier, array $columnArray):bool
     {
         // TODO: Implement rowEdit() method.
-        $connection=$this->model->getConnectionName();
-        $table=$this->model->getTable();
-        $fields=$this->model->base_Field;
+        $connection=$this->getConnectionName();
+        $table=$this->getTable();
+        $fields=$this->mod_Tables[$this->ms_id]['fields'];
         if(!array_key_exists('updated_at',$columnArray))$columnArray['updated_at']=now()->toDateTimeString();
         if(count($identifier) > 1){
            // dd(reset($identifier));
@@ -707,9 +752,9 @@ public $dataToProcess=[];
      */
     public function rowDelete(array $identifier):bool
     {
-        $connection=$this->model->getConnectionName();
-        $table=$this->model->getTable();
-        $fields=$this->model->base_Field;
+        $connection=$this->getConnectionName();
+        $table=$this->getTable();
+        $fields=$this->mod_Tables[$this->ms_id]['fields'];
 
         if(count($identifier) < 2){
             //dd(reset($identifier));
@@ -736,9 +781,9 @@ public $dataToProcess=[];
      */
     public function rowGet(array $identifier=[]): array
     {
-        $connection=$this->model->getConnectionName();
-        $table=$this->model->getTable();
-        $fields=$this->model->base_Field;
+        $connection=$this->getConnectionName();
+        $table=$this->getTable();
+        $fields=$this->mod_Tables[$this->ms_id]['fields'];
 
 
         $return=[];
@@ -788,7 +833,7 @@ public $dataToProcess=[];
 
     public function getAllTable(string $connection=null):array {
         if($connection !=""){
-            return \DB::connection($this->model->getConnectionName())->getDoctrineSchemaManager()->listTableNames();
+            return \DB::connection($this->getConnectionName())->getDoctrineSchemaManager()->listTableNames();
         }
 
     }
@@ -1009,6 +1054,14 @@ public $dataToProcess=[];
     public static function getBlankDBPath(){
         return base_path( implode(DS,self::$dbSource) );
     }
+    public static function getBackDBPath(){
+        $d=[Carbon::now()->timestamp];
+        $path=array_merge(self::$dbBackUpPath,$d);
+        $path=base_path( implode(DS,$path ));
+       // dd($path);
+        mkdir($path);
+        return  $path;
+    }
     public static function makeDB(string $name,array $path=[]){
         $path['storePath']=implode(DS,[self::getDBPath($path),$name]) ;
         $path['sourcePath']=self::getBlankDBPath();
@@ -1026,9 +1079,12 @@ public $dataToProcess=[];
         return file_exists($path['sourcePath']);
     }
 
-    public static function backDB(string $name=null){
-
+    public static function backUpDB(string $name=null){
+        $path['storePath']=implode(DS,[self::getDBPath(),$name]) ;
+        $path['backUpPath']= implode(DS,[self::getBackDBPath(),$name]) ;
+        return copy ($path['storePath'], $path['backUpPath']);
     }
+
 
     public function ForPagination($page){
         $input=$page->all();

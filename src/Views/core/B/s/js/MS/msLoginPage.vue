@@ -9,7 +9,11 @@
 
             <div class="ms-login-h" >
 
-                <img class="ms-clientlogo" :src="msPageData.cIcon" >
+                <div class="ms-login-logo-box">
+                    <img class="ms-msterlogo" v-if="false" :src="msPageData.cIcon" >
+                    <img class="ms-clientlogo" :src="msPageData.cIcon" >
+                </div>
+
                 <hr>
 
                 <div class="ms-login-form">
@@ -69,8 +73,13 @@
                         with your social network
                         <div class="ms-login-others-btn-box ">
 
-                        <div v-for="sor in msPageData.asd" class="cursor-pointer">
-                       <a :href="sor.VerifyUrl">   <i :class="{[sor.VerifyIcon]:true}"></i></a>
+                        <div v-for="sor in msLoginAs" class="ms-login-others-btn">
+                       <a :href="sor.VerifyUrl" class="ms-login-others-btn-contetnt">
+                           <div class="ms-login-other-btn-icon">
+                               <i :class="{[sor.VerifyIcon]:true}" ></i>
+                           </div>
+                          <div class="ms-login-other-btn-text" >{{sor.VerifyName}} Account</div>
+                       </a>
                         </div>
 
 
@@ -81,12 +90,11 @@
 
                 </div>
 
-                <div class="ms-login-copyright-box">
+                <div class="ms-login-info-box">
                     <span>Don't have account Sign up<a :href="msFrontEnd+'/signup'"> here </a> |</span>
-                    <span class="ms-login-copyright-pre"> Not able to login ? Reach us </span>
+                    <span> Not able to login ? Reach us </span>
                     <hr>
-                    <span class="ms-login-copyright-pre"> {{msData.helpLine}}</span>
-                    <hr>
+                    <span class="ms-login-info-pre"> {{msData.helpLine}}</span>
                 </div>
 
                 <div class="ms-login-copyright-box">
@@ -138,6 +146,7 @@
                 successLogin:false,
                 msPostResponseData:{},
                 msFrontEnd:window.msFrontEnd,
+                msLoginAs:{}
               //  loader:null
 
                     };
@@ -218,6 +227,11 @@
 
          //   if(this.msData.hasOwnProperty('ClientIcon'))this.msPageData.cIcon=this.msData.ClientIcon;
         },
+        mounted() {
+
+            this.msLoginAs=this.msData.AllSoucesData;
+            this.msLoginAs.shift();
+            },
         methods:    {
 
             resetForm(){

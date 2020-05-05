@@ -7,6 +7,7 @@
  */
 
 namespace MS\Core\Helper;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use phpDocumentor\Reflection\Types\Boolean;
@@ -21,12 +22,40 @@ define('ENCRYPTION_KEY', 'd0a7e7997b6d5fcd55f4b5c32611b87cd923e88837b63bf2941ef8
  */
 class Comman
 {
+
+    public static function moneyFormatIndia($num) {
+    $explrestunits = "" ;
+    if(strlen($num)>3) {
+        $lastthree = substr($num, strlen($num)-3, strlen($num));
+        $restunits = substr($num, 0, strlen($num)-3); // extracts the last three digits
+        $restunits = (strlen($restunits)%2 == 1)?"0".$restunits:$restunits; // explodes the remaining digits in 2's formats, adds a zero in the beginning to maintain the 2's grouping.
+        $expunit = str_split($restunits, 2);
+        for($i=0; $i<sizeof($expunit); $i++) {
+            // creates each of the 2's group and adds a comma to the end
+            if($i==0) {
+                $explrestunits .= (int)$expunit[$i].","; // if is first value , convert into integer
+            } else {
+    $explrestunits .= $expunit[$i].",";
+}
+}
+$thecash = $explrestunits.$lastthree;
+} else {
+    $thecash = $num;
+}
+return $thecash; // writes the final format where $currency is the currency symbol.
+}
+    public static function filterArray($ar,$key){
+        foreach ($key as $k){
+            if(array_key_exists($k,$ar))unset($ar[$k]);
+        }
+        return $ar;
+    }
+
     public function msJsonError($e=[]){
         return response()->json([
             'errorsRaw' => implode(' , ',$e),
         ],418);
     }
-
 
     public static function msJson($t,$nextData=[],$e=[]){
         $valid=0;
@@ -166,8 +195,9 @@ if($master && array_key_exists('locationOfFile', $array)){
      * @param integer $type = 1 (Default)
      * @return string
      */
-    public static function random($count=4,$type=1,$lvl=1,$dv='_'): string {
+    public static function random($count=4,$type=1,$lvl=1,$preFix=[],$dv='_'): string {
         $randstring=[];
+      //  dd($preFix);
         switch ($type) {
             case'patern':
                 $characters = '456';
@@ -203,9 +233,9 @@ if($master && array_key_exists('locationOfFile', $array)){
                 break;
         }
 
-if($lvl>1){
+    if($lvl>1){
     $fCode=[];
-    for ($i2 = 0; $i2 <=     $lvl; $i2++){
+    for ($i2 = 0; $i2 <= $lvl; $i2++){
         $randstring=[];
         for ($i = 0; $i < $count; $i++) {
             $randstring[]= $characters[rand(0, strlen($characters)-1)];
@@ -223,8 +253,59 @@ if($lvl>1){
         $randstring[]=$characters[rand(0, strlen($characters)-1)];
     }
 }
+    $randstring=implode('', $randstring);
 
-        return implode('', $randstring) ;
+    if(count($preFix)>0){
+    //    dd($preFix);
+        $preFix=implode($dv,$preFix);
+        $randstring= implode($dv,[  $preFix,$randstring]);
+    }
+
+        return $randstring ;
+    }
+
+
+
+    public static function encodeLimit($str='',$min=30,$zone='Asia/Kolkata',$salt="|\/|"):string {
+    $enStr='';
+    $enStr=(strlen($str)>0)?$str:'';
+    $now=Carbon::now($zone);
+   // $now->tz = $zone;
+  //  dd($now->timezone);
+    $timeStamp=self::encode($now->addMinutes($min)->timestamp);
+    $min=self::encode($min*60000);
+ //   $timeStamp=$now->timestamp;
+    $enStr=self::encode($enStr);
+    $enStr=implode($salt,[$enStr,$timeStamp,$min]);
+    $enStr=self::encode($enStr);
+    return $enStr;
+    }
+
+    public static function decodeLimit($str='',$min=30,$zone='Asia/Kolkata',$salt="|\/|"):string {
+
+    $deStr='';
+
+    $deStr=(strlen($str)>0)?$str:'';
+    $deStr=self::decode($deStr);
+    $exStr=explode($salt,$deStr);
+
+    if(count($exStr)==3){
+        $min=(string)end($exStr);
+        $min=self::decode( $min) /60000;
+    }
+
+   // dd($exStr);
+
+    $timeStamp=(count($exStr)==3)?self::decode( $exStr[count($exStr)-2]):self::decode( end($exStr));
+
+
+    $now=Carbon::now($zone);
+    $checkNow=Carbon::now($zone);
+    $checkNow=$checkNow->setTimestamp($timeStamp);
+   // dd(self::decode(reset($exStr)));
+     //   dd($checkNow->minute);
+    if(!$now->diffInMinutes($checkNow)) return '';
+    return self::decode(reset($exStr));
     }
 
     /**
@@ -390,25 +471,25 @@ if($lvl>1){
                     break;
 
                 case 'post':
-                    \Route::post($link['route'],$method)->name($link['name']);
+                    \Route::post($link['route'],$method)->name($link['name'])->middleware('web');
                     break;
 
                 case 'put':
-                    \Route::put($link['route'],$method)->name($link['name']);
+                    \Route::put($link['route'],$method)->name($link['name'])->middleware('web');
                     break;
 
                 case 'update':
-                    \Route::patch($link['route'],$method)->name($link['name']);
+                    \Route::patch($link['route'],$method)->name($link['name'])->middleware('web');
                     break;
 
                 case 'delete':
-                    \Route::delete($link['route'],$method)->name($link['name']);
+                    \Route::delete($link['route'],$method)->name($link['name'])->middleware('web');
                     break;
 
 
 
                 default:
-                    \Route::get($link['route'],$method)->name($link['name']);
+                    \Route::get($link['route'],$method)->name($link['name'])->middleware('web');
                     break;
             }
 
@@ -422,13 +503,15 @@ if($lvl>1){
             'msg'=>'Opps I am Computer not Human.'
 
         ];
+      //  dd(\MS\Core\Helper\Comman::decode($input['accessToken']));
 
-        if(array_key_exists('accessToken',$input))$input['accessToken']=\MS\Core\Helper\Comman::decode($input['accessToken']);
+        if(array_key_exists('accessToken',$input))$input['accessToken']=\MS\Core\Helper\Comman::decodeLimit($input['accessToken']);
+
+     //   dd(self::decode($input['accessToken']));
+        //dd($sessionData);
 
 
-      //  dd($data);
-
-        if( (count($getVeriData)>0) && array_key_exists('accessToken',$getVeriData) &&  ( $input['accessToken']!=$getVeriData['accessToken'])){
+        if( (count($getVeriData)>0) && array_key_exists('accessToken',$getVeriData) &&  ( $input['accessToken']!=$getVeriData['accessToken']) && strlen($input['accessToken'])<1){
          //dd($input);
             $error['accessTokenNotVerified']='Sorry , I am not Human you can not bribe me.';
         }
@@ -437,7 +520,7 @@ if($lvl>1){
             $returnArray['msg']='We finding Data';
 
 
-            switch ($input['type']){
+            if(array_key_exists('type',$input))switch ($input['type']){
                 case 'json':
 
                     switch ($input['find']){

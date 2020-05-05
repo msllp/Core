@@ -8,12 +8,13 @@
     color : $ms-theme-color-light;
     @apply px-2;
 
-    background:  linear-gradient(47deg, $ms-theme-color-light, $ms-dark-theme-color-main-cross-4);;
+    background:  linear-gradient(47deg, $ms-theme-color-light, $ms-dark-theme-color-main-cross);;
 font-size: 12px;
     z-index:1126;
     }
 
 .ms-live-data-block{
+    @apply border;
  //   padding-top: 50px;
 }
 

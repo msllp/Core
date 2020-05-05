@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: ms
- * Date: 26-05-2019
- * Time: 06:18 PM
- */
 
 namespace MS\Mod\{NameSpace};
 use Faker\Generator as Faker;

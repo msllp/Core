@@ -19,7 +19,7 @@ class MSPlease
         ];
         $dataFinal=[];
         $exNamespace=explode('\\',$namespace);
-       //dd($exNamespace);
+       // dd($exNamespace);
         $dataStatic=[
             'ModCode'=>end($exNamespace),
             'NameSpace'=>$namespace,

@@ -1,12 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: ms
- * Date: 18-03-2019
- * Time: 03:13 AM
- */
 
-namespace {NameSpace};
+namespace MS\Mod\{NameSpace};
 
 
 
