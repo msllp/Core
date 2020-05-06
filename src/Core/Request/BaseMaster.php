@@ -6,7 +6,7 @@
  * Time: 01:10 PM
  */
 
-namespace MS\Core\Helper\Request;
+namespace MS\Core\Request;
 
 
 interface BaseMaster

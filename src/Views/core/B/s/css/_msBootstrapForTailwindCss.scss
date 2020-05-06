@@ -14,7 +14,7 @@ $base-theme-color-6: rgba(97,88,206,0.6);
 
 
 @import "MS/var";
-
+@import "MS/root";
 @import "MS/UI";
 @import "MS/dashboard";
 @import "MS/sidemenu";
@@ -25,6 +25,10 @@ $base-theme-color-6: rgba(97,88,206,0.6);
 @import "MS/loginpage";
 @import "MS/profilePage";
 @import "MS/listmake";
+@import "MS/videoconf";
+@import "MS/modal";
+@import "MS/vMeet";
+@import "MS/MOD/Master";
 
 
 

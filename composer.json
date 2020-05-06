@@ -14,10 +14,12 @@
     "laravel/framework": "^7.0",
     "laravel/tinker": "^2.0",
     "doctrine/dbal": "^2.10",
-    "symfony/yaml": "^4.3",
+    "symfony/yaml": "^5.0",
     "barryvdh/laravel-dompdf": "^0.8.4",
     "guzzlehttp/guzzle": "^6.3",
-    "razorpay/razorpay": "2.*"
+    "razorpay/razorpay": "2.*",
+    "laravel/socialite": "^4.3",
+    "pusher/pusher-php-server": "^4.1"
   },
   "autoload": {
     "psr-4": {

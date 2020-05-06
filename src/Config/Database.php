@@ -102,18 +102,18 @@ return
             'prefix' => '',
             'foreign_key_constraints' => true,
         ],
-      'MS_GE_Config'=>[
-            'driver' => 'sqlite',
-            'database' => base_path('MS/DB/Master/MS_GE_Config'),
-            'prefix' => '',
-            'foreign_key_constraints' => true,
-        ],
-      'MS_GE_Data'=>[
-            'driver' => 'sqlite',
-            'database' => base_path('MS/DB/Master/MS_GE_Data'),
-            'prefix' => '',
-            'foreign_key_constraints' => true,
-        ],
+        'MS_GE_Config'=>[
+                'driver' => 'sqlite',
+                'database' => base_path('MS/DB/Master/MS_GE_Config'),
+                'prefix' => '',
+                'foreign_key_constraints' => true,
+            ],
+        'MS_GE_Data'=>[
+                'driver' => 'sqlite',
+                'database' => base_path('MS/DB/Master/MS_GE_Data'),
+                'prefix' => '',
+                'foreign_key_constraints' => true,
+            ],
 
 
 
@@ -130,15 +130,33 @@ return
             'prefix' => '',
             'foreign_key_constraints' => true,
         ],
-       'O3_Users_Data'=>[
+        'O3_Users_Data'=>[
             'driver' => 'sqlite',
             'database' => base_path('MS/DB/Master/O3_Users_Data'),
             'prefix' => '',
             'foreign_key_constraints' => true,
         ],
-       'O3_Users_Config'=>[
+        'O3_Users_Config'=>[
             'driver' => 'sqlite',
             'database' => base_path('MS/DB/Master/O3_Users_Config'),
+            'prefix' => '',
+            'foreign_key_constraints' => true,
+        ],
+        'O3_Company_Master'=>[
+            'driver' => 'sqlite',
+            'database' => base_path('MS/DB/Master/O3_Company_Master'),
+            'prefix' => '',
+            'foreign_key_constraints' => true,
+        ],
+        'O3_Company_Data'=>[
+            'driver' => 'sqlite',
+            'database' => base_path('MS/DB/Master/O3_Company_Data'),
+            'prefix' => '',
+            'foreign_key_constraints' => true,
+        ],
+        'O3_Company_Config'=>[
+            'driver' => 'sqlite',
+            'database' => base_path('MS/DB/Master/O3_Company_Config'),
             'prefix' => '',
             'foreign_key_constraints' => true,
         ],

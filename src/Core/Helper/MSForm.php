@@ -174,7 +174,7 @@ class MSForm
             //if(array_key_exists('msLinkKey',$btnData)) dd($btnData);
 
             //dd(in_array($type,$this->dbMaster['MSforms'][$this->formID]['actions']));
-            //dd();
+          //  dd($this->dbMaster['MSforms'][$this->formID]);
             if(in_array($type,$this->accessAction) && in_array($type,$this->dbMaster['MSforms'][$this->formID]['actions']))
             {
                 $returnData[$type]=$btnData;
@@ -340,8 +340,9 @@ class MSForm
 
     public function fromModel(MSDB $dbClass,$data=[]){
         $this->msdb=$dbClass;
-        $this->action=$this->fields=$this->msdb->model->ms_action;;
-        $this->fields=$this->msdb->model->base_Field;
+        $baseTabele=$this->fields=$this->msdb->mod_Tables[$this->id];
+        $this->action=$baseTabele['action'];
+        $this->fields=$baseTabele['fields'];
         if(count($data)>0)$this->newForm=false;
         $this->makeForm();
 
@@ -476,7 +477,7 @@ class MSForm
     }
     private function makeForm(){
 
-
+        //dd($this->dbMaster);
 
         if( array_key_exists('add',$this->action) or  (count($this->action)>0) ){
             $action=$this->action;
@@ -506,6 +507,8 @@ class MSForm
 
 
                 $fields=$this->makeFieldsFromGroup($fData)  ;
+
+
 
                 $this->returnHTML['formData']=$fields;
            //     if()mod_Tables
@@ -538,11 +541,12 @@ class MSForm
 
 
     private function makeDataForVue($data,$multiple=false){
-      //  dd($this);
 
+
+        $defaultInputType='text';
         $array=[
             'name'=>$data['name'],
-            'type'=>$data['input'],
+            'type'=>(array_key_exists('input',$data))?$data['input']:$defaultInputType,
             //'vName'=>$data['vName'],
             //'prefix'=>"lock text-info",
             //'perfix'=>"asterisk text-danger",

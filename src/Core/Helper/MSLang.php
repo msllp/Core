@@ -105,6 +105,10 @@ class MSLang
             'salesAddCust'=>['en'=>'Add Customer'],
             'salesAllCust'=>['en'=>'View All Customers'],
 
+            'panelLoginId'=>['en'=>implode(' / ',['Username','Email','Mobile No.'])],
+            'panelLoginPassword'=>['en'=>'Password'],
+            'loginForOwner'=>['en'=>'Please login to proceed']
+
 
             ];
         return self::processDataForOut($finalData[$version],$lang) ;

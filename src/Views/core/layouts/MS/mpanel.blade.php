@@ -10,11 +10,12 @@
         'path'=>
             [
                 'sidebar'=> route('mPanel.SideNav')],
-        'accessToken'=> \MS\Core\Helper\Comman::encode('UserMitul')
+        'accessToken'=> \MS\Core\Helper\Comman::encodeLimit('UserMitul')
 
     ];
     if(isset($msData))$data=$msData;
-    //dd($data);
+
+   // dd($data);
     $json=collect($data)->toJson();
 
     ?>

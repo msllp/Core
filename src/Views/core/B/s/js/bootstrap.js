@@ -1,3 +1,4 @@
+import https from "https";
 
 window._ = require('lodash');
 
@@ -7,11 +8,11 @@ window._ = require('lodash');
  * code may be modified to fit the specific needs of your application.
  */
 
-try {
-    window.$ = window.jQuery = require('jquery');
-
-    require('bootstrap');
-} catch (e) {}
+// try {
+//    window.$ = window.jQuery = require('jquery');
+//
+//     require('bootstrap');
+// } catch (e) {}
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -20,7 +21,10 @@ try {
  */
 
 window.axios = require('axios');
-
+window.msValidate = require("validate.js");
+window.msFrontEnd = process.env.MIX_APP_FRONTEND_URL;
+//console.log(process.env)
+window.msBackEnd = process.env.MIX_APP_BACKEND_URL;
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /**
@@ -33,19 +37,35 @@ let token = document.head.querySelector('meta[name="csrf-token"]');
 
 if (token) {
     window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+    window.axios.defaults.headers.common['MS-APP-Token'] = 'ms-web';
 } else {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
+//const msEcho = () => import("laravel-echo");
+
+import Echo from 'laravel-echo'
+import Pusher from "pusher-js";
+
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: process.env.MIX_PUSHER_APP_KEY,
+    cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+    forceTLS: true
+});
+
+window.MSStream=require('simple-peer');
+window.MSwrtc=require('wrtc');
 
 
-// import Echo from 'laravel-echo'
-
-// window.Pusher = require('pusher-js');
-
-// window.Echo = new Echo({
-//     broadcaster: 'pusher',
-//     key: 'your-pusher-key'
-// });
+window.msInstance = axios.create({
+    httpsAgent: new https.Agent({
+        headers: {},
+        rejectUnauthorized: false,
+        crossDomain: true
+    })
+});
 
 window.Vue = require('vue');
 // import zingchartVue from 'zingchart-vue';
@@ -73,10 +93,15 @@ Vue.component('msdashboard', require('./MS/msDashboard.vue').default);
 Vue.component('mswindow', require('./MS/msWindow.vue').default);
 Vue.component('msmenubar', require('./MS/msMenubar.vue').default);
 Vue.component('msdatatable', require('./MS/msDatatable.vue').default);
-Vue.component('msdockerdashboard', require('E:/Pojects/php/MSFrame/6/Master/MS/B/M/DCM/V/Vue/dockerMasterDashboard.vue').default);
+Vue.component('msvideoconf', require('./MS/C/msVideoConf.vue').default);
+Vue.component('msmodal', require('./MS/C/msModal.vue').default);
+//Vue.component('msdockerdashboard', require('E:/Pojects/php/MSFrame/6/Master/MS/B/M/DCM/V/Vue/dockerMasterDashboard.vue').default);
 Vue.component('mssidenav', require('./MS/C/msSideNav.vue').default);
 Vue.component('newtab', require('./MS/C/msNewTab.vue').default);
 Vue.component('salesdashboard', require('./MS/D/Sales.vue').default);
+
+
+Vue.component('msvmeet', require('./MS/C/msSchedulevMeet.vue').default);
 
 
 Vue.component('mscalc', require('./MS/C/msCalc.vue').default);
@@ -89,6 +114,10 @@ Vue.component('profile', require('./MS/P/profilePage.vue').default);
 Vue.component('mslistmaker', require('./MS/C/msListMaker.vue').default);
 
 //Components
+
+//Mod Components
+const MyComponent =require("./MS/M/Company/setupCompany");
+Vue.component('setupcompany', MyComponent.default);
 
 
 import MS from './MS/C/MS';

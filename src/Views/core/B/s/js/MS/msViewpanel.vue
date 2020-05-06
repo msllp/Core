@@ -52,7 +52,7 @@
                 'ms-live-data-block':true
                 }"
                    >
-                    <mswindow :ms-data="tab"  :index="index"  :ref= "'tab_'+index" > </mswindow>
+                    <mswindow class="ms-live-data-block" :ms-data="tab"  :index="index"  :ref= "'tab_'+index" > </mswindow>
 
 
             </div>
@@ -68,10 +68,16 @@
     import  MDD from 'mobile-device-detect';
     export default {
         name: "msviewpanel",
-        props:{},
+        props:{
+            'msData':{
+                type: Object,
+                required: true
+            },
+        },
         mixins:[MS],
         mounted(){
            if ( window.innerWidth < 800  )this.maxTabLimit=3;
+
             let sampleData=[
                 {
                     tabCode:'01',
@@ -83,7 +89,16 @@
 
                 ];
             this.currentTab=0;
-            this.allTab=sampleData;
+            this.$nextTick(() => {
+                this.allTab=(typeof this.msData.tab == 'undefined' || !this.msData.hasOwnProperty('tab'))?sampleData:this.msData.tab;
+
+                for (var i in this.allTab){
+                    this.addActionToTab(this.allTab[i]);
+                }
+
+
+            });
+
 
 
 
@@ -99,11 +114,11 @@
         },
         methods:{
 
+
             tabClicked(index){
               //  console.log(index);
                 this.currentTab=index;
-            }
-            ,
+            },
             checkActive(index){
                 if(index==this.currentTab)return true;
                 return false;
@@ -118,7 +133,8 @@
 
                 }
 
-            },rightClick(event){
+            },
+            rightClick(event){
 
                 // screenX/Y gives the coordinates relative to the screen in device pixels.
               //  console.log(event.screenX);
@@ -138,7 +154,8 @@
                     console.log("Limit: "+this.maxTabLimit+" current lenth: "+this.allTab.length);
                 }
 
-            },addNewTabnUpdate(data){
+            },
+            addNewTabnUpdate(data){
 
                 this.addNewTab(data);
                 var newtab=this.allTab.length-1;
@@ -154,25 +171,19 @@
             this.currentTab=newtab;
             },
             addActionToTab(data){
-                //delete this.allTab[this.currentTab];
-
-                var Handler=this.$refs['tab_'+this.currentTab][0];
-                if(this.allTab.length < 1){
-                    data.tabCode=this.ms_rand(5,1);
-                    data.modCode="MAS";
-                    this.addNewTab(data);
-                }else{
-                    this.allTab[this.currentTab].modDView=data.modDView;
-                }
-
-
                 this.$nextTick(() => {
-
+                    var Handler=this.$refs['tab_'+this.currentTab][0];
+                    if(this.allTab.length < 1){
+                        data.tabCode=this.ms_rand(5,1);
+                        data.modCode="MAS";
+                        this.addNewTab(data);
+                    }else{
+                        this.allTab[this.currentTab].modDView=data.modDView;
+                    }
 
                     Handler.updateTab(data);
-                //    console.log(data);
-                    //normalizeArray(this.$refs.form).classList.remove("was-validated");
-                },data);
+
+            });
 
                 //this.$children[this.currentTab].updateTab(data);
                 //
@@ -181,9 +192,8 @@
                // console.log(msHandle2);
 
              //   this.$refs[this.currentTab][0].updateTab(data);
-            },updateTabFromOthe(data){
-
-                //console.log(data);
+            },
+            updateTabFromOthe(data){
                 this.allTab[this.currentTab].modDView=data.modDView;
             }
 
