@@ -6,7 +6,7 @@
  * Time: 04:54 AM
  */
 
-namespace MS\Provider;
+namespace MS\Providers;
 use \Illuminate\Contracts\Auth\Authenticatable;
 
 class BasicUserProvider implements Authenticatable

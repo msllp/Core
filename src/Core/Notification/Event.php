@@ -1,6 +1,6 @@
 <?php
 
-namespace MS\Core\Notification\Events;
+namespace MS\Core\Notification;
 
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;

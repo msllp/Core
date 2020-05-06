@@ -6,7 +6,7 @@
  * Time: 01:14 PM
  */
 
-namespace MS\Core\Helper\Request;
+namespace MS\Core\Request;
 
 
 use Illuminate\Foundation\Http\FormRequest;

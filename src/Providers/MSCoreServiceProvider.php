@@ -6,7 +6,7 @@
  * Time: 03:03 AM
  */
 
-namespace MS\Provider;
+namespace MS\Providers;
 use Illuminate\Http\Request;
 
 define("MSCORE_UI_STATUS_1","B\MAS:CORE_UI_Status_1:StatusBoolean->StatusName");
