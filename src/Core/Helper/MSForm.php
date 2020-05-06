@@ -340,8 +340,9 @@ class MSForm
 
     public function fromModel(MSDB $dbClass,$data=[]){
         $this->msdb=$dbClass;
-        $this->action=$this->fields=$this->msdb->model->ms_action;;
-        $this->fields=$this->msdb->model->base_Field;
+        $baseTabele=$this->fields=$this->msdb->mod_Tables[$this->id];
+        $this->action=$baseTabele['action'];
+        $this->fields=$baseTabele['fields'];
         if(count($data)>0)$this->newForm=false;
         $this->makeForm();
 
