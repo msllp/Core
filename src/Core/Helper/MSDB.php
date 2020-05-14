@@ -100,6 +100,7 @@ class MSDB implements MasterNoSql
 
     private function getConnectionName(){
         if($this->connection!=null)return $this->connection;
+    //    if(!array_key_exists('connection', $this->mod_Tables[$this->ms_id]))dd($this->mod_Tables);
         return  $this->mod_Tables[$this->ms_id]['connection'];
     }
 
@@ -327,7 +328,7 @@ class MSDB implements MasterNoSql
 
             $table=$this->getTable();
             $connection=$this->getConnection();
-            $fields=$this->mod_Tables[$this->ms_id]['fields'];
+            $fields= $this->makeFieldsTomigrateToDB( $this->mod_Tables[$this->ms_id]['fields']);
 
 
         }
@@ -338,6 +339,17 @@ class MSDB implements MasterNoSql
         }
 
         return false;
+    }
+
+    private function makeFieldsTomigrateToDB(array $data):array{
+
+        $function=function($ar){
+            if(array_key_exists('dbOff',$ar) && $ar['dbOff'])return null;
+            return $ar;
+        };
+        $data=array_map($function,$data);
+        return array_filter($data);
+
     }
 
     /**

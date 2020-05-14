@@ -21,16 +21,7 @@ class checkValidRoute{
         $fAllowed=array_merge($allowed,$debugAllowed);
         $orgin=explode('//',$request->root())[1];
         $orgin=($request->headers->get('Origin') !=null)? explode('//',$request->headers->get('Origin'))[1]:$orgin;
-//dd($orgin);
-        if($request->ajax() && $request->headers->has('MS-APP-Token') && in_array($orgin,$fAllowed)){
-
-            //return $next($request);
-        }elseif($request->ajax() &&(!$request->headers->has('MS-APP-Token') or  in_array($orgin,$fAllowed)) ){
-          //  dd($request->headers->has('MS-APP-Token'));
-            return response()->json(['Dont try to be smart . You are not only who think smart.']);
-         //   return collect();
-        }
-
+        
         //dd($request->headers->has('MS-APP-Token'));
         $fAllowed=array_merge($allowed,$debugAllowed);
 

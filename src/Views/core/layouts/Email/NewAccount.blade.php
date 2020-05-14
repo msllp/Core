@@ -1,3 +1,6 @@
+@extends('MS::core.layouts.rootEmail')
+@section('body')
+
 <div class="card-footer">
 
 
@@ -16,3 +19,7 @@
     <p style="font-size: 8px;">This automated e-mail was sent to {{ $data['toEmail'] }}. </p>
    <span style="color: #1e7e34"> Save trees & help preserving our environment! Print this E-Mail only if necessary . </span>
 </div>
+
+
+
+@endsection

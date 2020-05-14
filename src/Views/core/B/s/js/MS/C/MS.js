@@ -40,7 +40,13 @@ export default {
             let returnX='ok';
             var Handler=classFor;
 
-            fetch(url)   .then(function(response) {
+            var headers={
+                'MS-APP-ID':window.MSclientName,
+                'MS-APP-Token':window.MSclientToken,
+                'X-Requested-With':'XMLHttpRequest'
+            };
+
+            fetch(url,{headers:headers})   .then(function(response) {
 
              //   console.log(response);
                 return response.json()

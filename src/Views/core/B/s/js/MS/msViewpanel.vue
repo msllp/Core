@@ -96,7 +96,7 @@
                     this.addActionToTab(this.allTab[i]);
                 }
 
-
+              //  this.refreshAllTab();
             });
 
 
@@ -114,6 +114,16 @@
         },
         methods:{
 
+
+            refreshAllTab(){
+            //console.log('refreshTab Called');
+                this.allTab=(typeof this.msData.tab == 'undefined' || !this.msData.hasOwnProperty('tab'))?sampleData:this.msData.tab;
+
+                for (var i in this.allTab){
+                    this.addActionToTab(this.allTab[i]);
+                }
+            //    console.log('refreshTab end');
+            },
 
             tabClicked(index){
               //  console.log(index);
@@ -165,23 +175,27 @@
                 var nextTab=this.allTab.length-1;
                 var Handler=this.$refs['tab_'+ nextTab ] [0];
                 Handler.updateTab(data);
+                this.currentTab=newtab;
                 //    console.log(data);
                 //normalizeArray(this.$refs.form).classList.remove("was-validated");
             },data);
-            this.currentTab=newtab;
+
             },
             addActionToTab(data){
                 this.$nextTick(() => {
                     var Handler=this.$refs['tab_'+this.currentTab][0];
-                    if(this.allTab.length < 1){
+                  //  console.log(this.currentTab);
+                    if(this.allTab.length < 1 ){
                         data.tabCode=this.ms_rand(5,1);
                         data.modCode="MAS";
-                        this.addNewTab(data);
+                        this.addNewTabnUpdate(data);
+
                     }else{
+                        Handler.updateTab(data);
                         this.allTab[this.currentTab].modDView=data.modDView;
                     }
 
-                    Handler.updateTab(data);
+
 
             });
 

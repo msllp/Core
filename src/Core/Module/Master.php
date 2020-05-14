@@ -157,7 +157,46 @@ class Master implements BaseMaster
     }
 
     public static function getRoutes(){
-        return static ::$route;
+
+        $staticRoutes=[];
+        $dynamicRoutes=[];
+
+        $namspace=static::$controller;
+        $exName=explode('\\',$namspace);
+        array_pop($exName);
+        $namspace=implode('\\',$exName);
+
+
+        foreach (static::$route as $r){
+            if(array_key_exists('preFix',$r) &&  array_key_exists('dynamicLoadNameSpace',$r)&&  array_key_exists('dynamicLoadRouteMethod',$r)){
+
+                $finalNamespace="\\".implode('\\',[$namspace,$r['dynamicLoadNameSpace']]);
+                $method=$r['dynamicLoadRouteMethod'];
+                $dynamR=$finalNamespace::$method();
+                $mapFun=function ($ar) use ($r){
+                    if(strpos($ar['route'],'/')===0)$ar['route']=substr($ar['route'],1);
+                    $ar['name']=implode('.',[ucfirst(strtolower($r['preFix'])) ,$ar['name']]);
+                    $ar['route']=implode('/',['',$r['preFix'],$ar['route']]);
+                    return $ar;
+                };
+                $dynamR=array_map($mapFun,$dynamR);
+
+                $dynamicRoutes=array_merge($dynamicRoutes,$dynamR);
+
+
+           /// dd($dynamR);
+
+
+            }else{
+                $staticRoutes[]=$r;
+            }
+        }
+
+        $allRoutes=[];
+
+        $allRoutes=array_merge($staticRoutes,$dynamicRoutes);
+
+        return $allRoutes;
     }
 
     public static function getAction($tableID=false) :array {

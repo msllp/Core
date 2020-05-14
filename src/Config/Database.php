@@ -160,6 +160,25 @@ return
             'prefix' => '',
             'foreign_key_constraints' => true,
         ],
+        'O3_Sales_Master'=>[
+                    'driver' => 'sqlite',
+                    'database' => base_path('MS/DB/Master/O3_Sales_Master'),
+                    'prefix' => '',
+                    'foreign_key_constraints' => true,
+                ],
+        'O3_Sales_Data'=>[
+                    'driver' => 'sqlite',
+                    'database' => base_path('MS/DB/Master/O3_Sales_Data'),
+                    'prefix' => '',
+                    'foreign_key_constraints' => true,
+                ],
+        'O3_Sales_Config'=>[
+                    'driver' => 'sqlite',
+                    'database' => base_path('MS/DB/Master/O3_Sales_Config'),
+                    'prefix' => '',
+                    'foreign_key_constraints' => true,
+                ],
+
 
 
     ];

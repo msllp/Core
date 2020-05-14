@@ -46,7 +46,7 @@ class MSTableSchema {
     ];
 
     private static $allowedKeysFields=[
-        'name','vName','type','input','validation'
+        'name','vName','type','input','validation','dbOff'
     ];
 
     private static  $requireKeysFields=[

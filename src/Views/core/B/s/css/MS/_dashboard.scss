@@ -1,6 +1,47 @@
+.ms-dashboard-profile-company-btn{
+    @apply border;
+    @apply cursor-pointer;
+    border-color:$ms-dark-theme-color-main;
+    @apply w-auto;
+    @apply ml-2;
+    @apply flex;
+    @apply relative;
+    .ms-dashboard-profile-company-btn-side{
+        @apply  pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700;
+    }
+    select{
+        @apply w-full;
+        @apply cursor-pointer;
+        @apply block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 px-4 pr-8 rounded leading-tight ;
+        option{
+            @apply cursor-pointer;
+        }
+    }
+    //@apply rounded;
+ //   min-height: 32px;
+ //   @apply px-2;
+}
 
-
-
+.ms-company-logo-2{
+    cursor: pointer;
+    max-height:70px;
+    @apply p-1;
+    @apply pl-3;
+    @apply ml-2;
+    @apply ml-2;
+    @apply border-l;
+}
+.ms-company-logo-text-2{
+    cursor: pointer;
+    max-height:70px;
+    @apply p-1;
+    @apply pl-3;
+    @apply ml-2;
+    @apply flex;
+    @apply content-center;
+    @apply border-l;
+    @apply flex-wrap;
+}
 
 
 .ms-dashboard-notification-box{
@@ -16,7 +57,7 @@
     .ms-dashboard-notification-body{
         @apply ms-animation;
         min-width: 250px;
-        max-height: 250px;
+        max-height: 290px;
 
         overflow-y:auto ;
         background: linear-gradient(-47deg, rgba(200,200,200,1), rgba(240,240,240,1));
@@ -403,6 +444,8 @@
     max-height:70px;
 }
 
+
+
 .ms-hidden-fix{
     padding-left: 0px;
 }
@@ -676,7 +719,7 @@
     .ms-dashboard-profile-body{
         @apply ms-animation;
         min-width: 250px;
-        max-height: 250px;
+        max-height: 290px;
         background: linear-gradient(-47deg, rgba(200,200,200,1), rgba(240,240,240,1));
         @apply p-3;
         .ms-dashboard-profile-user-box {

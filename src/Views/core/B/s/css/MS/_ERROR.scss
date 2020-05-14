@@ -1,0 +1,67 @@
+.ms-error-box{
+    background-color: $ms-theme-color-default;
+    @apply select-none;
+
+    @apply p-5;
+    .ms-error-img{
+        @apply p-3;
+
+        img{
+            @apply mx-auto;
+            max-width: 280px;
+            max-height: 280px;
+        }
+
+    }
+
+    .ms-error-text{
+        @apply text-center;
+    }
+
+    .ms-error-btn{
+        @apply block;
+        @apply cursor-pointer;
+        @apply text-center;
+        @apply mt-3;
+        @apply border;
+        @apply rounded;
+        background-color: rgba(255,153,0,1);
+        max-width: 260px;
+        @apply mx-auto;
+        img{
+            @apply mb-2;
+            @apply mx-auto;
+            max-height: 80px;
+        }
+        span{
+
+        }
+        @apply py-2;
+
+    }
+
+    .ms-error-btn:hover{
+            @apply ms-animation;
+            @apply block;
+            @apply cursor-pointer;
+            @apply text-center;
+            @apply mt-3;
+            @apply border;
+            @apply rounded;
+            @apply shadow-xl;
+            background-color: rgba(255,153,0,1);
+            max-width: 260px;
+            @apply mx-auto;
+            img{
+                @apply mb-2;
+                @apply mx-auto;
+                max-height: 80px;
+            }
+            span{
+
+            }
+            @apply py-2;
+
+        }
+
+}

@@ -41,7 +41,6 @@ class MSSMS
     {
 
         (strlen($to)==10)?$this->setToNumber($to):$this->setError('Invalid Mobile Number');
-
         if(array_key_exists('countryCode',$data) && $data!='')$this->setCountrCode($data['countryCode']);
         if(array_key_exists('channelId',$data) && $data!='')$this->setChannelId($data['channelId']);
         (array_key_exists('strData',$data) && $data!='')?$this->setStrData($data['strData']):$this->setStrData([]);
@@ -135,18 +134,19 @@ class MSSMS
         $client = new \GuzzleHttp\Client();
         try {
             $res = $client->request('POST', $url,['form_params'=>$post_data]);
+            ($res->getStatusCode()== 200)?$this->setApiResponse($res): $this->setError('Api Call Failed');
+
+            $resPonse=$this->getApiResponse();
+            if($res->getStatusCode()==200){
+                $this->setFinalReturnData('200','status');
+                $this->setFinalReturnData('OTP SMS Sent Successfully.','msg');
+            }
         }catch (\Exception $e){
 
-        //    dd($e);
+          //  dd($e);
         }
 
-        ($res->getStatusCode()== 200)?$this->setApiResponse($res): $this->setError('Api Call Failed');
 
-        $resPonse=$this->getApiResponse();
-        if($res->getStatusCode()==200){
-            $this->setFinalReturnData('200','status');
-            $this->setFinalReturnData('OTP SMS Sent Successfully.','msg');
-        }
 
      //   dd($res);
 

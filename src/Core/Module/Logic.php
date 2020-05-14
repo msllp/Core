@@ -30,7 +30,8 @@ class Logic
 
     public function __call($method,$arguments) {
 
-        if(!method_exists($this,$method)){
+
+        if(!method_exists($this,$method) && $method !="getTableRaw"){
 
             $setProp=get_object_vars  ($this);
             $methodName=str_replace("get", "",$method);
@@ -77,15 +78,16 @@ class Logic
 
         if (count($methods) > 1 && count($methods) != 0) {
 
-        } elseif (count($methods) != 0) {
+        } elseif (count($methods) != 0 && count($methods) == 1 ) {
 
-            foreach ($methods as $method) {
-                if (array_key_exists('method', $method) && array_key_exists('data', $method)) {
+            $method=reset($methods);
+            if (array_key_exists('method', $method) && array_key_exists('data', $method)) {
                     //        dd(call_user_func([$c,$method['method']],$method['data']));
 
+                //dd(count($methods) != 0 && count($methods) == 1);
                     return call_user_func([$c, $method['method']], $method['data']);
-                }
             }
+
 
         }
 

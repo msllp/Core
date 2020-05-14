@@ -327,7 +327,7 @@
         .ms-dashboard-profile-body{
             @apply ms-animation;
             min-width: 250px;
-            max-height: 250px;
+            max-height: 290px;
             background: linear-gradient(-47deg, $ms-dark-theme-color-main-2,$ms-dark-theme-color-main-4);
             @apply p-3;
             .ms-dashboard-profile-user-box {
@@ -374,7 +374,7 @@
         .ms-dashboard-profile-body{
 
             min-width: 250px;
-            max-height: 250px;
+            max-height: 290px;
             background: linear-gradient(-47deg, $ms-dark-theme-color-main-2,$ms-dark-theme-color-main-4);
             @apply p-3;
             .ms-dashboard-profile-user-box {

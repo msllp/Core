@@ -42,6 +42,12 @@
 
                     <img src="/images/logo.png" class="fill-current h-12 mr-2 ms-company-logo " >
 
+                    <img v-if="getCompanyLogo() !={}" :src="getCompanyLogo()" class="fill-current h-12 mr-2 ms-company-logo-2 " >
+                   <div v-else class="fill-current ms-company-logo-text-2 ">
+
+                       <span class="w-full" >{{getCompanyLogo(true)}}</span>
+                   </div>
+
 
 
                 </div>
@@ -89,6 +95,21 @@
                     <hr class="ms-dashboard-profile-hr">
                     <div class="text-center">{{msUserData.Username}}
                     <br>{{msUserData.email}}
+                        <hr class="ms-dashboard-profile-hr">
+                        <div class="flex mx-auto">
+                            <span class="flex">Switch Company : </span>
+                            <div class="ms-dashboard-profile-company-btn " >
+
+                                <select v-model="currentCompany">
+                                    <option v-for="com in allCompany"  :value="com.UniqId">{{com.CompanyShortName}}</option>
+                                </select>
+
+                                <div class="ms-dashboard-profile-company-btn-side">
+                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"></path></svg>
+
+                                </div>
+                                </div>
+                        </div>
                     </div>
                     <hr class="ms-dashboard-profile-hr">
                     <div class="ms-dashboard-profile-footer">
@@ -112,7 +133,8 @@
                     </div>
                     <hr class="ms-dashboard-profile-hr">
                     <div class="ms-dashboard-profile-footer">
-                        <span class="flex">Switch mode : </span>
+                        <div class="flex">
+                        <span >Switch mode : </span>
                         <div class="ms-dashboard-profile-darkmode-btn " v-on:click="darkModeToggel">
 
                             <span>
@@ -122,6 +144,9 @@
                                 {{(msDarkMode)?'Light':'Dark'}} </span>
 
                         </div>
+                        </div>
+
+
                     </div>
 
                 </div>
@@ -283,7 +308,9 @@
                 allUser:[],
                 msModalOpen:false,
                 msAllNotification:{},
-                dataFormsViewpanel:{}
+                dataFormsViewpanel:{},
+                allCompany:{},
+                currentCompany:''
 
             }
         },
@@ -294,10 +321,67 @@
             },
 
 
-        }
-        ,
+        },
+        watch:{
+            currentCompany(newVal){
+               if(typeof newVal != 'undefined') this.setCompany(newVal);
+            }
+        },
         methods:{
 
+            getCompanyLogo(shortname=false){
+            if(this.currentCompany != ''){
+                var com  =this.getCompanyById( this.currentCompany);
+                return  (!shortname)?com.CompanyLogo:com.CompanyShortName.toUpperCase();
+            }
+
+            },
+
+            getCompanyById(id){
+                var company={};
+
+                for (var i in this.allCompany){
+                    if(this.allCompany[i]['UniqId']==id)company=this.allCompany[i];
+                }
+
+                return company;
+            },
+
+            setCompany(id){
+                if(id!=this.msUserData.currentCompany){
+
+                    var msClient=msInstance;
+                    this.msUserData.currentCompany=id;
+                    var url=this.msData.path.changeCurrentCompany+"/"+id;
+                    var app= vueApp;
+                    msClient.get(url).then(
+                        function (res) {
+                            //        console.log(res.data);
+                            app.refreshAllTab()
+                        }
+                    );
+                }
+
+
+
+            },
+
+
+            getCompany(id){
+
+            },
+
+            getAllCompanies(){
+
+                var msClient=msInstance;
+                var url =this.msData.path.getAllCompany;
+                var th=this;
+                msClient.get(url).then(function (res) {
+                    th.allCompany=res.data.msData;
+                    th.currentCompany=th.msData.msUser.currentCompany;
+                });
+
+            },
             openInTab(data){
                 this.$refs['ms-live-tab'].addActionToTab(data);
             },
@@ -692,6 +776,7 @@
             this.getAllAvailableUser();
             this.getModalStatus();
             this.getNotification();
+            this.getAllCompanies();
             var myNotifyChannel='.private_'+ this.msData.msUser.id;
 
             console.log(" Channel Name: "+myNotifyChannel)
@@ -772,7 +857,7 @@
         ,
         computed : {
             msDarkMode(){
-                console.log(this.$root.$data.msDarkMode);
+            //    console.log(this.$root.$data.msDarkMode);
                 return this.$root.$data.msDarkMode;
             }
 

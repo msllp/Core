@@ -264,6 +264,7 @@
                                 t.waitingForData=false;
                                 t.successLogin=true;
                                 t.msPostResponseData=response.data.msData;
+
                             })
                             .catch(function (error) {
                                 t.msError=true;
@@ -303,6 +304,14 @@
             }
         },
         watch:{
+            msPostResponseData(newVal){
+                if(newVal.hasOwnProperty('redirectUrl')){
+                    window.setTimeout(function() {
+                        location.href = newVal.redirectUrl;
+                    }, 2000);
+                }
+                console.log(newVal);
+            },
             msInputData(){
                 this.checkForm();
 

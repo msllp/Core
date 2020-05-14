@@ -85,7 +85,13 @@
                         template:"<div id='mswindow"+this.index+"' >"+ data +"</div>",
                         //     sharedState: store.state,
                         mounted() {
-                            //      console.log(this.$root.$data);
+                              //    console.log(window.vueApp);
+                        },
+                        methods:{
+                            clickFromTab(data){
+                                var vApp=window.vueApp;
+                                vApp.clickFromTab(data);
+                            }
                         }
                     });
                 }

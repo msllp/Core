@@ -163,9 +163,10 @@ class MSLang
     }
     public static function getSales($lang='en'){
         $finalData=[
+            'NavMainHead'=>['en'=>'Sales'],
             'Navtitle1'=>['en'=>'Manage Leads & Quotations'],
 
-            'NavSub0'=>['en'=>'Sales Dashboard'],
+            'NavSub0'=>['en'=>'Sales One View'],
             'NavSub11'=>['en'=>'Get Lead'],
             'NavSub12'=>['en'=>'Generate Quotation'],
             'NavSub14'=>['en'=>'View all Quotation'],
@@ -242,7 +243,7 @@ class MSLang
     }
     public static function getPurchase($lang='en'){
         $finalData=[
-            'NavSub0'=>['en'=>'Purchase Dashboard'],
+            'NavSub0'=>['en'=>'Purchase One View'],
             'Navtitle1'=>['en'=>'Manage  Purchase'],
 
 
@@ -251,13 +252,13 @@ class MSLang
             'NavSub13'=>['en'=>'View all Cash Purchase'],
             'NavSub14'=>['en'=>'View all Invoice Purchase'],
 
-            'Navtitle2'=>['en'=>'Manage Dues'],
+            'Navtitle2'=>['en'=>'Manage Dues & Payments'],
             'NavSub21'=>['en'=>'Clear Cash Purchase'],
             'NavSub22'=>['en'=>'Payment for Invoices'],
             'NavSub24'=>['en'=>'View all Payment'],
-            'NavSub23'=>['en'=>'View all Invoices'],
+            'NavSub23'=>['en'=>'View all Purchase Invoices'],
 
-            'Navtitle3'=>['en'=>'Manage Vendor'],
+            'Navtitle3'=>['en'=>'Manage Vendors'],
             'NavSub31'=>['en'=>'Add New Vendor'],
             'NavSub32'=>['en'=>'View all Vendors'],
 
@@ -296,9 +297,14 @@ class MSLang
 
 
         $finalData=[
+            'NavMainHead'=>['en'=>'Company'],
             'Nav_User_1'=>['en'=>'Users'],
             'Nav_User_h1'=>['en'=>'Users Dashboard'],
+
+
+            'Navtitle0'=>['en'=>'Company One View'],
             'Navtitle1'=>['en'=>'Manage  Company'],
+            'NavSub10'=>['en'=>'Add New Company'],
             'NavSub11'=>['en'=>'Manage Basic Details'],
             'NavSub12'=>['en'=>'Manage Branches'],
             'NavSub13'=>['en'=>'Manage Bank Accounts'],

@@ -100,6 +100,15 @@ return $thecash; // writes the final format where $currency is the currency symb
         if(count($er)>0)return true;
         return false;
     }
+
+
+    public static function url($routeName,$title,$data=[]){
+
+        $data=['url'=>route($routeName,$data),'title'=>$title];
+        return collect($data)->toJson();
+
+    }
+
     public static function makeNextData($mod,$text,$url):array {
 
         return [
@@ -153,7 +162,7 @@ if($master && array_key_exists('locationOfFile', $array)){
 
     $array['locationOfFile']=implode(DIRECTORY_SEPARATOR,explode('.',$array['locationOfFile']));
     $array['locationOfFile']= implode(DIRECTORY_SEPARATOR,['vendor','msllp','modules','src','Modules','B',$array['locationOfFile'].".php",]);
-   //dd($array);
+
     require (base_path($array['locationOfFile']));
     $end='donothing';
     // dd($array);
@@ -402,7 +411,9 @@ if($master && array_key_exists('locationOfFile', $array)){
         if($master)$class=implode('\\',['MS','Mod']).'\\';
         $class.=implode('\\',[$mCode,"B"]);
 
-        $r=$class::$route;
+
+        $r=$class::getRoutes();
+
         $dv="@";
         $controller="\\".$class::$controller;
       //  dd($controller);
