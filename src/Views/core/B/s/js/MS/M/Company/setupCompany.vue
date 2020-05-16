@@ -675,8 +675,17 @@
                    var th=this;
                    if(this.logo!="")this.allInput['logo']=this.logo;
                    client.post(url,this.allInput).then(function (res) {
+                       if(res.data.hasOwnProperty('ms')){
+                           var msData=res.data.ms;
+                           if(msData.hasOwnProperty('nextData')){
+                               vueApp.updateTab(msData.nextData);
+                           }
 
-                       console.log(res.data);
+                       }else{
+                           console.log('Not Valid Response');
+                           console.log(res.data);
+
+                       }
 
                    }).catch(function (er) {
                         console.log(er);

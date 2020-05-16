@@ -55,6 +55,7 @@ Vue.component('profile', require('./MS/P/profilePage.vue').default);
 Vue.component('mslistmaker', require('./MS/C/msListMaker.vue').default);
 Vue.component('setupcompany', require("./MS/M/Company/setupCompany").default);
 Vue.component('msupgradeuser', require("./MS/M/User/msUpgradeUser").default);
+Vue.component('addbankaccount', require("./MS/M/Company/addBankAccount").default);
 
 Vue.use(VueTouch, {name: 'v-touch'})
 

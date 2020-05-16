@@ -7,6 +7,18 @@ export default {
     }
     ,
     methods: {
+        forIndianFormat(num) {
+            var input = Number.parseFloat(num).toFixed(2);
+            var n1, n2;
+            num = num + '' || '';
+            // works for integer and floating as well
+            n1 = num.split('.');
+            n2 = n1[1] || null;
+            n1 = n1[0].replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            num = n2 ? n1 + '.' + n2 : n1;
+
+            return num;
+        },
         validatePassword (pass,length=8,strenth=3) {
 
         switch (strenth) {
@@ -64,10 +76,11 @@ export default {
         },
         getGetLink(url,classFor){
  //   url=url+"?dataLink=true"
+            var msClient=msInstance;
     var returnX=true;
     var self = classFor ;
     var config={headers: {'MS-APP-Token': 'app'}} ;
-    let re= axios.get(url,config)
+    let re= msClient.get(url)
         .then(
             function(response){
 //console.log(response.data);
@@ -103,9 +116,9 @@ export default {
     var outData ;
     if(callback == null)callback ='setHtml';
         var callbackF=callback;
+            var msClient=msInstance;
 
-
-   axios.post(link, data,{headers: {
+            msClient.post(link, data,{headers: {
             'content-type': 'multipart/form-data',
             // 'charset':'utf-8',
             'boundary':Math.random().toString().substr(2),

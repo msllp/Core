@@ -54,7 +54,7 @@ return $thecash; // writes the final format where $currency is the currency symb
     public function msJsonError($e=[]){
         return response()->json([
             'errorsRaw' => implode(' , ',$e),
-        ],418);
+        ],419);
     }
 
     public static function msJson($t,$nextData=[],$e=[]){

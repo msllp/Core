@@ -389,11 +389,10 @@ class MSDB implements MasterNoSql
      * @return bool
      */
 
-    public function rowAll(){
-        $foundRow=$this->MSmodel->get()->toArray();
+    public function rowAll($orderBy='id',$orderType='asc'){
+        $foundRow=$this->MSmodel->orderBy($orderBy, $orderType)->get()->toArray();
 
         if($foundRow>0){
-
             $mapFunction=function ($array){
                 return (gettype($array) == 'object')?(array)$array:$array;
             };

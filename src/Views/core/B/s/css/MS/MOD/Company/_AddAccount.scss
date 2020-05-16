@@ -1,0 +1,34 @@
+.ms-add-account-btn{
+    @apply cursor-pointer;
+    .ms-company-setup-form-body-head{
+        @apply py-2 text-center bg-blue-300  ;
+    }
+    .ms-company-setup-form-body-head:hover{
+        @apply bg-blue-500;
+    }
+}
+
+.ms-add-account-btn-disabled {
+    @apply pointer-events-none cursor-not-allowed ;
+
+
+    .ms-company-setup-form-body-head{
+        @apply py-2 text-center  cursor-not-allowed pointer-events-none bg-gray-400;
+    }
+
+}
+
+.ms-company-setup-form-body-row-col{
+
+    .ms-delete-btn{
+        @apply p-1 border bg-red-200 cursor-pointer float-left px-2;
+        color: $ms-theme-color-danger;
+    }
+
+    .ms-delete-btn-disabled{
+        @apply text-gray-500 p-1 border bg-gray-200 float-left px-2 cursor-not-allowed pointer-events-none;
+
+    }
+
+}
+

@@ -10,7 +10,7 @@ class onlyAjaxRoute
     {
 
 
-
+       //dd($request->ajax());
 
         if(!$request->ajax())return $this->throwError();
 
@@ -34,7 +34,7 @@ class onlyAjaxRoute
         $token=\MS\Core\Helper\Comman::decodeLimit($token);
 
         if(array_key_exists($appId,$allowedToken) && $token==$appId)return true;
- 
+
         return false;
     }
     protected function throwError($erID=''){
