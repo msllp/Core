@@ -34,7 +34,7 @@ window.MSclientName="o3-backend";
 // var path = require('path');
 // var appDir = path.dirname(require.main.filename);
 var VueTouch = require('vue-touch');
-window.Chart = require('chart.js');
+window.msChart = require('chart.js');
 
 Vue.component('msinput', require('./MS/C/msInput.vue').default);
 Vue.component('msform', require('./MS/C/msForm.vue').default);
@@ -56,6 +56,7 @@ Vue.component('mslistmaker', require('./MS/C/msListMaker.vue').default);
 Vue.component('setupcompany', require("./MS/M/Company/setupCompany").default);
 Vue.component('msupgradeuser', require("./MS/M/User/msUpgradeUser").default);
 Vue.component('addbankaccount', require("./MS/M/Company/addBankAccount").default);
+Vue.component('allinone', require("./MS/D/AllInOne").default);
 
 Vue.use(VueTouch, {name: 'v-touch'})
 

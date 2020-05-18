@@ -31,6 +31,7 @@ $base-theme-color-6: rgba(97,88,206,0.6);
 @import "MS/ERROR";
 @import "MS/msUpgareUser";
 @import "MS/MOD/Master";
+@import "MS/fonts";
 
 
 
@@ -38,8 +39,8 @@ $base-theme-color-6: rgba(97,88,206,0.6);
 
 ///
 
-@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans:500&display=swap');
 body{
+
     font-family: 'IBM Plex Sans', sans-serif;
 }
 

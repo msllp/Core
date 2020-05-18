@@ -346,7 +346,14 @@
 
                 return company;
             },
-
+            getCompanyData(){
+              return {
+                  currentData:this.getCompanyById(this.currentCompany)
+              }
+            },
+            passDataToParent(method,data=null){
+                return this[method](data);
+            },
             setCompany(id){
                 if(id!=this.msUserData.currentCompany){
 

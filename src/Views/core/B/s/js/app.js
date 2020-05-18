@@ -59,8 +59,7 @@ axios.get(url,{crossDomain: true,withCredentials:true})
                     }
 
 
-                }
-                ,
+                },
 
                 refreshAllTab() {
                     var dashBoard = this.$children[0];
@@ -79,8 +78,7 @@ axios.get(url,{crossDomain: true,withCredentials:true})
                     var dashBoard = this.$children[0];
                     var viewPanel = dashBoard.$refs['ms-live-tab'];
                     viewPanel.addActionToTab(data);
-                }
-                ,
+                },
                 updateTab(data) {
                     var dashBoard = this.$children[0];
                     var viewPanel = dashBoard.$refs['ms-live-tab'];
@@ -93,7 +91,7 @@ axios.get(url,{crossDomain: true,withCredentials:true})
                     var viewPanel = dashBoard.$refs['ms-live-tab'];
                     viewPanel.addNewTabnUpdate(data);
                 },
-                getModBtn: function (url) {
+                getModBtn (url) {
 
                     // console.log(this);
                     this.setMsErrorZero();
@@ -101,7 +99,7 @@ axios.get(url,{crossDomain: true,withCredentials:true})
 
 
                 },
-                setMsError: function (Data) {
+                setMsError(Data) {
 
                     this.mserror = Data;
                     //  console.log(Data);
@@ -139,7 +137,7 @@ axios.get(url,{crossDomain: true,withCredentials:true})
 
                 },
 
-                setMsErrorZero: function () {
+                setMsErrorZero () {
 
                     for (var inputName in this.mserror) {
                         var key = inputName.toString().toLowerCase();
@@ -151,19 +149,26 @@ axios.get(url,{crossDomain: true,withCredentials:true})
 
 
                 },
-                setUpGroup: function (data) {
+                setUpGroup (data) {
                     // alert("demo");
                     //console.log(data);
                     this.msform = data;
                     //this.msform.push(data);
 
                 },
-                checkGroupExist: function (value) {
+                checkGroupExist (value) {
 
                     if (this.msform.length > 0) return false;
                     return false;
                     return this.in_array(value, this.msform);
                 },
+
+                getCompany(){
+                    var dashBoard = this.$children[0];
+                    return dashBoard.passDataToParent('getCompanyData').currentData;
+                    console.log(dashBoard.passDataToParent('getCompanyData'));
+                   // var viewPanel = dashBoard.$refs['ms-live-tab'];
+                }
 
 
             },
