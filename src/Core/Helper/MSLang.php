@@ -6,6 +6,12 @@ namespace MS\Core\Helper;
 
 class MSLang
 {
+    private $currentData=[];
+    private $finalData=[];
+    public function __construct()
+    {
+
+    }
 
     public static $allowedMod=['Sales','Purchase','Company','Accounts','Operation'];
 
@@ -431,10 +437,89 @@ class MSLang
         return self::processDataForOut($finalData,$lang) ;
     }
 
+    public static function getHR($lang='en'){
+        $c=new Self();
+
+        $c->en('Humar Resource')->name('NavMainHead');
+
+        $c->en('HR One View')->name('Navtitle0');
+        $c->en('Manage Employee')->name('Navtitle1');
+        $c->en('Add Employee')->name('NavSub10');
+        $c->en('Add Employee Roles')->name('NavSub11');
+        $c->en('Manage Employee')->name('NavSub12');
+        $c->en('Manage Employee Roles')->name('NavSub13');
+
+        $c->en('Manage Attendance & Leave')->name('Navtitle3');
+        $c->en('Feed Attendance')->name('NavSub31');
+        $c->en('Ask/Approve Leave')->name('NavSub32');
+        $c->en('Attedance Report')->name('NavSub33');
+
+        $c->en('Manage Salary')->name('Navtitle4');
+        $c->en('Salary Slip')->name('NavSub42');
+        $c->en('Edit User Salary')->name('NavSub43');
+        $c->en('Salary Report')->name('NavSub44');
+
+
+        return self::processDataForOut($c->all(),$lang) ;
+    }
+    public static function getInventory($lang='en'){
+        $c=new Self();
+
+        $c->en('Inventory')->name('NavMainHead');
+
+        $c->en('Inventory One View')->name('Navtitle0');
+        $c->en('Manage Stock')->name('Navtitle1');
+        $c->en('Inward Stock')->name('NavSub10');
+        $c->en('Outward Stock')->name('NavSub11');
+        $c->en('Shift Stock')->name('NavSub12');
+        $c->en('View All Stock')->name('NavSub13');
+
+        $c->en('Manage Location')->name('Navtitle3');
+        $c->en('Add Location')->name('NavSub31');
+        $c->en('Edit Location')->name('NavSub32');
+
+        $c->en('Manage Suppliers')->name('Navtitle4');
+        $c->en('Add Suppliers')->name('NavSub42');
+        $c->en('View All Suppliers')->name('NavSub43');
+
+
+        return self::processDataForOut($c->all(),$lang) ;
+    }
+    public static function getAccounts($lang='en'){
+        $c=new Self();
+
+        $c->en('Accounts')->name('NavMainHead');
+
+        $c->en('Accounts One View')->name('Navtitle0');
+        $c->en('Manage Ledgers')->name('Navtitle1');
+        $c->en('Income Ledgers')->name('NavSub10');
+        $c->en('Expense Ledgers')->name('NavSub11');
+        $c->en('Client Ledgers')->name('NavSub12');
+        $c->en('Vendor Ledgers')->name('NavSub13');
+        $c->en('Cash Ledgers')->name('NavSub14');
+        $c->en('Bank Ledgers')->name('NavSub15');
+
+        $c->en('Reports')->name('Navtitle3');
+        $c->en('Sales Report')->name('NavSub31');
+        $c->en('Purchase Report')->name('NavSub32');
+        $c->en('GST Report')->name('NavSub33');
+
+        $c->en('Manage Salary')->name('Navtitle4');
+        $c->en('Salary Slip')->name('NavSub42');
+        $c->en('Edit User Salary')->name('NavSub43');
+        $c->en('Salary Report')->name('NavSub44');
+
+        //dd($c->all());
+        return self::processDataForOut($c->all(),$lang) ;
+    }
+
+
+
+
 
 
     ////Methods
-    ///
+    ///Do Not Edit
     public static function processDataForOut($inData,$lang='en'){
 
         $outData=[];
@@ -446,4 +531,33 @@ class MSLang
 
         return $outData;
     }
+
+    public function __call($method,$arguments) {
+
+        $allowedLang=['hin','gj','en'];
+        if(!method_exists($this,$method) && in_array($method,$allowedLang) && $method !="name" ){
+
+            $setProp=get_object_vars($this);
+           // dd($arguments);
+            if(!array_key_exists($method,$this->currentData))$this->currentData[$method]=reset($arguments);
+           return $this;
+
+        }elseif (!method_exists($this,$method) && $method =="name"){
+            $key=reset($arguments);
+            if(!array_key_exists($key,$this->finalData) && count($this->currentData)>0) {
+                $this->finalData[$key] = $this->currentData;
+                $this->currentData=[];
+            }
+            return $this;
+        }elseif (!method_exists($this,$method) && $method =="all"){
+
+            return $this->finalData;
+        }
+        else{
+            return $this;
+        }
+
+
+    }
+
 }

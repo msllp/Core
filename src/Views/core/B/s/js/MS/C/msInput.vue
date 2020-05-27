@@ -10,18 +10,18 @@
 
 
             <div v-if="inputType == 'locked'" class="flex flex-wrap" :class="msValid">
-                <span v-if="!inputOnly" class=" select-none lg:mr-2" >{{inputVname}}</span>
+                <span v-if="!inputOnly" class=" select-none lg:mr-2" >{{inputVname}} <sup v-if="inputRequired" class="text-red-400">*</sup></span>
                 <i class="fas p2 ml-2 mt-1 fa-qrcode mr-2"></i><input :type="inputType" disabled autocomplete="off" class="text-center border focus:outline-none focus:shadow-outline lg:flex-1" :class="{'w-full':onMobile}" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
             </div>
 
             <div  v-if="inputType == 'text'"  class="flex flex-wrap" :class="msValid">
-            <span v-if="!inputOnly" class=" select-none lg:mr-2" >{{inputVname}}</span>
+            <span v-if="!inputOnly" class=" select-none lg:mr-2" >{{inputVname}} <sup v-if="inputRequired" class="text-red-400">*</sup></span>
             <input @focus="msFocus = true"  :index="msInputIndex"  :placeholder="'Enter '+inputVname+' here'" :type="inputType"  autocomplete="off" class=" border focus:outline-none focus:shadow-outline lg:flex-1" :class="{'w-full':onMobile}" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
             </div >
 
             <div v-else-if="inputType == 'password'" class="select-none flex flex-wrap" :class="msValid">
 
-                <span v-if="!inputOnly" class=" select-none lg:flex-1" :class="{'w-full':!onMobile}">{{inputVname}}</span>
+                <span v-if="!inputOnly" class=" select-none lg:flex-1" :class="{'w-full':!onMobile}">{{inputVname}} <sup v-if="inputRequired" class="text-red-400">*</sup></span>
                 <input :index="msInputIndex"  :placeholder="'Enter '+inputVname+' here'" :type="inputType" autocomplete="off"  class="msPasswordInput focus:outline-none focus:shadow-outline lg:flex-1 "  :class="{'w-9/12':onMobile}" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
 
                 <div class="msPasswordVisible" :class="{'w-3/12':onMobile}" v-on:click="visiblePassowrd"
@@ -48,23 +48,23 @@
               </div>
 
             <div v-else-if="inputType == 'email'" class="flex flex-wrap" :class="msValid">
-                <span v-if="!inputOnly" class=" select-none lg:mr-2" >{{inputVname}}</span>
+                <span v-if="!inputOnly" class=" select-none lg:mr-2" >{{inputVname}} <sup v-if="inputRequired" class="text-red-400">*</sup></span>
                 <input :index="msInputIndex" :placeholder="'Enter '+inputVname+' here'" :type="inputType" style="min-width: 60%;" autocomplete="off" class="border focus:outline-none focus:shadow-outline lg:flex-1"  :class="{'w-full':onMobile}"  :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
             </div>
 
             <div v-else-if="inputType == 'number'" class="flex flex-wrap" :class="msValid">
-                <span v-if="!inputOnly" class=" select-none lg:mr-2" >{{inputVname}}</span>
+                <span v-if="!inputOnly" class=" select-none lg:mr-2" >{{inputVname}} <sup v-if="inputRequired" class="text-red-400">*</sup></span>
                 <input :index="msInputIndex" :type="inputType" style="min-width: 50%;" autocomplete="off" class="border focus:outline-none focus:shadow-outline lg:flex-1"  :class="{'w-full':onMobile}"  :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
             </div>
 
 
             <div  v-if="inputType == 'file'" class="flex flex-wrap" :class="msValid"  >
-                <span v-if="!inputOnly" class=" select-none  lg:mr-2">{{inputVname}}</span>
+                <span v-if="!inputOnly" class=" select-none  lg:mr-2">{{inputVname}} <sup v-if="inputRequired" class="text-red-400">*</sup></span>
                 <input :index="msInputIndex" :type="inputType"  class="text-center border focus:outline-none focus:shadow-outline lg:flex-1 " :class="{'w-full':onMobile}" :name="inputName"  v-on:change="loadFilestoLocal($event)"  :id="msData.msGroupIndex">
             </div>
 
             <div v-if="inputType == 'radio'" class="flex flex-wrap" :class="msValid">
-                <span v-if="!inputOnly" class=" select-none" :class="{'w-4/12 mr-2':!onMobile,'w-full':onMobile}">{{inputVname}}</span>
+                <span v-if="!inputOnly" class=" select-none" :class="{'w-4/12 mr-2':!onMobile,'w-full':onMobile}">{{inputVname}} <sup v-if="inputRequired" class="text-red-400">*</sup></span>
 
                 <div :class="{
                 'select-none flex-1 border-l p-1 mr-1 border-b':true,
@@ -82,7 +82,7 @@
             </div>
 
             <div v-if="inputType == 'checkbox'" class="flex flex-wrap" :class="msValid">
-                <span v-if="!inputOnly" class=" select-none" :class="{'w-4/12 mr-2':!onMobile,'w-full':onMobile}">{{inputVname}}</span>
+                <span v-if="!inputOnly" class=" select-none" :class="{'w-4/12 mr-2':!onMobile,'w-full':onMobile}">{{inputVname}} <sup v-if="inputRequired" class="text-red-400">*</sup></span>
 
                 <div :class="{
                 'select-none flex-1 border-l p-1 mr-1 border-b':true,
@@ -102,29 +102,33 @@
 
 
             <div v-if="inputType == 'date'" class="flex flex-wrap" :class="msValid"  >
-                <span v-if="!inputOnly" class=" select-none lg:mr-2" >{{inputVname}}</span>
+                <span v-if="!inputOnly" class=" select-none lg:mr-2" >{{inputVname}} <sup v-if="inputRequired" class="text-red-400">*</sup></span>
                 <input :index="msInputIndex" :type="inputType"  class="text-center border focus:outline-none focus:shadow-outline lg:flex-1" :class="{'w-full':onMobile}" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
             </div>
 
             <div v-if="inputType == 'time'" class="flex flex-wrap" :class="msValid"  >
-                <span v-if="!inputOnly" class=" select-none lg:mr-2" >{{inputVname}}</span>
+                <span v-if="!inputOnly" class=" select-none lg:mr-2" >{{inputVname}} <sup v-if="inputRequired" class="text-red-400">*</sup></span>
                 <input :index="msInputIndex" :type="inputType"  class="text-center border focus:outline-none focus:shadow-outline lg:flex-1" :class="{'w-full':onMobile}" :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
             </div>
 
             <div v-if="inputType == 'textarea'" class="flex flex-wrap" :class="msValid"  >
-                <span v-if="!inputOnly" class=" select-none lg:mr-2" >{{inputVname}}</span>
+                <span v-if="!inputOnly" class=" select-none lg:mr-2" >{{inputVname}} <sup v-if="inputRequired" class="text-red-400">*</sup>  </span>
                 <textarea :index="msInputIndex" :type="inputType"  class="border focus:outline-none focus:shadow-outline lg:flex-1" :class="{'w-full':onMobile}"  :name="inputName"  v-model="msValue" :id="msData.msGroupIndex"> </textarea>
             </div>
 
             <div v-if="inputType == 'option'" class="flex flex-wrap" :class="msValid">
 
-                <span v-if="!inputOnly" class=" select-none" :class="{'w-4/12 mr-2':!onMobile,'w-full':onMobile}">{{inputVname}}  <i class="" v-if="(msValue!=null ) && ((msValue.search('msicon-') != '-1') || (msValue.search('flaticon-') != '-1') )" :class='msValue'></i></span>
+                <span v-if="!inputOnly" class=" select-none" :class="{'w-4/12 mr-2':!onMobile,'w-full':onMobile}">{{inputVname}} <sup v-if="inputRequired" class="text-red-400">*</sup> <i class="" v-if="(msValue!=null ) && ((msValue.search('msicon-') != '-1') || (msValue.search('flaticon-') != '-1') )" :class='msValue'></i></span>
+
 
                 <select :name="inputName" class="border focus:outline-none focus:shadow-outline lg:flex-1" :class="{'w-full':onMobile}" size="1" v-model="msValue" >
-                    <option v-for="(radio,key) in msData.verifyBy.msdata" v-bind:value="radio[msData.verifyBy.value]" >
+                   <option :value="null" disabled>Select {{inputVname}} </option>
+                    <option v-for="(radio,key) in inputAuto" v-bind:value="radio[msData.verifyBy.value]" >
 
                         {{ forNice(radio[msData.verifyBy.text]) }}</option>
                 </select>
+
+
 
 
             </div>
@@ -145,7 +149,15 @@
 
             </div>
 
+            <div v-if="inputAuto.length <1 && msData.hasOwnProperty('addAction')" class="" >
+                <div class="px-2 p-1 text-center" :class="{
+                    [ 'bg-'+msData.addAction.btnColor+'-300' ]:msData.addAction.hasOwnProperty('btnColor')
+                }" v-on:click="addActionToMadal(msData.addAction)">
+                    {{ msData.addAction.btnText }}
+                </div>
 
+
+            </div>
 
         </div>
 
@@ -163,19 +175,6 @@
 
 
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -219,6 +218,8 @@
         beforeMount() {
 
             // console.log(this.msData);
+
+            if(this.inputValidation.hasOwnProperty('required') && this.inputValidation.required )this.inputRequired=true;
             if(this.hasOwnProperty('msMultiIndex'))this.inputMultipleIndex=this.msMultiIndex;
             if(this.msData.hasOwnProperty('groupInput'))this.groupInput=this.msData.groupInput;
             if(this.msData.hasOwnProperty('name'))
@@ -284,7 +285,12 @@
                     break;
                 case "radio":
                     this.msValid="is-valid";
+                    break;
 
+                case "option":
+                   // console.log('option');
+                    this.msValue=null;
+                   // this.msValid="is-valid";
                     break;
 
                 default:
@@ -297,7 +303,7 @@
 
             //   var finalArray= this.makeArrayForInput(this);
 
-            this.setFinalInput(this.makeArrayForInput (this));
+            this.setFinalInput(this.makeArrayForInput(this));
 
             // if(!this.$ref['msFrom'].checkGroupExist(this.groupInput)){
             //     this.$ref['msFrom'].setUpGroup(this.groupInput);
@@ -333,18 +339,40 @@
             // console.log( this.inputValidation);
         },
         methods:{
+            addActionToMadal(data){
+                var data ={
+                    //   modCode:"Schedule vMeet",
+                    // modIcon:{
+                    //     type:'svg',
+                    //     icon:'msicon-svg-video-calling'
+                    // },
+                    modDView:data.btnText,
+                    modUrl:data.route+'?modal=true',
 
-            setError:function () {
+                }
+
+                vueApp.addModalAction(data,this);
+            },
+            refreshData(){
+                var msClient=msInstance;
+                var url=this.msData.addAction.dataRoute;
+                var th=this;
+                msClient.get(url).then(res=>{
+                    th.inputAuto=res.data.msData;
+                });
+
+            },
+            setError() {
 
                 this.msValid="is-invalid";
 
             },
-            setErrorZero:function(){
+            setErrorZero(){
                 this.msValid="is-valid";
                 //this.$parent.in
                 this.inputError=new Object();
             },
-            getValue:function () {
+            getValue () {
                 var returnF=this.msValue;
                 return returnF;
             },
@@ -362,7 +390,6 @@
                 this.finalInput=[array];
                 //   console.log(this.finalInput);
             },
-
             isM(){
                // console.log(this.isMobile());
                 return this.isMobile();
@@ -430,7 +457,8 @@
                     if(this.validateLen(val,inputLen)){
                         delete this.inputError.MinLen;
                         if(error)error=0;
-                    }else {
+                    }
+                    else {
                         error=1;
 
                        var  str="";
@@ -452,32 +480,29 @@
                     if (!error) {
                         //this.$parent.msFormDataValue[];
 
-                        this.$parent.removeError(this.inputName);
+                      //  this.$parent.removeError(this.inputName);
                         this.msValid="is-valid";
                     }else{
-                        this.$parent.setError(
-
-                        {
-                            inputName:this.inputName,
-                                errors:this.inputError
-                        }
-
-
-                        );
+                        // this.$parent.setError(
+                        //     {
+                        //     inputName:this.inputName,
+                        //         errors:this.inputError
+                        // }
+                        // );
                         this.msValid="is-invalid";
                     }
 
                 }else {
                     this.msValid=" ";
                 }
-                //  console.log(val);
+                    //  console.log(val);
               //  if(this.msData.hasOwnProperty('inputMultiple')) return this.$parent.setInputData(this.inputName,val,this.msData.inputMultiple,this.msData.msGroupIndex);
-
+                this.validateInput();
                 this.$parent.setInputData(this.inputName,val,this.inputMultiple,this.inputMultipleIndex);
 
 
-            }
-            ,visiblePassowrd(){
+            },
+            visiblePassowrd(){
                 if(this.inputPasswordVisible)
                 {
                     this.inputPasswordVisible=false;
@@ -516,8 +541,51 @@
             getfile(){
 
                 return  this.$refs.file.files[0];
+            },
+            validateInput(){
+                this.setErrorZero();
+                var error=[];
+
+                var validationConf={};
+                if(this.inputValidation.hasOwnProperty('length'))validationConf.length=this.inputValidation.length;
+                if(this.inputValidation.hasOwnProperty('required')) validationConf.presence={allowEmpty: false};
+                if(this.inputValidation.hasOwnProperty('email')) validationConf.email=this.inputValidation.email;
+                if(this.inputValidation.hasOwnProperty('format')) validationConf.format=this.inputValidation.format;
+                if(this.inputValidation.hasOwnProperty('numericality')) validationConf.numericality=this.inputValidation.numericality;
+
+                var validation=msValidate.single(this.msValue,validationConf);
+                if(validation != undefined)
+                {
+                    for (var i in validation){
+                        error.push(validation[i]);
+                    }
+
+                }
+
+                if(error.length>0){
+                    for (var i in error){
+                        this.inputError['onPageError'+i]=error[i];
+                    }
+
+                    this.$parent.setError(
+                        {
+                            inputName:this.inputName,
+                            errors:this.inputError
+                        }
+                    );
+                    this.msValid="is-invalid";
+                }else
+                {
+
+                    this.$parent.removeError(
+                        this.inputName);
+
+                }
             }
 
+        },
+        mounted() {
+            this.validateInput();
         },
         data: function () {
             return {
@@ -550,8 +618,7 @@
                // hasAutofieldBool:false,,
 
             }
-        }
-        ,
+        },
         computed: {
 
 
@@ -562,29 +629,6 @@
                this.inpututProcess(val,oldVal);
 
 
-               switch (this.inputType) {
-                   case 'text':
-                    if(this.inputAuto.length > 0){
-
-                        var msData1= this.inputAuto;
-                        var msThis=this;
-                        // console.log(
-                        //
-                        //     msData1.filter(function (ele) {
-                        //
-                        //
-                        //
-                        //
-                        //     })
-                        //
-                        //
-                        //
-
-//                        );
-
-                    }
-                       break;
-               }
 
 
 

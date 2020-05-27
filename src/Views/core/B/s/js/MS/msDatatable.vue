@@ -11,7 +11,7 @@
                     <input type="text" class="w-full border focus:outline-none focus:shadow-outline shadow" v-model="msSearch">
                     <select   v-model="msSearchBy" class="w-full mt-3  border focus:outline-none focus:shadow-outline shadow">
                         <option value="ms0" disabled selected>Please Select Column to search</option>
-                        <option :value="index"  v-for="column,index,key in msAllData.fromV.tableColumns"  >{{  column.vName }}</option>
+                        <option :value="index"  v-for="(column,index,key) in msAllData.fromV.tableColumns"  >{{  column.vName }}</option>
                     </select>
 
                     </div>
@@ -25,7 +25,7 @@
         <span class="w-full ms-btn border-l hover:shadow">Perform</span>
         <select   v-model="msMassActionSelected" class="w-full mt-3  border focus:outline-none focus:shadow-outline shadow">
             <option value="ms0" disabled selected>Please Select Action to perform</option>
-            <option :value="index"  v-for="column,index in msMassAction"  :class="column.color" > <i :class="column.icon"></i> {{  column.text }}</option>
+            <option :value="index"  v-for="(column,index) in msMassAction"  :class="column.color" > <i :class="column.icon"></i> {{  column.text }}</option>
         </select>
         <span class="w-full">on selected   <strong>{{ msSelectedRow.length }}</strong>  </span>
         </div>
@@ -41,7 +41,7 @@
                             <div class ="flex text-right pr-5">Per page rows </div>
                             <select   v-model="msPerPage" class="flex-1   border focus:outline-none focus:shadow-outline shadow">
 
-                                <option :value="column"  v-for="column,index,key in msPerPageData"  >{{  column }}</option>
+                                <option :value="column"  v-for="(column,index,key) in msPerPageData"  >{{  column }}</option>
                             </select>
 
                             <div class ="flex ">to display </div>
@@ -71,7 +71,7 @@
 
                 <tbody class=" shadow">
 
-<tr v-for="row,index in msAllData.fromV.tableData.data" class="border bg-white" :class="{
+<tr v-for="(row,index) in msAllData.fromV.tableData.data" class="border bg-white" :class="{
 
           'bg-white':!msSelectedRow.includes(row[msRowID]),
              'bg-blue-200':msSelectedRow.includes(row[msRowID]),
@@ -96,7 +96,7 @@
     </td>
 
 
-    <td    v-for="column,index,key in msAllData.fromV.tableColumns"  class="border p-1 text-center cursor-wait" :title="column.vName" >
+    <td    v-for="(column,index,key) in msAllData.fromV.tableColumns"  class="border p-1 text-center cursor-wait" :title="column.vName" >
 
 <div>
 
@@ -174,11 +174,12 @@
 
     <td class="border p-1 text-center bg-grey-100 cursor-pointer select-none ms-action-btn-td  hover:bg-blue-200":class="{
 
-    }" v-if="msActionViewRow.includes(index)">
+    }" v-if="msActionViewRow.length>0 && msActionViewRow.includes(index) ">
 
 
 
-        <span v-on:click="msActionClick(ac,row)" v-for="ac,index in msAction" :class="ac.color"  class="hover:border hover:shadow-inner px-2 py-1 mx-1" :title="ac.text"> <i :class="ac.icon"> </i></span>
+
+        <span v-on:click="msActionClick(ac,row)" v-for="(ac,index) in msAction" :class="ac.color"  class="hover:border hover:shadow-inner px-2 py-1 mx-1" :title="ac.text"> <i :class="ac.icon"> </i></span>
 
 
 
@@ -335,7 +336,7 @@
 
                         };
 
-                        if(ac.hasOwnProperty('ownTab') &&  ac.ownTab == 'true'){
+                        if(ac.hasOwnProperty('ownTab') &&  (ac.ownTab == 'true' || ac.ownTab )){
                             window.vueApp.updateTab(data);
                         }else{
                             window.vueApp.addNewTab(data);

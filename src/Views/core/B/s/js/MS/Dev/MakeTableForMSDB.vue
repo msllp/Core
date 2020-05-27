@@ -1,158 +1,157 @@
 <template>
-<div>
-    <div class="ms-company-setup-box  ">
-        <div class="ms-company-setup-image">
+    <div>
+        <div class="ms-company-setup-box  ">
+            <div class="ms-company-setup-image">
 
-            <img class="ms-company-setup-image-icon" :src="MainIconImag">
-        </div>
-        <div  class="ms-company-setup-form">
+                <img class="ms-company-setup-image-icon" :src="MainIconImag">
+            </div>
+            <div  class="ms-company-setup-form">
 
-            <div class="ms-company-setup-form-title" > {{MainTitle}}</div>
+                <div class="ms-company-setup-form-title" > {{MainTitle}}</div>
 
-            <div class="ms-company-setup-form-body" >
+                <div class="ms-company-setup-form-body" >
 
-                <div class="ms-company-setup-form-section">
-                    <div class="ms-company-setup-form-body-head"> Business Basic Details </div>
-                    <div v-for="rows in msForm" class="ms-company-setup-form-body-row">
-
-
-                        <div v-for="col in rows" class="ms-company-setup-form-body-row-col">
+                    <div class="ms-company-setup-form-section">
+                        <div class="ms-company-setup-form-body-head"> Column Fields Details </div>
+                        <div v-for="rows in msForm" class="ms-company-setup-form-body-row">
 
 
-                            <input v-on:keyup.enter="addAccountToCurrentList()" :class="{
+                            <div v-for="col in rows" class="ms-company-setup-form-body-row-col">
+
+
+                                <input v-on:keyup.enter="addAccountToCurrentList()" :class="{
                                 'ms-sucess-input':(col.hasOwnProperty('validation') && checkInputisValid(col.model)),
                                 'ms-failure-input':(col.hasOwnProperty('validation') &&  !checkInputisValid(col.model) ) ,
 
                             }"  v-on:keyup="updateAllInput()" v-model="allInput[col.model]" v-if="col.type=='text' || col.type=='number'" :type="col.type" class="ms-company-setup-form-input" :placeholder="'Enter '+col.name">
-                            <div class="ms-company-setup-form-input" :class="{
+                                <div class="ms-company-setup-form-input" :class="{
                                 'ms-sucess-input':checkInputisValid(col.model),
                                 'ms-failure-input':!checkInputisValid(col.model),
 
                             }" v-if="col.type=='option'">
-                                <select v-model="allInput[col.model]"   v-on:change="updateAllInput()">
-                                    <option disabled selected value="disabled">Select {{col.name}}</option>
-                                    <option v-for="op in  (col.hasOwnProperty('data'))?col.data:msDatafromServer[col.model]" :value="op.value">{{op.name}}</option>
-                                </select>
-                            </div>
+                                    <select v-model="allInput[col.model]"   v-on:change="updateAllInput()">
+                                        <option disabled selected value="disabled">Select {{col.name}}</option>
+                                        <option v-for="op in  (col.hasOwnProperty('data'))?col.data:msDatafromServer[col.model]" :value="op.value">{{op.name}}</option>
+                                    </select>
+                                </div>
 
-                            <div v-if="checkInputisValid(col.model) && col.type!='option' && col.hasOwnProperty('validation')" class="ms-company-setup-form-input-ok"><i class="fas fa-check"></i></div>
+                                <div v-if="checkInputisValid(col.model) && col.type!='option' && col.hasOwnProperty('validation')" class="ms-company-setup-form-input-ok"><i class="fas fa-check"></i></div>
 
-                            <div :class="{
+                                <div :class="{
                                 'ms-company-setup-form-input-lable':checkInputisValid(col.model),
                                 'ms-company-setup-form-input-lable-have-error':!checkInputisValid(col.model),
                             }">{{col.name}}
-                                <sup v-if="col.hasOwnProperty('required') && col.required" class="ms-company-setup-form-input-lable-required" >*</sup>
+                                    <sup v-if="col.hasOwnProperty('required') && col.required" class="ms-company-setup-form-input-lable-required" >*</sup>
 
-                            </div>
+                                </div>
 
 
-                            <div class="ms-company-setup-form-input-error" v-for="er in  getInputError(col.model)">
+                                <div class="ms-company-setup-form-input-error" v-for="er in  getInputError(col.model)">
 
-                                {{ er }}
+                                    {{ er }}
+                                </div>
+
                             </div>
 
                         </div>
-
                     </div>
-                </div>
 
-                <div class="ms-company-setup-form-section" v-on:click="addAccountToCurrentList()" :class="{
+                    <div class="ms-company-setup-form-section" v-on:click="addAccountToCurrentList()" :class="{
                         'ms-add-account-btn-disabled':!validToPost(),
                         'ms-add-account-btn':validToPost()
                     }">
-                    <div  class=" ms-company-setup-form-body-head" >
-                         <span class="fi2 flaticon-plus" ></span>   Add Account
-                    </div>
-                </div>
-
-                <div class="ms-company-setup-form-section">
-                    <div class="ms-company-setup-form-body-head">Bank Accounts</div>
-                    <div class="ms-company-setup-form-body-row border-b">
-
-
-                        <div class="ms-company-setup-form-body-row-col text-center">
-                        Bank
+                        <div  class=" ms-company-setup-form-body-head" >
+                            <span class="fi2 flaticon-plus" ></span>   Add Field
                         </div>
-                        <div class="ms-company-setup-form-body-row-col text-center">
-                        IFSC
-                        </div>
-                        <div class="ms-company-setup-form-body-row-col text-center">
-                        Type
-                        </div>
-                        <div class="ms-company-setup-form-body-row-col text-center">
-                        Account Holder
-                        </div>
-                        <div class="ms-company-setup-form-body-row-col text-center">
-                        Account No.
-                        </div>
-                        <div class="ms-company-setup-form-body-row-col text-center">
-                        Balance
-                        </div>
-
                     </div>
 
+                    <div class="ms-company-setup-form-section">
+                        <div class="ms-company-setup-form-body-head">Bank Accounts</div>
+                        <div class="ms-company-setup-form-body-row border-b">
 
-                    <div class="ms-company-setup-form-body-row border-t border-b" v-for="(ac,key) in allAccounts">
+
+                            <div class="ms-company-setup-form-body-row-col text-center">
+                                Bank
+                            </div>
+                            <div class="ms-company-setup-form-body-row-col text-center">
+                                IFSC
+                            </div>
+                            <div class="ms-company-setup-form-body-row-col text-center">
+                                Type
+                            </div>
+                            <div class="ms-company-setup-form-body-row-col text-center">
+                                Account Holder
+                            </div>
+                            <div class="ms-company-setup-form-body-row-col text-center">
+                                Account No.
+                            </div>
+                            <div class="ms-company-setup-form-body-row-col text-center">
+                                Balance
+                            </div>
+
+                        </div>
 
 
-                        <div class="ms-company-setup-form-body-row-col text-center" >
+                        <div class="ms-company-setup-form-body-row border-t border-b" v-for="(ac,key) in allAccounts">
+
+
+                            <div class="ms-company-setup-form-body-row-col text-center" >
                             <span
                                 :class="{
                                 'ms-delete-btn-disabled':ac.hasOwnProperty('delete') && ac.delete==false,
                                 'ms-delete-btn':(!ac.hasOwnProperty('delete') || (ac.hasOwnProperty('delete') && ac.delete==true))
                                 }"
                                 v-on:click="removeAcFromList(key)" class="fi2 flaticon-trash"></span>   <span class="block py-1">{{forNice(ac.BankName)}},<small>{{forNice(ac.BankBranch)}}</small> </span>
-                        </div>
-                        <div class="ms-company-setup-form-body-row-col text-center  py-1" >
-                           {{ac.IFSC}}
-                        </div>
-                        <div class="ms-company-setup-form-body-row-col text-center  py-1" >
-                           {{forNice(ac.AccountType)}}
-                        </div>
-                        <div class="ms-company-setup-form-body-row-col text-center py-1" >
-                           {{ac.AccounHolder}}
-                        </div>
-                        <div class="ms-company-setup-form-body-row-col text-center py-1" >
-                           {{ac.BankAcNo}}
-                        </div>
-                        <div class="ms-company-setup-form-body-row-col text-center py-1" >
-                          {{currency}} {{forIndianFormat(ac.CurrentBalance)}}
+                            </div>
+                            <div class="ms-company-setup-form-body-row-col text-center  py-1" >
+                                {{ac.IFSC}}
+                            </div>
+                            <div class="ms-company-setup-form-body-row-col text-center  py-1" >
+                                {{forNice(ac.AccountType)}}
+                            </div>
+                            <div class="ms-company-setup-form-body-row-col text-center py-1" >
+                                {{ac.AccounHolder}}
+                            </div>
+                            <div class="ms-company-setup-form-body-row-col text-center py-1" >
+                                {{ac.BankAcNo}}
+                            </div>
+                            <div class="ms-company-setup-form-body-row-col text-center py-1" >
+                                {{currency}} {{forIndianFormat(ac.CurrentBalance)}}
+                            </div>
+
+
                         </div>
 
 
                     </div>
 
 
+
+
+
+                </div>
+
+                <div class="ms-company-setup-form-footer">
+
+                    <div
+                        :class="{ 'ms-company-setup-form-footer-btn-save':true}"
+                        v-on:click="postForm()"> Save </div>
+
                 </div>
 
 
-
-
-
             </div>
 
-            <div class="ms-company-setup-form-footer">
-
-                <div
-                    :class="{ 'ms-company-setup-form-footer-btn-save':true}"
-                    v-on:click="postForm()"> Save </div>
-
-            </div>
 
 
         </div>
-
-
-
     </div>
-</div>
-
 </template>
 
 <script>
-   import  MS from '../../C/MS';
+    import  MS from '../C/MS';
     export default {
-        name: "addbankaccount",
+        name: "makedataformsdb",
         mixins:[MS],
         props:{
             'msData':{
@@ -162,85 +161,85 @@
         },
         data(){
             return {
-                MainIconImag:this.msData.path.img.ac,
-                MainTitle:'Add bank Account',
+                MainIconImag:this.msData.path.img.logo,
+                MainTitle:this.msData.title,
                 allAccounts:[],
                 currency:'₹',
                 msForm:[
                     [
                         {
-                            name:'Name Of Bank',
+                            name:'Column ID',
                             type:'text',
-                            model:'BankName',
+                            model:'columnId',
                             required:true,
                             validation:{presence: {allowEmpty: false}}
                         },
                         {
-                            name:'Branch',
-                            type:'text',
-                            model:'BankBranch',
-                            required:true,
-                            validation:{presence: {allowEmpty: false}}
-                        },
-                        {
-                            name:'IFSC',
-                            type:'text',
-                            model:'IFSC',
-                            required:true,
-                            validation:{presence: {allowEmpty: false}}
-                        },
-                        {
-                            name:'Type of Account',
+                            name:'Column type',
                             type:'option',
-                            model:'AccountType',
+                            model:'columntype',
                             required:true,
                             validation:{presence: {allowEmpty: false}},
                             data:[
                                 {
-                                    name:'Current',
-                                    value:'current'
+                                    name:'String',
+                                    value:'string'
                                 },
                                 {
-                                    name:'Saving',
-                                    value:'saving'
+                                    name:'Integer',
+                                    value:'integer'
                                 },
+                                {
+                                    name:'Boolean',
+                                    value:'boolean'
+                                },
+                                {
+                                    name:'Blob',
+                                    value:'blob'
+                                }
                             ]
                         },
+
 
                     ],
                     [
 
-                       {
-                             name:'Account Holder',
-                             type:'text',
-                             model:'AccounHolder',
-                             required:true,
-                             validation:{presence: {allowEmpty: false}},
-
-                       },
-                       {
-                             name:'Bank Account No.',
-                             type:'number',
-                             model:'BankAcNo',
-                             required:true,
-                             validation:{presence: {allowEmpty: false}},
-
-                                    },
-                       {
-                            name:'Current balance',
-                            type:'number',
-                            model:'CurrentBalance',
+                        {
+                            name:'Input Name',
+                            type:'text',
+                            model:'inputname',
                             required:true,
                             validation:{presence: {allowEmpty: false}},
+
+                        },
+                        {
+                            name:'Input Type',
+                            type:'text',
+                            model:'inputtype',
+                            required:true,
+                            validation:{presence: {allowEmpty: false}},
+
+                        },
+                        {
+                            name:'Input Required',
+                            type:'option',
+                            model:'inputrequired',
+                            required:true,
+                            validation:{presence: {allowEmpty: false}},
+                            data: [{name:'Mandatory',value: 1},{name:'Optional',value: 0}]
 
                         },
                     ]
                 ],
                 msFormDefaultValue:[
                     {
-                        name:'AccountType',
-                        value:'disabled'
+                        name:'columntype',
+                        value:'string'
                     },
+                    {
+                        name:'inputrequired',
+                        value: 0
+                    }
                 ],
                 msDatafromServer:{},
                 allInput:{},
@@ -258,10 +257,10 @@
             this.setDataFromServer(this.msForm2);
             this.allInput=def;
             this.getExistingAccounts();
-           // this.addSampleAC();
+            // this.addSampleAC();
 
 
-       //     this.validateAll(this.allInput,this.msConditionalForm[this.allInput.typeOfBusiness])
+            //     this.validateAll(this.allInput,this.msConditionalForm[this.allInput.typeOfBusiness])
 
         },
 
@@ -270,10 +269,10 @@
                 this.allAccounts=data;
             },
             getExistingAccounts(){
-            var msClient=msInstance;
-            var url=this.msData.path.data.allAccounts;
-            var th=this;
-            msClient.get(url).then((res)=>th.setExistingAccounts(res.data.msData));
+                var msClient=msInstance;
+                var url=this.msData.path.data.allAccounts;
+                var th=this;
+                msClient.get(url).then((res)=>th.setExistingAccounts(res.data.msData));
 
 
             },
@@ -293,15 +292,15 @@
             },
 
             addSampleAC(){
-            var ac={
-                AccountType:"current",
-                BankAcNo:"1280398120830810",
-                BankName:"bank of baroda",
-                BankBranch:"piplod",
-                IFSC:"212312",
-                CurrentBalance: this.forIndianFormat("10000")
-            };
-            this.addAccount(ac);
+                var ac={
+                    AccountType:"current",
+                    BankAcNo:"1280398120830810",
+                    BankName:"bank of baroda",
+                    BankBranch:"piplod",
+                    IFSC:"212312",
+                    CurrentBalance: this.forIndianFormat("10000")
+                };
+                this.addAccount(ac);
             },
 
             addAccount(ac=null){
@@ -440,7 +439,7 @@
 
             postForm (){
                 if(!this.formPostedAndWaitingForData ){
-                     this.formPostedAndWaitingForData=true;
+                    this.formPostedAndWaitingForData=true;
                     var client=window.msInstance;
                     var url=this.msData.path.form.post;
                     var th=this;
@@ -482,18 +481,16 @@
             allInput(newVal,oldVal){
                 //   console.log('validates');
                 this.validateAll(newVal,this.msForm);
-             //   this.validateAll(newVal,this.msForm2);
+                //   this.validateAll(newVal,this.msForm2);
                 //console.log(newVal.typeOfBusiness);
                 //  console.log(this.msConditionalForm.typeOfBusiness[newVal.typeOfBusiness]);
-              //  if(newVal.typeOfBusiness !='disabled')this.validateAll(newVal,this.msConditionalForm.typeOfBusiness[newVal.typeOfBusiness]);
+                //  if(newVal.typeOfBusiness !='disabled')this.validateAll(newVal,this.msConditionalForm.typeOfBusiness[newVal.typeOfBusiness]);
 
 
             }
 
 
         },
-
-
 
     }
 </script>

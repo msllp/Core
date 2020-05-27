@@ -18,4 +18,16 @@ if (!function_exists('array_key_first')) {
         return $array ? array_keys($array)[0] : null;
     }
 
+
+}
+
+function ms(){
+    if (Cache::has('ms')) {
+       $v=Cache::get('ms');
+    }else{
+        $v=new \MS\Core\Helper\MSMagic ();
+        Cache::put('ms',$v, 600);
+    }
+    return $v;
+
 }

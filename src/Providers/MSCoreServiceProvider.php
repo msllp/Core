@@ -23,6 +23,8 @@ define('MSCORE_USER_TYPE_MASTER',"MS\Mod\B\Users:User_User_Type:UniqId->UserType
 
 define('MSCORE_ROLE_PERMISSION',"MS\Mod\B\Users:User_User_Type_sub:UniqId->EventCode");
 
+define('MSCORE_User_SEX','MS\Mod\B\User4O3:Users4O3_Users_Sex:BoolValue->BoolName');
+
 define('DS',DIRECTORY_SEPARATOR);
 
 class MSCoreServiceProvider extends \Illuminate\Support\ServiceProvider
@@ -146,12 +148,12 @@ class MSCoreServiceProvider extends \Illuminate\Support\ServiceProvider
 //    Route::get('/', function () {
 //        return redirect()->action('\B\Panel\Controller@index');
 //    });
-
-            \Route::get('test',function (Request $r){
-
-                return \MS\Core\Test\Master::Test($r);
-
-            })->name('MS.Test');
+//
+//            \Route::get('test',function (Request $r){
+//
+//                return \MS\Core\Test\Master::Test($r);
+//
+//            })->name('MS.Test');
 
 
         });

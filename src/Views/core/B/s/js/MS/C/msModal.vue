@@ -67,7 +67,9 @@
 
                     }
                 ],
-                msModalIcon:{}
+                msModalIcon:{},
+                msModalCallbackClass:null,
+                msModalCallbackMethod:'refreshData'
             }
         },
         mounted() {
@@ -78,6 +80,10 @@
 
         },
         methods:{
+            attachClass(classToRefresh,methodTocall=null){
+                this.msModalCallbackClass=classToRefresh;
+                if(methodTocall!=null)this.msModalCallbackMethod=methodTocall;
+            },
             getModalData(data){
             var client=msInstance;
             var th=this;
@@ -96,7 +102,7 @@
                 switch (data.actionType) {
 
                     case "inbuilt":
-                        console.log('inbuilt');
+                      //  console.log('inbuilt');
                         var method=data.actionMethod;
                         this[data.actionMethod](data,key);
 
@@ -105,10 +111,11 @@
                 }
             },
             closeModal(){
-                console.log('cloase click');
+               // console.log('cloase click');
                 this.resetModalBody();
                 this.$parent.setModalStatus(false);
                 this.msModalOpen=false;
+                if(this.msModalCallbackClass!=null)this.msModalCallbackClass[this.msModalCallbackMethod]();
             },
 
             openModalFromParent(data={}){

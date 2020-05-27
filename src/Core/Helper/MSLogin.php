@@ -40,10 +40,13 @@ class MSLogin
             $d=$outAPI->getSourceByName($name);
 
             $data=$d;
-
+         //   dd($data);
             if(array_key_exists('VerifyUrl',$data) && array_key_exists('VerifyCallback',$data)){
-                $data['VerifyUrl']=route($data['VerifyUrl']);
-                $data['VerifyCallback']=route($data['VerifyCallback']);
+                if(\Route::has($data['VerifyUrl'])){
+                    $data['VerifyUrl']=route($data['VerifyUrl']);
+                    $data['VerifyCallback']=route($data['VerifyCallback']);
+                }
+
             }
 
             $this->setVerifyData($data);

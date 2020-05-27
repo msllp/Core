@@ -52,7 +52,7 @@ class MSForm
      * @param \MS\Core\Helper\string|null $perFix
      * @param array $data
      */
-    public function __construct(string $namespace, string $id=null, string $perFix=null, array $data=[])
+    public function __construct(string $namespace, string $id=null, array $perFix=null, array $data=[])
     {
 
         $this->namespace=$namespace;
@@ -161,6 +161,10 @@ class MSForm
                     if(is_array($btnData) && !array_key_exists('btnColor',$btnData)) $btnData['btnColor']='bg-red-400' ;
                     //$btn['Class'][]='btn-danger';
                     break;
+
+                default:
+                    if(is_array($btnData) && !array_key_exists('btnColor',$btnData)) $btnData['btnColor']='bg-blue-400' ;
+                    break;
             }
             //dd($this);
             if(is_array($btnData)){
@@ -175,11 +179,13 @@ class MSForm
 
             //dd(in_array($type,$this->dbMaster['MSforms'][$this->formID]['actions']));
           //  dd($this->dbMaster['MSforms'][$this->formID]);
-            if(in_array($type,$this->accessAction) && in_array($type,$this->dbMaster['MSforms'][$this->formID]['actions']))
+
+            if((in_array($type,$this->accessAction)||1)&& in_array($type,$this->msdb->mod_Tables[$this->id]['MSforms'][$this->formID]['actions']))
             {
+
                 $returnData[$type]=$btnData;
             }else{
-              //  dd( $returnData);
+
             }
 
         }
@@ -190,6 +196,8 @@ class MSForm
         return $returnData;
         //dd($returnData);
     }
+
+
 
     private function makeDataRouteWithPara($r,$p,$d){
         $rArray=[];
@@ -215,7 +223,8 @@ class MSForm
             $ex2=explode('->',$ex[2]);
             $data ['darray'][$ex2[0]]=$ex2[1];
            // dd($data);
-            $m=new MSDB($data['namespace'],$data['tableId'],$per);
+            $m=ms()->msdb($data['namespace'],$data['tableId'],$per);
+            //$m=new MSDB($data['namespace'],$data['tableId'],$per);
            // $m->migrate();
             $d=$m->rowGet();
 
@@ -339,10 +348,12 @@ class MSForm
     }
 
     public function fromModel(MSDB $dbClass,$data=[]){
+
         $this->msdb=$dbClass;
         $baseTabele=$this->fields=$this->msdb->mod_Tables[$this->id];
         $this->action=$baseTabele['action'];
         $this->fields=$baseTabele['fields'];
+      //  dd($baseTabele);
         if(count($data)>0)$this->newForm=false;
         $this->makeForm();
 
@@ -395,7 +406,7 @@ class MSForm
 
     private function makeFieldsFromGroup($groupArray){
         $returnArray=[];
-
+       // dd($groupArray);
         foreach ($groupArray as $title=>$fieldsArray){
 //            $returnArray[]=[
 //                'vName'=>$title,
@@ -403,19 +414,19 @@ class MSForm
 //                $title=>$fieldsArray
 //
 //            ];
-         //   dd($fieldsArray);
+
             foreach ($fieldsArray as $fieldName){
                 if(($fieldName == 'created_at') && ($fieldName =='updated_at')) dd($fieldName);
                 if(($fieldName != 'created_at') && ($fieldName !='updated_at')){
 
                     //dd();
                     $aray=$this->getFieldFromFields($fieldName);
+
                     if($aray == null)dd($fieldName); //TODO Find proper out put for no array found
 //                if(array_key_exists('fieldGroupMultiple',$this->dbMaster) && $this->dbMaster['fieldGroupMultiple'])
 //                    $aray['groupInput']=$this->make4Vue($title);
 
-                    //  $returnArray[$this->make4Vue($title)]['inputs'][]= $this->makeDataForVue($aray);
-                    $returnArray[$this->make4Vue($title)]['gruoupHeading']=$title;
+                   $returnArray[$this->make4Vue($title)]['gruoupHeading']=$title;
                     if(array_key_exists('fieldGroupMultiple',$this->dbMaster) && in_array($title,$this->dbMaster['fieldGroupMultiple']))
                     {
                         // if($aray == null)dd($fieldsArray);
@@ -451,8 +462,6 @@ class MSForm
 
                 }
 
-
-
             }
 //
 //            $returnArray[]=[
@@ -476,8 +485,6 @@ class MSForm
 
     }
     private function makeForm(){
-
-        //dd($this->dbMaster);
 
         if( array_key_exists('add',$this->action) or  (count($this->action)>0) ){
             $action=$this->action;
@@ -512,11 +519,12 @@ class MSForm
 
                 $this->returnHTML['formData']=$fields;
            //     if()mod_Tables
-
+         //   dd($fields);
 
             }else{
 
                 $fields=$this->makeFieldsFromGroup($this->dbMaster['fieldGroup'])  ;
+
                 $this->returnHTML['formData']=$fields;
 
             }
@@ -565,6 +573,7 @@ class MSForm
    //if($data == null ) dd($data);
 
         $array=\MS\Core\Helper\MSForm::makeArrayForViewFromStyle($array,$data);
+
 //dd($array);
 
         if (array_key_exists('vName',$data))$array['vName']=$data['vName'];
@@ -578,7 +587,7 @@ class MSForm
 
         }
 
-        if(array_key_exists('validation',$data)){
+        if(array_key_exists('validation',$data) && is_array($data['validation'])){
 
             if(array_key_exists( 'required',$data['validation']) && $data['validation']['required']){
                 //(array_key_exists('perfix',$array))?$array['perfix'].= " ":null;
@@ -588,18 +597,33 @@ class MSForm
 
             }
 
+            if(array_key_exists('length',$data['validation']))$array['validation']['length']=$data['validation']['length'];
+            if(array_key_exists('email',$data['validation']))$array['validation']['email']=$data['validation']['email'];
+            if(array_key_exists('duration',$data['validation']))$array['validation']['duration']=$data['validation']['duration'];
+            if(array_key_exists('numericality',$data['validation']))$array['validation']['numericality']=$data['validation']['numericality'];
+            if(array_key_exists('format',$data['validation']))$array['validation']['format']=$data['validation']['format'];
 
-            if(array_key_exists('existIn',$data['validation']))$array['verifyBy']=\MS\Core\Helper\MSForm::getDataFromTable($data['validation']['existIn']);
+           // if(array_key_exists('length',$data['validation']) || 1 )dd($array);
+            //dd($data);
+            //dd($this->perFix);
 
+            if(array_key_exists('existIn',$data['validation']))$array['verifyBy']=\MS\Core\Helper\MSForm::getDataFromTable($data['validation']['existIn'],$this->getPerFixForDataFromOtherTable($data));
 
-
-            //$array['']=;
 
 
         }
         if(array_key_exists('inputMultiple',$data))$array['inputMultiple']=$data['inputMultiple'];
         if(array_key_exists('inputMultiple',$data))$array['inputMultiple']=$data['inputMultiple'];
         if(array_key_exists('inputInfo',$data))$array['inputInfo']=$data['inputInfo'];
+        if(array_key_exists('addAction',$data) && array_key_exists($data['addAction'],$this->getAction()))
+        {
+
+            $array['addAction']=$this->getAction()[$data['addAction']];
+
+            if(strpos('https://',$array['addAction']['route'])===false)$array['addAction']['route']=route($array['addAction']['route']);
+            if(strpos('https://',$array['addAction']['dataRoute'])===false)$array['addAction']['dataRoute']=route($array['addAction']['dataRoute']);
+        }
+
         if($multiple)$array['inputMultiple']=true;
         if(array_key_exists('groupInput',$data))$array['groupInput']=$data['groupInput'];
         $f= implode("\\",[$this->namespace,"F"]) ;
@@ -621,11 +645,21 @@ class MSForm
                 //dd($array);
                 break;
         }
-//dd($array);
+
+       // if(array_key_exists('validation',$data) && array_key_exists('existIn',$data['validation']))dd($array);
+       // if($data['name']=='Role')dd($array);
         return $array;
+
         $arrayJson=collect($array)->toJson();
     }
 
+    private function getPerFixForDataFromOtherTable($data):array {
+
+        $return=[];
+        if(array_key_exists($data['name'],$this->perFix))$return=$this->perFix[$data['name']]['perFix'];
+        return $return;
+
+    }
     private function makeDataValueForView($name){
         if(array_key_exists($name,$this->formData[$name]))
         return $this->formData[$name];
@@ -665,10 +699,10 @@ class MSForm
 
      //   dd(  );
       // dd($this );
-     if(!$this->debug)  return view("MS::core.layouts.Form.formPlateRaw")->with("form",$this->returnHTML);
+
+     if(!ms()->debug())  return view("MS::core.layouts.Form.formPlateRaw")->with("form",$this->returnHTML);
         return view("MS::core.layouts.Form.formPlate")->with("form",$this->returnHTML);
-        return view("MS::core.layouts.Form.formPlate")->with("form",implode("",$this->returnHTML));
-        return implode("",$this->returnHTML);
+
     }
 
     private function addOneline(array $data){

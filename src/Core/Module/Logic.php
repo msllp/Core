@@ -4,7 +4,6 @@
 namespace MS\Core\Module;
 
 
-use MS\Core\Helper\MSDB;
 
 class Logic
 {
@@ -101,13 +100,13 @@ class Logic
 
         return response()->json($err,200);
     }
-    public function throwError(array $data){
+    public function throwError($data,$status=419){
 
         $err=[
             'errors'=>$data
         ];
 
-        return response()->json($err,419);
+        return response()->json($err,$status);
     }
     public function unSet($column, $d)
     {
@@ -120,9 +119,11 @@ class Logic
 
     public static function getModel($namespace,$tableId,$data=[])
     {
+        if (count($data) > 0){
 
+        }
         $tableId = implode('_',[static ::$modCode,$tableId]) ;
-        $c = new MSDB($namespace, $tableId,$data);
+        $c = ms()->msdb($namespace, $tableId,$data);
         return $c;
 
     }
@@ -133,7 +134,7 @@ class Logic
         $tableId = (count($idExplode) > 0 && reset($idExplode) == static::$modCode) ?
             $id : implode('_', array_merge([static::$modCode, $id,]));
         $namespace=implode('\\',['MS','Mod','B',static ::$modCode]);
-        $c = new MSDB($namespace, $tableId, $data);
+        $c = ms()->msdb($namespace, $tableId, $data);
         //dd();
         return ($c->checkTableExist())?false:$c->migrate();
     }

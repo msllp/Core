@@ -69,7 +69,7 @@
     @apply w-full;
     @apply border-b;
     border-bottom-color: $ms-theme-color-main;
-    //@apply border-r;
+    color:rgba(255,255,255,0.8);
     @apply py-3;
     @apply mb-2;
     font-size:14px;
@@ -77,16 +77,19 @@
     @apply ms-animation;
     position: sticky;
     top: 0;
+    font-weight: 600;
    // color: white;
 
-    background: linear-gradient(47deg, $ms-dark-theme-color-main-cross-4, $ms-theme-color-light);
+    background: linear-gradient(47deg, rgba(58,58,198,1), $ms-theme-color-light);
 }
 .ms-main-title:hover{
+    font-weight: 600;
     @apply pl-4;
     @apply mr-3;
     @apply shadow;
     // color:rgba(255,255,255,0.8);
-    background: linear-gradient(47deg, $ms-dark-theme-color-main-cross, $ms-theme-color-light);
+    color:rgba(255,255,255,0.8);
+    background: linear-gradient(127deg, rgba(58,58,198,1), $ms-theme-color-light);
     @apply ms-animation;
 
 }
@@ -196,7 +199,7 @@
     color: rgba(255,255,255,0.9);
     border-color: rgb(97,88,206,0.8);
     position: sticky;
-    top: 32px;
+    top: 47px;
 
     @apply p-2;
     @apply mb-1;

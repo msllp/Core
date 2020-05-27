@@ -133,6 +133,25 @@ return $thecash; // writes the final format where $currency is the currency symb
         return $fArray;
 
     }
+    public static function ucfirst($str,$needle='.',$doNotChange=['O3']){
+
+        dd($str);
+        dd(strpos('.',$str));
+
+        if(strpos('.',$str)!==false){
+            $exStr=explode($needle,$str);
+            $mapFunction=function ($ar)use($doNotChange){
+                return (!in_array($ar,$doNotChange))?ucfirst(strtolower($ar)):$ar;
+            };
+            $exStrToMap=array_map($mapFunction,$exStr);
+            dd($exStrToMap);
+            return implode($needle,$exStrToMap);
+        }else{
+            return ucfirst( strtolower($str) );
+        }
+
+
+    }
 
     public static function loadBack(){
         require(base_path('MS'.DIRECTORY_SEPARATOR .'B'.DIRECTORY_SEPARATOR .'M'.DIRECTORY_SEPARATOR ."Routes.php"));
@@ -204,7 +223,7 @@ if($master && array_key_exists('locationOfFile', $array)){
      * @param integer $type = 1 (Default)
      * @return string
      */
-    public static function random($count=4,$type=1,$lvl=1,$preFix=[],$dv='_'): string {
+        public static function random($count=4,$type=1,$lvl=1,$preFix=[],$dv='_'): string {
         $randstring=[];
       //  dd($preFix);
         switch ($type) {

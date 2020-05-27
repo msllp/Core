@@ -16,8 +16,18 @@
             </div>
 
 
+            <div class="ms-master-title" >
+                <div class="" @click.prevent="openTab({ title:'O3 One View', url:'/o3/Panel/home/oneview'},false)">
 
-            <div v-for="mainNav,index in msData" class="ms-master-title" v-on:click="setMainTab(index)">
+                    <i class="fi2 flaticon-business-and-finance-8 p-1"></i>
+
+                    <span v-if="msNavigationOn" :class="{'ms-animation':msNavigationOn}">O<sub>3</sub> One View</span>
+
+                </div>
+
+            </div>
+
+            <div v-for="(mainNav,index) in msData" class="ms-master-title" v-on:click="setMainTab(index)">
                 <div class="">
 
                     <i v-if="mainNav.hasOwnProperty('icon')" :class="mainNav.icon" class="p-1"></i>
@@ -33,7 +43,7 @@
         <div class="flex-wrap ms-nav-div" v-if="!currentMainTab">
             <div class="ms-main-title cursor-pointer" v-on:click="backToMain">
                 <i class="fas fa-backward p-1" ></i>
-                <span v-if="msNavigationOn">back to Main Navigation</span>
+                <span v-if="msNavigationOn">Back to Main Navigation</span>
             </div>
 
             <div v-for="mainNav,index in msData" class="" v-if="currentSubTab == index">
@@ -92,6 +102,7 @@
                 currentMainTab:true,
                 currentSubTab:0,
                 msNavigationOn:false,
+                msBackEnd:window.msBackEnd
             }
         },
         methods:{
@@ -116,7 +127,21 @@
             openTab(item,proccess) {
           //      this.activeSubMenu = item.txt;
                 // this.$router.push(this.getUrl(item));
-                if(proccess)this.getUrlFromSideNav(item);
+                if(proccess) {
+                    this.getUrlFromSideNav(item);
+                }
+               else {
+                    var data={
+                        modUrl:this.msBackEnd+item.url,
+                        modDView:item.title
+                    };
+                    //  data.modUrl=item.link;
+                    //data.modCode="MAS";
+                    //    data.modDView=item.text;
+                    this.$parent.hideNavOnlyForMobile(true);
+                    this.$parent.driveRequestFromNavToLiveTab(data);
+
+                }
                 //  window.bus.$emit('menu/closeMobileMenu');
             },
             getUrlFromSideNav(item) {

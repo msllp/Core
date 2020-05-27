@@ -46,7 +46,7 @@ class MSTableSchema {
     ];
 
     private static $allowedKeysFields=[
-        'name','vName','type','input','validation','dbOff'
+        'name','vName','type','input','validation','dbOff','addAction'
     ];
 
     private static  $requireKeysFields=[
@@ -286,13 +286,14 @@ class MSTableSchema {
 
     public function addAction($acId,$acData){
             $ac=$this->getAction();
+           // dd($ac);
             if($ac==null)$ac=[];
         //    dd(!array_key_exists($acId,$ac));
             if(is_array($ac) && !array_key_exists($acId,$ac))
             {
                 $ac[$acId]=$acData;
             }
-
+           // dd($ac);
             $this->setAction($ac);
             return $this;
     }
@@ -565,9 +566,12 @@ class MSTableSchema {
     }
     private function filterFields($d){
         $fD=[];
+
         foreach (self::$allowedKeysFields as $keName){
             if(array_key_exists($keName,$d)) $fD[$keName]=$d[$keName];
         }
+       // if($d['name']=='Role')dd($fD);
+
         return $fD;
     }
 

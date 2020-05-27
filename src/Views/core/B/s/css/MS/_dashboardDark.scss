@@ -1,11 +1,22 @@
 
 
-    @apply ms-animation;
+    .ms-company-logo-2{
+        cursor: pointer;
+        max-height:70px;
+        @apply p-1;
+        @apply px-3;
+        @apply ml-2;
+        @apply ml-2;
+        @apply border-l;
+        background-color: rgba(255,255,255,0.8);
+        @apply rounded;
+    }
 
     .ms-nav-container{
         z-index: 2501;
         position: fixed;
         background: linear-gradient(47deg, $ms-dark-theme-color-main, $ms-dark-theme-color-main-2);
+        @apply border-b;
         //color:white;
     }
 

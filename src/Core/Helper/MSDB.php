@@ -57,6 +57,7 @@ class MSDB implements MasterNoSql
     {
 
        // dd(func_get_args());
+        //  $this->MSmodel =\DB::connection($connection)->table($tableName);
         $nameSpace=$nameSpace;
         $base=$nameSpace."\B";
         $this->masterNamespace= $nameSpace;
@@ -70,37 +71,44 @@ class MSDB implements MasterNoSql
 
         if(count($perFix)>0 )$this->database['perfix']=$perFix;
 
-
-
-
-
-//        if(array_key_exists('perfix',$this->database)) {
-//            $this->model = new $this->database['namespace'] ($nameSpace, $id, $this->database['perfix']);
-//        }else{
-//            //  if('\MS\Mod\B\Users4O3\M'==$this->database['namespace'])     dd($this);
-//            $this->model = new $this->database['namespace'] ($nameSpace, $id);
-//        }
-       // dd($nameSpace);
-        //dd($this->model->ms_base);
-        //parent::__construct($nameSpace, $id, $perFix);
-        $baseNameSpace=implode('\\',['',$nameSpace,'b']);
-        //$this->mod_Tables[$this->ms_id]=$this->model->ms_base::getTableArray($this->ms_id,$tableData);
+        $baseNameSpace=implode('\\',['',$nameSpace,'B']);
         $this->mod_Tables[$this->ms_id]=$baseNameSpace::getTableArray($this->ms_id,$tableData);
-        //   if(!is_array($this->mod_Tables))dd($this->mod_Tables);
-
+        //dd($this->mod_Tables[$this->ms_id]);
         $connection=$this->getConnectionName();
-      //  $tableName=$this->model->getTable();
         $tableName=$this->getTable();
         $this->fTableName=$tableName;
         $this->connection=$connection;
-        $this->MSmodel =\DB::connection($connection)->table($tableName);
+       // if($this->ms_id == 'Users4O3_Users')dd($this);
+        ms()->cache()->setFromMSDB(implode('_',[$nameSpace,$id,implode('_',$perFix)]),$this);
+        $this->MSmodel =\DB::connection($this->getConnectionName())->table($this->getTable());
 
+    }
+
+    public function getModTable(){
+        return $this->mod_Tables[$this->ms_id];
+    }
+
+    public function getAction(){
+        return $this->getModTable()['action'];
+    }
+    public function getFields(){
+
+        return $this->getModTable()['fields'];
+    }
+
+    public function __sleep() {
+        return [ 'masterNamespace','ms_id' ,'database','mod_Tables','fTableName','connection']; //Pass the names of the variables that should be serialised here
+    }
+    public function __wakeup() {
+        //Since we can't serialize the connection we need to re-open it when we unserialise
+        $this->MSmodel =\DB::connection($this->getConnectionName())->table($this->getTable());
 
     }
 
     private function getConnectionName(){
         if($this->connection!=null)return $this->connection;
     //    if(!array_key_exists('connection', $this->mod_Tables[$this->ms_id]))dd($this->mod_Tables);
+//        if(!array_key_exists('connection',$this->mod_Tables[$this->ms_id]))dd($this);
         return  $this->mod_Tables[$this->ms_id]['connection'];
     }
 
@@ -115,8 +123,6 @@ class MSDB implements MasterNoSql
     }
 
     public function attachTableData($tableData){
-    //    dd($tableData);
-
         if(is_array($this->mod_Tables) && array_key_exists($this->ms_id,$this->mod_Tables) && array_key_exists($this->ms_id,$tableData)){
 
             $this->mod_Tables[$this->ms_id]=$tableData[$this->ms_id];
@@ -134,7 +140,6 @@ class MSDB implements MasterNoSql
     // dd($this);
         return $this;
     }
-
 
 
 
@@ -402,6 +407,16 @@ class MSDB implements MasterNoSql
         return [];
 
     }
+
+    public function rowAddMass(array $columnArray, array $uniqArray=[]):bool{
+        $process=[];
+        foreach ($columnArray as $k=>$row){
+            $process[$this->rowAdd($row,$uniqArray)][]=$k;
+        }
+        if(array_key_exists(0,$process) && count($process[0])>0)return false;
+        return  true;
+    }
+
     public function rowAdd(array $columnArray, array $uniqArray=[], bool $debug=false):bool
     {
 
@@ -867,8 +882,9 @@ class MSDB implements MasterNoSql
 
     public function displayForm($formId=null,$data=[]){
 
+      //  dd($data);
         if($formId != null){
-            $f=new \MS\Core\Helper\MSForm($this->masterNamespace,$this->database['id'],null,['formID'=>$formId]);
+            $f=new \MS\Core\Helper\MSForm($this->masterNamespace,$this->database['id'],$data,['formID'=>$formId]);
         }else{
             $f=new \MS\Core\Helper\MSForm($this->masterNamespace,$this->database['id']);
         }
@@ -886,7 +902,7 @@ class MSDB implements MasterNoSql
         return $f->fromModel($this)->viewRaw();
     }
 
-    public function viewData($viewId=null){
+    public function viewData($viewId=null,$data=[]){
 
         if($viewId != null){
 
@@ -896,7 +912,7 @@ class MSDB implements MasterNoSql
         }
         //dd($f);
 
-        return $f->fromModel($this)->view();
+        return $f->fromModel($this,$data)->view();
     }
     ///View Functions END
 
@@ -967,6 +983,7 @@ class MSDB implements MasterNoSql
     public function checkRulesForData($r=null){
 
         if($r==null)$r=$this->r;
+
 
         $data= $this->filterData($r->all());
         $this->dataToProcess=$data;
@@ -1097,8 +1114,9 @@ class MSDB implements MasterNoSql
     }
 
 
-    public function ForPagination($page){
+    public function ForPagination($page,$data=[]){
         $input=$page->all();
+        $where=(array_key_exists('where',$data))?$data['where']:[];
         $data=[];
         $page=$input['page'];
       //  dd($input);
@@ -1113,10 +1131,22 @@ class MSDB implements MasterNoSql
            // dd($data);
 
         }elseif (array_key_exists('page',$input) ){
+
+            $tableData=[];
+            if(count($where)>0){
+            $q=$this->MSmodel;
+                foreach ($where as $k=>$v){
+                    $q=$q->where($k,$v);
+                }
+                $tableData=$q->paginate( $this->perPage, ['*'], 'page', $page );
+            }else{
+                $tableData= $this->MSmodel->latest()->paginate( $this->perPage, ['*'], 'page', $page );
+            }
+
             $data['fromV']= [
                 // 'tableTitle'=>"",
                 // 'tableColumns'=>[],
-                'tableData'=>$this->MSmodel->latest()->paginate( $this->perPage, ['*'], 'page', $page )
+                'tableData'=>$tableData
             ];
         }
 

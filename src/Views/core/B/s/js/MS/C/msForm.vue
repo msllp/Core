@@ -127,7 +127,7 @@
                                 'bg-gray-200':!checkImHiddenOrNot(section),
                             'bg-gray-500':checkImHiddenOrNot(section)}"  v-on:click.prevent="showCollapse(section.id)">
                                 <i :class="{
-                            'fas fa-search-minus':!checkImHiddenOrNot(section),
+                            'fas fa-search-minus':!checkImHiddenOrNot(section) ,
                             'fas fa-search-plus':checkImHiddenOrNot(section)
                             }"/> </div>
                             <span class="">{{section.gruoupHeading}}</span>
@@ -196,7 +196,7 @@
                                   }"
                                   :class="{'bg-gray-200':!checkImHiddenOrNot(section),
                             'bg-gray-500':checkImHiddenOrNot(section)}"  v-on:click.prevent="showCollapse(section.id)"><i :class="{
-                            'fas fa-search-minus ':!checkImHiddenOrNot(section),
+                            'fas fa-search-minus ':!checkImHiddenOrNot(section) ,
                             'fas fa-search-plus ':checkImHiddenOrNot(section)
 
                             }"  ></i> </div>
@@ -247,6 +247,7 @@
             <tr v-for="(subRow,id3) in msFormDataFinal[id2]">
                 <td >
                     {{
+
                     section.inputs.find(key=>key.name==id2).verifyBy.msdata.find(function(data) {
                     return data[section.inputs.find(key=>key.name==id2).verifyBy.value]==subRow
                     })[section.inputs.find(key=>key.name==id2).verifyBy.text]
@@ -304,9 +305,14 @@
                     <div class="inline-flex w-full cursor-pointer text-center" :class="{}" >
                      <span
                          @click.prevent="formActionFromBtn(index)"
-                         class="w-1/3 bg-gray-200  hover:bg-gray-400 border-t border-b  border-r px-3 py-1 text-sm font-semibold text-gray-700"
+                         class="w-1/3  border-t border-b  border-r px-3 py-1 text-sm font-semibold text-gray-700"
 
-                              v-for="(msBtn,index) in msActionBtn" type="button" :class="{[msBtn.btnColor]:msBtn.hasOwnProperty('btnColor')}"
+                              v-for="(msBtn,index) in msActionBtn" type="button" :class="{
+
+                                  ['bg-'+msBtn.btnColor+'-200  hover:bg-'+msBtn.btnColor+'-400'  ]:msBtn.hasOwnProperty('btnColor'),
+                                  ['bg-gray-200  hover:bg-gray-400']:!msBtn.hasOwnProperty('btnColor')
+
+                              }"
 
                         >
                                <i v-if="msBtn.hasOwnProperty('btnIcon')" :class="msBtn.btnIcon"></i> {{displauActionBtnText(msBtn)}}
@@ -398,7 +404,8 @@
                 onMobile:false,
                 allErrors:[],
                 CurrentDataFromServer:null,
-                compactForm:true
+                compactForm:true,
+                msViewAll:true
             }
         },
         methods:{
@@ -466,7 +473,7 @@
             },
             removeInputGroup(id,rootId,rid) {
                 //console.log(this.msCount.hasOwnProperty(id))
-                console.log("id: "+id+" rootId: "+rootId +" rid: "+rid);
+              //  console.log("id: "+id+" rootId: "+rootId +" rid: "+rid);
                 if(confirm('Are you sure you want to remove Input group ?')){
                     if(this.msCount.hasOwnProperty(rootId) && this.msCount[rootId] >1){
 
@@ -580,11 +587,11 @@
             removeDataFromDynamicWithGroup(id,name){
              //   if(this.msFormDataFinal.hasOwnProperty(name) && this.msFormDataFinal[name].hasOwnProperty(id))console.log(id);     console.log(this.msFormDataFinal[name][id]);
                 if(this.msFormDataFinal.hasOwnProperty(name) && typeof this.msFormDataFinal[name] == 'object' && this.msFormDataFinal[name].hasOwnProperty(id)){
-                    console.log("found: id: "+id+" name :"+ name);
+          //          console.log("found: id: "+id+" name :"+ name);
                     delete this.msFormDataFinal[name][id];
                 }else {
 
-                    console.log("Not found: id: "+id+" name :"+ name);
+                 //   console.log("Not found: id: "+id+" name :"+ name);
                     // console.log( id);
                     // console.log( this.msFormDataFinal);
                     // console.log(name);
@@ -605,7 +612,7 @@
                 ,setInputData(name,value,multi=false,index=0){
                 //console.log(name2 != "");
                /// console.log(multi);
-                console.log('Name: '+name+' value: '+value+' multi: '+multi+' index: '+index);
+           //     console.log('Name: '+name+' value: '+value+' multi: '+multi+' index: '+index);
                 if(false){
                     if(!(this.msFormDataFinal[name] instanceof Object))
                     {
@@ -658,8 +665,13 @@
 
             },
             setError(data){
-                this.allErrors.push(data);
+                var fkey=this.allErrors.findIndex(o => o.inputName == data.inputName);
 
+                if(fkey == -1) {
+                    this.allErrors.push(data);
+                }else {
+                    this.allErrors[fkey]=data;
+                }
 
 
             },
@@ -729,6 +741,7 @@
 
               //  if()this.msCurrentTab=section.id;
 
+                if (this.msViewAll) return false;
                 if(this.msCurrentTab!=null){
 
                      //   console.log(this.msCurrentTab==section.id);
@@ -745,18 +758,19 @@
             }
             ,formActionFromBtn(id,row){
                 if(this.allErrors.length<1){
-                    var row=this.msData.actionButton[id];
+                    var row=this.msActionBtn[id];
                     var mKey=row.msLinkKey;
                     //console.log(mKey);
-                    var route=this.msData.actionButton[id].route;
+                    var route=this.msActionBtn[id].route;
 
 
                     return this.getAllData(route);
 
                  //   console.log(this.msData.actionButton[id].route);
                 }else{
-                    var route=this.msData.actionButton[id].route;
-                    return this.getAllData(route);
+
+                    var route=this.msActionBtn[id].route;
+                   // return this.getAllData(route);
                 }
 
                 //console.log(this.msData.actionButton[id].route);

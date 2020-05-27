@@ -9,5 +9,4 @@
 interface Master
 {
 
-    public
 }

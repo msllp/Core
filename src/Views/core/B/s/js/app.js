@@ -6,11 +6,10 @@ var store = {
         message: 'Hello!'
     },
     setMessageAction(newValue) {
-        if (this.debug) console.log('setMessageAction triggered with', newValue)
+
         this.state.message = newValue
     },
     clearMessageAction() {
-        if (this.debug) console.log('clearMessageAction triggered')
         this.state.message = ''
     }
 }
@@ -20,7 +19,7 @@ var url =window.msBackEnd+'/o3/Mod/forUser';
 
 axios.get(url,{crossDomain: true,withCredentials:true})
     .then(function (response) {
-        // console.log(response.data.msData.csrf)
+
 
         window.MSclientToken=response.data.msData.csrf;
         window.axios.defaults.headers.common['MS-APP-Token'] = response.data.msData.csrf;
@@ -33,7 +32,7 @@ axios.get(url,{crossDomain: true,withCredentials:true})
                 withCredentials:false
             })
         });
-        //   console.log('appmake');
+
         const app = new Vue({
             el: '#msapp',
             mixins: [window.MS],
@@ -93,7 +92,7 @@ axios.get(url,{crossDomain: true,withCredentials:true})
                 },
                 getModBtn (url) {
 
-                    // console.log(this);
+
                     this.setMsErrorZero();
                     this.getGetLink(url, this);
 
@@ -102,15 +101,12 @@ axios.get(url,{crossDomain: true,withCredentials:true})
                 setMsError(Data) {
 
                     this.mserror = Data;
-                    //  console.log(Data);
 
-                    //  console.log(Data);
 
                     for (var inputName in Data) {
                         var key = inputName.toString().toLowerCase();
-                        //
                         if (this.$refs['msFrom'].$refs.hasOwnProperty(key) && this.$refs['msFrom'].$refs[key].hasOwnProperty(0)) {
-                            // console.log(inputName);
+
                             this.$refs['msFrom'].$refs[key][0].setError();
                             this.$refs['msFrom'].$refs[key][0].inputError = Data[inputName];
                             this.$refs['msFrom'].allErrors.push(
@@ -129,11 +125,11 @@ axios.get(url,{crossDomain: true,withCredentials:true})
                     //        this.$refs[key].setError();
                     //        this.$refs[key].inputError=value.msg;
                     //
-                    // //       console.log(this.$refs[key].getValue());
+
                     //
                     //    },this)
                     this.mserrorCount = true;
-                    //   console.log(this.mserror);
+
 
                 },
 
@@ -151,7 +147,7 @@ axios.get(url,{crossDomain: true,withCredentials:true})
                 },
                 setUpGroup (data) {
                     // alert("demo");
-                    //console.log(data);
+
                     this.msform = data;
                     //this.msform.push(data);
 
@@ -166,10 +162,19 @@ axios.get(url,{crossDomain: true,withCredentials:true})
                 getCompany(){
                     var dashBoard = this.$children[0];
                     return dashBoard.passDataToParent('getCompanyData').currentData;
-                    console.log(dashBoard.passDataToParent('getCompanyData'));
-                   // var viewPanel = dashBoard.$refs['ms-live-tab'];
-                }
 
+                   // var viewPanel = dashBoard.$refs['ms-live-tab'];
+                },
+                addModalAction(data,classToRefresh=null,methodTocall=null){
+                    var dashBoard = this.$children[0];
+                    dashBoard.openModal(data,classToRefresh,methodTocall);
+
+                },
+
+                closeModal(){
+                    var dashBoard = this.$children[0];
+                    dashBoard.closeModal();
+                }
 
             },
             data: function () {
@@ -186,7 +191,7 @@ axios.get(url,{crossDomain: true,withCredentials:true})
                 }
             },
             mounted: function () {
-                // console.log(this.msform);
+
 
 
             },
@@ -200,7 +205,7 @@ axios.get(url,{crossDomain: true,withCredentials:true})
     })
     .catch(function (error) {
 
-        console.log(error)
+
     });
 
 

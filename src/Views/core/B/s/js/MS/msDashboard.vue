@@ -361,9 +361,13 @@
                     this.msUserData.currentCompany=id;
                     var url=this.msData.path.changeCurrentCompany+"/"+id;
                     var app= vueApp;
+                    var th =this;
                     msClient.get(url).then(
                         function (res) {
                             //        console.log(res.data);
+                            if(th.msUserData.hasOwnProperty('RootId')) {
+                                th.refreshMenuData();
+                            }
                             app.refreshAllTab()
                         }
                     );
@@ -373,7 +377,11 @@
 
             },
 
-
+            refreshMenuData(){
+                this.getDataForSideBar();
+                var Han=this.$refs['msMenuSide'];
+                Han.setData(this.sendNavDatatoBar().items);
+            },
             getCompany(id){
 
             },
@@ -435,17 +443,22 @@
 
                 this.openModal(data);
 
-            }
-            ,
+            },
             setModalStatus(v){
                 this.msModalOpen=v;
             },
-            openModal(data={}){
+            openModal(data={},classToRefresh=null,methodTocall=null){
                 this.msModalOpen=true;
+            //    console.log(classToRefresh)
                 this.$nextTick(() => {
                     this.$refs.msCurrentModal.getModalData({'titleIcon':data.modIcon,'url':data.modUrl,'title':data.modDView})
                     this.$refs.msCurrentModal.openModalFromParent() ;
+                    if(classToRefresh!=null)this.$refs.msCurrentModal.attachClass(classToRefresh,methodTocall);
                 });
+            },
+            closeModal(){
+                this.msModalOpen=false;
+                this.$refs.msCurrentModal.closeModal();
             },
             getModalStatus(){
                 this.$nextTick(() => {

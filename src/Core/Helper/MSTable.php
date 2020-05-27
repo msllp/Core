@@ -20,7 +20,7 @@ class MSTable
     public $vueAllowed=[
         'msLinkKey','msLinkText','doubleConfirmText','doubleConfirm','ownTab'
     ];
-    public $namespace,$id,$perFix,$data,$msdb,$fields,$dbMaster,$action;
+    public $namespace,$id,$perFix,$data,$msdb,$fields,$dbMaster,$action,$whereCondition;
     public $dynamicData=[];
     public $viewID=null;
     public $attachedAction=[];
@@ -41,8 +41,6 @@ class MSTable
         $this->data=$data;
         $base="\\".$this->namespace."\\B";
         $this->dbMaster=$base::getModuleTables()[$this->id];
-        // $this->actionButton=[];
-
 
         foreach ($data as $v=>$k){
 
@@ -68,8 +66,10 @@ class MSTable
 
     public function fromModel(MSDB $dbClass,$data=[]){
         $this->msdb=$dbClass;
-        $this->action=  $this->msdb->model->ms_action;
-        $this->fields=$this->msdb->model->base_Field;
+
+        $this->action=$this->msdb->getAction();
+        $this->fields=$this->msdb->getFields();
+        $this->whereCondition=array_key_exists('where',$data)?$data['where']:[];
        // if(count($data)>0)$this->newForm=false;
         $this->makeTable();
       //  dd($this);
@@ -97,7 +97,7 @@ class MSTable
                 $fArray[$vueData['fc']]=$this->makeArrayForColumns($vd['groups'] );
                // dd($this->msdb->rowAll());
                 //dd($this->dbMaster['MSViews'][$this->viewID]['paginationLink']);
-                $fArray[$vueData['data']]=$this->msdb->MSmodel->latest()->paginate($this->perPage)->withPath(route($vd['paginationLink']));
+                $fArray[$vueData['data']]=$this->getTableData($vd);
                // dd($this->dynamicData);
                 $fArray[$vueData['ddata']]=$this->dynamicData;
                 $fArray[$vueData['ac']]=$this->makeArrayForAction();
@@ -110,11 +110,28 @@ class MSTable
         $fArray[$vueData['data']]->links();
 
 
+
 //dd($fArray);
             //$formName=$this;
 
             return $fArray;
 
+
+
+    }
+
+    private function getTableData($vd){
+        if(count($this->whereCondition)<1){
+            return $this->msdb->MSmodel->latest()->paginate($this->perPage)->withPath(route($vd['paginationLink']));
+        }else{
+            $q=$this->msdb->MSmodel;
+
+            foreach ($this->whereCondition as $k=>$v){
+                $q=$q->where($k,$v);
+            }
+
+            return $q->paginate($this->perPage)->withPath(route($vd['paginationLink']));
+        }
 
 
     }
@@ -288,8 +305,8 @@ class MSTable
 
     public function view(){
        // dd($this);
-     //  return view("MS::core.layouts.Table.tablePlateRaw")->with("table",$this->returnHTML);
-        return view("MS::core.layouts.Table.tablePlate")->with("table",$this->returnHTML);
+       return view("MS::core.layouts.Table.tablePlateRaw")->with("table",$this->returnHTML);
+     //   return view("MS::core.layouts.Table.tablePlate")->with("table",$this->returnHTML);
     }
 
 }

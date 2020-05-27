@@ -21,7 +21,7 @@ class checkValidRoute{
         $fAllowed=array_merge($allowed,$debugAllowed);
         $orgin=explode('//',$request->root())[1];
         $orgin=($request->headers->get('Origin') !=null)? explode('//',$request->headers->get('Origin'))[1]:$orgin;
-        
+
         //dd($request->headers->has('MS-APP-Token'));
         $fAllowed=array_merge($allowed,$debugAllowed);
 
@@ -29,12 +29,12 @@ class checkValidRoute{
         //dd(explode('//',$request->root()));
         $orgin=explode('//',$request->root())[1];
 
-    $checkArray=\MS\Mod\B\Mod\F::checkRouteExist($request);
-//dd($request);
-if($checkArray['pathFound'] or !$debug)return $next($request);
+        $checkArray=\MS\Mod\B\Mod\F::checkRouteExist($request);
 
-if($debug)return $next($request);
-return response()->json(['msg'=>'Opps System can not found your target or your not allowed to reach target']);
+        if($checkArray['pathFound'] or !$debug)return $next($request);
+
+        if($debug)return $next($request);
+        return response()->json(['msg'=>'Opps System can not found your target or your not allowed to reach target']);
 
     }
 

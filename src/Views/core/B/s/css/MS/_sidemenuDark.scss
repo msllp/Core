@@ -193,11 +193,11 @@
 
 .ms-master-title-in-sub{
     @apply border-b;
-    background-color:  $ms-dark-theme-color-main-cross-4    ;
+    background-color:  $ms-theme-color-info   ;
     color: rgba(255,255,255,0.9);
     border-color: rgb(97,88,206,0.8);
     position: sticky;
-    top: 32px;
+    top: 47px;
 
     @apply p-2;
     @apply mb-1;

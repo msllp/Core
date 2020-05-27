@@ -56,8 +56,7 @@ class Master implements BaseMaster
 
     public static function getModuleTables(){
 
-            $base=self::getBasics();
-
+        $base=self::getBasics();
         $return=[];
         $returnArray=[];
         $allExistDB=$base['dbList'];
@@ -108,7 +107,8 @@ class Master implements BaseMaster
     public static function getTableArray($tableID=false,$tableData=[]):array
     {
 
-        $table= self:: getModuleTables() ;
+        $table= self::getModuleTables() ;
+
         if(count($tableData) > 0)$table=array_merge($table,$tableData);
      //   dd($tableID);
 
@@ -175,8 +175,9 @@ class Master implements BaseMaster
                 $dynamR=$finalNamespace::$method();
                 $mapFun=function ($ar) use ($r){
                     if(strpos($ar['route'],'/')===0)$ar['route']=substr($ar['route'],1);
-                    $ar['name']=implode('.',[ucfirst(strtolower($r['preFix'])) ,$ar['name']]);
+                    $ar['name']= (array_key_exists('NamePreFix',$r))?implode('.',[$r['NamePreFix'] ,$ar['name']]):$ar['name'];
                     $ar['route']=implode('/',['',$r['preFix'],$ar['route']]);
+                  // if(array_key_exists('NamePreFix',$r))dd(ucfirst(strtolower($r['NamePreFix'])));
                     return $ar;
                 };
                 $dynamR=array_map($mapFun,$dynamR);
@@ -294,6 +295,7 @@ class Master implements BaseMaster
                     switch ($ruleType){
 
                         case 'required':
+
                             if($ruleString) $outArray[$field['name']][]= 'required';
                             break;
 
@@ -363,11 +365,12 @@ class Master implements BaseMaster
 
             if(count($rules)>0) {
 
-                // dd($rules);
-                foreach ($rules as $inputName => $ruleArray) {
-                    foreach (self::getField($tableID) as $inputArray){
 
-                        $outArray[$inputArray['name']]=$inputArray ['vName'];
+                foreach ($rules as $inputName => $ruleArray) {
+
+
+                    foreach (self::getField($tableID) as $inputArray){
+                       if($inputArray['name'] == $inputName) $outArray[$inputArray['name']]=$inputArray ['vName'];
 
                     }
 

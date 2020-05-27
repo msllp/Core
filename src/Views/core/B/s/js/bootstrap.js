@@ -57,6 +57,12 @@ Vue.component('setupcompany', require("./MS/M/Company/setupCompany").default);
 Vue.component('msupgradeuser', require("./MS/M/User/msUpgradeUser").default);
 Vue.component('addbankaccount', require("./MS/M/Company/addBankAccount").default);
 Vue.component('allinone', require("./MS/D/AllInOne").default);
+Vue.component('addrole', require("./MS/M/User/msAddRole").default);
+
+window.ms_debug=process.env.MIX_MS_DEBUG;
+if(process.env.MIX_MS_DEBUG){
+    Vue.component('makedataformsdb', require("./MS/Dev/MakeTableForMSDB").default);
+}
 
 Vue.use(VueTouch, {name: 'v-touch'})
 
