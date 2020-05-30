@@ -548,7 +548,7 @@
 
                 var validationConf={};
                 if(this.inputValidation.hasOwnProperty('length'))validationConf.length=this.inputValidation.length;
-                if(this.inputValidation.hasOwnProperty('required')) validationConf.presence={allowEmpty: false};
+                if(this.inputValidation.hasOwnProperty('required') && this.inputValidation.required)  validationConf.presence={allowEmpty: false};
                 if(this.inputValidation.hasOwnProperty('email')) validationConf.email=this.inputValidation.email;
                 if(this.inputValidation.hasOwnProperty('format')) validationConf.format=this.inputValidation.format;
                 if(this.inputValidation.hasOwnProperty('numericality')) validationConf.numericality=this.inputValidation.numericality;

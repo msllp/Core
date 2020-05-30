@@ -1143,8 +1143,7 @@ class MSDB implements MasterNoSql
                 $tableData= $this->MSmodel->latest()->paginate( $this->perPage, ['*'], 'page', $page );
             }
 
-            $data['fromV']= [
-                // 'tableTitle'=>"",
+            $data['fromV']= [// 'tableTitle'=>"",
                 // 'tableColumns'=>[],
                 'tableData'=>$tableData
             ];

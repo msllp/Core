@@ -168,6 +168,7 @@ class MSLang
         return $finalData;
     }
     public static function getSales($lang='en'){
+
         $finalData=[
             'NavMainHead'=>['en'=>'Sales'],
             'Navtitle1'=>['en'=>'Manage Leads & Quotations'],
@@ -196,7 +197,9 @@ class MSLang
 
             'Navtitle5'=>['en'=>'Manage Product & Services'],
             'NavSub51'=>['en'=>'Add Product or Service'],
-            'NavSub52'=>['en'=>'View Product & Services'],
+            'NavSub52'=>['en'=>'Add Product & Services Category'],
+            'NavSub53'=>['en'=>'View Product or Service'],
+            'NavSub54'=>['en'=>'View Product & Services Category'],
 
             'DashboardManageLeads'=>['en'=>'Manage Leads'],
             'DashboardManageQuotations'=>['en'=>'Manage Quotations'],

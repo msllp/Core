@@ -260,12 +260,12 @@ class MSTableSchema {
     }
 
 
-    public function addGroup($groupid){
+    public function addGroup($groupid,$groupData=[]){
         $fg=$this->getFieldGroup();
         if(is_array($fg) && !array_key_exists($groupid,$fg)){
-            $fg[$groupid]=[];
+            $fg[$groupid]=$groupData;
         }elseif($fg==null){
-            $fg=[$groupid=>[]] ;
+            $fg=[$groupid=>$groupData] ;
         }
         $this->setFieldGroup($fg);
         return $this;

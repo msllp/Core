@@ -9,6 +9,7 @@ class MSCache
     public $globalKey='ms_app_data';
     public $msdbModelKey='msdb_models';
     public $NotAllowedKey=['msdb_models'];
+    public $MiddlewareKey='ms_middleware';
 
     public function __construct()
     {
@@ -77,6 +78,21 @@ class MSCache
         if(array_key_exists($tableName,$allTableModels))return $allTableModels[$tableName];
 
     }
+
+    public function getMiddleware($name){
+        $all=$this->get($this->MiddlewareKey,true);
+        if($all==null) return [];
+        if(array_key_exists($name,$all))return $all[$name];
+        return false;
+    }
+    public function setMiddleware($name,$class){
+        $all=$this->get($this->MiddlewareKey,true);
+        if($all==null) $all= [];
+        $allCount=count($all);
+        if($allCount< 1 || !array_key_exists($name,$all))$all[$name]=$class;
+        $this->set($this->msdbModelKey,$all,true);
+    }
+
 
     public function hasMSDB($k){
         $allTableModels=$this->get($this->msdbModelKey,true);

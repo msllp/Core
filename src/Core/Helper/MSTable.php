@@ -304,9 +304,9 @@ class MSTable
    // public function
 
     public function view(){
-       // dd($this);
-       return view("MS::core.layouts.Table.tablePlateRaw")->with("table",$this->returnHTML);
-     //   return view("MS::core.layouts.Table.tablePlate")->with("table",$this->returnHTML);
+
+        if(!ms()->debug())      return view("MS::core.layouts.Table.tablePlateRaw")->with("table",$this->returnHTML);
+        return view("MS::core.layouts.Table.tablePlate")->with("table",$this->returnHTML);
     }
 
 }

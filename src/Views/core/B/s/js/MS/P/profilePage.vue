@@ -11,7 +11,7 @@
 
                     <div class="p-4 md:p-12 text-center lg:text-left">
                         <!-- Image for mobile view-->
-                        <div class="block lg:hidden rounded-full shadow-xl mx-auto -mt-16 h-48 w-48 bg-cover bg-center" style="background-image: url('https://source.unsplash.com/MP0IUfwrn0A')"></div>
+                        
 
                         <h1 class="text-3xl font-bold pt-8 lg:pt-0">{{msUserData.name}}</h1>
                         <div class="mx-auto lg:mx-0 w-full pt-3 border-b-2 border-blue-500 opacity-25"></div>

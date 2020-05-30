@@ -189,9 +189,9 @@ export default {
     // return [re];
 },
         makeArrayForInputGroup(base,id,index,multiIndex=0){
-    var self=base;
-    var idfor=id+"_"+index;
-    var Inputindex=1
+            var self=base;
+            var idfor=id+"_"+index;
+            var Inputindex=1
     //  console.log(self.msFormData[id])
 
     Inputindex =base.msCount[id]  ;

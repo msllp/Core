@@ -27,8 +27,30 @@ class MSMagic
     public function cache(){
         return \MS\Core\Helper\MSCache::getClassFromMagic();
     }
+
+    public function getMiddleware($type){
+        $typeData=[
+            'api'=>'\MS\Middlelwares\onlyAjaxRoute',
+            'onlyuser'=>'\MS\Middlelwares\onlyForUsers'
+        ];
+        $c=$this->cache();
+        dd($c->all());
+        $class=$c->getMiddleware($type);
+        if(!$class && array_key_exists($type,$typeData))$c->setMiddleware($type,new $typeData[$type]());
+        return $c->getMiddleware($type);
+    }
     public function user(){
         return \MS\Mod\B\User4O3\F::getUser();
+    }
+
+    public function companyId(){
+        return $this->user()['currentCompany'];
+
+    }
+
+    public function rootId(){
+        $user=$this->user();
+        return ($this->checkRootUser())?$user['id']:$user['RootId'];
     }
 
     public function checkRootUser(){
@@ -60,5 +82,8 @@ class MSMagic
         return \MS\Core\Helper\Comman::decodeLimit($str,$min,$zone,$salt);
     }
 
+    public function app(){
+        return new \MS\Mod\B\Mod4O3\L\App();
+    }
 
 }

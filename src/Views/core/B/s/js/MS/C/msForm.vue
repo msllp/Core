@@ -16,10 +16,10 @@
         <div v-if="compactForm" class="w-full rounded  border-t shadow-lg bg-gray-100"  v-for="(section,id,key) in  msFormData" >
 
             <div v-if="section.groupDynamic">
-                <span v-if="msCount[id] >=1"  class="font-bold text-md border-b p-2  flex flex-wrap bg-blue-200 ">{{section.gruoupHeading}} {{msCount[id]}}</span>
+                <span v-if="msCount[id] >=1"  class="font-bold text-md border-b p-2  flex flex-wrap bg-blue-200 ">{{section.gruoupHeading}}  (Total: {{msCount[id]}})</span>
                 <table  >
 
-                    <tr v-if="id < 3 ">
+                    <tr v-if="id < 2 ">
                         <th class="border-l  border-r border-b" v-for="input in section.inputs">{{input.vName}}</th>
                         <th class="border-l  border-r border-b">Action</th>
                     </tr>
@@ -130,13 +130,9 @@
                             'fas fa-search-minus':!checkImHiddenOrNot(section) ,
                             'fas fa-search-plus':checkImHiddenOrNot(section)
                             }"/> </div>
-                            <span class="">{{section.gruoupHeading}}</span>
+                            <span class="">{{section.gruoupHeading}} </span>
 
-
-
-
-
-                            <div class="flex px-3  ml-3 " v-if="section.groupDynamic && false">
+                           <div class="flex px-3  ml-3 " v-if="section.groupDynamic && false">
 
                                 <div class="text-green-500 bg-gray-200 border hover:border-green-500 hover:shadow px-2 mx-1 hover:bg-gray-300 " v-if="checkMutlipleFirst(section)" v-on:click.prevent="addInputGroup(id)"><i class="fa fa-times-circle " style="transform: rotate(45deg)"></i> </div>
 
@@ -204,7 +200,7 @@
 
                             {{section.gruoupHeading}}
 
-                            <div class="flex px-3  ml-3 " v-if="section.groupDynamic ">
+                            <div class="flex px-3  ml-3 " v-if="section.groupDynamic">
 
                                 <div class="text-green-500 bg-gray-200 border hover:border-green-500 hover:shadow px-2 mx-1 hover:bg-gray-300 " v-if="checkMutlipleFirst(section)" v-on:click.prevent="addInputGroup(id)"><i class="fa fa-times-circle " style="transform: rotate(45deg)"></i> </div>
 
