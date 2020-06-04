@@ -41,13 +41,19 @@ class MasterController extends BaseController
                     switch ($exMethod[$i]){
                         case 'api':
                             $c=ms()->getMiddleware('api');
-                            dd($c);
+
                             $error[]=$c->handle(Request::getFacadeRoot(),function ()use($error){
                                 //  dd($this);
                             });
                             break;
                         case 'onlyuser':
-                            $c=new \MS\Middlelwares\onlyForUsers() ;
+                            $c=ms()->getMiddleware('onlyuser');
+                            $error[]=$c->handle(Request::getFacadeRoot(),function ()use($error){
+                                //  dd($this);
+                            });
+                            break;
+                        case 'role':
+                            $c=ms()->getMiddleware('role');
                             $error[]=$c->handle(Request::getFacadeRoot(),function ()use($error){
                                 //  dd($this);
                             });
@@ -55,11 +61,12 @@ class MasterController extends BaseController
                     }
 
                 }
-
-                dd($error);
+                //dd($error);
+                if(end($error)!=null) return response()->json(end($error)->getOriginalContent(),end($error)->status()  );
             }
             $nameSpace=implode('\\',array_merge($exChildClass,['L',$rootClass]));
             $request=Request::getFacadeRoot();
+
            // dd(Request::);
             $data=[
                 'r'=>$request,

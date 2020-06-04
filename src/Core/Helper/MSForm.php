@@ -45,6 +45,8 @@ class MSForm
 
     public $formData=[];
 
+    public $modalForm=false;
+
     /**
      * MSForm constructor.
      * @param \MS\Core\Helper\string $namespace
@@ -52,7 +54,7 @@ class MSForm
      * @param \MS\Core\Helper\string|null $perFix
      * @param array $data
      */
-    public function __construct(string $namespace, string $id=null, array $perFix=null, array $data=[])
+    public function __construct(string $namespace, string $id=null, array $perFix=null, array $data=[],$modalForm=false)
     {
 
         $this->namespace=$namespace;
@@ -61,9 +63,11 @@ class MSForm
         $this->data=$data;
         $base="\\".$this->namespace."\\B";
         $this->dbMaster=$base::getModuleTables()[ $this->id];
+        $this->modalForm=$modalForm;
        // $this->actionButton=[];
 
 
+        //dd($this);
         foreach ($data as $v=>$k){
 
             switch ($v){
@@ -141,13 +145,13 @@ class MSForm
             //$btn['Class']=['btn'];
             switch ($type){
                 case 'back';
-                    if(is_array($btnData) && !array_key_exists('btnColor',$btnData)) $btnData['btnColor']='bg-blue-400' ;
+                    if(is_array($btnData) && !array_key_exists('btnColor',$btnData)) $btnData['btnColor']='blue' ;
                     //$btn['Class'][]='btn-primary';
                     break;
 
                 case 'add';
                     //  dd($btnData);
-                    if(is_array($btnData) && !array_key_exists('btnColor',$btnData)) $btnData['btnColor']='bg-green-300 hover:text-gray-800' ;
+                    if(is_array($btnData) && !array_key_exists('btnColor',$btnData)) $btnData['btnColor']='green' ;
                     //$btn['Class'][]='btn-success';
                     break;
 
@@ -353,8 +357,8 @@ class MSForm
         $baseTabele=$this->fields=$this->msdb->mod_Tables[$this->id];
         $this->action=$baseTabele['action'];
         $this->fields=$baseTabele['fields'];
-      //  dd($baseTabele);
-        if(count($data)>0)$this->newForm=false;
+
+        if(array_key_exists('data',$data) && count($data['data'])>0)$this->newForm=false;
         $this->makeForm();
 
         return $this;
@@ -692,6 +696,7 @@ class MSForm
         //dd($this->returnHTML);
 
         $this->returnHTML['actionButton']=$this->viewActionBtn();
+        $this->returnHTML['formInModal']=$this->modalForm;
 //        if(count($this->formData) > 0 ){
 //            $this->returnHTML['formValue']=$this->makeDataValueForView();
 //        }
@@ -699,7 +704,7 @@ class MSForm
 
      //   dd(  );
       // dd($this );
-
+       // dd($this->returnHTML);
      if(!ms()->debug())  return view("MS::core.layouts.Form.formPlateRaw")->with("form",$this->returnHTML);
         return view("MS::core.layouts.Form.formPlate")->with("form",$this->returnHTML);
 

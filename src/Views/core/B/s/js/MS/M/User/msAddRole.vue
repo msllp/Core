@@ -486,7 +486,7 @@
                     // this.formPostedAndWaitingForData=true;
                     var client=window.msInstance;
                     var url=this.msData.path.post;
-                    console.log(url);
+                    //console.log(url);
                     var th=this;
 
                     client.post(url,this.allInput).then(function (res) {

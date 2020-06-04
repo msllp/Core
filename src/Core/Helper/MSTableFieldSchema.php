@@ -24,7 +24,6 @@ class MSTableFieldSchema
         return $this;
     }
     public function t($type):object {
-        if($type=='email')$this->validation['email']=true;
         $this->type=$type;
         return $this;
     }
@@ -48,29 +47,31 @@ class MSTableFieldSchema
 
     public function min($int):object {
         $this->validation['length']['minimum']=(int)$int;
-        $this;
+        return $this;
     }
 
     public function max($int):object {
         $this->validation['length']['maximum']=(int)$int;
-        $this;
+        return$this;
     }
     public function length($in):object {
         $this->validation['length']['is']=(int)$int;
         $this;
     }
 
-    public function pattern($regx,$msg='is not Valid'):object {
+    public function pattern($regx,$msg='is not Valid',$flag=''):object {
         $this->validation['format']=[
             'pattern'=> $regx,
-            'flags'> "i",
+            'flags'=> $flag,
             'message'=> $msg
         ];
+
+        return$this;
     }
 
-    public function onlyNumber($bool=true):object {
-        if($bool)$this->validation['numericality']= ['strict'=> $bool];
-        $this;
+    public function onlyNumber($bool=true,$msg='is not valid number',$stric=true):object {
+        if($bool)$this->validation['numericality']= ['strict'=> $stric,'greaterThan'=>0,'message'=>$msg];
+        return$this;
     }
 
     public function addAction($actionId):object {
@@ -80,6 +81,10 @@ class MSTableFieldSchema
     public function connectDB($namespace,$tableId,$valueColumn,$displayColumn){
         $str=implode(':',[$namespace,$tableId,implode('->',[$valueColumn,$displayColumn])]);
         $this->validation['existIn']=$str;
+        return $this;
+    }
+    public function connectDBRaw($str){
+       $this->validation['existIn']=$str;
         return $this;
     }
 
@@ -117,6 +122,22 @@ class MSTableFieldSchema
             'type'=>$this->type,
             'input'=>$this->input,
         ];
+
+        switch ($array['input']){
+            case 'number':
+                //$this->pattern('^[a-zA-Z0-9]*$');
+                $this->onlyNumber(true,'is not valid number',false);
+             //   $this->pattern('^$|^\S[0-9.]*$','is not valid number');
+                //$this->pattern("(^[0-9]+$|^$)",'in not valid number','g');
+               // dd($this);
+                break;
+            case 'text':
+                $this->pattern('^$|^\S[a-zA-Z0-9 ]*$','is not valid text');
+                break;
+            case 'email':
+                $this->validation['email']=true;
+                break;
+        }
         if($this->vName!=null)$array['vName']=$this->vName;
         if($this->addAction!=null)$array['addAction']=$this->addAction;
         if($this->dbOff)$array['dbOff']=$this->dbOff;

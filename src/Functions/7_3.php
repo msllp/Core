@@ -31,3 +31,7 @@ function ms(){
     return $v;
 
 }
+function msRaw(){
+    $v=new \MS\Core\Helper\MSMagic ();
+    return $v;
+}

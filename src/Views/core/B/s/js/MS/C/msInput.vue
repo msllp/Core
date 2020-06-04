@@ -53,8 +53,8 @@
             </div>
 
             <div v-else-if="inputType == 'number'" class="flex flex-wrap" :class="msValid">
-                <span v-if="!inputOnly" class=" select-none lg:mr-2" >{{inputVname}} <sup v-if="inputRequired" class="text-red-400">*</sup></span>
-                <input :index="msInputIndex" :type="inputType" style="min-width: 50%;" autocomplete="off" class="border focus:outline-none focus:shadow-outline lg:flex-1"  :class="{'w-full':onMobile}"  :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
+                <label v-if="!inputOnly" class=" select-none lg:mr-2" >{{inputVname}} <sup v-if="inputRequired" class="text-red-400">*</sup></label>
+                <input v-on:keypress="onlyNumberBerfore($event)"  v-on:keyup="onlyNumber($event)"  :index="msInputIndex" type="tel" style="min-width: 50%;" autocomplete="off" class="border focus:outline-none focus:shadow-outline lg:flex-1"  :class="{'w-full':onMobile}"  :name="inputName"  v-model="msValue" :id="msData.msGroupIndex">
             </div>
 
 
@@ -149,7 +149,7 @@
 
             </div>
 
-            <div v-if="inputAuto.length <1 && msData.hasOwnProperty('addAction')" class="" >
+            <div v-if=" msData.hasOwnProperty('addAction')" class="" >
                 <div class="px-2 p-1 text-center" :class="{
                     [ 'bg-'+msData.addAction.btnColor+'-300' ]:msData.addAction.hasOwnProperty('btnColor')
                 }" v-on:click="addActionToMadal(msData.addAction)">
@@ -339,6 +339,9 @@
             // console.log( this.inputValidation);
         },
         methods:{
+            nonSelect(e){
+            e.preventDefault();
+            },
             addActionToMadal(data){
                 var data ={
                     //   modCode:"Schedule vMeet",
@@ -421,83 +424,83 @@
                 this.$parent.setInputData(this.inputName,value,this.inputMultiple,this.msGroupIndex);
             },
             inpututProcess(val, oldVal){
-                if(this.inputRequired){
-
-                    var error=0;
-
-                    var inputLen=1;
-                    if(this.inputValidation.hasOwnProperty("minSize")){
-                        inputLen=this.inputValidation.minSize;
-                    }
-
-
-                    switch (this.inputType) {
-                        case 'password':
-                            inputLen=8;
-                            if (this.validatePassword(val,inputLen)){
-
-                                if(this.inputError.hasOwnProperty('passwordNotStrong'))
-                                    delete this.inputError.passwordNotStrong;
-                                if(error)error=0;
-
-                            }else{
-
-                                error=1;
-                                if(!this.inputError.hasOwnProperty('string'))
-                                    this.inputError.passwordNotStrong="Password Must have a lowercase, upercase, number, symbol & "+inputLen+" char. required";
-                            }
-
-                            break;
-                    }
-
-
-
-
-
-                    if(this.validateLen(val,inputLen)){
-                        delete this.inputError.MinLen;
-                        if(error)error=0;
-                    }
-                    else {
-                        error=1;
-
-                       var  str="";
-
-                        switch (this.inputType) {
-                            case 'checkbox':
-                                this.inputError.MinLen="Min. "+inputLen+" Selection required";
-                                break;
-                            default:
-                                this.inputError.MinLen="Min. "+inputLen+" char. required";
-                                break ;
-                        }
-
-
-
-                    }
-
-
-                    if (!error) {
-                        //this.$parent.msFormDataValue[];
-
-                      //  this.$parent.removeError(this.inputName);
-                        this.msValid="is-valid";
-                    }else{
-                        // this.$parent.setError(
-                        //     {
-                        //     inputName:this.inputName,
-                        //         errors:this.inputError
-                        // }
-                        // );
-                        this.msValid="is-invalid";
-                    }
-
-                }else {
-                    this.msValid=" ";
-                }
+                // if(this.inputRequired){
+                //
+                //     var error=0;
+                //
+                //     var inputLen=1;
+                //     if(this.inputValidation.hasOwnProperty("minSize")){
+                //         inputLen=this.inputValidation.minSize;
+                //     }
+                //
+                //
+                //     switch (this.inputType) {
+                //         case 'password':
+                //             inputLen=8;
+                //             if (this.validatePassword(val,inputLen)){
+                //
+                //                 if(this.inputError.hasOwnProperty('passwordNotStrong'))
+                //                     delete this.inputError.passwordNotStrong;
+                //                 if(error)error=0;
+                //
+                //             }else{
+                //
+                //                 error=1;
+                //                 if(!this.inputError.hasOwnProperty('string'))
+                //                     this.inputError.passwordNotStrong="Password Must have a lowercase, upercase, number, symbol & "+inputLen+" char. required";
+                //             }
+                //
+                //             break;
+                //     }
+                //
+                //
+                //
+                //
+                //
+                //     if(this.validateLen(val,inputLen)){
+                //         delete this.inputError.MinLen;
+                //         if(error)error=0;
+                //     }
+                //     else {
+                //         error=1;
+                //
+                //        var  str="";
+                //
+                //         switch (this.inputType) {
+                //             case 'checkbox':
+                //                 this.inputError.MinLen="Min. "+inputLen+" Selection required";
+                //                 break;
+                //             default:
+                //                 this.inputError.MinLen="Min. "+inputLen+" char. required";
+                //                 break ;
+                //         }
+                //
+                //
+                //
+                //     }
+                //
+                //
+                //     if (!error) {
+                //         //this.$parent.msFormDataValue[];
+                //
+                //       //  this.$parent.removeError(this.inputName);
+                //         this.msValid="is-valid";
+                //     }else{
+                //         // this.$parent.setError(
+                //         //     {
+                //         //     inputName:this.inputName,
+                //         //         errors:this.inputError
+                //         // }
+                //         // );
+                //         this.msValid="is-invalid";
+                //     }
+                //
+                // }else {
+                //     this.msValid=" ";
+                // }
                     //  console.log(val);
               //  if(this.msData.hasOwnProperty('inputMultiple')) return this.$parent.setInputData(this.inputName,val,this.msData.inputMultiple,this.msData.msGroupIndex);
-                this.validateInput();
+                this.validateInput(val, oldVal);
                 this.$parent.setInputData(this.inputName,val,this.inputMultiple,this.inputMultipleIndex);
 
 
@@ -542,22 +545,72 @@
 
                 return  this.$refs.file.files[0];
             },
-            validateInput(){
+
+            onlyNumberBerfore(e){
+                if(this.msValue!="") {
+                    var validationConf = {};
+                    validationConf.numericality = this.inputValidation.numericality;
+                    var validation = msValidate.single(this.msValue, validationConf);
+                    if (validation == undefined) {
+                        this.msValueOld=this.msValue;
+                    }
+                }else {
+                    this.msValueOld="";
+                }
+
+            },
+
+            onlyNumber(e){
+
+
+                if(this.msValue!=""){
+                    var validationConf={};
+                    validationConf.numericality=this.inputValidation.numericality;
+                    var validation=msValidate.single(this.msValue,validationConf);
+                    if (validation != undefined) {
+                        this.msValue=this.msValueOld;
+                    }
+
+                }
+
+                // if((this.msValue!=null || this.msValue!="")  && !((keyCode > 47 && keyCode< 58) || (keyCode > 96 && keyCode< 105)))switch (this.inputType) {
+                //
+                //     case "number":
+                //         setValue = this.msValue.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
+                //         break;
+                //
+                // }
+
+            },
+            validateInput(val, oldVal){
                 this.setErrorZero();
+               // this.msValue=this.filterInput(val,oldVal);
                 var error=[];
 
                 var validationConf={};
+
+                if(this.inputType=='text')validationConf.type="string";
                 if(this.inputValidation.hasOwnProperty('length'))validationConf.length=this.inputValidation.length;
                 if(this.inputValidation.hasOwnProperty('required') && this.inputValidation.required)  validationConf.presence={allowEmpty: false};
                 if(this.inputValidation.hasOwnProperty('email')) validationConf.email=this.inputValidation.email;
                 if(this.inputValidation.hasOwnProperty('format')) validationConf.format=this.inputValidation.format;
                 if(this.inputValidation.hasOwnProperty('numericality')) validationConf.numericality=this.inputValidation.numericality;
 
-                var validation=msValidate.single(this.msValue,validationConf);
-                if(validation != undefined)
+                switch (this.inputType) {
+                    case "number":
+                    //    if(val=="" && oldVal!="" && oldVal.length==1)validationConf.numericality=false;
+                     if(val=='')validationConf.numericality=false;
+                        break;
+                }
+
+                var validation=msValidate.single(val,validationConf);
+                if(validation != undefined )
                 {
+                   // if(this.inputType=='number')console.log(validation);
+
                     for (var i in validation){
                         error.push(validation[i]);
+                      //
                     }
 
                 }
@@ -591,6 +644,7 @@
             return {
                 msValid: 0,
                 msValue:null,
+                msValueOld:null,
                 msMinCharValidation:0,
                 inputValidation:[],
                 inputAuto:[],
@@ -624,14 +678,8 @@
 
         },
         watch: {
-            msValue: function(val, oldVal) {
-
+            msValue: function(val, oldVal,event) {
                this.inpututProcess(val,oldVal);
-
-
-
-
-
             },
             msFile:function (val,oldVal) {
              //   console.log(val)

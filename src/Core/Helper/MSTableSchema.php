@@ -8,7 +8,7 @@ class MSTableSchema {
     public $tableId,$tableName,$connection,
            $fields,$fieldGroup,$validationMessage,
            $fieldGroupMultiple,$action,
-           $MSforms,$MSViews,$MSLogin;
+           $MSforms,$MSViews,$MSLogin,$UniqFields;
 
     private $modId,$modNameSpcae;
 
@@ -25,7 +25,8 @@ class MSTableSchema {
         'action'=>'action',
         'MSforms'=>'MSforms',
         'MSViews'=>'MSViews',
-        'MSLogin'=>'MSLogin'
+        'MSLogin'=>'MSLogin',
+        'UniqFields'=>'UniqFields'
 
 
     ];
@@ -259,6 +260,11 @@ class MSTableSchema {
         return $mf;
     }
 
+
+    public function UniqFields($array){
+        $this->UniqFields=$array;
+        return $this;
+    }
 
     public function addGroup($groupid,$groupData=[]){
         $fg=$this->getFieldGroup();

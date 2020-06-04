@@ -81,7 +81,7 @@ class MSCache
 
     public function getMiddleware($name){
         $all=$this->get($this->MiddlewareKey,true);
-        if($all==null) return [];
+        if($all==null) return false;
         if(array_key_exists($name,$all))return $all[$name];
         return false;
     }
@@ -90,7 +90,7 @@ class MSCache
         if($all==null) $all= [];
         $allCount=count($all);
         if($allCount< 1 || !array_key_exists($name,$all))$all[$name]=$class;
-        $this->set($this->msdbModelKey,$all,true);
+        $this->set($this->MiddlewareKey,$all,true);
     }
 
 

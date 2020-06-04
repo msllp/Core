@@ -415,7 +415,11 @@
                                             type: 'text',
                                             model:'pan',
                                             required:true,
-                                            validation:{presence: {allowEmpty: false}}
+                                            validation:{presence: {allowEmpty: false},format:{
+                                                    pattern:$regx,
+                                                    flags: '([A-Z]){5}([0-9]){4}([A-Z]){1}$',
+                                                    message: 'invalid PAN please fill correct PAN'
+                                                }}
                                         },
 
                                         {

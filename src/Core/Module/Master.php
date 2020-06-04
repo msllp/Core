@@ -279,24 +279,59 @@ class Master implements BaseMaster
 
     }
 
-    public static function getAllRules($tableID=false){
+    public static function getTableDataFromString($str){
+
+        $explodeStr1=explode(':',$str);
+        $data['namespace']=$explodeStr1[0];
+        $data['tableId']=$explodeStr1[1];
+        $explodeStr2=explode('->',$explodeStr1[2]);
+        $data['column']=$explodeStr2[0];
+       return $data;
+    }
+
+    public static function getAllRules($tableID=false,$perFix=[]){
 
 
         $targeTable=self::getTableArray($tableID);
         //dd($targeTable);
+       // dd($perFix);
         $outArray=[];
+      //  dd($targeTable['fields']);
         foreach ($targeTable['fields'] as $field){
 
             if(array_key_exists('validation',$field) && is_array($field['validation']) && (count($field['validation']) > 0)){
-
 
                 foreach ($field['validation'] as $ruleType=>$ruleString){
 
                     switch ($ruleType){
 
-                        case 'required':
+                        case 'existIn':
+                            if(array_key_exists($field['name'],$perFix) ){
 
+                                $strData=self::getTableDataFromString($ruleString);
+                                $m=ms()->msdb($strData['namespace'],$strData['tableId'],[$perFix[$field['name']]]);
+                                $exist['c']=$m->getConnection();
+                                $exist['t']=$m->getFTableName();
+                                $rule=implode('.',[$exist['c'],$exist['t']]);
+                                $outArray[$field['name']][]='exists'.':'.$rule.','.$strData['column'];
+
+                            }
+
+                            break;
+
+                        case 'required':
                             if($ruleString) $outArray[$field['name']][]= 'required';
+                            break;
+
+
+                        case 'numericality':
+                            $outArray[$field['name']][]= 'numeric';
+                            break;
+
+                        case 'format':
+
+                            $petern=implode(':',['regex','/'.$ruleString['pattern'].'/'.(array_key_exists('flags',$ruleString))?$ruleString['flags']:''  ]);
+                            $outArray[$field['name']][]= $petern;
                             break;
 
                     }
@@ -310,7 +345,7 @@ class Master implements BaseMaster
             }
 
         }
-     //   dd($outArray);
+       // dd($outArray);
         return $outArray;
      //   dd($outArray);
 
@@ -370,7 +405,7 @@ class Master implements BaseMaster
 
 
                     foreach (self::getField($tableID) as $inputArray){
-                       if($inputArray['name'] == $inputName) $outArray[$inputArray['name']]=$inputArray ['vName'];
+                       if($inputArray['name'] == $inputName) $outArray[$inputArray['name']]=(array_key_exists('vName',$inputArray))?$inputArray ['vName']:$inputArray['name'];
 
                     }
 

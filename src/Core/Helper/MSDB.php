@@ -880,12 +880,13 @@ class MSDB implements MasterNoSql
         return $f->fromModel($this)->view();
     }
 
-    public function displayForm($formId=null,$data=[]){
+    public function displayForm($formId=null,$data=[],$modalForm=false){
 
       //  dd($data);
         if($formId != null){
-            $f=new \MS\Core\Helper\MSForm($this->masterNamespace,$this->database['id'],$data,['formID'=>$formId]);
+            $f=new \MS\Core\Helper\MSForm($this->masterNamespace,$this->database['id'],$data,['formID'=>$formId],$modalForm);
         }else{
+
             $f=new \MS\Core\Helper\MSForm($this->masterNamespace,$this->database['id']);
         }
 
@@ -980,7 +981,13 @@ class MSDB implements MasterNoSql
         return $fData;
     }
 
-    public function checkRulesForData($r=null){
+    public function getUniqFields(){
+        $mod=$this->getModTable();
+        return (array_key_exists('UniqFields',$mod))?$mod['UniqFields']:[];
+
+    }
+
+    public function checkRulesForData($inData=[],$r=null){
 
         if($r==null)$r=$this->r;
 
@@ -996,7 +1003,10 @@ class MSDB implements MasterNoSql
 
         $b=implode('\\',[$this->masterNamespace,'B']);
 
-       $rules= $b::getAllRules($this->ms_id);
+       $perFix=(array_key_exists('perFix',$inData))?$inData['perFix']:[];
+       $rules= $b::getAllRules($this->ms_id,$perFix);
+       // dd($rules);
+
 
        //dd($b::getAllMessage($this->ms_id,$rules));
        //foreach ()
@@ -1051,25 +1061,37 @@ class MSDB implements MasterNoSql
     private function makeRulesForValidation($data){
 
         $outArray=[];
-        foreach ($data as $inputName=>$inputRules){
+        $UniqFields=$this->getUniqFields();
 
+        foreach ($data as $inputName=>$inputRules){
 
            // $inputRules=  array_merge(['bail'],$inputRules);
             //var_dump($inputRules);
          //   switch ( $iputRules)
             $ruleAdded=0;
             //var_dump($inputRules);
-            if (in_array('required',$inputRules)){
-         //     unset($inputRules[array_search('required',$inputRules)]);
-           //     $inputRules=array_merge($inputRules,['required']);
-              //  dd( $inputRules);
-                $outArray[$inputName]=implode('|',$inputRules);
-                $ruleAdded=1;
+            if(in_array($inputName,$UniqFields)) {
+                $con=$this->getConnection();
+                $table= implode('.',[$con,$this->getTable()]) ;
+                $inputRules[]=implode(':',['unique',$table]);
+                //dd($inputRules);
+
             }
-            if(!$ruleAdded)$outArray[$inputName]=implode('|',$inputRules);
+
+//            if (in_array('required',$inputRules)){
+//                //dd($inputRules);
+//         //     unset($inputRules[array_search('required',$inputRules)]);
+//           //     $inputRules=array_merge($inputRules,['required']);
+//              //  dd( $inputRules);
+//               // $outArray[$inputName]=implode('|',$inputRules);
+//                $outArray[$inputName]=implode('|',$inputRules);
+//                $ruleAdded=1;
+//            }
+
+           $outArray[$inputName]=$inputRules;
         }
 
-       // dd($outArray);
+
         return $outArray;
 
     }
@@ -1268,7 +1290,6 @@ class MSDB implements MasterNoSql
        // dd($this);
            return $this->jsonOutError(['No Login Page Found'],404);
         }
-
         $loginPage=new MSLogin($this,$lData);
         return $loginPage->displayLoginPageFromMSDB();
     }
