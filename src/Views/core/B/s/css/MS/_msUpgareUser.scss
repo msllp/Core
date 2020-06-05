@@ -1,0 +1,434 @@
+.ms-active-plan{
+
+    @apply py-3;
+    .ms-active-table{
+        @apply mt-3;
+        @apply mx-auto;
+        .ms-active-plan-img{
+            min-width: 0px;
+            max-height: 265px;
+        }
+        @apply border;
+
+        th{
+            @apply text-left;
+            @apply p-2;
+            @apply border-b;
+            background-color: $ms-theme-color-default-light;
+        }
+        td{
+            @apply p-2;
+        }
+        .ms-active-limits{
+            @apply text-right;
+        }
+
+    }
+}
+
+.ms-padding-fix{
+    padding-bottom: 10px;
+}
+
+.ms-price-box{
+    @apply pt-3;
+    .ms-price-table{
+        @apply border;
+        @apply mx-auto;
+        th{
+            @apply border-b;
+        }
+        td{
+            @apply py-1;
+            @apply px-2;
+            select{
+                @apply border;
+            }
+            .ms-select-btn{
+                @apply mx-auto;
+                @apply border;
+                @apply p-2;
+                background-color: $ms-theme-color-light;
+            }
+            .ms-select-btn-selected{
+                @apply mx-auto;
+                @apply border;
+                @apply p-2;
+                background-color: $ms-theme-color-default;
+            }
+
+        }
+        .ms-selected-on{
+            @apply border;
+
+            border-color: $ms-theme-color-info;
+            background-color: $ms-theme-color-default-light;
+            .ms-plan-icon{
+                @apply rounded;
+                min-height:135px;
+            background-color: $ms-theme-color-default;
+            }
+        }
+        .ms-selected-off{
+            @apply border;
+
+            border-color: $ms-theme-color-info;
+
+            .ms-plan-icon{
+                min-height:135px;
+               @apply rounded;
+            background-color: $ms-theme-color-default;
+            }
+        }
+    }
+}
+
+@screen sm{
+
+    .ms-active-plan{
+
+        @apply py-3;
+        .ms-active-table{
+            @apply mt-3;
+            @apply mx-auto;
+            .ms-active-plan-img{
+                min-width: 0px;
+                max-height: 265px;
+            }
+            @apply border;
+
+            th{
+                @apply text-left;
+                @apply p-2;
+                @apply border-b;
+                background-color: $ms-theme-color-default-light;
+            }
+            td{
+                @apply p-2;
+            }
+            .ms-active-limits{
+                @apply text-right;
+            }
+
+        }
+    }
+
+    .ms-padding-fix{
+        padding-bottom: 10px;
+    }
+
+    .ms-price-box{
+        @apply pt-3;
+        .ms-price-table{
+            @apply border;
+            @apply mx-auto;
+            th{
+                @apply border-b;
+            }
+            td{
+                @apply py-1;
+                @apply px-2;
+                select{
+                    @apply border;
+                }
+                .ms-select-btn{
+                    @apply mx-auto;
+                    @apply border;
+                    @apply p-2;
+                    background-color: $ms-theme-color-light;
+                }
+                .ms-select-btn-selected{
+                    @apply mx-auto;
+                    @apply border;
+                    @apply p-2;
+                    background-color: $ms-theme-color-default;
+                }
+
+            }
+            .ms-selected-on{
+                @apply border;
+
+                border-color: $ms-theme-color-info;
+                background-color: $ms-theme-color-default-light;
+                .ms-plan-icon{
+                    @apply rounded;
+                    min-height:135px;
+                    background-color: $ms-theme-color-default;
+                }
+            }
+            .ms-selected-off{
+                @apply border;
+
+                border-color: $ms-theme-color-info;
+
+                .ms-plan-icon{
+                    min-height:135px;
+                    @apply rounded;
+                    background-color: $ms-theme-color-default;
+                }
+            }
+        }
+    }
+
+}
+@screen md{
+    .ms-active-plan{
+
+        @apply py-3;
+        .ms-active-table{
+            @apply mt-3;
+            @apply mx-auto;
+            .ms-active-plan-img{
+                min-width: 260px;
+                max-height: 265px;
+            }
+            @apply border;
+
+            th{
+                @apply text-left;
+                @apply p-2;
+                @apply border-b;
+                background-color: $ms-theme-color-default-light;
+            }
+            td{
+                @apply p-2;
+            }
+            .ms-active-limits{
+                @apply text-right;
+            }
+
+        }
+    }
+
+    .ms-padding-fix{
+        padding-bottom: 10px;
+    }
+
+    .ms-price-box{
+        @apply pt-3;
+        .ms-price-table{
+            @apply border;
+            @apply mx-auto;
+            th{
+                @apply border-b;
+            }
+            td{
+                @apply py-1;
+                @apply px-2;
+                select{
+                    @apply border;
+                }
+                .ms-select-btn{
+                    @apply mx-auto;
+                    @apply border;
+                    @apply p-2;
+                    background-color: $ms-theme-color-light;
+                }
+                .ms-select-btn-selected{
+                    @apply mx-auto;
+                    @apply border;
+                    @apply p-2;
+                    background-color: $ms-theme-color-default;
+                }
+
+            }
+            .ms-selected-on{
+                @apply border;
+
+                border-color: $ms-theme-color-info;
+                background-color: $ms-theme-color-default-light;
+                .ms-plan-icon{
+                    @apply rounded;
+                    min-height:135px;
+                    background-color: $ms-theme-color-default;
+                }
+            }
+            .ms-selected-off{
+                @apply border;
+
+                border-color: $ms-theme-color-info;
+
+                .ms-plan-icon{
+                    min-height:135px;
+                    @apply rounded;
+                    background-color: $ms-theme-color-default;
+                }
+            }
+        }
+    }
+
+}
+@screen lg{
+    .ms-active-plan{
+
+        @apply py-3;
+        .ms-active-table{
+            @apply mt-3;
+            @apply mx-auto;
+            .ms-active-plan-img{
+                min-width: 260px;
+                max-height: 265px;
+            }
+            @apply border;
+
+            th{
+                @apply text-left;
+                @apply p-2;
+                @apply border-b;
+                background-color: $ms-theme-color-default-light;
+            }
+            td{
+                @apply p-2;
+            }
+            .ms-active-limits{
+                @apply text-right;
+            }
+
+        }
+    }
+
+    .ms-padding-fix{
+        padding-bottom: 10px;
+    }
+
+    .ms-price-box{
+        @apply pt-3;
+        .ms-price-table{
+            @apply border;
+            @apply mx-auto;
+            th{
+                @apply border-b;
+            }
+            td{
+                @apply py-1;
+                @apply px-2;
+                select{
+                    @apply border;
+                }
+                .ms-select-btn{
+                    @apply mx-auto;
+                    @apply border;
+                    @apply p-2;
+                    background-color: $ms-theme-color-light;
+                }
+                .ms-select-btn-selected{
+                    @apply mx-auto;
+                    @apply border;
+                    @apply p-2;
+                    background-color: $ms-theme-color-default;
+                }
+
+            }
+            .ms-selected-on{
+                @apply border;
+
+                border-color: $ms-theme-color-info;
+                background-color: $ms-theme-color-default-light;
+                .ms-plan-icon{
+                    @apply rounded;
+                    min-height:135px;
+                    background-color: $ms-theme-color-default;
+                }
+            }
+            .ms-selected-off{
+                @apply border;
+
+                border-color: $ms-theme-color-info;
+
+                .ms-plan-icon{
+                    min-height:135px;
+                    @apply rounded;
+                    background-color: $ms-theme-color-default;
+                }
+            }
+        }
+    }
+
+}
+@screen xl{
+    .ms-active-plan{
+
+        @apply py-3;
+        .ms-active-table{
+            @apply mt-3;
+            @apply mx-auto;
+            .ms-active-plan-img{
+                min-width: 260px;
+                max-height: 265px;
+            }
+            @apply border;
+
+            th{
+                @apply text-left;
+                @apply p-2;
+                @apply border-b;
+                background-color: $ms-theme-color-default-light;
+            }
+            td{
+                @apply p-2;
+            }
+            .ms-active-limits{
+                @apply text-right;
+            }
+
+        }
+    }
+
+    .ms-padding-fix{
+        padding-bottom: 10px;
+    }
+
+    .ms-price-box{
+        @apply pt-3;
+        .ms-price-table{
+            @apply border;
+            @apply mx-auto;
+            th{
+                @apply border-b;
+            }
+            td{
+                @apply py-1;
+                @apply px-2;
+                select{
+                    @apply border;
+                }
+                .ms-select-btn{
+                    @apply mx-auto;
+                    @apply border;
+                    @apply p-2;
+                    background-color: $ms-theme-color-light;
+                }
+                .ms-select-btn-selected{
+                    @apply mx-auto;
+                    @apply border;
+                    @apply p-2;
+                    background-color: $ms-theme-color-default;
+                }
+
+            }
+            .ms-selected-on{
+                @apply border;
+
+                border-color: $ms-theme-color-info;
+                background-color: $ms-theme-color-default-light;
+                .ms-plan-icon{
+                    @apply rounded;
+                    min-height:135px;
+                    background-color: $ms-theme-color-default;
+                }
+            }
+            .ms-selected-off{
+                @apply border;
+
+                border-color: $ms-theme-color-info;
+
+                .ms-plan-icon{
+                    min-height:135px;
+                    @apply rounded;
+                    background-color: $ms-theme-color-default;
+                }
+            }
+        }
+    }
+
+}
