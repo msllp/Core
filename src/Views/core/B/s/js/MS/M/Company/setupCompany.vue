@@ -416,16 +416,27 @@
                                             model:'pan',
                                             required:true,
                                             validation:{presence: {allowEmpty: false},format:{
-                                                    pattern:$regx,
-                                                    flags: '([A-Z]){5}([0-9]){4}([A-Z]){1}$',
+                                                    pattern:'([A-Z]){5}([0-9]){4}([A-Z]){1}$',
+                                                    flags: 'g',
                                                     message: 'invalid PAN please fill correct PAN'
-                                                }}
+                                                },
+                                            length:{
+                                                is: 10
+                                            }
+                                            }
                                         },
 
                                         {
                                             name: 'GST No.',
                                             type: 'text',
-                                            model:'gst'
+                                            model:'gst',
+                                            validation: {
+                                                format: {
+                                                    pattern: '([0-9]){2}([A-Z]){5}([0-9]){4}([A-Z]){1}([0-9]){1}([A-Z]){2}|^$',
+                                                    flags:'g',
+                                                    message: 'invalid GST No. please fill correct GST'
+                                                }
+                                            }
                                         },
                                    ]
                                 ],
@@ -437,29 +448,53 @@
                                             type: 'text',
                                             model:'pan',
                                             required:true,
-                                            validation:{presence: {allowEmpty: false}}
+                                            validation:{presence: {allowEmpty: false},format:{
+                                                    pattern:'([A-Z]){5}([0-9]){4}([A-Z]){1}$',
+                                                    flags: 'g',
+                                                    message: 'invalid PAN please fill correct PAN'
+                                                }}
                                         },
+
                                         {
                                             name: 'GST No.',
                                             type: 'text',
-                                            model:'gst'
+                                            model:'gst',
+                                            validation: {
+                                                format: {
+                                                    pattern: '([0-9]){2}([A-Z]){5}([0-9]){4}([A-Z]){1}([0-9]){1}([A-Z]){2}|^$',
+                                                    flags:'g',
+                                                    message: 'invalid GST No. please fill correct GST'
+                                                }
+                                            }
                                         },
                                     ]
                                 ],
                         'partnership':[
                                          [
-                            {
-                                name: 'PAN',
-                                type: 'text',
-                                model:'pan',
-                                required:true,
-                                validation:{presence: {allowEmpty: false}}
-                            },
-                            {
-                                name: 'GST No.',
-                                type: 'text',
-                                model:'gst'
-                            },
+                                             {
+                                                 name: 'PAN',
+                                                 type: 'text',
+                                                 model:'pan',
+                                                 required:true,
+                                                 validation:{presence: {allowEmpty: false},format:{
+                                                         pattern:'([A-Z]){5}([0-9]){4}([A-Z]){1}$',
+                                                         flags: 'g',
+                                                         message: 'invalid PAN please fill correct PAN'
+                                                     }}
+                                             },
+
+                                             {
+                                                 name: 'GST No.',
+                                                 type: 'text',
+                                                 model:'gst',
+                                                 validation: {
+                                                     format: {
+                                                         pattern: '([0-9]){2}([A-Z]){5}([0-9]){4}([A-Z]){1}([0-9]){1}([A-Z]){2}|^$',
+                                                         flags:'g',
+                                                         message: 'invalid GST No. please fill correct GST'
+                                                     }
+                                                 }
+                                             },
                         ]
                                       ],
                         'private':[
@@ -476,12 +511,24 @@
                                     type: 'text',
                                     model:'pan',
                                     required:true,
-                                    validation:{presence: {allowEmpty: false}}
+                                    validation:{presence: {allowEmpty: false},format:{
+                                            pattern:'([A-Z]){5}([0-9]){4}([A-Z]){1}$',
+                                            flags: 'g',
+                                            message: 'invalid PAN please fill correct PAN'
+                                        }}
                                 },
+
                                 {
                                     name: 'GST No.',
                                     type: 'text',
-                                    model:'gst'
+                                    model:'gst',
+                                    validation: {
+                                        format: {
+                                            pattern: '([0-9]){2}([A-Z]){5}([0-9]){4}([A-Z]){1}([0-9]){1}([A-Z]){2}|^$',
+                                            flags:'g',
+                                            message: 'invalid GST No. please fill correct GST'
+                                        }
+                                    }
                                 },
                             ]
                         ],
@@ -499,12 +546,24 @@
                                     type: 'text',
                                     model:'pan',
                                     required:true,
-                                    validation:{presence: {allowEmpty: false}}
+                                    validation:{presence: {allowEmpty: false},format:{
+                                            pattern:'([A-Z]){5}([0-9]){4}([A-Z]){1}$',
+                                            flags: 'g',
+                                            message: 'invalid PAN please fill correct PAN'
+                                        }}
                                 },
+
                                 {
                                     name: 'GST No.',
                                     type: 'text',
-                                    model:'gst'
+                                    model:'gst',
+                                    validation: {
+                                        format: {
+                                            pattern: '([0-9]){2}([A-Z]){5}([0-9]){4}([A-Z]){1}([0-9]){1}([A-Z]){2}|^$',
+                                            flags:'g',
+                                            message: 'invalid GST No. please fill correct GST'
+                                        }
+                                    }
                                 },
                             ]
                         ],
@@ -516,12 +575,24 @@
                                     type: 'text',
                                     model:'pan',
                                     required:true,
-                                    validation:{presence: {allowEmpty: false}}
+                                    validation:{presence: {allowEmpty: false},format:{
+                                            pattern:'([A-Z]){5}([0-9]){4}([A-Z]){1}$',
+                                            flags: 'g',
+                                            message: 'invalid PAN please fill correct PAN'
+                                        }}
                                 },
+
                                 {
                                     name: 'GST No.',
                                     type: 'text',
-                                    model:'gst'
+                                    model:'gst',
+                                    validation: {
+                                        format: {
+                                            pattern: '([0-9]){2}([A-Z]){5}([0-9]){4}([A-Z]){1}([0-9]){1}([A-Z]){2}|^$',
+                                            flags:'g',
+                                            message: 'invalid GST No. please fill correct GST'
+                                        }
+                                    }
                                 },
                             ]
                         ],
@@ -597,6 +668,7 @@
                        // console.log(this.msForm[p][i]);
                         if (input.hasOwnProperty('validation') && this.allInput.hasOwnProperty(input.model)) {
 
+
                             var validInputState=verify.single(this.allInput[input.model], input.validation);
                         //   console.log(validInputState);
                             validated[input.model] = ((validInputState == 'undefined' || typeof validInputState == 'undefined') && this.allInput[input.model]!='disabled' ) ? true : false;
@@ -610,7 +682,7 @@
 
                                 error[input.model]= verify.single(this.allInput[input.model], input.validation);
                                 if((error[input.model] == 'undefined' || typeof error[input.model] == 'undefined') && input.type=='option',val[input.model]=='disabled'){
-                                    error[input.model]=["can't be blansk"];
+                                    error[input.model]=["can't be blank"];
                                 }
 
 
@@ -618,19 +690,26 @@
                             }
                               //console.log((verify.single(this.allInput[this.msForm[p][i].model], input.validation) == 'undefined') ? true : false);
                         } else {
+                            if(input.hasOwnProperty('validation')){
+                                var validInputState=verify.single(this.allInput[form[p][i].model], input.validation);
+                                error[form[p][i].model]=(validInputState!=undefined)?validInputState:Array();
+                                validated[form[p][i].model] = (input.hasOwnProperty('validation') && error[form[p][i].model].length>0) ? false : true;
+                            }else{
+                                validated[form[p][i].model] = true;
+                            }
 
-                            if(input.hasOwnProperty('validation')) error[form[p][i].model]=verify.single(this.allInput[form[p][i].model], input.validation);
-                           validated[form[p][i].model] = (input.hasOwnProperty('validation')) ? false : true;
+
                         }
                     }
 
                 }
+
                 this.valdidationInputError={...this.valdidationInputError,...error};
                 this.validationInput = {...this.validationInput,...validated};
             },
             checkInputisValid(name){
 
-             return (this.validationInput.hasOwnProperty(name))?this.validationInput[name]:false;
+                return (this.validationInput.hasOwnProperty(name))?this.validationInput[name]:false;
             },
             getInputError(name){
 
@@ -710,11 +789,13 @@
         },
         watch:{
             allInput(newVal,oldVal){
-             //   console.log('validates');
+                if(newVal.hasOwnProperty('pan'))this.allInput.pan=this.allInput.pan.toUpperCase();
+                if(newVal.hasOwnProperty('gst'))this.allInput.gst=this.allInput.gst.toUpperCase();
+                if(newVal.hasOwnProperty('llpNo'))this.allInput.llpNo=this.allInput.llpNo.toUpperCase();
+                if(newVal.hasOwnProperty('cin'))this.allInput.llpNo=this.allInput.cin.toUpperCase();
+
                 this.validateAll(newVal,this.msForm);
                 this.validateAll(newVal,this.msForm2);
-                //console.log(newVal.typeOfBusiness);
-              //  console.log(this.msConditionalForm.typeOfBusiness[newVal.typeOfBusiness]);
                 if(newVal.typeOfBusiness !='disabled')this.validateAll(newVal,this.msConditionalForm.typeOfBusiness[newVal.typeOfBusiness]);
 
 

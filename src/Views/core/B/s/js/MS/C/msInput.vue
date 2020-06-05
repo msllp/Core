@@ -282,14 +282,16 @@
 
                 case "checkbox":
                     this.msValue={};
+                    this.msValue=(!this.msData.hasOwnProperty('value'))?null:this.dValue;
                     break;
                 case "radio":
                     this.msValid="is-valid";
+                    this.msValue=(!this.msData.hasOwnProperty('value'))?null:this.dValue;
                     break;
 
                 case "option":
                    // console.log('option');
-                    this.msValue=null;
+                    this.msValue=(!this.msData.hasOwnProperty('value'))?null:this.dValue;
                    // this.msValid="is-valid";
                     break;
 

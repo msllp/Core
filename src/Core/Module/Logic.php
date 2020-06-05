@@ -93,6 +93,10 @@ class Logic
 
     }
 
+    public function throwNextData($mod,$title,$route,$data=[]){
+        $nextData=\MS\Core\Helper\Comman::makeNextData($mod,$title,route($route,$data));
+        return \MS\Core\Helper\Comman::msJson([],$nextData,[]);
+    }
     public function throwData(array $data){
         $err=[
             'msData'=>$data

@@ -32,7 +32,7 @@ class MSTable
         * @param \MS\Core\Helper\string|null $perFix
         * @param array $data
         */
-    public function __construct(string $namespace, string $id=null, string $perFix=null, array $data=[])
+    public function __construct(string $namespace, string $id=null, array $perFix=[], array $data=[])
     {
 
         $this->namespace=$namespace;
@@ -137,7 +137,9 @@ class MSTable
     }
 
     private function makeRowId(){
-        if(array_key_exists('rowId',$this->dbMaster['MSViews'][$this->viewID]))return $this->dbMaster['MSViews'][$this->viewID]['rowId'];
+       
+        $modtable=$this->msdb->getModTable();
+        if(array_key_exists('rowId',$modtable))return $modtable['rowId'];
         return 'id';
     }
 
@@ -167,7 +169,9 @@ class MSTable
                                 ms_dyn_data:
                                 if(array_key_exists('validation',$colD)){
                                     if(array_key_exists('existIn',$colD['validation'])){
-                                        $this->dynamicData[$colD['name']]=\MS\Core\Helper\MSForm::getDataFromTable($colD['validation']['existIn']);
+                                        $perFix=(array_key_exists($colD['name'],$this->perFix))?[$this->perFix[$colD['name']]]:[];
+                                       // dd($colD);
+                                        $this->dynamicData[$colD['name']]=\MS\Core\Helper\MSForm::getDataFromTable($colD['validation']['existIn'],$perFix);
                                         //dd(\MS\Core\Helper\MSForm::getDataFromTable($colD['validation']['existIn']));
                                     }
                                 }
@@ -218,6 +222,7 @@ class MSTable
     }
 
     private  function makeArrayForAction(){
+
         $fArray=[];
         if(array_key_exists('actions',$this->dbMaster['MSViews'][$this->data['viewID']]) && count($this->dbMaster['MSViews'][$this->data['viewID']]['actions'])){
 

@@ -45,6 +45,7 @@ class MSCoreServiceProvider extends \Illuminate\Support\ServiceProvider
         $this->loadViewsFrom(  dirname(__DIR__) .DS.'Views', 'MS');
 
         $this->loadViewsFrom(  base_path(implode(DS,['vendor','msllp','modules','src','Modules'])), 'MOD');
+        $this->loadViewsFrom(  base_path(implode(DS,['vendor','msllp','core','src','Views','errors'])),'error');
 
         $this->publishes([
             dirname(__DIR__) .DS.'Config'.DS.'MS.php' => base_path('config/MS.php'),

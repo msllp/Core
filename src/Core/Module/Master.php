@@ -330,7 +330,11 @@ class Master implements BaseMaster
 
                         case 'format':
 
-                            $petern=implode(':',['regex','/'.$ruleString['pattern'].'/'.(array_key_exists('flags',$ruleString))?$ruleString['flags']:''  ]);
+                            $flag=(array_key_exists('flags',$ruleString))?$ruleString['flags']:'';
+                           // $flag='g';
+
+                            $petern=implode(':',['regex','/'.$ruleString['pattern'].'/'.$flag]);
+                          //  dd($petern);
                             $outArray[$field['name']][]= $petern;
                             break;
 

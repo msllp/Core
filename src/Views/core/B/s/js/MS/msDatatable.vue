@@ -54,7 +54,7 @@
 
             </div>
 
-            <table class="table-auto mt-2 w-full ms-datatable-table-box">
+            <table class="table-auto mt-2 w-full ms-datatable-table-box" >
 
                 <thead class="border border-blue-500  border-b-2 ">
 
@@ -172,14 +172,18 @@
     </td>
 
 
-    <td class="border p-1 text-center bg-grey-100 cursor-pointer select-none ms-action-btn-td  hover:bg-blue-200":class="{
+    <td class="border p-1 text-center bg-grey-100 cursor-pointer select-none ms-action-btn-td  ":class="{
 
     }" v-if="msActionViewRow.length>0 && msActionViewRow.includes(index) ">
 
 
 
 
-        <span v-on:click="msActionClick(ac,row)" v-for="(ac,index) in msAction" :class="ac.color"  class="hover:border hover:shadow-inner px-2 py-1 mx-1" :title="ac.text"> <i :class="ac.icon"> </i></span>
+        <span v-on:click="msActionClick(ac,row)" v-for="(ac,index) in msAction" :class="{
+            ['bg-'+ac.color+'-300']:true,
+            ['hover:bg-'+ac.color+'-600']:true,
+
+        }"  class="hover:border hover:shadow-inner px-2 py-1 mx-1" :title="ac.text"> <i :class="ac.icon"> </i></span>
 
 
 
@@ -295,6 +299,7 @@
             },
 
             msSelecetRow(index){
+
               //  console.log(this.msSelectedRow.includes(this.msAllData.fromV.tableData.data[index][this.msRowID]));
                 if(!this.msSelectedRow.includes(this.msAllData.fromV.tableData.data[index][this.msRowID])){
                     this.msSelectedRow.push(this.msAllData.fromV.tableData.data[index][this.msRowID]);

@@ -432,6 +432,13 @@ class MSTableSchema {
         return $this;
     }
 
+    public function addRowId($viewId,$calumnName){
+        $mf=$this->getMSViews();
+
+        if(!array_key_exists($viewId,$mf))$mf['rowId']=$calumnName;
+            $this->setMSViews($mf);
+            return $this;
+    }
     public function addLogin($loginId){
         $mf=$this->getMSLogin();
         if(is_array($mf) && !array_key_exists($loginId,$mf)){
