@@ -3,7 +3,7 @@
 
 
 
-        <div  class=" p-2" >
+        <div  class=" p-2" v-if="!msOptional">
 
 
 
@@ -208,6 +208,11 @@
                 type: Number,
                 required: false,
                 default:1
+            } ,
+            'msOptional':{
+                type: Boolean,
+                required: false,
+                default:false
             }
 
 
@@ -232,6 +237,8 @@
                 }
 
             }
+
+            this.msOptionalInput=this.msData.msOptional;
 
 
             if(this.msData.hasOwnProperty('msMultiIndex'))this.inputMultipleIndex=this.msData.msMultiIndex;
@@ -503,6 +510,7 @@
                     //  console.log(val);
               //  if(this.msData.hasOwnProperty('inputMultiple')) return this.$parent.setInputData(this.inputName,val,this.msData.inputMultiple,this.msData.msGroupIndex);
                 this.validateInput(val, oldVal);
+
                 this.$parent.setInputData(this.inputName,val,this.inputMultiple,this.inputMultipleIndex);
 
 
@@ -636,6 +644,10 @@
                         this.inputName);
 
                 }
+            },
+
+            setInputValueFromParent(val){
+                this.msValue=val;
             }
 
         },
@@ -644,6 +656,7 @@
         },
         data: function () {
             return {
+                msOptionalInput:false,
                 msValid: 0,
                 msValue:null,
                 msValueOld:null,

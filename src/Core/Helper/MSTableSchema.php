@@ -2,7 +2,6 @@
 namespace MS\Core\Helper;
 //TODO Make table schema For Table
 use phpDocumentor\Reflection\Types\Boolean;
-
 class MSTableSchema {
 
     public $tableId,$tableName,$connection,
@@ -47,7 +46,7 @@ class MSTableSchema {
     ];
 
     private static $allowedKeysFields=[
-        'name','vName','type','input','validation','dbOff','addAction'
+        'name','vName','type','input','validation','dbOff','addAction','relation',
     ];
 
     private static  $requireKeysFields=[
@@ -68,7 +67,7 @@ class MSTableSchema {
             if($this->$key==null)$this->$key=$dValue;
         }
 
-    //dd($this);
+
 
     }
 
@@ -286,20 +285,19 @@ class MSTableSchema {
             && !in_array($field,$fg[$groupId])
         )$fg[$groupId][]=$field;
         $this->setFieldGroup($fg);
-        //dd($this);
+
         return $this;
     }
 
     public function addAction($acId,$acData){
             $ac=$this->getAction();
-           // dd($ac);
+
             if($ac==null)$ac=[];
-        //    dd(!array_key_exists($acId,$ac));
-            if(is_array($ac) && !array_key_exists($acId,$ac))
+         if(is_array($ac) && !array_key_exists($acId,$ac))
             {
                 $ac[$acId]=$acData;
             }
-           // dd($ac);
+
             $this->setAction($ac);
             return $this;
     }
@@ -327,8 +325,8 @@ class MSTableSchema {
     public function addGroup4Form($formId,$groupId){
         $mf=$this->getMSforms();
         $fg=$this->getFieldGroup();
-        //dd($formId);
-        foreach ($groupId as $group)//dd(is_array($mf) && array_key_exists($formId,$mf) && array_key_exists($group,$fg));
+
+        foreach ($groupId as $group)
         if(is_array($mf) && array_key_exists($formId,$mf) && array_key_exists($group,$fg) )$mf[$formId]['groups'][]=$group;
         $this->setMSforms($mf);
         return $this;
@@ -340,9 +338,7 @@ class MSTableSchema {
         $mf=$this->getMSforms();
         $fg=$this->getAction();
         if($fg==null)$fg=[];
-        foreach ($actionId as $action)//dd($formId);
-            //dd(is_array($mf) && is_array($fg) && array_key_exists($formId,$mf) && array_key_exists($action,$fg)  && ( array_key_exists('action',$mf[$formId]) or true ) );
-            if(is_array($mf) && is_array($fg) && array_key_exists($formId,$mf) && array_key_exists($action,$fg) )$mf[$formId]['actions'][]=$action;
+        foreach ($actionId as $action)if(is_array($mf) && is_array($fg) && array_key_exists($formId,$mf) && array_key_exists($action,$fg) )$mf[$formId]['actions'][]=$action;
         $this->setMSforms($mf);
         return $this;
     }
@@ -350,7 +346,6 @@ class MSTableSchema {
     public function addIcon4Form($formId,$icon){
         $mf=$this->getMSforms();
 
-        //dd($fg);
 
             if(is_array($mf) && array_key_exists($formId,$mf) )$mf[$formId]['icon']=$icon;
         $this->setMSforms($mf);
@@ -381,9 +376,8 @@ class MSTableSchema {
 
           $mf=$this->getMSViews();
         $fg=$this->getFieldGroup();
-//dd($fg);
-        foreach ($groupId as $group)//dd(is_array($mf) && array_key_exists($formId,$mf) && array_key_exists($group,$fg));
-        if(is_array($mf) && array_key_exists($viewId,$mf) && array_key_exists($group,$fg) )$mf[$viewId]['groups'][]=$group;
+
+        foreach ($groupId as $group)      if(is_array($mf) && array_key_exists($viewId,$mf) && array_key_exists($group,$fg) )$mf[$viewId]['groups'][]=$group;
         $this->setMSViews($mf);
         return $this;
 }
@@ -392,7 +386,7 @@ class MSTableSchema {
         $mf=$this->getMSViews();
         $fg=$this->getFieldGroup();
 
-        //dd($fg);
+
 
         if(is_array($mf) && array_key_exists($viewId,$mf) && !array_key_exists($viewId,$fg) ){$mf[$viewId]['paginationLink']=$name;$mf[$viewId]['pagination']=true;}else{$mf[$viewId]['pagination']=false;}
         $this->setMSViews($mf);
@@ -403,7 +397,7 @@ class MSTableSchema {
     public function addIcon4View($viewId,$icon){
         $mf=$this->getMSViews();
         $fg=$this->getFieldGroup();
-        //dd($fg);
+
 
         if(is_array($mf) && array_key_exists($viewId,$mf))$mf[$viewId]['icon']=$icon;
         $this->setMSViews($mf);
@@ -414,9 +408,7 @@ class MSTableSchema {
         $mf=$this->getMSViews();
         $fg=$this->getAction();
         if($fg==null)$fg=[];
-        foreach ($actionId as $action)//dd($formId);
-            //dd(is_array($mf) && is_array($fg) && array_key_exists($formId,$mf) && array_key_exists($action,$fg)  && ( array_key_exists('action',$mf[$formId]) or true ) );
-            if(is_array($mf) && is_array($fg) && array_key_exists($viewId,$mf) && array_key_exists($action,$fg) )$mf[$viewId]['actions'][]=$action;
+        foreach ($actionId as $action)   if(is_array($mf) && is_array($fg) && array_key_exists($viewId,$mf) && array_key_exists($action,$fg) )$mf[$viewId]['actions'][]=$action;
         $this->setMSViews($mf);
         return $this;
     }
@@ -425,9 +417,7 @@ class MSTableSchema {
         $mf=$this->getMSViews();
         $fg=$this->getAction();
         if($fg==null)$fg=[];
-        foreach ($actionId as $action)//dd($formId);
-            //dd(is_array($mf) && is_array($fg) && array_key_exists($formId,$mf) && array_key_exists($action,$fg)  && ( array_key_exists('action',$mf[$formId]) or true ) );
-            if(is_array($mf) && is_array($fg) && array_key_exists($viewId,$mf) && array_key_exists($action,$fg) )$mf[$viewId]['massAction'][]=$action;
+        foreach ($actionId as $action)if(is_array($mf) && is_array($fg) && array_key_exists($viewId,$mf) && array_key_exists($action,$fg) )$mf[$viewId]['massAction'][]=$action;
         $this->setMSViews($mf);
         return $this;
     }
@@ -583,7 +573,6 @@ class MSTableSchema {
         foreach (self::$allowedKeysFields as $keName){
             if(array_key_exists($keName,$d)) $fD[$keName]=$d[$keName];
         }
-       // if($d['name']=='Role')dd($fD);
 
         return $fD;
     }

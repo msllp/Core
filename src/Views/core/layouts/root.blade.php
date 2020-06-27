@@ -34,12 +34,10 @@
 
 
 <div id="msapp" class="min-vh-100 min-h-screen" :class="{
-'ms-dark-mode-body':msDarkMode
+'ms-dark-mode-body':getDarkModeStatus()
 }"  >
 @yield('body')
-    <transition name="slide"  mode="out-in">
-    <mscalc v-if="msCalc"></mscalc>
-    </transition>
+
 </div>
 
   <script src="{{ asset("b/js/app.js") }}?{{\MS\Core\Helper\Comman::random(10)}}" type="text/javascript" defer></script>

@@ -46,7 +46,7 @@
                 <span v-if="msNavigationOn">Back to Main Navigation</span>
             </div>
 
-            <div v-for="mainNav,index in msData" class="" v-if="currentSubTab == index">
+            <div v-for="(mainNav,index) in msData" class="" v-if="currentSubTab == index">
                 <div class="flex flex-wrap ms-side-sun-div">
 
                     <span class="w-full ms-master-title-in-sub">

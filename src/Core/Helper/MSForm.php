@@ -9,43 +9,43 @@
 namespace MS\Core\Helper;
 
 
-use function GuzzleHttp\default_user_agent;
-
 class MSForm
 {
 
 
-
-    public $returnHTML =[
+    public $returnHTML = [
         //   '<div  class="accordion">'
     ];
-    public $debug=false;
+    public $debug = false;
 
-    public static $optionalStyleKeys=[
-        'prefix'=>'prefix',
-        'perfix'=>'perfix',
-        'inputClass'=>'inputClass',
-        'formClass'=>'formClass',
-        'onlyInput'=>'inputOnly',
+    public static $optionalStyleKeys = [
+        'prefix' => 'prefix',
+        'perfix' => 'perfix',
+        'inputClass' => 'inputClass',
+        'formClass' => 'formClass',
+        'onlyInput' => 'inputOnly',
 
 
     ];
 
-    public static $optionalStyleKeysWithDynamicValue=[
-        'inputSize'=>'inputSize'
+    public static $optionalStyleKeysWithDynamicValue = [
+        'inputSize' => 'inputSize'
     ];
-    public $namespace,$id,$perFix,$data,$msdb,$fields,$dbMaster,$action;
-    public $newForm=true;
+    public $namespace, $id, $perFix, $data, $msdb, $fields, $dbMaster, $action;
+    public $newForm = true;
 
-    public $accessAction=['add','back','edit','signin'];
+    public $accessAction = ['add', 'back', 'edit', 'signin'];
 
-    public $attachedAction=[];
+    public $attachedAction = [];
 
-    public $formID=null;
+    public $formID = null;
 
-    public $formData=[];
+    public $formData = [];
 
-    public $modalForm=false;
+    public $optionalFormData = [];
+
+    public $modalForm = false;
+    public $optionalFormInput=[];
 
     /**
      * MSForm constructor.
@@ -54,31 +54,28 @@ class MSForm
      * @param \MS\Core\Helper\string|null $perFix
      * @param array $data
      */
-    public function __construct(string $namespace, string $id=null, array $perFix=null, array $data=[],$modalForm=false)
+    public function __construct(string $namespace, string $id = null, array $perFix = null, array $data = [], $modalForm = false)
     {
 
-        $this->namespace=$namespace;
-        $this->id=$id;
-        $this->perFix=$perFix;
-        $this->data=$data;
-        $base="\\".$this->namespace."\\B";
-        $this->dbMaster=$base::getModuleTables()[ $this->id];
-        $this->modalForm=$modalForm;
-       // $this->actionButton=[];
+        $this->namespace = $namespace;
+        $this->id = $id;
+        $this->perFix = $perFix;
+        $this->data = $data;
+        $base = "\\" . $this->namespace . "\\B";
+        $this->dbMaster = $base::getModuleTables()[$this->id];
+        $this->modalForm = $modalForm;
 
+        foreach ($data as $v => $k) {
 
-        //dd($this);
-        foreach ($data as $v=>$k){
-
-            switch ($v){
+            switch ($v) {
 
                 case 'formID':
-                    //dd($this);
-                  $this->formID=$k;
+
+                    $this->formID = $k;
                     break;
 
                 case 'formData':
-                    $this->formData=$k;
+                    $this->formData = $k;
                 default:
 
 
@@ -86,16 +83,11 @@ class MSForm
 
             }
 
-        //    dd($this);
 
         }
 
 
-
-
     }
-
-
 
 
     /**
@@ -115,221 +107,206 @@ class MSForm
     }
 
 
-
-    private function viewActionBtn(){
+    private function viewActionBtn()
+    {
 //$this->attachedAction[]='add';
-        if(count($this->getAttachedAction())>0){
+        if (count($this->getAttachedAction()) > 0) {
 
-            $mData=[];
-            $allAction=$this->getAction();
-            $attachedAction=$this->getAttachedAction();
-            foreach ( $attachedAction as $v){
-            if(array_key_exists($v,$allAction))$mData[$v]=$allAction[$v];
+            $mData = [];
+            $allAction = $this->getAction();
+            $attachedAction = $this->getAttachedAction();
+            foreach ($attachedAction as $v) {
+                if (array_key_exists($v, $allAction)) $mData[$v] = $allAction[$v];
             }
 
-            return  $this->make4VueButtonArray($mData);
-        }else{
-            return  $this->make4VueButtonArray($this->getAction());
+            return $this->make4VueButtonArray($mData);
+        } else {
+            return $this->make4VueButtonArray($this->getAction());
         }
 
-        return view("MS::core.layouts.Form.button.buttonGroup")->with('data',$this->action)->render();
+        return view("MS::core.layouts.Form.button.buttonGroup")->with('data', $this->action)->render();
 
     }
 
-    private function  make4VueButtonArray($data){
-        $bdata=$data;
-        $returnData=[];
-      //  dd($data);
-        foreach ($data as $type =>$btnData){
-            $btn['Class']=[];
+    private function make4VueButtonArray($data)
+    {
+        $bdata = $data;
+        $returnData = [];
+
+        foreach ($data as $type => $btnData) {
+            $btn['Class'] = [];
             //$btn['Class']=['btn'];
-            switch ($type){
+            switch ($type) {
                 case 'back';
-                    if(is_array($btnData) && !array_key_exists('btnColor',$btnData)) $btnData['btnColor']='blue' ;
+                    if (is_array($btnData) && !array_key_exists('btnColor', $btnData)) $btnData['btnColor'] = 'blue';
                     //$btn['Class'][]='btn-primary';
                     break;
 
                 case 'add';
-                    //  dd($btnData);
-                    if(is_array($btnData) && !array_key_exists('btnColor',$btnData)) $btnData['btnColor']='green' ;
+
+                    if (is_array($btnData) && !array_key_exists('btnColor', $btnData)) $btnData['btnColor'] = 'green';
                     //$btn['Class'][]='btn-success';
                     break;
 
                 case 'edit';
-                    if(is_array($btnData) && !array_key_exists('btnColor',$btnData)) $btnData['btnColor']='bg-yellow-400' ;
+                    if (is_array($btnData) && !array_key_exists('btnColor', $btnData)) $btnData['btnColor'] = 'bg-yellow-400';
                     //$btn['Class'][]='btn-warning';
                     break;
 
 
                 case 'delete';
-                    if(is_array($btnData) && !array_key_exists('btnColor',$btnData)) $btnData['btnColor']='bg-red-400' ;
+                    if (is_array($btnData) && !array_key_exists('btnColor', $btnData)) $btnData['btnColor'] = 'bg-red-400';
                     //$btn['Class'][]='btn-danger';
                     break;
 
                 default:
-                    if(is_array($btnData) && !array_key_exists('btnColor',$btnData)) $btnData['btnColor']='bg-blue-400' ;
+                    if (is_array($btnData) && !array_key_exists('btnColor', $btnData)) $btnData['btnColor'] = 'bg-blue-400';
                     break;
             }
-            //dd($this);
-            if(is_array($btnData)){
-                if(array_key_exists('btnIcon',$btnData) && $btnData['btnIcon']== "")unset($btnData['btnIcon']);
-                if(array_key_exists('route',$btnData)) $btnData['route']=route($btnData['route']);
-                if(array_key_exists('btnClass',$btnData))$btnData['btnClass']=implode(' ',$btn['Class']);
-                //if(array_key_exists('routePara',$btnData)) dd($btnData);
-                if(array_key_exists('routePara',$btnData) && array_key_exists('formData',$this->data) && count($this->data['formData']) > 0)$btnData['route']=$this->makeDataRouteWithPara($bdata[$type],$btnData['routePara'],$this->data['formData']);
+
+            if (is_array($btnData)) {
+                if (array_key_exists('btnIcon', $btnData) && $btnData['btnIcon'] == "") unset($btnData['btnIcon']);
+                if (array_key_exists('route', $btnData)) $btnData['route'] = route($btnData['route']);
+                if (array_key_exists('btnClass', $btnData)) $btnData['btnClass'] = implode(' ', $btn['Class']);
+
+                if (array_key_exists('routePara', $btnData) && array_key_exists('formData', $this->data) && count($this->data['formData']) > 0) $btnData['route'] = $this->makeDataRouteWithPara($bdata[$type], $btnData['routePara'], $this->data['formData']);
             }
 
-            //if(array_key_exists('msLinkKey',$btnData)) dd($btnData);
 
-            //dd(in_array($type,$this->dbMaster['MSforms'][$this->formID]['actions']));
-          //  dd($this->dbMaster['MSforms'][$this->formID]);
+            if ((in_array($type, $this->accessAction) || 1) && in_array($type, $this->msdb->mod_Tables[$this->id]['MSforms'][$this->formID]['actions'])) {
 
-            if((in_array($type,$this->accessAction)||1)&& in_array($type,$this->msdb->mod_Tables[$this->id]['MSforms'][$this->formID]['actions']))
-            {
-
-                $returnData[$type]=$btnData;
-            }else{
+                $returnData[$type] = $btnData;
+            } else {
 
             }
 
         }
 
-
-     //   dd($returnData);
 
         return $returnData;
-        //dd($returnData);
+
     }
 
 
+    private function makeDataRouteWithPara($r, $p, $d)
+    {
+        $rArray = [];
 
-    private function makeDataRouteWithPara($r,$p,$d){
-        $rArray=[];
-        //dd($d);
-        //$rr=route($r);
-      //  dd($d);
-        foreach ($p as $para=>$v){
-          //  if(!array_key_exists($v,$d)) dd($r);
-            $rArray[$para]=$d[$v];
+        foreach ($p as $para => $v) {
+            $rArray[$para] = $d[$v];
         }
-        return route($r['route'],$rArray);
-        //foreach ($p)
+        return route($r['route'], $rArray);
+
 
     }
-    public static function getDataFromTable($str,$per=[]){
-        $ex=explode(':',$str);
-        //dd($ex);
-        $data=[];
-        $rdata=[];
-        if(count($ex)==3){
-            $data ['namespace']=$ex[0];
-            $data ['tableId']=$ex[1];
-            $ex2=explode('->',$ex[2]);
-            $data ['darray'][$ex2[0]]=$ex2[1];
-           // dd($data);
-            $m=ms()->msdb($data['namespace'],$data['tableId'],$per);
+
+    public static function getDataFromTable($str, $per = [])
+    {
+        $ex = explode(':', $str);
+
+        $data = [];
+        $rdata = [];
+        if (count($ex) == 3) {
+            $data ['namespace'] = $ex[0];
+            $data ['tableId'] = $ex[1];
+            $ex2 = explode('->', $ex[2]);
+            $data ['darray'][$ex2[0]] = $ex2[1];
+            $m = ms()->msdb($data['namespace'], $data['tableId'], $per);
             //$m=new MSDB($data['namespace'],$data['tableId'],$per);
-           // $m->migrate();
-            $d=$m->rowGet();
+            // $m->migrate();
+            $d = $m->rowGet();
 
-            $rdata['msdata']=$d;
+            $rdata['msdata'] = $d;
 
-            $rdata['value']=$ex2[0];
-            $rdata['text']=$ex2[1];
+            $rdata['value'] = $ex2[0];
+            $rdata['text'] = $ex2[1];
 
             return $rdata;
 
 
-        }else{
+        } else {
             return [];
         }
 
 
     }
 
-    public static function makeArrayForViewFromStyle(array $array,array $data) : array{
+    public static function makeArrayForViewFromStyle(array $array, array $data): array
+    {
 
-        foreach (self::$optionalStyleKeys as $key=>$value){
-            if(array_key_exists('style',$data) &&  array_key_exists($key,$data['style']))
-            {
-                $array[$value]=$data['style'][$key];
+        foreach (self::$optionalStyleKeys as $key => $value) {
+            if (array_key_exists('style', $data) && array_key_exists($key, $data['style'])) {
+                $array[$value] = $data['style'][$key];
             }
-            if(array_key_exists('validation',$data) &&  array_key_exists($key,$data['validation']))
-            {
+            if (array_key_exists('validation', $data) && array_key_exists($key, $data['validation'])) {
 
-                $array[$value]=$data['validation'][$key];
+                $array[$value] = $data['validation'][$key];
             }
         }
 
 
-        foreach (self::$optionalStyleKeysWithDynamicValue as $key=>$value){
-            if(array_key_exists('style',$data) && array_key_exists($key,$data['style']))
-            {
-                switch ($key){
+        foreach (self::$optionalStyleKeysWithDynamicValue as $key => $value) {
+            if (array_key_exists('style', $data) && array_key_exists($key, $data['style'])) {
+                switch ($key) {
                     case "inputSize":
-                        $strExploded=explode(".",$data['style'][$key]);
+                        $strExploded = explode(".", $data['style'][$key]);
 
-                        if(count($strExploded) > 1 ){
+                        if (count($strExploded) > 1) {
 
-                            switch (count($strExploded)){
+                            switch (count($strExploded)) {
 
                                 case 2:
-                                    $array[$value]=
+                                    $array[$value] =
                                         implode(" ",
                                             [
                                                 //implode("-",['col','xs',$strExploded[0]]),
-                                                implode("-",['w',$strExploded[0]]),
-                                                implode("-",[implode(':',['sm','w']),$strExploded[0]]),
-                                                implode("-",[implode(':',['lg','w']),$strExploded[1]]),
-                                     //           implode("-",['col','lg',$strExploded[3]])
-                                        ]
-                                        )
-                                    ;
+                                                implode("-", ['w', $strExploded[0]]),
+                                                implode("-", [implode(':', ['sm', 'w']), $strExploded[0]]),
+                                                implode("-", [implode(':', ['lg', 'w']), $strExploded[1]]),
+                                                //           implode("-",['col','lg',$strExploded[3]])
+                                            ]
+                                        );
                                     break;
                                 case 3:
-                                    $array[$value]=
+                                    $array[$value] =
                                         implode(" ",
                                             [
                                                 //implode("-",['col','xs',$strExploded[0]]),
-                                                implode("-",[implode(':',['sm','w']),$strExploded[0]]),
-                                                implode("-",[implode(':',['md','w']),$strExploded[1]]),
-                                                implode("-",[implode(':',['lg','w']),$strExploded[2]])]
-                                        )
-                                    ;
+                                                implode("-", [implode(':', ['sm', 'w']), $strExploded[0]]),
+                                                implode("-", [implode(':', ['md', 'w']), $strExploded[1]]),
+                                                implode("-", [implode(':', ['lg', 'w']), $strExploded[2]])]
+                                        );
                                     break;
                                 case 4:
-                                    $array[$value]=
+                                    $array[$value] =
                                         implode(" ",
-                                        [implode("-",[implode(':',['sm','w']),$strExploded[0]]),
-                                        implode("-",[implode(':',['md','w']),$strExploded[1]]),
-                                        implode("-",[implode(':',['lg','w']),$strExploded[2]]),
-                                        implode("-",[implode(':',['xl','w']),$strExploded[3]])]
-                                        )
-                                        ;
+                                            [implode("-", [implode(':', ['sm', 'w']), $strExploded[0]]),
+                                                implode("-", [implode(':', ['md', 'w']), $strExploded[1]]),
+                                                implode("-", [implode(':', ['lg', 'w']), $strExploded[2]]),
+                                                implode("-", [implode(':', ['xl', 'w']), $strExploded[3]])]
+                                        );
                                     break;
 
                             }
 
 
-                        }else{
-                            if(array_key_exists('style',$data) && array_key_exists($key,$data['style'])) {
+                        } else {
+                            if (array_key_exists('style', $data) && array_key_exists($key, $data['style'])) {
 
-                                    $array[$value] = implode('-',["w" , implode("/",[$data['style'][$key],12])]);
+                                $array[$value] = implode('-', ["w", implode("/", [$data['style'][$key], 12])]);
                             }
                         }
                         break;
                 }
 
 
-
             }
 
             //var_dump($key);
             //TODO Finish validation to pass proper data to Vue Components
-            if(array_key_exists('validation',$data) && array_key_exists($key,$data['validation']))
-            {
-                dd(array_key_exists($key,$data['validation']));
-                switch ($key){
+            if (array_key_exists('validation', $data) && array_key_exists($key, $data['validation'])) {
+                dd(array_key_exists($key, $data['validation']));
+                switch ($key) {
                     case 'existIn':
 
                         dd($key);
@@ -351,33 +328,32 @@ class MSForm
 
     }
 
-    public function fromModel(MSDB $dbClass,$data=[]){
+    public function fromModel(MSDB $dbClass, $data = [])
+    {
 
-        $this->msdb=$dbClass;
-        $baseTabele=$this->fields=$this->msdb->mod_Tables[$this->id];
-        $this->action=$baseTabele['action'];
-        $this->fields=$baseTabele['fields'];
+        $this->msdb = $dbClass;
+        $baseTabele = $this->fields = $this->msdb->mod_Tables[$this->id];
+        $this->action = $baseTabele['action'];
+        $this->fields = $baseTabele['fields'];
 
-        if(array_key_exists('data',$data) && count($data['data'])>0)$this->newForm=false;
+        if (array_key_exists('data', $data) && count($data['data']) > 0) $this->newForm = false;
         $this->makeForm();
 
         return $this;
 
     }
 
-    private function getFieldFromFields($name){
-        $fields=$this->fields;
-        $field=collect($fields)->where('name',$name);
+    private function getFieldFromFields($name)
+    {
+        $fields = $this->fields;
+        $field = collect($fields)->where('name', $name);
 
-        if($field->count()> 0){
+        if ($field->count() > 0) {
             return $field->first();
         }
 
 
-
-
     }
-
 
 
     /**
@@ -388,185 +364,191 @@ class MSForm
      * @return void
      *
      */
-    public function attachAction($actioId):void {
+    public function attachAction($actioId): void
+    {
 
-    $this->attachedAction[]=$actioId;
+        $this->attachedAction[] = $actioId;
 
     }
-    private function make4Vue($str){
+
+    private function make4Vue($str)
+    {
         //var_dump($str);
-            $str= strtolower(str_replace(' ','_',$str)) ;
-            return $str;
+        $str = strtolower(str_replace(' ', '_', $str));
+        return $str;
     }
 
-    private function map4Vue($array){
+    private function map4Vue($array)
+    {
 
-            return array_map(
-                function ($key){
-                     return  $this->make4Vue($key) ;
-                },$array
-            );
+        return array_map(
+            function ($key) {
+                return $this->make4Vue($key);
+            }, $array
+        );
     }
 
-    private function makeFieldsFromGroup($groupArray){
-        $returnArray=[];
-       // dd($groupArray);
-        foreach ($groupArray as $title=>$fieldsArray){
-//            $returnArray[]=[
-//                'vName'=>$title,
-//                'input'=>'gourpHeading',
-//                $title=>$fieldsArray
-//
-//            ];
+    private function makeDataForOptionalFormInput($groupName, $name, $data)
+    {
 
-            foreach ($fieldsArray as $fieldName){
-                if(($fieldName == 'created_at') && ($fieldName =='updated_at')) dd($fieldName);
-                if(($fieldName != 'created_at') && ($fieldName !='updated_at')){
 
-                    //dd();
-                    $aray=$this->getFieldFromFields($fieldName);
 
-                    if($aray == null)dd($fieldName); //TODO Find proper out put for no array found
-//                if(array_key_exists('fieldGroupMultiple',$this->dbMaster) && $this->dbMaster['fieldGroupMultiple'])
-//                    $aray['groupInput']=$this->make4Vue($title);
+        foreach ($data as $k => $v) {
+            if (gettype($v['value']) == 'array') {
+                foreach ($v['value'] as $v2) $this->optionalFormData[$k][$v2][] = $name;
+            } else {
+                $this->optionalFormData[$k][$v['value']][] = $name;
+            }
 
-                   $returnArray[$this->make4Vue($title)]['gruoupHeading']=$title;
-                    if(array_key_exists('fieldGroupMultiple',$this->dbMaster) && in_array($title,$this->dbMaster['fieldGroupMultiple']))
-                    {
-                        // if($aray == null)dd($fieldsArray);
-                        //   if($aray == null)dd($aray)
-                        if(count($this->formData) > 0){
-                            $returnArray[$this->make4Vue($title)]['inputs'][]= $this->makeDataForVue($aray,true);
-                      //      $returnArray[$this->make4Vue($title)]['inputs'][$aray['name']]= $this->makeDataForVue($aray,true);
-                        }else{
-                            $returnArray[$this->make4Vue($title)]['inputs'][]= $this->makeDataForVue($aray,true);
+            $this->optionalFormInput[]=$name;
+        }
+
+
+    }
+
+    private function makeFieldsFromGroup($groupArray)
+    {
+        $returnArray = [];
+
+        foreach ($groupArray as $title => $fieldsArray) {
+
+
+            foreach ($fieldsArray as $fieldName) {
+                if (($fieldName == 'created_at') && ($fieldName == 'updated_at')) dd($fieldName);
+                if (($fieldName != 'created_at') && ($fieldName != 'updated_at')) {
+
+
+                    $aray = $this->getFieldFromFields($fieldName);
+
+                    if (array_key_exists('relation', $aray) && count($aray) > 0) {
+
+                        $this->makeDataForOptionalFormInput($this->make4Vue($title), $fieldName, $aray['relation']);
+                        $aray['optionalInput']=true;
+                    }
+                    if ($aray == null) dd($fieldName); //TODO Find proper out put for no array found
+
+                    $returnArray[$this->make4Vue($title)]['gruoupHeading'] = $title;
+                    if (array_key_exists('fieldGroupMultiple', $this->dbMaster) && in_array($title, $this->dbMaster['fieldGroupMultiple'])) {
+
+                        if (count($this->formData) > 0) {
+                            $returnArray[$this->make4Vue($title)]['inputs'][] = $this->makeDataForVue($aray, true);
+                            //      $returnArray[$this->make4Vue($title)]['inputs'][$aray['name']]= $this->makeDataForVue($aray,true);
+                        } else {
+                            $returnArray[$this->make4Vue($title)]['inputs'][] = $this->makeDataForVue($aray, true);
                         }
 
-                        $returnArray[$this->make4Vue($title)]['groupDynamic']=true;
+                        $returnArray[$this->make4Vue($title)]['groupDynamic'] = true;
 
 
-                       // dd(property_exists($this,'data'));
-                       if(property_exists($this,'data') && array_key_exists("formData",$this->data)){
 
-                           if(count($this->formData) > 0) $returnArray[$this->make4Vue($title)]['withData']=true;
+                        if (property_exists($this, 'data') && array_key_exists("formData", $this->data)) {
+
+                            if (count($this->formData) > 0) $returnArray[$this->make4Vue($title)]['withData'] = true;
 
 
-                          // dd($aray);
-                           if(count($this->formData) > 0)  $returnArray[$this->make4Vue($title)]['msDyData'][$aray['name']]=$this->makeDataForVueDynamic($aray);
+               ;
+                            if (count($this->formData) > 0) $returnArray[$this->make4Vue($title)]['msDyData'][$aray['name']] = $this->makeDataForVueDynamic($aray);
 
-                       }
+                        }
 
-                    }else{
-                        //dd($title);
-                        if($aray == null)dd("ERROR 90.3 : Programing Fatal Bug in ".__CLASS__);
+                    } else {
 
-                        $returnArray[$this->make4Vue($title)]['inputs'][]= $this->makeDataForVue($aray);
-                        $returnArray[$this->make4Vue($title)]['groupDynamic']=false;
+                        if ($aray == null) dd("ERROR 90.3 : Programing Fatal Bug in " . __CLASS__);
+
+                        $returnArray[$this->make4Vue($title)]['inputs'][] = $this->makeDataForVue($aray);
+                        $returnArray[$this->make4Vue($title)]['groupDynamic'] = false;
                     }
 
                 }
 
             }
-//
-//            $returnArray[]=[
-//                'vName'=>$title,
-//                'input'=>'gourpEnd',
-//
-//            ];
 
         }
-       // dd($returnArray);
+
+        //dd($returnArray);
         return $returnArray;
 
     }
 
-    private function makeDataForVueDynamic($a){
+    private function makeDataForVueDynamic($a)
+    {
 
-       // dd($this);
-        if(count($this->formData) > 0)
-        $d=\MS\Core\Helper\MSForm::getDataFromTable($a['msTableLink'],[$this->formData[$a['msTableKey']]]);
+
+        if (count($this->formData) > 0)
+            $d = \MS\Core\Helper\MSForm::getDataFromTable($a['msTableLink'], [$this->formData[$a['msTableKey']]]);
         return $d;
 
     }
-    private function makeForm(){
 
-        if( array_key_exists('add',$this->action) or  (count($this->action)>0) ){
-            $action=$this->action;
+    private function makeForm()
+    {
+
+        if (array_key_exists('add', $this->action) or (count($this->action) > 0)) {
+            $action = $this->action;
         }
-        $fields=$this->fields;
-        $getFields=false;
+        $fields = $this->fields;
+        $getFields = false;
         //if()
 
-        if(array_key_exists('fieldGroup',$this->dbMaster)){
-            $getFields=true;
+        if (array_key_exists('fieldGroup', $this->dbMaster)) {
+            $getFields = true;
 
-            if($this->formID != null){
-             //   dd($this->formID);
-                $fData=[];
-                if(array_key_exists($this->formID,$this->dbMaster['MSforms'])){
-//dd($this);
-                    $data=$this->dbMaster['MSforms'][$this->formID];
-                  //  dd( $data);
+            if ($this->formID != null) {
 
-                    foreach ($data['groups'] as $k){
-                        if(array_key_exists($k,$this->dbMaster['fieldGroup']))$fData[$k]=$this->dbMaster['fieldGroup'][$k];
+                $fData = [];
+                if (array_key_exists($this->formID, $this->dbMaster['MSforms'])) {
+
+                    $data = $this->dbMaster['MSforms'][$this->formID];
+
+
+                    foreach ($data['groups'] as $k) {
+                        if (array_key_exists($k, $this->dbMaster['fieldGroup'])) $fData[$k] = $this->dbMaster['fieldGroup'][$k];
                     }
-//dd($data);
-                    $this->returnHTML['formTitle']=$data['title'];
+
+                    $this->returnHTML['formTitle'] = $data['title'];
                 }
-//dd($fData);
 
 
-                $fields=$this->makeFieldsFromGroup($fData)  ;
+                $fields = $this->makeFieldsFromGroup($fData);
 
 
+                $this->returnHTML['formData'] = $fields;
 
-                $this->returnHTML['formData']=$fields;
-           //     if()mod_Tables
-         //   dd($fields);
 
-            }else{
+            } else {
 
-                $fields=$this->makeFieldsFromGroup($this->dbMaster['fieldGroup'])  ;
+                $fields = $this->makeFieldsFromGroup($this->dbMaster['fieldGroup']);
 
-                $this->returnHTML['formData']=$fields;
+                $this->returnHTML['formData'] = $fields;
 
             }
 
 
 
-
-//            if(array_key_exists('fieldGroupMultiple',$this->dbMaster))
-//            {
-//                $this->returnHTML['multipleGroup']= $this-> map4Vue( $this->dbMaster['fieldGroupMultiple']);
-//            }
-
-        }else {
-            $this->returnHTML=[];
+        } else {
+            $this->returnHTML = [];
         }
 
 
-
-        }
-
+    }
 
 
+    private function makeDataForVue($data, $multiple = false)
+    {
 
-    private function makeDataForVue($data,$multiple=false){
 
-
-        $defaultInputType='text';
-        $array=[
-            'name'=>$data['name'],
-            'type'=>(array_key_exists('input',$data))?$data['input']:$defaultInputType,
+        $defaultInputType = 'text';
+        $array = [
+            'name' => $data['name'],
+            'type' => (array_key_exists('input', $data)) ? $data['input'] : $defaultInputType,
             //'vName'=>$data['vName'],
             //'prefix'=>"lock text-info",
             //'perfix'=>"asterisk text-danger",
             //'inputOnly'=>true,
             //'required'=>true,
-            'validation'=>[
+            'validation' => [
                 // 'minSize'=>5,
-                'required'=>0
+                'required' => 0
             ],
             //'inputClass'=>[],
             //'formClass'=>[],
@@ -574,64 +556,58 @@ class MSForm
         ];
 
 
-   //if($data == null ) dd($data);
-
-        $array=\MS\Core\Helper\MSForm::makeArrayForViewFromStyle($array,$data);
-
-//dd($array);
-
-        if (array_key_exists('vName',$data))$array['vName']=$data['vName'];
-        if (!array_key_exists('vName',$array))$array['vName']=$data['name'];
-        if ((count($this->formData) > 0) && array_key_exists($data['name'],$this->formData))$array['value']=$this->formData[$data['name']];
+        $array = \MS\Core\Helper\MSForm::makeArrayForViewFromStyle($array, $data);
 
 
-        if(array_key_exists('style',$data)){
+        if (array_key_exists('vName', $data)) $array['vName'] = $data['vName'];
+        if (!array_key_exists('vName', $array)) $array['vName'] = $data['name'];
+        if ((count($this->formData) > 0) && array_key_exists($data['name'], $this->formData)) $array['value'] = $this->formData[$data['name']];
 
+
+        if (array_key_exists('style', $data)) {
 
 
         }
 
-        if(array_key_exists('validation',$data) && is_array($data['validation'])){
+        if (array_key_exists('validation', $data) && is_array($data['validation'])) {
 
-            if(array_key_exists( 'required',$data['validation']) && $data['validation']['required']){
+            if (array_key_exists('required', $data['validation']) && $data['validation']['required']) {
                 //(array_key_exists('perfix',$array))?$array['perfix'].= " ":null;
 
-                $array['validation']['required']=$data['validation']['required'];
+                $array['validation']['required'] = $data['validation']['required'];
 
 
             }
 
-            if(array_key_exists('length',$data['validation']))$array['validation']['length']=$data['validation']['length'];
-            if(array_key_exists('email',$data['validation']))$array['validation']['email']=$data['validation']['email'];
-            if(array_key_exists('duration',$data['validation']))$array['validation']['duration']=$data['validation']['duration'];
-            if(array_key_exists('numericality',$data['validation']))$array['validation']['numericality']=$data['validation']['numericality'];
-            if(array_key_exists('format',$data['validation']))$array['validation']['format']=$data['validation']['format'];
+            if (array_key_exists('length', $data['validation'])) $array['validation']['length'] = $data['validation']['length'];
+            if (array_key_exists('email', $data['validation'])) $array['validation']['email'] = $data['validation']['email'];
+            if (array_key_exists('duration', $data['validation'])) $array['validation']['duration'] = $data['validation']['duration'];
+            if (array_key_exists('numericality', $data['validation'])) $array['validation']['numericality'] = $data['validation']['numericality'];
+            if (array_key_exists('format', $data['validation'])) $array['validation']['format'] = $data['validation']['format'];
 
-           // if(array_key_exists('length',$data['validation']) || 1 )dd($array);
-            //dd($data);
-            //dd($this->perFix);
+            if (array_key_exists('existIn', $data['validation']) && !array_key_exists('verifyBy', $data['validation'])) $array['verifyBy'] = \MS\Core\Helper\MSForm::getDataFromTable($data['validation']['existIn'], $this->getPerFixForDataFromOtherTable($data));
 
-            if(array_key_exists('existIn',$data['validation']))$array['verifyBy']=\MS\Core\Helper\MSForm::getDataFromTable($data['validation']['existIn'],$this->getPerFixForDataFromOtherTable($data));
-
-
-
+            if(!array_key_exists('existIn', $data['validation']) && array_key_exists('verifyBy', $data['validation'])) {
+                $array['verifyBy'] = $data['validation']['verifyBy'];
+            }
         }
-        if(array_key_exists('inputMultiple',$data))$array['inputMultiple']=$data['inputMultiple'];
-        if(array_key_exists('inputMultiple',$data))$array['inputMultiple']=$data['inputMultiple'];
-        if(array_key_exists('inputInfo',$data))$array['inputInfo']=$data['inputInfo'];
-        if(array_key_exists('addAction',$data) && array_key_exists($data['addAction'],$this->getAction()))
-        {
+        if (array_key_exists('inputMultiple', $data)) $array['inputMultiple'] = $data['inputMultiple'];
+        if (array_key_exists('inputMultiple', $data)) $array['inputMultiple'] = $data['inputMultiple'];
+        if (array_key_exists('inputInfo', $data)) $array['inputInfo'] = $data['inputInfo'];
+        if (array_key_exists('addAction', $data) && array_key_exists($data['addAction'], $this->getAction())) {
 
-            $array['addAction']=$this->getAction()[$data['addAction']];
+            $array['addAction'] = $this->getAction()[$data['addAction']];
 
-            if(strpos('https://',$array['addAction']['route'])===false)$array['addAction']['route']=route($array['addAction']['route']);
-            if(strpos('https://',$array['addAction']['dataRoute'])===false)$array['addAction']['dataRoute']=route($array['addAction']['dataRoute']);
+            if (strpos('https://', $array['addAction']['route']) === false) $array['addAction']['route'] = route($array['addAction']['route']);
+            if (strpos('https://', $array['addAction']['dataRoute']) === false) $array['addAction']['dataRoute'] = route($array['addAction']['dataRoute']);
         }
 
-        if($multiple)$array['inputMultiple']=true;
-        if(array_key_exists('groupInput',$data))$array['groupInput']=$data['groupInput'];
-        $f= implode("\\",[$this->namespace,"F"]) ;
-        switch ($data['input']){
+        if ($multiple) $array['inputMultiple'] = true;
+        if (array_key_exists('optionalInput', $data) && $data['optionalInput']) $array['optional']=true;
+
+        if (array_key_exists('groupInput', $data)) $array['groupInput'] = $data['groupInput'];
+        $f = implode("\\", [$this->namespace, "F"]);
+        switch ($data['input']) {
 
             case 'auto':
                 goto msautogenratevalue;
@@ -639,123 +615,153 @@ class MSForm
                 break;
 
             case 'password':
-                if(array_key_exists('value',$array))unset($array['value']);
+                if (array_key_exists('value', $array)) unset($array['value']);
                 break;
 
             case 'locked':
                 msautogenratevalue:
-                if(array_key_exists('callback',$data))$array['value']=call_user_func(implode("::",[$f,$data['callback']]));
-                if($array['type'] != 'locked')$array['type']='locked';
-                //dd($array);
+                if (array_key_exists('callback', $data)) $array['value'] = call_user_func(implode("::", [$f, $data['callback']]));
+                if ($array['type'] != 'locked') $array['type'] = 'locked';
+
                 break;
         }
 
-       // if(array_key_exists('validation',$data) && array_key_exists('existIn',$data['validation']))dd($array);
-       // if($data['name']=='Role')dd($array);
+        //if(array_key_exists('optionalInput',$data))dd($array);
         return $array;
 
-        $arrayJson=collect($array)->toJson();
+        $arrayJson = collect($array)->toJson();
     }
 
-    private function getPerFixForDataFromOtherTable($data):array {
+    private function getPerFixForDataFromOtherTable($data): array
+    {
 
-        $return=[];
-        if(array_key_exists($data['name'],$this->perFix))$return=$this->perFix[$data['name']]['perFix'];
+        $return = [];
+        if (array_key_exists($data['name'], $this->perFix)) $return = $this->perFix[$data['name']]['perFix'];
         return $return;
 
     }
-    private function makeDataValueForView($name){
-        if(array_key_exists($name,$this->formData[$name]))
-        return $this->formData[$name];
-        return null;
-        $d=[];
-        foreach ($this->fields as $input){
-            if( (count($this->formData) > 0) && array_key_exists($input['name'],$this->formData)){
 
-                switch ($input['input']){
+    private function makeDataValueForView($name)
+    {
+        if (array_key_exists($name, $this->formData[$name]))
+            return $this->formData[$name];
+        return null;
+        $d = [];
+        foreach ($this->fields as $input) {
+            if ((count($this->formData) > 0) && array_key_exists($input['name'], $this->formData)) {
+
+                switch ($input['input']) {
 
                     case 'password' :
                         break;
 
                     default:
-                        $d[$input['name']]=$this->formData[$input['name']];
+                        $d[$input['name']] = $this->formData[$input['name']];
                         break;
                 }
 
             }
         }
         return $d;
-        dd($d);
+
 
     }
-    public function viewRaw(){
-        $this->returnHTML['actionButton']=$this->viewActionBtn();
+
+    public function viewRaw()
+    {
+        $this->returnHTML['actionButton'] = $this->viewActionBtn();
         return $this->returnHTML;
     }
-    public function view(){
-        //dd($this->returnHTML);
 
-        $this->returnHTML['actionButton']=$this->viewActionBtn();
-        $this->returnHTML['formInModal']=$this->modalForm;
-//        if(count($this->formData) > 0 ){
-//            $this->returnHTML['formValue']=$this->makeDataValueForView();
-//        }
-        //   $this->returnHTML[]='</div>';
+    public function view()
+    {
 
-     //   dd(  );
-      // dd($this );
-       // dd($this->returnHTML);
-     if(!ms()->debug())  return view("MS::core.layouts.Form.formPlateRaw")->with("form",$this->returnHTML);
-        return view("MS::core.layouts.Form.formPlate")->with("form",$this->returnHTML);
+        $this->returnHTML['actionButton'] = $this->viewActionBtn();
+        $this->returnHTML['formInModal'] = $this->modalForm;
+        $this->returnHTML['optionalData'] = $this->optionalFormData;
+        $this->returnHTML['optionalFormInput'] = $this->optionalFormInput;
+
+        if (!ms()->debug()) return view("MS::core.layouts.Form.formPlateRaw")->with("form", $this->returnHTML);
+        return view("MS::core.layouts.Form.formPlate")->with("form", $this->returnHTML);
 
     }
 
-    private function addOneline(array $data){
-        dd($data);
-        $this->returnHTML['input'][]=$data;
+    private function addOneline(array $data)
+    {
+
+        $this->returnHTML['input'][] = $data;
 
 
 //        $this->returnHTML[]=view("MS::core.layouts.Form.input.oneline")->with('data',$data)->render();
 
     }
 
-    private function text($data){
+    private function text($data)
+    {
 
-            $this->returnHTML[]=view("MS::core.layouts.Form.input.oneline")->with('data',$data)->render();
+        $this->returnHTML[] = view("MS::core.layouts.Form.input.oneline")->with('data', $data)->render();
 
 
     }
 
-    private function locked ($data){}
-    private function generated ($data){
+    private function locked($data)
+    {
+    }
 
-        $sClass=$this->namespace."\\F";
+    private function generated($data)
+    {
 
-            $sMethod="::".$data['callback'];
-       // dd($sClass . $sMethod);
-            //  dd($input['callback']."()");
-            //dd(call_user_func($sClass . $sMethod));
-            $val=call_user_func($sClass . $sMethod);
+        $sClass = $this->namespace . "\\F";
 
+        $sMethod = "::" . $data['callback'];
+
+        $val = call_user_func($sClass . $sMethod);
 
 
         //$this->returnHTML[]=$val;
 
 
-
     }
-    private function number ($data){}
-    private function textarea ($data){}
-    private function email ($data){}
-    private function password ($data){}
-    private function date ($data){}
-    private function datetime ($data){}
-    private function radio ($data){}
-    private function checkbox ($data){}
-    private function option ($data){}
 
-    private function checkFromHidden($data){
-        if(array_key_exists('hidden',$data) && $data['hidden'])return false;
-            return true;
+    private function number($data)
+    {
+    }
+
+    private function textarea($data)
+    {
+    }
+
+    private function email($data)
+    {
+    }
+
+    private function password($data)
+    {
+    }
+
+    private function date($data)
+    {
+    }
+
+    private function datetime($data)
+    {
+    }
+
+    private function radio($data)
+    {
+    }
+
+    private function checkbox($data)
+    {
+    }
+
+    private function option($data)
+    {
+    }
+
+    private function checkFromHidden($data)
+    {
+        if (array_key_exists('hidden', $data) && $data['hidden']) return false;
+        return true;
     }
 }

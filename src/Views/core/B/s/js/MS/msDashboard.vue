@@ -1,12 +1,12 @@
 <template>
 
     <div  class="ms-dashboard-container" :class="{
-        'ms-dark-mode':this.msDarkMode
+        'ms-dark-mode':msDarkModeOn
     }">
 
 
 
-        <div class="fixed w-full ms-nav-container shadow " :class="{'ms-dashboard-modal-active':this.msModalOpen}" >
+        <div class="fixed w-full ms-nav-container shadow " :class="{'ms-dashboard-modal-active':msModalOpen}" >
             <nav class="flex items-center justify-between flex-wrap lg:p-1  object-cover " style="min-height: 70px;">
 
                 <div class="flex items-center flex-shrink-0 lg:hidden" >
@@ -139,9 +139,9 @@
 
                             <span>
 <i class="ms-dashboard-profile-darkmode-icon fi2 flaticon-replace" :class="{
-                              'flaticon-replace':msDarkMode
+                              'flaticon-replace':msDarkModeOn
                           }"></i>
-                                {{(msDarkMode)?'Light':'Dark'}} </span>
+                                {{(msDarkModeOn)?'Light':'Dark'}} </span>
 
                         </div>
                         </div>
@@ -255,14 +255,14 @@
 
         </div>
 
-        <mssidenav :class="{'ms-nav-mian-div-hidden':!msNavBar,'ms-nav-mian-div':msNavBar,'ms-dashboard-modal-active':this.msModalOpen}"  ref="msMenuSide" :ms-nav ="msNavOn"  ></mssidenav>
+        <mssidenav :class="{'ms-nav-mian-div-hidden':!msNavBar,'ms-nav-mian-div':msNavBar,'ms-dashboard-modal-active':msModalOpen}"  ref="msMenuSide" :ms-nav ="msNavOn"  ></mssidenav>
 
         <div style=""
         :class="{
         'ms-livebox ':true,
         'ms-livebox-full':!msNavOn,
         'ms-livebox-without-nav':!msNavBar,
-        'ms-dashboard-modal-active':this.msModalOpen
+        'ms-dashboard-modal-active':msModalOpen
         }"
         >
             <msviewpanel ref="ms-live-tab" :ms-data="dataFormsViewpanel" ></msviewpanel>
@@ -280,9 +280,6 @@
         name: "msdashboard", mixins: [MS],
         data() {
             return {
-              //  msRoot:app,
-
-                //msModelOpen:true,
                 msNotification:false,
                 msNavOn:true,
                 msMenuOn:false,
@@ -310,7 +307,8 @@
                 msAllNotification:{},
                 dataFormsViewpanel:{},
                 allCompany:{},
-                currentCompany:''
+                currentCompany:'',
+                msDarkModeOn:false,
 
             }
         },
@@ -319,8 +317,6 @@
                 type: Object,
                 required: true
             },
-
-
         },
         watch:{
             currentCompany(newVal){
@@ -579,7 +575,9 @@
                 this.hideNavBar(event);
             },
             darkModeToggel(){
-                this.$root.$data.msDarkMode=(this.$root.$data.msDarkMode)?false:true;
+                this.msDarkModeOn=(this.msDarkModeOn)?false:true;
+                window.vueApp.toggleDarkMode();
+
             },
 
             sendCallReqToServer(to,data){
@@ -778,7 +776,8 @@
                     .catch(function (error) {
                         console.log(error);
                     });
-            }
+            },
+
 
         },
 
@@ -865,21 +864,17 @@
             if(this.msData.hasOwnProperty('msUser'))this.msUserData=this.msData.msUser;
 
            this.getDataForSideBar();
+          //  console.log(vueApp);
 
-
-
+           // this.msDarkModeOn=vueApp.getDarkModeStatus();
             if(this.msNavOn && ( window.innerWidth < 800  ))this.msNavOn=false;
         },
         beforeMount(){
-           // this.getDataForSideBar();
-        }
 
-        ,
+           // this.getDataForSideBar();
+        },
         computed : {
-            msDarkMode(){
-            //    console.log(this.$root.$data.msDarkMode);
-                return this.$root.$data.msDarkMode;
-            }
+
 
         }
     }

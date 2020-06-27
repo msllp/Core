@@ -170,6 +170,14 @@ axios.get(url,{crossDomain: true,withCredentials:true})
                     dashBoard.openModal(data,classToRefresh,methodTocall);
 
                 },
+                getDarkModeStatus(){
+                    return this.msDarkMode;
+                },
+
+                toggleDarkMode(){
+                    this.msDarkMode=(this.msDarkMode)?false:true;
+                  //  console.log(this.msDarkMode);
+                },
 
                 closeModal(){
                     var dashBoard = this.$children[0];
@@ -177,7 +185,7 @@ axios.get(url,{crossDomain: true,withCredentials:true})
                 }
 
             },
-            data: function () {
+            data () {
                 return {
                     mserror: [],
                     mstab: [],

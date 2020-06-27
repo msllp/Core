@@ -74,7 +74,7 @@
                             <span class="">{{section.gruoupHeading}}</span>
 
 
-                            <div class="flex px-3  ml-3 " v-if="section.groupDynamic ">
+                            <div class="flex px-3  ml-3 " v-if="section.groupDynamic">
 
                                 <div
                                     class="text-green-500 bg-gray-200 border hover:border-green-500 hover:shadow px-2 mx-1 hover:bg-gray-300 "
@@ -102,20 +102,29 @@
                 // 'flex':!onMobile
                 }">
 
-                                <msinput v-if="!(section.hasOwnProperty('withData') && section.withData)" class="w-1/2"
-                                         :class="section.inputs[id2].inputSize" v-for="(inputRaw,id2) in section.inputs"
-                                         :key="inputRaw.name.toLowerCase()" :ref="inputRaw.name.toLowerCase()"
-                                         v-bind:ms-data="inputRaw" v-bind:ms-group-index="id" :ms-input-index="id2">
-                                </msinput>
+                                <div v-for="(inputRaw,id2) in section.inputs" class="w-1/2"  v-if="checkOptionalInput(inputRaw)">
 
-                                <msinput v-else class="w-1/2" :class="section.inputs[id2].inputSize"
-                                         v-for="(inputRaw,id2,key) in section.inputs" :key="inputRaw.name.toLowerCase()"
-                                         :ref="inputRaw.name.toLowerCase()" v-bind:ms-data="inputRaw"
-                                         v-bind:ms-group-index="id" :ms-input-index="
+                                    <div >
+
+                                        <msinput   v-if="!(section.hasOwnProperty('withData') && section.withData)"
+                                                   :class="section.inputs[id2].inputSize"
+                                                   :key="inputRaw.name.toLowerCase()" :ref="inputRaw.name.toLowerCase()"
+                                                   v-bind:ms-data="inputRaw" :ms-group-index="id" :ms-input-index="id2" />
+
+                                        <msinput v-else  :class="section.inputs[id2].inputSize"
+                                                 :key="inputRaw.name.toLowerCase()"
+                                                 :ref="inputRaw.name.toLowerCase()" v-bind:ms-data="inputRaw"
+                                                 v-bind:ms-group-index="id" :ms-input-index="
                        Object.keys(section.inputs[id2].inputs).find(key =>section.inputs[id2].name == id2 )
-                         ">
+                         "/>
 
-                                </msinput>
+
+                                    </div>
+
+
+                                </div>
+
+
                             </div>
 
 
@@ -167,22 +176,22 @@
                     <div>
 
 
-                        <div class="text-gray-700 text-base flex flex-wrap" v-bind:class="{
+                        <div class="text-gray-700 text-base flex flex-wrap" :class="{
                         'hidden':checkImHiddenOrNot(section),
                         // 'flex':onMobile,
                         // 'flex':!onMobile
                         }">
 
-                            <msinput v-if="!(section.hasOwnProperty('withData') && section.withData)" class="w-1/2"
+                            <msinput v-if="!(section.hasOwnProperty('withData') && section.withData) " class="w-1/2"
                                      :class="section.inputs[id2].inputSize" v-for="(inputRaw,id2) in section.inputs"
                                      :key="inputRaw.name.toLowerCase()" :ref="inputRaw.name.toLowerCase()"
-                                     v-bind:ms-data="inputRaw" v-bind:ms-group-index="id" :ms-input-index="id2">
+                                     :ms-data="inputRaw" :ms-group-index="id" :ms-input-index="id2">
                             </msinput>
 
                             <msinput v-else class="w-1/2" :class="section.inputs[id2].inputSize"
                                      v-for="(inputRaw,id2,key) in section.inputs" :key="inputRaw.name.toLowerCase()"
                                      :ref="inputRaw.name.toLowerCase()" v-bind:ms-data="inputRaw"
-                                     v-bind:ms-group-index="id" :ms-input-index="
+                                     :ms-group-index="id" :ms-input-index="
                                Object.keys(section.inputs[id2].inputs).find(key =>section.inputs[id2].name == id2 )
                                  ">
 
@@ -389,6 +398,12 @@
             if (this.msData.hasOwnProperty('q')) this.msQ = this.msData.q;
 
             //console.log();
+            if(this.msData.hasOwnProperty('optionalData') && this.msData.hasOwnProperty('optionalFormInput')){
+
+                this.msFormOptionalInput=this.msData.optionalFormInput;
+                this.msFormOptionalData=this.msData.optionalData;
+
+            }
 
             if (this.msData.hasOwnProperty('formData')) {
                 Object.keys(this.msData.formData).forEach(function (key, index) {
@@ -396,6 +411,7 @@
                     var data = this.msData.formData[key];
                     data.id = key;
 
+                    //console.log(data);
                     this.msFormData.push(data);
 
                     //   console.log(index);
@@ -407,7 +423,6 @@
                     }
 
                 }, this);
-
 
             }
             // this.msFormData= this.msData.formData;
@@ -430,10 +445,45 @@
                 allErrors: [],
                 CurrentDataFromServer: null,
                 compactForm: true,
-                msViewAll: true
+                msViewAll: true,
+                msFormOptionalInput:{},
+                msFormOptionalData:{},
+                msFormOptionalInputActive:[],
+                msFormOptionalCurrentActiveRoot:{}
             }
         },
         methods: {
+
+            findFromLevel1(data,needle){
+                var FoundRoot=[];
+                var FilteredArray=[];
+                for (var i in data){
+
+                    for (var z in data[i]){
+
+                        console.log(data[i][z])
+                        data[i][z].filter(function (inputName) {
+                            if(inputName == needle)FilteredArray.push(i);
+                            return  inputName == needle;
+                        })
+                    }
+
+
+                }
+                if(FilteredArray.length != undefined && FilteredArray.length>0){
+                    console.log(FilteredArray)
+
+
+                }
+                return FoundRoot;
+            },
+            checkOptionalInput(input){
+               // return false;
+         //   console.log(this.msFormOptionalInputActive.includes(input.name));
+                 if(this.msFormOptionalInputActive.includes(input.name))return true;
+            return (input.hasOwnProperty('optional') && input.optional  )? false:true;
+
+            },
             formShortcut(event) {
                 switch (event.keyCode) {
                     case '102':
@@ -634,8 +684,49 @@
 
             },
             setInputData(name, value, multi = false, index = 0) {
-                //console.log(name2 != "");
-                /// console.log(multi);
+
+                var th=this;
+                console.log(name+ " : "+value)
+                 if(this.msData.optionalData.hasOwnProperty(name) &&this.msData.optionalData[name].hasOwnProperty(value) ){
+                     console.log('aaaa')
+                     //  console.log(name);
+                    // var newActive=[];
+                     for (var i in this.msData.optionalData[name][value]){
+                            var iName=this.msData.optionalData[name][value][i];
+                        if(!th.msFormOptionalInputActive.includes(iName))    th.msFormOptionalInputActive.push(iName);
+                     }
+                 //    console.log(th.msFormOptionalInputActive)
+                    // th.msFormOptionalInputActive=newActive;
+                 //    this.msFormOptionalInputActive=this.msData.optionalData[name][value];
+
+
+                 }else if(this.msData.optionalData.hasOwnProperty(name) && !this.msData.optionalData[name].hasOwnProperty(value) ){
+                //  console.log(this.msData.optionalData[name]);
+                  console.log('sss')
+                    var newActive=[];
+                    var activeRoot=[];
+                     for (var i in this.msFormOptionalInputActive){
+                        var iName=this.msFormOptionalInputActive[i];
+                        this.allErrors = this.allErrors.filter(function( obj ) {
+                            return obj.inputName !== iName;
+                        });
+                    }
+                     for (var z in this.msFormOptionalData){
+                         if(z==name){
+                             for (var x in this.msFormOptionalData[z]){
+                                 for (var y in this.msFormOptionalData[z][x]){
+                                     if(newActive.includes(this.msFormOptionalData[z][x][y])===false ) {
+                                      //  if(value==x)
+                                         newActive.push(this.msFormOptionalData[z][x][y]);
+                                     }
+
+                                 }
+                                  }
+
+                         }
+                     }
+                     this.msFormOptionalInputActive=newActive;
+                 }
                 //     console.log('Name: '+name+' value: '+value+' multi: '+multi+' index: '+index);
                 if (false) {
                     if (!(this.msFormDataFinal[name] instanceof Object)) {
@@ -671,6 +762,7 @@
 
                 //console.log(this.msFormDataFinal[name].mslength);
             },
+
             viewIconTogle() {
             },
             setAllMsError(data) {
@@ -787,7 +879,14 @@
                 //console.log(this.msData.actionButton[id].route);
             }
 
-        }
+        },
+        watch:
+            {
+                msFormOptionalInputActive(newVal,oldVal){
+               // console.log(newVal);
+                //console.log(oldVal);
+                }
+            }
 
 
     }

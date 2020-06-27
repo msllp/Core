@@ -14,6 +14,8 @@ class MSTableFieldSchema
     private $FinalDataToOut=[];
     private $dbOff=false;
     private $addAction=null;
+    private $relationToOther=[];
+    private $defaultData=[];
     public function __construct()
     {
 
@@ -94,6 +96,15 @@ class MSTableFieldSchema
         $this->resetAllValue();
         return $dataToOut;
     }
+    public function connectTo($inputName,$value="",$operator='='){
+        $this->relationToOther[$inputName]=[
+            'operator'=>$operator,
+            'value'=>$value
+        ];
+        return $this;
+        //dd($this);
+
+    }
 
     public function resetAllValue(){
 
@@ -106,6 +117,8 @@ class MSTableFieldSchema
             'FinalDataToOut'=>[],
             'dbOff'=>false,
             'addAction'=>null,
+            'relationToOther'=>[],
+            'defaultData'=>[]
         ];
 
         foreach ($defalutValue as  $k=>$v){
@@ -114,6 +127,18 @@ class MSTableFieldSchema
 
 
 
+    }
+
+    public function giveData($namespace,$method,$key='BoolName',$value="BoolValue"){
+        $this->defaultData=
+            [
+                'msdata'=>  $namespace::$method(),
+                'text'=>$key,
+                'value'=>$value
+
+            ];
+
+        return $this;
     }
 
     public function proccessToOut():void {
@@ -127,12 +152,10 @@ class MSTableFieldSchema
             case 'number':
                 //$this->pattern('^[a-zA-Z0-9]*$');
                 $this->onlyNumber(true,'is not valid number',false);
-             //   $this->pattern('^$|^\S[0-9.]*$','is not valid number');
-                //$this->pattern("(^[0-9]+$|^$)",'in not valid number','g');
-               // dd($this);
+
                 break;
             case 'text':
-                $this->pattern('^$|^\S[a-zA-Z0-9 ]*$','is not valid text');
+                if(!array_key_exists('format',$this->validation))  $this->pattern('^$|^\S[a-zA-Z0-9 ]*$','is not valid text');
                 break;
             case 'email':
                 $this->validation['email']=true;
@@ -142,7 +165,10 @@ class MSTableFieldSchema
         if($this->addAction!=null)$array['addAction']=$this->addAction;
         if($this->dbOff)$array['dbOff']=$this->dbOff;
         if(count($this->validation)>0)$array['validation']=$this->validation;
-
+        if(count($this->relationToOther)>0)$array['relation']=$this->relationToOther;
+        if(count($this->defaultData)>0)$array['validation']['verifyBy']=$this->defaultData;
+       // if(count($this->defaultData)>0)dd($array);
+        //dd($array);
         $this->FinalDataToOut=$array;
     }
 
