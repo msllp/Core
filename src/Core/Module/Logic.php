@@ -97,18 +97,19 @@ class Logic
         $nextData=\MS\Core\Helper\Comman::makeNextData($mod,$title,route($route,$data));
         return \MS\Core\Helper\Comman::msJson([],$nextData,[]);
     }
-    public function throwData(array $data){
+    public function throwData(array $data,$status=200,$extra=[]){
         $err=[
             'msData'=>$data
         ];
 
-        return response()->json($err,200);
+        return response()->json($err,$status);
     }
-    public function throwError($data,$status=419){
+    public function throwError($data,$status=419,$extra=[]){
 
         $err=[
             'errors'=>$data
         ];
+        $err=array_merge($err,$extra);
 
         return response()->json($err,$status);
     }

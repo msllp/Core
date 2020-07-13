@@ -16,6 +16,7 @@ class MSTableFieldSchema
     private $addAction=null;
     private $relationToOther=[];
     private $defaultData=[];
+    private $debug=false;
     public function __construct()
     {
 
@@ -141,6 +142,10 @@ class MSTableFieldSchema
         return $this;
     }
 
+    public function debugOn(){
+        $this->debug=true;
+        return $this;
+    }
     public function proccessToOut():void {
         $array=[
             'name'=>$this->name,
@@ -148,15 +153,27 @@ class MSTableFieldSchema
             'input'=>$this->input,
         ];
 
+        if($this->type=='UID'){
+            $array['input']='UID';
+            $array['type']='string';
+        }
+
+     //   if($this->debug)dd($array);
+
         switch ($array['input']){
             case 'number':
                 //$this->pattern('^[a-zA-Z0-9]*$');
                 $this->onlyNumber(true,'is not valid number',false);
-
                 break;
+
             case 'text':
                 if(!array_key_exists('format',$this->validation))  $this->pattern('^$|^\S[a-zA-Z0-9 ]*$','is not valid text');
                 break;
+
+            case 'UID':
+                if(!array_key_exists('format',$this->validation))  $this->pattern('^$|^\S[a-zA-Z0-9_]*$','is not valid text');
+                break;
+
             case 'email':
                 $this->validation['email']=true;
                 break;
@@ -169,6 +186,7 @@ class MSTableFieldSchema
         if(count($this->defaultData)>0)$array['validation']['verifyBy']=$this->defaultData;
        // if(count($this->defaultData)>0)dd($array);
         //dd($array);
+      //  if($this->debug)dd($array);
         $this->FinalDataToOut=$array;
     }
 

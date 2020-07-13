@@ -38,6 +38,27 @@
 }"  >
 @yield('body')
 
+    <div class="ms-loading " >
+        <div class="ms-loading-animation" >
+            <div class="ms-loader" style="z-index: 8"></div>
+            <div class="ms-loader-1" style="z-index: 7"></div>
+            <div class="ms-loader-2" style="z-index: 6"></div>
+            <div class="ms-loader-3" style="z-index: 5"></div>
+            <div class="ms-loader-4" style="z-index: 4"></div>
+            <div class="ms-loader-5" style="z-index: 3"></div>
+            <div class="ms-loader-6" style="z-index: 2"></div>
+            <div class="ms-loader-7" style="z-index: 1"></div>
+        </div>
+        <div   class="ms-loading-text" >
+            <div>
+                Loading
+            </div>
+
+        </div>
+
+    </div>
+
+
 </div>
 
   <script src="{{ asset("b/js/app.js") }}?{{\MS\Core\Helper\Comman::random(10)}}" type="text/javascript" defer></script>

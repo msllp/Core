@@ -229,6 +229,13 @@ class MSDB implements MasterNoSql
         return Schema::connection($connection)->hasTable($table);
     }
 
+    public function allOk(){
+        $connection = $this->getConnectionName();
+        $table = $this->getTable();
+
+        return Schema::connection($connection)->hasTable($table);
+    }
+
     /**
      * Static Raw drop Table Function
      * @param string $tableName
@@ -555,7 +562,7 @@ class MSDB implements MasterNoSql
                         //dd($model->get()->count());
                         if ($model->get()->count() > 0) {
 
-                            $valdationErrorArray[$name] = "Duplicate Found for Column name: " . $name . " \n Error casued by class::method = " . __METHOD__;
+                            $valdationErrorArray[$name] = "Duplicate Record Found";
                         }
                         //   if($name=="Username")dd(($model->get()->count()));
                     }
@@ -574,11 +581,19 @@ class MSDB implements MasterNoSql
             }
 
         } catch (\Exception $e) {
-            // dd($e);
+
             ms_error_found:
             if (1) {
+              $errA=[];
+                foreach ($valdationErrorArray as $v=>$ed){
+                $errA[$v]=[$ed];
+                }
+                $this->CurrentError->merge($errA);
+               // dd($this);
                 if (isset($valdationErrorArray)) {
                     if (count($valdationErrorArray) > 0) $er['validationArray'] = $valdationErrorArray;
+                }else{
+                    $valdationError=false;
                 }
                 //    dd($er);
 
@@ -592,10 +607,11 @@ class MSDB implements MasterNoSql
 
 
         ms_final_return:
-        //dd($valdationError);
-        //if(count($er)>0)dd($valdationError==true);
+       // if(count($er)>0)dd($this->CurrentError);
+//dd( $this->getModel()->insert($columnArray));
         if (!isset($valdationError)) $valdationError = true;
         if ($valdationError == true) return false;
+
         return true;
 
         // TODO: Implement rowAdd() method.
@@ -1260,13 +1276,13 @@ class MSDB implements MasterNoSql
         return $this;
     }
 
-    public function checkRulesForData($inData = [], $r = null)
+    public function checkRulesForData($inData = [], $r = null,$customData=[])
     {
 
         if ($r == null) $r = $this->r;
 
 
-        $data = $this->filterData($r->all());
+        $data =(count($customData)<1)? $this->filterData($r->all()):$this->filterData($customData);
         $this->dataToProcess = $data;
 
         if (count($this->dataToProcess) > 0) {
@@ -1293,6 +1309,7 @@ class MSDB implements MasterNoSql
         // dd($r->validate($this->makeRulesForValidation($rules),$message,$attr));
 
         //  dd($rules);
+       // dd($data);
         $validator = Validator::make($data, $this->makeRulesForValidation($rules), $message, $attr);
 
         //$validator->passes();

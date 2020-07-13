@@ -557,6 +557,7 @@ class MSTableSchema {
      */
     public function setFields(array $fields=[])
     {
+
         $d=$this->filterFields($fields);
 
         if ($this->checkFields($d))$this->fields[] = $d;
@@ -564,6 +565,7 @@ class MSTableSchema {
     }
 
     private function checkFields($d) {
+
         if ((count($d)> (count(self::$requireKeysFields)-1) ) && collect($this->getFields())->where('name','=',$d['name'] )->count() <1  )return true;
         return false;
     }

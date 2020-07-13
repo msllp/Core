@@ -12,7 +12,7 @@
             <div class="ms-company-setup-form-body" >
 
                 <div class="ms-company-setup-form-section">
-                    <div class="ms-company-setup-form-body-head"> Business Basic Details </div>
+                    <div class="ms-company-setup-form-body-head"> Account Details </div>
                     <div v-for="rows in msForm" class="ms-company-setup-form-body-row">
 
 

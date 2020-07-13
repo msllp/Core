@@ -1,3 +1,282 @@
+$baseBox:120px;
+$loadingPosition:absolute;
+.ms-loading{
+    z-index: 2502;
+
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    top:0;
+    left: 0;
+    background-color: rgba(0,0,0,0.7);
+    .ms-loading-animation{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+
+        color: rgba(0,0,0,0.4);
+
+        @apply mx-auto;
+        .ms-loader {
+            z-index: 8;
+            border: 5px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 5px solid rgba(66,179,228,1);
+            border-right: 5px solid rgba(61,110,239,1) ;
+            border-bottom: 5px solid rgba(61,110,239,1);
+            border-left: 5px solid rgba(66,179,228,1);
+            //border-image:  linear-gradient($ms-theme-color-main,$ms-theme-color-light) 30 round;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: ms_spin 1s ease-in-out infinite;
+            animation: ms_spin 1s ease-in-out infinite;
+            padding: 0px;
+            margin-left: auto;
+            margin-right: auto;
+            position:$loadingPosition ;
+
+        }
+        .ms-loader-1 {
+            //z-index: 1;
+            z-index:7;
+           // position:initial;
+            @apply object-none object-center;
+            border: 5px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 10px solid rgba(66,179,228,1);
+            border-right: 10px solid rgba(61,110,239,1) ;
+            border-bottom: 10px solid rgba(61,110,239,1);
+            border-left: 10px solid rgba(66,179,228,1);
+            //border-image:  linear-gradient($ms-theme-color-main,$ms-theme-color-light) 30 round;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: ms_spin_reverse 3s ease-in-out infinite;
+            animation: ms_spin_reverse 3s ease-in-out infinite;
+            padding: 0px;
+            margin-left: auto;
+            margin-right: auto;
+            position:$loadingPosition ;
+
+
+
+
+        }
+        .ms-loader-2 {
+            //z-index: 1;
+            z-index: 6;
+        //    position:initial;
+            @apply object-none object-center;
+            border: 5px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 15px solid rgba(66,179,228,1);
+            border-right: 15px solid rgba(61,110,239,1) ;
+            border-bottom: 15px solid rgba(61,110,239,1);
+            border-left: 15px solid rgba(66,179,228,1);
+            //border-image:  linear-gradient($ms-theme-color-main,$ms-theme-color-light) 30 round;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: ms_spin 4s ease-in-out infinite;
+            animation: ms_spin 4s ease-in-out infinite;
+            padding: 0px;
+            margin-left: auto;
+            margin-right: auto;
+            position:$loadingPosition ;
+
+
+
+        }
+        .ms-loader-3 {
+            z-index: 5;
+        //    position:initial;
+            border: 5px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 25px solid rgba(66,179,228,1);
+            border-right: 25px solid rgba(61,110,239,1) ;
+            border-bottom: 25px solid rgba(61,110,239,1);
+            border-left: 25px solid rgba(66,179,228,1);
+            //border-image:  linear-gradient($ms-theme-color-main,$ms-theme-color-light) 30 round;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: ms_spin_reverse 5s ease-in-out infinite;
+            animation: ms_spin_reverse 5s ease-in-out infinite;
+            padding: 0px;
+            margin-left: auto;
+            margin-right: auto;
+            position:$loadingPosition ;
+
+
+
+
+        }
+        .ms-loader-4 {
+            //z-index: 1;
+            z-index: 4;
+        //    position:initial;
+            border: 5px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 30px solid rgba(66,179,228,1);
+            border-right: 30px solid rgba(61,110,239,1) ;
+            border-bottom: 30px solid rgba(61,110,239,1);
+            border-left: 30px solid rgba(66,179,228,1);
+            //border-image:  linear-gradient($ms-theme-color-main,$ms-theme-color-light) 30 round;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: ms_spin 6s ease-in-out infinite;
+            animation: ms_spin 6s ease-in-out infinite;
+            padding: 0px;
+            margin-left: auto;
+            margin-right: auto;
+            position:$loadingPosition ;
+
+
+
+
+        }
+        .ms-loader-5 {
+            //z-index: 1;
+            z-index: 3;
+        //    position:initial;
+            border: 5px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 35px solid rgba(66,179,228,1);
+            border-right: 35px solid rgba(61,110,239,1) ;
+            border-bottom: 35px solid rgba(61,110,239,1);
+            border-left: 35px solid rgba(66,179,228,1);
+            //border-image:  linear-gradient($ms-theme-color-main,$ms-theme-color-light) 30 round;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: ms_spin_reverse 7s ease-in-out infinite;
+            animation: ms_spin_reverse 7s ease-in-out infinite;
+            padding: 0px;
+            margin-left: auto;
+            margin-right: auto;
+            position:$loadingPosition ;
+
+
+
+
+        }
+        .ms-loader-6 {
+            //z-index: 1;
+            z-index: 2;
+        //    position:initial;
+            border: 5px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 40px solid rgba(66,179,228,1);
+            border-right: 40px solid rgba(61,110,239,1) ;
+            border-bottom: 40px solid rgba(61,110,239,1);
+            border-left: 40px solid rgba(66,179,228,1);
+            //border-image:  linear-gradient($ms-theme-color-main,$ms-theme-color-light) 30 round;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: ms_spin 8s ease-in-out infinite;
+            animation: ms_spin 8s ease-in-out infinite;
+            padding: 0px;
+            margin-left: auto;
+            margin-right: auto;
+            position:$loadingPosition ;
+
+
+
+
+        }
+        .ms-loader-7 {
+            //z-index: 1;
+            z-index: 1;
+        //    position:initial;
+            border: 5px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 45px solid rgba(66,179,228,1);
+            border-right: 45px solid rgba(61,110,239,1) ;
+            border-bottom: 45px solid rgba(61,110,239,1);
+            border-left: 45px solid rgba(66,179,228,1);
+            //border-image:  linear-gradient($ms-theme-color-main,$ms-theme-color-light) 30 round;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: ms_spin_reverse 9s ease-in-out infinite;
+            animation: ms_spin_reverse 9s ease-in-out infinite;
+            padding: 0px;
+            margin-left: auto;
+            margin-right: auto;
+            position:$loadingPosition ;
+
+
+
+
+        }
+    }
+    .ms-loading-text{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        color: black;
+        padding: 10px 30px;
+        background-color: rgba(255,255,255,0.8);
+    }
+
+
+
+}
+
+
+//@-webkit-keyframes ms_spin {
+//    0% {
+//        //-webkit-transform: rotate(0deg);
+//        width: 100px;
+//        height: 100px;
+//    }
+//    30% {
+//        width: 60px;
+//        height: 60px;
+//    }
+//
+//    100% {
+//        width: 0px;
+//        height: 0px;
+//    }
+//}
+
+@keyframes ms_spin {
+    0% {
+
+        transform: rotate(0deg);
+   ;
+    }
+
+
+    100% {
+
+        transform: rotate(360deg);
+
+    }
+
+}
+
+@keyframes ms_spin_reverse {
+    0% {
+
+        transform: rotate(0deg);
+   ;
+    }
+
+
+    100% {
+
+        transform: rotate(-360deg);
+
+    }
+
+}
+
+
+@keyframes ms_blink {
+    0%   {@apply text-red-700;@apply ms-animation; }
+    25%  {@apply text-red-600;@apply ms-animation;}
+    50%  {@apply text-red-500;@apply ms-animation;}
+    100% {@apply text-red-400;@apply ms-animation;}
+}
 .ms-animation{
     transition: all 500ms ease-in-out;
 }

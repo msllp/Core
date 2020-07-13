@@ -144,8 +144,46 @@
 
             }
 
+            .ms-company-setup-form-section-error{
+                @apply border;
+                @apply shadow;
+                @apply mb-2;
+                border-color: $ms-theme-color-danger-dark;
+                background-color: $ms-theme-color-danger-bg;
+                .ms-company-setup-form-body-head{
+                    @apply text-lg;
+                    @apply px-2 py-1;
+                    @apply border-b;
+
+                    color: $ms-theme-color-danger-dark;
+                    border-color: $ms-theme-color-danger-dark;
+
+                }
+                .ms-company-setup-form-body-row{
+
+                    border-color: $ms-theme-color-danger-dark;
+                    @apply px-2;
+                    @apply py-1;
+                    font-size: smaller;
+                    //@apply mb-2;
+                    @apply flex;
+                    @apply flex-row;
+                    i{
+                        line-height: 1.3;
+                        @apply px-2;
+                        @apply text-red-400;
+                        animation-name: ms_blink;
+                        animation-duration: 1s;
+                        animation-iteration-count: infinite;
+                    }
+
+                }
+
+            }
+
 
         }
+
 
         .ms-company-setup-form-footer{
             @apply w-full;

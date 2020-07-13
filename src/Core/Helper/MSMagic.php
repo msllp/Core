@@ -57,6 +57,11 @@ class MSMagic
         return \MS\Mod\B\User4O3\F::getUser();
     }
 
+    public function userId(){
+        $u=$this->user();
+        return (array_key_exists('id',$u))?$u['id']:null;
+    }
+
     public function role()
     {
 
@@ -72,7 +77,7 @@ class MSMagic
     public function rootId()
     {
         $user = $this->user();
-        return ($this->checkRootUser()) ? $user['id'] : $user['RootId'];
+        return ($this->checkRootUser()) ? $this->userId() : $user['RootId'];
     }
 
     public function checkRootUser()

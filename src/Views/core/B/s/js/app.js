@@ -37,6 +37,10 @@ axios.get(url,{crossDomain: true,withCredentials:true})
             el: '#msapp',
             mixins: [window.MS],
             methods: {
+
+                isMSLoading(){
+                    return false;
+                },
                 msShortCut(event, keyCode = false) {
                     var fKeyCode = 0;
                     if (keyCode != false) {
