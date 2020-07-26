@@ -27,6 +27,7 @@ class MSDB implements MasterNoSql
     public $dataToProcess = [];
     public $currentFiles = [];
     public $ms_id = "0";
+    public $relationArray=[];
 
     public $r = null;
     public $perPage = 5;
@@ -868,6 +869,16 @@ class MSDB implements MasterNoSql
 
     }
 
+    public function attach(string $columnName,$data=[]){
+        $model = $data;
+        if(gettype($data)!='array' && get_class($model)=='MS\Core\Helper\MSDB'){
+            $this->relationArray[$columnName]=$model->rowGet();
+        }elseif(count($data)==4){
+            $this->relationArray[$columnName]=$data;
+        }
+    }
+
+
     /**
      * Get Row From any valid Column Value
      * @param array $identifier
@@ -899,10 +910,35 @@ class MSDB implements MasterNoSql
 
 
             $row = \DB::connection($connection)->table($table)->get();
+            $rel=$this->relationArray;
 
-            if ($row->count() > 0) $return = collect($row->all())->map(function ($item) {
-                return json_decode(json_encode($item), true);
+            if ($row->count() > 0) $return = collect($row->all())->map(function ($item)use($rel) {
+
+                $itemArray=json_decode(json_encode($item), true);
+
+                if(count($rel)>0) {
+
+                    foreach ($rel as $column => $cData) {
+                        if (array_key_exists('type', $cData) && array_key_exists('class', $cData) && array_key_exists('method', $cData) && array_key_exists('connectId', $cData)) {
+                            if (array_key_exists($cData['connectId'], $itemArray)) {
+                                $perFix = $itemArray['UniqId'];
+                                $m = call_user_func([$cData['class'], $cData['method']], $perFix);
+
+                                if(!$m->allOk())$m->migrate();
+                                $itemArray[$column] = $m->rowGet();
+                            } else {
+                                $itemArray[$column] = $cData;
+                            }
+
+                        }
+                    }
+                }
+                return $itemArray;
+
             })->toArray();
+
+            if (count($this->relationArray)>0)dd($return);
+
             goto fn_final;
         } elseif (count($identifier) == 1) {
             ms_default:
@@ -1497,6 +1533,17 @@ class MSDB implements MasterNoSql
         }
         $loginPage = new MSLogin($this, $lData);
         return $loginPage->displayLoginPageFromMSDB();
+    }
+
+
+    public function __call($method, $arguments)
+    {
+
+        if(!method_exists($this,$method) ){
+
+
+
+        }
     }
 
 }
